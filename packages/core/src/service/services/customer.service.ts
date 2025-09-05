@@ -4,8 +4,8 @@ import {
   RegisterCustomerInput,
   UpdateCustomerInput as UpdateCustomerShopInput,
   VerifyCustomerAccountResult,
-} from "@deenruv/common/lib/generated-shop-types";
-import {
+} from "@deenruv/common/src/generated-shop-types";
+import type {
   AddNoteToCustomerInput,
   CreateAddressInput,
   CreateCustomerInput,
@@ -20,12 +20,12 @@ import {
   UpdateCustomerInput,
   UpdateCustomerNoteInput,
   UpdateCustomerResult,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
 import { IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import {
   ErrorResultUnion,
   isGraphQlErrorResult,
@@ -66,8 +66,8 @@ import { AccountRegistrationEvent } from "../../event-bus/events/account-registr
 import { AccountVerifiedEvent } from "../../event-bus/events/account-verified-event";
 import { CustomerAddressEvent } from "../../event-bus/events/customer-address-event";
 import { CustomerEvent } from "../../event-bus/events/customer-event";
-import { IdentifierChangeEvent } from "../../event-bus/events/identifier-change-event";
-import { IdentifierChangeRequestEvent } from "../../event-bus/events/identifier-change-request-event";
+import { type IDentifierChangeEvent } from "../../event-bus/events/identifier-change-event";
+import { type IDentifierChangeRequestEvent } from "../../event-bus/events/identifier-change-request-event";
 import { PasswordResetEvent } from "../../event-bus/events/password-reset-event";
 import { PasswordResetVerifiedEvent } from "../../event-bus/events/password-reset-verified-event";
 import { CustomFieldRelationService } from "../helpers/custom-field-relation/custom-field-relation.service";

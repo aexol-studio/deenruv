@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { InjectableStrategy } from "../../common/types/injectable-strategy";
@@ -6,7 +6,7 @@ import { Channel } from "../../entity/channel/channel.entity";
 import { Order } from "../../entity/order/order.entity";
 import { OrderLine } from "../../entity/order-line/order-line.entity";
 import { ShippingLine } from "../../entity/shipping-line/shipping-line.entity";
-import { OrderState } from "../../service/helpers/order-state-machine/order-state";
+import { type OrderState } from "../../service/helpers/order-state-machine/order-state";
 
 /**
  * @description

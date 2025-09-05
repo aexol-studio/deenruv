@@ -3,13 +3,13 @@ import {
   CreateProductOptionGroupInput,
   DeletionResult,
   UpdateProductOptionGroupInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import { FindManyOptions, Like } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
-import { Translated } from "../../common/types/locale-types";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
+import type { Translated } from "../../common/types/locale-types";
 import { assertFound, idsAreEqual } from "../../common/utils";
 import { Logger } from "../../config/logger/deenruv-logger";
 import { TransactionalConnection } from "../../connection/transactional-connection";

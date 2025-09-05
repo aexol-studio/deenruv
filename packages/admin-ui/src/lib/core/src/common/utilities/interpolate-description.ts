@@ -1,4 +1,4 @@
-import { ConfigurableOperationDefinition } from '../generated-types';
+import type { ConfigurableOperationDefinition } from '../generated-types';
 
 /**
  * Interpolates the description of an ConfigurableOperation with the given values.

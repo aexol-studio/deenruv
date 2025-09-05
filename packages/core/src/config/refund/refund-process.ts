@@ -7,7 +7,7 @@ import {
 import { InjectableStrategy } from "../../common/types/injectable-strategy";
 import {
   CustomRefundStates,
-  RefundState,
+  type RefundState,
   RefundTransitionData,
 } from "../../service/helpers/refund-state-machine/refund-state";
 

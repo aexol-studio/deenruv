@@ -1,7 +1,9 @@
 {
   "name": "@deenruv/common",
   "version": "0.1.39",
-  "main": "index.js",
+  "exports": {
+    "./src/*": "./src/*.ts"
+  },
   "license": "MIT",
   "scripts": {
     "watch": "tsc -p ./tsconfig.build.json -w",
@@ -16,7 +18,7 @@
     "access": "public"
   },
   "files": [
-    "lib/**/*"
+    "src/**/*"
   ],
   "devDependencies": {
     "rimraf": "^5.0.5",

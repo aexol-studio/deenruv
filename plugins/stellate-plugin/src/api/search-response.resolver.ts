@@ -1,5 +1,5 @@
 import { Info, ResolveField, Resolver } from "@nestjs/graphql";
-import { GraphQLResolveInfo } from "graphql/type";
+import { type GraphQLResolveInfo } from "graphql/type";
 
 @Resolver("SearchResponse")
 export class SearchResponseFieldResolver {

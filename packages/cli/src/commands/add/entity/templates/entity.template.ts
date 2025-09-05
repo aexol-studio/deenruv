@@ -1,5 +1,5 @@
 import {
-  DeepPartial,
+  type DeepPartial,
   HasCustomFields,
   LocaleString,
   Translatable,

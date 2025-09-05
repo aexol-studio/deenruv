@@ -1,5 +1,5 @@
-import { omit } from "@deenruv/common/lib/omit";
-import { pick } from "@deenruv/common/lib/pick";
+import { omit } from "@deenruv/common/src/omit";
+import { pick } from "@deenruv/common/src/pick";
 import {
   containsProducts,
   customerGroup,

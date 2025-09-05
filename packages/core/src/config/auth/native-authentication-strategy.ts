@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";
 

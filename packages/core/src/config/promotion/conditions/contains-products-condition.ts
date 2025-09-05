@@ -1,7 +1,7 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
-import { idsAreEqual } from "../../../common/utils";
+import { type IDsAreEqual } from "../../../common/utils";
 import { OrderLine } from "../../../entity/order-line/order-line.entity";
 import { PromotionCondition } from "../promotion-condition";
 

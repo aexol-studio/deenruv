@@ -1,15 +1,15 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   JobQueue,
   MutationCancelJobArgs,
   MutationFlushBufferedJobsArgs,
   MutationRemoveSettledJobsArgs,
-  Permission,
   QueryJobArgs,
   QueryJobBufferSizeArgs,
   QueryJobsArgs,
   QueryJobsByIdArgs,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import {
   ConfigService,

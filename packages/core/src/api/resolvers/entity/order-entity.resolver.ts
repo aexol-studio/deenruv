@@ -1,16 +1,15 @@
 import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import {
+import type {
   HistoryEntryListOptions,
   OrderHistoryArgs,
-  SortOrder,
-} from "@deenruv/common/lib/generated-types";
-
+} from "@deenruv/common/src/generated-types";
+import { SortOrder } from "@deenruv/common/src/generated-types";
 import { assertFound, idsAreEqual } from "../../../common/utils";
 import { Order } from "../../../entity/order/order.entity";
 import { CustomerService, TranslatorService } from "../../../service/index";
 import { HistoryService } from "../../../service/services/history.service";
 import { OrderService } from "../../../service/services/order.service";
-import { ApiType } from "../../common/get-api-type";
+import { type ApiType } from "../../common/get-api-type";
 import { RequestContext } from "../../common/request-context";
 import { Api } from "../../decorators/api.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";

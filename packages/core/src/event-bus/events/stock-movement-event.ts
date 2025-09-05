@@ -1,4 +1,4 @@
-import { StockMovementType } from "@deenruv/common/lib/generated-types";
+import { StockMovementType } from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { StockMovement } from "../../entity/stock-movement/stock-movement.entity";

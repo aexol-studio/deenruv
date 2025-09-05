@@ -1,10 +1,10 @@
 {
   "name": "@deenruv/admin-ui-plugin",
   "version": "0.1.39",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "src/plugin.ts",
+  "types": "src/index.d.ts",
   "files": [
-    "lib/**/*"
+    "src/**/*"
   ],
   "license": "MIT",
   "scripts": {

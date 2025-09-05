@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectDataSource } from "@nestjs/typeorm/dist/common/typeorm.decorators";
-import { ID, Type } from "@deenruv/common/lib/shared-types";
+import { type ID, type Type } from "@deenruv/common/src/shared-types";
 import {
   DataSource,
   EntityManager,

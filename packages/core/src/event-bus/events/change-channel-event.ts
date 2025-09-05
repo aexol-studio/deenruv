@@ -1,4 +1,4 @@
-import { ID, Type } from "@deenruv/common/lib/shared-types";
+import { type ID, Type } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api";
 import { ChannelAware } from "../../common";

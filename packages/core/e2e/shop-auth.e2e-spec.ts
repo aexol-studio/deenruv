@@ -2,8 +2,8 @@ import { OnModuleInit } from "@nestjs/common";
 import {
   ErrorCode,
   RegisterCustomerInput,
-} from "@deenruv/common/lib/generated-shop-types";
-import { pick } from "@deenruv/common/lib/pick";
+} from "@deenruv/common/src/generated-shop-types";
+import { pick } from "@deenruv/common/src/pick";
 import {
   AccountRegistrationEvent,
   EventBus,

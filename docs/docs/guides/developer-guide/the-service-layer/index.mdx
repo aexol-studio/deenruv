@@ -23,7 +23,7 @@ used in the example in the [previous section](/guides/developer-guide/the-api-la
 ```ts title="src/services/product.service.ts"
 import { Injectable } from '@nestjs/common';
 import { IsNull } from 'typeorm';
-import { ID, Product, RequestContext, TransactionalConnection, TranslatorService } from '@deenruv/core';
+import { type ID, Product, RequestContext, TransactionalConnection, TranslatorService } from '@deenruv/core';
 
 @Injectable()
 export class ProductService {
@@ -121,7 +121,7 @@ Here are some examples of using the Find API:
 
 ```ts title="src/services/item.service.ts"
 import { Injectable } from '@nestjs/common';
-import { ID, RequestContext, TransactionalConnection } from '@deenruv/core';
+import { type ID, RequestContext, TransactionalConnection } from '@deenruv/core';
 import { IsNull } from 'typeorm';
 import { Item } from '../entities/item.entity';
 
@@ -190,7 +190,7 @@ Here are some examples of using the QueryBuilder API:
 
 ```ts title="src/services/item.service.ts"
 import { Injectable } from '@nestjs/common';
-import { ID, RequestContext, TransactionalConnection } from '@deenruv/core';
+import { type ID, RequestContext, TransactionalConnection } from '@deenruv/core';
 import { Brackets, IsNull } from 'typeorm';
 import { Item } from '../entities/item.entity';
 

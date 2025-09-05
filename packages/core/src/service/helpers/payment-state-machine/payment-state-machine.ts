@@ -15,7 +15,7 @@ import { Logger } from "../../../config/logger/deenruv-logger";
 import { Order } from "../../../entity/order/order.entity";
 import { Payment } from "../../../entity/payment/payment.entity";
 
-import { PaymentState, PaymentTransitionData } from "./payment-state";
+import { type PaymentState, PaymentTransitionData } from "./payment-state";
 
 @Injectable()
 export class PaymentStateMachine {

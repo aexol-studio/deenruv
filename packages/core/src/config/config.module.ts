@@ -4,7 +4,7 @@ import {
   OnApplicationShutdown,
 } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
 
 import { ConfigurableOperationDef } from "../common/configurable-operation";
 import { Injector } from "../common/injector";

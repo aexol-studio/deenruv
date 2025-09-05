@@ -1,5 +1,5 @@
-import { ID } from "@deenruv/common/lib/shared-types";
-import { isObject } from "@deenruv/common/lib/shared-utils";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { isObject } from "@deenruv/common/src/shared-utils";
 
 import { EntityIdStrategy } from "../../config/entity/entity-id-strategy";
 import { DeenruvEntity } from "../../entity/base/base.entity";

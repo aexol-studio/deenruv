@@ -198,7 +198,7 @@ export class MyPluginService {
 You can create your own custom events by extending the [`DeenruvEvent`](/reference/typescript-api/events/deenruv-event) class. For example, to create a custom event which is triggered when a customer submits a review, you could do this:
 
 ```ts title="src/plugins/reviews/events/review-submitted.event.ts"
-import { ID, RequestContext, DeenruvEvent } from '@deenruv/core';
+import { type ID, RequestContext, DeenruvEvent } from '@deenruv/core';
 import { ProductReviewInput } from '../types';
 
 /**
@@ -245,7 +245,7 @@ export class ProductReviewService {
 There is a special event class [`VendureEntityEvent`](/reference/typescript-api/events/deenruv-entity-event) for events relating to the creation, update or deletion of entities. Let's say you have a custom entity (see [defining a database entity](/guides/developer-guide/database-entity)) `BlogPost` and you want to trigger an event whenever a new `BlogPost` is created, updated or deleted:
 
 ```ts title="src/plugins/blog/events/blog-post-event.ts"
-import { ID, RequestContext, VendureEntityEvent } from '@deenruv/core';
+import { type ID, RequestContext, VendureEntityEvent } from '@deenruv/core';
 import { BlogPost } from '../entities/blog-post.entity';
 import { CreateBlogPostInput, UpdateBlogPostInput } from '../types';
 

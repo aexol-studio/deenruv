@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import {
-  ConfigurableOperation,
+  type ConfigurableOperation,
   ConfigurableOperationInput,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
 import { ConfigurableOperationDef } from "../../../common/configurable-operation";
 import { UserInputError } from "../../../common/error/errors";

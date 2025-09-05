@@ -1,5 +1,5 @@
-import { ConfigurableOperation } from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import type { ConfigurableOperation } from "@deenruv/common/src/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -11,6 +11,7 @@ import {
   Tree,
   TreeChildren,
   TreeParent,
+  type Relation,
 } from "typeorm";
 
 import { ChannelAware, Orderable } from "../../common/types/common-types";
@@ -72,7 +73,7 @@ export class Collection
   @ManyToOne((type) => Asset, (asset) => asset.featuredInCollections, {
     onDelete: "SET NULL",
   })
-  featuredAsset: Asset;
+  featuredAsset: Relation<Asset>;
 
   @OneToMany(
     (type) => CollectionAsset,

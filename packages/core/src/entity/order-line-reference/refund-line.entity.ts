@@ -1,5 +1,5 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { ChildEntity, Index, ManyToOne } from "typeorm";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type Relation, ChildEntity, Index, ManyToOne } from "typeorm";
 
 import { EntityId } from "../entity-id.decorator";
 import { Refund } from "../refund/refund.entity";
@@ -21,7 +21,7 @@ export class RefundLine extends OrderLineReference {
 
   @Index()
   @ManyToOne((type) => Refund, (refund) => refund.lines)
-  refund: Refund;
+  refund: Relation<Refund>;
 
   @EntityId()
   refundId: ID;

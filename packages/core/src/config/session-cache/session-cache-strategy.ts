@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { InjectableStrategy } from "../../common/types/injectable-strategy";
 import { UserChannelPermissions } from "../../service/helpers/utils/get-user-channels-permissions";

@@ -1,6 +1,6 @@
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types";
 
-import { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
+import type { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
 import { orderTotalIsCovered } from "../../service/helpers/utils/order-utils";
 
 import { PaymentProcess } from "./payment-process";

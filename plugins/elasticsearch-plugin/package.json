@@ -21,7 +21,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@deenruv/common": "workspace:^",
+    "@deenruv/common": "workspace:*",
     "@elastic/elasticsearch": "~7.9.1",
     "@nestjs/common": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
@@ -30,7 +30,7 @@
     "fast-deep-equal": "^3.1.3"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "rimraf": "^5.0.5",
     "rxjs": "7.8.1",
     "typescript": "5.3.3"

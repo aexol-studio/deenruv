@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   ConfigurableOperationDefinition,
   DeletionResponse,
   MutationAssignCollectionsToChannelArgs,
@@ -9,15 +9,14 @@ import {
   MutationMoveCollectionArgs,
   MutationRemoveCollectionsFromChannelArgs,
   MutationUpdateCollectionArgs,
-  Permission,
   QueryCollectionArgs,
   QueryCollectionsArgs,
   QueryPreviewCollectionVariantsArgs,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
-
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 import { UserInputError } from "../../../common/error/errors";
-import { Translated } from "../../../common/types/locale-types";
+import type { Translated } from "../../../common/types/locale-types";
 import { CollectionFilter } from "../../../config/catalog/collection-filter";
 import { Collection } from "../../../entity/collection/collection.entity";
 import { CollectionService } from "../../../service/services/collection.service";
@@ -25,7 +24,10 @@ import { FacetValueService } from "../../../service/services/facet-value.service
 import { ConfigurableOperationCodec } from "../../common/configurable-operation-codec";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 

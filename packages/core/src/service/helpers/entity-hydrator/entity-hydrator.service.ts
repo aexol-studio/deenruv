@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { Type } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import { type Type } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 import { SelectQueryBuilder } from "typeorm";
 
 import { RequestContext } from "../../../api/common/request-context";
@@ -24,7 +24,7 @@ import { mergeDeep } from "./merge-deep";
  * @example
  * ```ts
  * import { Injectable } from '\@nestjs/common';
- * import { ID, RequestContext, EntityHydrator, ProductVariantService } from '\@deenruv/core';
+ * import { type ID, RequestContext, EntityHydrator, ProductVariantService } from '\@deenruv/core';
  *
  * \@Injectable()
  * export class MyService {

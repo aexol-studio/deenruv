@@ -1,7 +1,7 @@
 import {
   SUPER_ADMIN_USER_IDENTIFIER,
   SUPER_ADMIN_USER_PASSWORD,
-} from "@deenruv/common/lib/shared-constants";
+} from "@deenruv/common/src/shared-constants";
 import {
   createErrorResultGuard,
   createTestEnvironment,

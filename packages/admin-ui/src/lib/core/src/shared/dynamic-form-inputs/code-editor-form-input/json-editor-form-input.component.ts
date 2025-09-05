@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { DefaultFormComponentId } from '@deenruv/common/lib/shared-types';
+import { DefaultFormComponentId } from '@deenruv/common/src/shared-types';
 
 import { FormInputComponent } from '../../../common/component-registry-types';
 

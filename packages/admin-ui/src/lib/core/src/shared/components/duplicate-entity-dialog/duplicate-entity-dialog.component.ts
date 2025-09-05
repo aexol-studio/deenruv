@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { assertNever } from '@deenruv/common/lib/shared-utils';
+import { assertNever } from '@deenruv/common/src/shared-utils';
 
 import { lastValueFrom, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
-    ConfigurableOperation,
+    type ConfigurableOperation,
     DuplicateEntityDocument,
     GetEntityDuplicatorsDocument,
     GetEntityDuplicatorsQuery,

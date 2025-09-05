@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   DeletionResult,
   MutationCreateProductOptionArgs,
@@ -7,21 +7,24 @@ import {
   MutationDeleteProductOptionArgs,
   MutationUpdateProductOptionArgs,
   MutationUpdateProductOptionGroupArgs,
-  Permission,
   QueryProductOptionGroupArgs,
   QueryProductOptionGroupsArgs,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
-import { Translated } from "../../../common/types/locale-types";
+import { type Translated } from "../../../common/types/locale-types";
 import { ProductOption } from "../../../entity/product-option/product-option.entity";
 import { ProductOptionGroup } from "../../../entity/product-option-group/product-option-group.entity";
 import { ProductOptionGroupService } from "../../../service/services/product-option-group.service";
 import { ProductOptionService } from "../../../service/services/product-option.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 @Resolver()
 export class ProductOptionResolver {

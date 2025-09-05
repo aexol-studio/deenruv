@@ -1,6 +1,6 @@
-import { CurrencyCode } from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
+import { CurrencyCode } from "@deenruv/common/src/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type Relation, Column, Entity, Index, ManyToOne } from "typeorm";
 
 import { HasCustomFields } from "../../config/custom-field/custom-field-types";
 import { DeenruvEntity } from "../base/base.entity";
@@ -39,7 +39,7 @@ export class ProductVariantPrice
     (variant) => variant.productVariantPrices,
     { onDelete: "CASCADE" },
   )
-  variant: ProductVariant;
+  variant: Relation<ProductVariant>;
 
   @Column((type) => CustomProductVariantPriceFields)
   customFields: CustomProductVariantPriceFields;

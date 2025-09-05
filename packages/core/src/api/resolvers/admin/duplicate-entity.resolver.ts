@@ -1,9 +1,9 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DuplicateEntityResult,
   MutationDuplicateEntityArgs,
-  Permission,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { EntityDuplicatorService } from "../../../service/helpers/entity-duplicator/entity-duplicator.service";
 import { RequestContext } from "../../common/request-context";

@@ -26,9 +26,9 @@ import {
     UpdateProductVariantInput,
     UpdateProductVariantsMutation,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
-import { unique } from '@deenruv/common/lib/unique';
+import { normalizeString } from '@deenruv/common/src/normalize-string';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
+import { unique } from '@deenruv/common/src/unique';
 import { gql } from 'apollo-angular';
 import { combineLatest, concat, EMPTY, from, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, shareReplay, switchMap, take } from 'rxjs/operators';

@@ -1,5 +1,5 @@
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { isGraphQlErrorResult } from "../../common/error/error-result";
@@ -7,8 +7,8 @@ import { InternalServerError } from "../../common/error/errors";
 import { awaitPromiseOrObservable } from "../../common/utils";
 import { Fulfillment } from "../../entity/fulfillment/fulfillment.entity";
 import { Order } from "../../entity/order/order.entity";
-import { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
-import { OrderState } from "../../service/helpers/order-state-machine/order-state";
+import type { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
+import type { OrderState } from "../../service/helpers/order-state-machine/order-state";
 import {
   orderItemsAreDelivered,
   orderItemsAreShipped,

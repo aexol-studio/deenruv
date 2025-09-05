@@ -1,4 +1,4 @@
-import { DeenruvEntity, DeepPartial } from "@deenruv/core";
+import { DeenruvEntity, type DeepPartial } from "@deenruv/core";
 import { Entity, Column } from "typeorm";
 import "reflect-metadata";
 

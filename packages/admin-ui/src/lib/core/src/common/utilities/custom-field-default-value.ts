@@ -1,5 +1,5 @@
-import { CustomFieldType } from '@deenruv/common/lib/shared-types';
-import { assertNever } from '@deenruv/common/lib/shared-utils';
+import { CustomFieldType } from '@deenruv/common/src/shared-types';
+import { assertNever } from '@deenruv/common/src/shared-utils';
 import { CustomFieldConfig } from '../generated-types';
 
 export function getCustomFieldsDefaults(customFieldConfig: CustomFieldConfig[]): {

@@ -1,4 +1,4 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,

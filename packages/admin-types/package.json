@@ -3,10 +3,10 @@
   "version": "0.1.39",
   "homepage": "https://www.deenruv.io/",
   "license": "MIT",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.d.ts",
   "files": [
-    "dist/**/*"
+    "src/**/*"
   ],
   "scripts": {
     "zeus": "zeus http://localhost:3000/admin-api ./src --ts --es --typedDocumentNode",

@@ -1,10 +1,10 @@
 import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import {
+import type {
   HistoryEntryListOptions,
   QueryOrdersArgs,
-  SortOrder,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { SortOrder } from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { Address } from "../../../entity/address/address.entity";
 import { Customer } from "../../../entity/customer/customer.entity";
@@ -13,7 +13,7 @@ import { CustomerService } from "../../../service/services/customer.service";
 import { HistoryService } from "../../../service/services/history.service";
 import { OrderService } from "../../../service/services/order.service";
 import { UserService } from "../../../service/services/user.service";
-import { ApiType } from "../../common/get-api-type";
+import { type ApiType } from "../../common/get-api-type";
 import { RequestContext } from "../../common/request-context";
 import { Api } from "../../decorators/api.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";

@@ -1,8 +1,28 @@
-import { LogicalOperator } from "@deenruv/common/lib/generated-types";
-import { Type } from "@deenruv/common/lib/shared-types";
-import { assertNever } from "@deenruv/common/lib/shared-utils";
+import { LogicalOperator } from "@deenruv/common/src/generated-types";
+import { type Type } from "@deenruv/common/src/shared-types";
+import { assertNever } from "@deenruv/common/src/shared-utils";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { DateUtils } from "typeorm/util/DateUtils";
+
+const DateUtils = {
+  mixedDateToUtcDatetimeString(date: Date): string {
+    function pad(n: number): string {
+      return n < 10 ? "0" + n : n.toString();
+    }
+    return (
+      date.getUTCFullYear() +
+      "-" +
+      pad(date.getUTCMonth() + 1) +
+      "-" +
+      pad(date.getUTCDate()) +
+      " " +
+      pad(date.getUTCHours()) +
+      ":" +
+      pad(date.getUTCMinutes()) +
+      ":" +
+      pad(date.getUTCSeconds())
+    );
+  },
+};
 
 import {
   InternalServerError,
@@ -239,10 +259,6 @@ function buildWhereCondition(
     default:
       assertNever(operator);
   }
-  return {
-    clause: "1",
-    parameters: {},
-  };
 }
 
 /**

@@ -56,7 +56,7 @@ export const ACTIVE_ORDER_INPUT_FIELD_NAME = "activeOrderInput";
  *
  * @example
  * ```ts
- * import { ID } from '\@deenruv/common/lib/shared-types';
+ * import type { ID } from '\@deenruv/common/src/shared-types';
  * import {
  *   ActiveOrderStrategy,
  *   CustomerService,

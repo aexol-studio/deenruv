@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   CreatePromotionResult,
   DeletionResponse,
   MutationAssignPromotionsToChannelArgs,
@@ -8,12 +8,11 @@ import {
   MutationDeletePromotionsArgs,
   MutationRemovePromotionsFromChannelArgs,
   MutationUpdatePromotionArgs,
-  Permission,
   QueryPromotionArgs,
   QueryPromotionsArgs,
   UpdatePromotionResult,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { ErrorResultUnion } from "../../../common/error/error-result";
 import {
@@ -26,9 +25,13 @@ import { PromotionService } from "../../../service/services/promotion.service";
 import { ConfigurableOperationCodec } from "../../common/configurable-operation-codec";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 @Resolver("Promotion")
 export class PromotionResolver {

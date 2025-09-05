@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { assertNever } from "@deenruv/common/lib/shared-utils";
+import { assertNever } from "@deenruv/common/src/shared-utils";
 import {
   Asset,
   ID,

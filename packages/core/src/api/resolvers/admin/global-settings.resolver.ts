@@ -6,20 +6,20 @@ import {
   ResolveField,
   Resolver,
 } from "@nestjs/graphql";
-import {
+import type {
   CustomFields as GraphQLCustomFields,
   CustomFieldConfig as GraphQLCustomFieldConfig,
   RelationCustomFieldConfig as GraphQLRelationCustomFieldConfig,
   EntityCustomFields,
   MutationUpdateGlobalSettingsArgs,
-  Permission,
   ServerConfig,
   UpdateGlobalSettingsResult,
-} from "@deenruv/common/lib/generated-types";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
 import {
   GraphQLOutputType,
-  GraphQLResolveInfo,
+  type GraphQLResolveInfo,
   isEnumType,
   isInterfaceType,
   isListType,

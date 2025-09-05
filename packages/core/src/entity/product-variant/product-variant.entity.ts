@@ -1,5 +1,5 @@
-import { CurrencyCode, GlobalFlag } from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { CurrencyCode, GlobalFlag } from "@deenruv/common/src/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -8,6 +8,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  type Relation,
 } from "typeorm";
 
 import { Calculated } from "../../common/calculated-decorator";
@@ -139,7 +140,7 @@ export class ProductVariant
     (type) => TaxCategory,
     (taxCategory) => taxCategory.productVariants,
   )
-  taxCategory: TaxCategory;
+  taxCategory: Relation<TaxCategory>;
 
   @OneToMany((type) => ProductVariantPrice, (price) => price.variant, {
     eager: true,

@@ -1,5 +1,5 @@
 import { S3Client } from "@aws-sdk/client-s3";
-import { ID, InjectableStrategy, RequestContext } from "@deenruv/core";
+import { type ID, InjectableStrategy, RequestContext } from "@deenruv/core";
 import { ReviewEntity } from "./entities/review.entity.js";
 import { LanguageCode } from "./zeus/index.js";
 

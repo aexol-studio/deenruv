@@ -1,5 +1,5 @@
 import type { Translation } from "@deenruv/core";
-import { DeepPartial, LanguageCode, DeenruvEntity } from "@deenruv/core";
+import { type DeepPartial, LanguageCode, DeenruvEntity } from "@deenruv/core";
 import { Column, Entity, Relation, ManyToOne } from "typeorm";
 
 import { Campaign } from "./campaign.entity";

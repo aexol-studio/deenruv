@@ -25,9 +25,9 @@
   "dependencies": {
     "react": "^18.2.0",
     "lucide-react": "^0.363.0",
-    "@deenruv/react-ui-devkit": "workspace:^",
-    "@deenruv/common": "workspace:^",
-    "@deenruv/admin-types": "workspace:^",
+    "@deenruv/react-ui-devkit": "workspace:*",
+    "@deenruv/common": "workspace:*",
+    "@deenruv/admin-types": "workspace:*",
     "@nestjs/common": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
     "@tanstack/react-table": "^8.15.3",
@@ -40,7 +40,7 @@
     "sonner": "^1.4.41"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "rimraf": "^5.0.10",
     "typescript": "5.3.3",
     "@types/react": "^18.2.0",

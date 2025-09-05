@@ -1,27 +1,29 @@
 import { Injectable } from "@nestjs/common";
-import {
+import type {
   AssignShippingMethodsToChannelInput,
   ConfigurableOperationDefinition,
   CreateShippingMethodInput,
   DeletionResponse,
-  DeletionResult,
-  Permission,
   RemoveShippingMethodsFromChannelInput,
   UpdateShippingMethodInput,
-} from "@deenruv/common/lib/generated-types";
-import { omit } from "@deenruv/common/lib/omit";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { omit } from "@deenruv/common/src/omit";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
 import { IsNull } from "typeorm";
+import {
+  Permission,
+  DeletionResult,
+} from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import {
   EntityNotFoundError,
   ForbiddenError,
   UserInputError,
 } from "../../common/error/errors";
 import { ListQueryOptions } from "../../common/types/common-types";
-import { Translated } from "../../common/types/locale-types";
+import { type Translated } from "../../common/types/locale-types";
 import { assertFound, idsAreEqual } from "../../common/utils";
 import { ConfigService } from "../../config/config.service";
 import { Logger } from "../../config/logger/deenruv-logger";

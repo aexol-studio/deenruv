@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   ConfigurableOperationDefinition,
   DeletionResponse,
   MutationAssignShippingMethodsToChannelArgs,
@@ -8,21 +8,23 @@ import {
   MutationDeleteShippingMethodsArgs,
   MutationRemoveShippingMethodsFromChannelArgs,
   MutationUpdateShippingMethodArgs,
-  Permission,
   QueryShippingMethodArgs,
   QueryShippingMethodsArgs,
   QueryTestEligibleShippingMethodsArgs,
   QueryTestShippingMethodArgs,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
-
-import { Translated } from "../../../common/types/locale-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
+import { type Translated } from "../../../common/types/locale-types";
 import { ShippingMethod } from "../../../entity/shipping-method/shipping-method.entity";
 import { OrderTestingService } from "../../../service/services/order-testing.service";
 import { ShippingMethodService } from "../../../service/services/shipping-method.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 

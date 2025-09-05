@@ -1,5 +1,5 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/lib/shared-constants";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
 import {
   EntityHydrator,
   idsAreEqual,

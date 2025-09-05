@@ -4,7 +4,7 @@ import createMollieClient, {
   RefundStatus,
   Order as MollieOrder,
 } from "@mollie/api-client";
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import {
   CreatePaymentErrorResult,
   CreatePaymentResult,

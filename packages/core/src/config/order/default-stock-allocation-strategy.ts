@@ -1,6 +1,6 @@
 import { RequestContext } from "../../api/common/request-context";
 import { Order } from "../../entity/order/order.entity";
-import { OrderState } from "../../service/helpers/order-state-machine/order-state";
+import type { OrderState } from "../../service/helpers/order-state-machine/order-state";
 
 import { StockAllocationStrategy } from "./stock-allocation-strategy";
 

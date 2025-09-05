@@ -7,7 +7,7 @@ import {
   RemoveOrderItemsResult,
   SetOrderShippingMethodResult,
   UpdateOrderItemsResult,
-} from "@deenruv/common/lib/generated-shop-types";
+} from "@deenruv/common/src/generated-shop-types";
 import {
   AddFulfillmentToOrderResult,
   AddManualPaymentToOrderResult,
@@ -36,15 +36,46 @@ import {
   ShippingMethodQuote,
   TransitionPaymentToStateResult,
   UpdateOrderNoteInput,
-} from "@deenruv/common/lib/generated-types";
-import { omit } from "@deenruv/common/lib/omit";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
-import { summate } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/generated-types";
+import { omit } from "@deenruv/common/src/omit";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { summate } from "@deenruv/common/src/shared-utils";
 import { In, IsNull, getMetadataArgsStorage } from "typeorm";
-import { FindOptionsUtils } from "typeorm/find-options/FindOptionsUtils";
+const FindOptionsUtils = {
+  joinEagerRelations: (
+    qb: any,
+    alias: string,
+    metadata: any,
+    parentJoinPath?: string,
+  ) => {
+    metadata.relations
+      .filter((relation: any) => relation.isEager)
+      .forEach((relation: any) => {
+        const relationAlias = parentJoinPath
+          ? `${parentJoinPath}_${relation.propertyName}`
+          : `${alias}_${relation.propertyName}`;
+        const joinPath = parentJoinPath
+          ? `${parentJoinPath}.${relation.propertyName}`
+          : `${alias}.${relation.propertyName}`;
+        if (
+          !qb.expressionMap.joinAttributes.find(
+            (j: any) => j.alias === relationAlias,
+          )
+        ) {
+          qb.leftJoinAndSelect(joinPath, relationAlias);
+          FindOptionsUtils.joinEagerRelations(
+            qb,
+            relationAlias,
+            relation.inverseEntityMetadata,
+            joinPath,
+          );
+        }
+      });
+  },
+};
 import { type QueryExpressionMap } from "typeorm/query-builder/QueryExpressionMap";
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import { RequestContextCacheService } from "../../cache/request-context-cache.service";
 import { CacheKey } from "../../common/constants";
 import {
@@ -111,15 +142,15 @@ import { OrderStateTransitionEvent } from "../../event-bus/events/order-state-tr
 import { RefundEvent } from "../../event-bus/events/refund-event";
 import { RefundStateTransitionEvent } from "../../event-bus/events/refund-state-transition-event";
 import { CustomFieldRelationService } from "../helpers/custom-field-relation/custom-field-relation.service";
-import { FulfillmentState } from "../helpers/fulfillment-state-machine/fulfillment-state";
+import type { FulfillmentState } from "../helpers/fulfillment-state-machine/fulfillment-state";
 import { ListQueryBuilder } from "../helpers/list-query-builder/list-query-builder";
 import { OrderCalculator } from "../helpers/order-calculator/order-calculator";
 import { OrderMerger } from "../helpers/order-merger/order-merger";
 import { OrderModifier } from "../helpers/order-modifier/order-modifier";
 import { OrderState } from "../helpers/order-state-machine/order-state";
 import { OrderStateMachine } from "../helpers/order-state-machine/order-state-machine";
-import { PaymentState } from "../helpers/payment-state-machine/payment-state";
-import { RefundState } from "../helpers/refund-state-machine/refund-state";
+import type { PaymentState } from "../helpers/payment-state-machine/payment-state";
+import type { RefundState } from "../helpers/refund-state-machine/refund-state";
 import { RefundStateMachine } from "../helpers/refund-state-machine/refund-state-machine";
 import { ShippingCalculator } from "../helpers/shipping-calculator/shipping-calculator";
 import { TranslatorService } from "../helpers/translator/translator.service";

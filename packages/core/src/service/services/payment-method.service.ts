@@ -1,23 +1,25 @@
 import { Injectable } from "@nestjs/common";
-import { PaymentMethodQuote } from "@deenruv/common/lib/generated-shop-types";
-import {
+import { PaymentMethodQuote } from "@deenruv/common/src/generated-shop-types";
+import type {
   AssignPaymentMethodsToChannelInput,
   ConfigurableOperationDefinition,
   CreatePaymentMethodInput,
   DeletionResponse,
-  DeletionResult,
-  Permission,
   RemovePaymentMethodsFromChannelInput,
   UpdatePaymentMethodInput,
-} from "@deenruv/common/lib/generated-types";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/lib/shared-constants";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import {
+  DeletionResult,
+  Permission,
+} from "@deenruv/common/src/generated-types";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import { ForbiddenError, UserInputError } from "../../common/error/errors";
 import { ListQueryOptions } from "../../common/types/common-types";
-import { Translated } from "../../common/types/locale-types";
+import { type Translated } from "../../common/types/locale-types";
 import { assertFound, idsAreEqual } from "../../common/utils";
 import { ConfigService } from "../../config/config.service";
 import { PaymentMethodEligibilityChecker } from "../../config/payment/payment-method-eligibility-checker";

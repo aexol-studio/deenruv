@@ -1,4 +1,4 @@
-import { ConfigurableOperationDefinition } from '../generated-types';
+import type { ConfigurableOperationDefinition } from '../generated-types';
 
 import { interpolateDescription } from './interpolate-description';
 

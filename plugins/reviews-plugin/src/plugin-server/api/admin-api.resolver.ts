@@ -4,7 +4,7 @@ import {
   Ctx,
   ID,
   LanguageCode,
-  RelationPaths,
+  type RelationPaths,
   Relations,
   RequestContext,
 } from "@deenruv/core";

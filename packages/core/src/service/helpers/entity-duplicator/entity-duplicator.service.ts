@@ -3,7 +3,7 @@ import {
   DuplicateEntityInput,
   DuplicateEntityResult,
   EntityDuplicatorDefinition,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { DuplicateEntityError } from "../../../common/error/generated-graphql-admin-errors";

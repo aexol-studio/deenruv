@@ -10,7 +10,7 @@ import {
   Product,
   ProductVariant,
   ProductVariantService,
-  RelationPaths,
+  type RelationPaths,
   RequestContext,
   TransactionalConnection,
   TranslatableSaver,

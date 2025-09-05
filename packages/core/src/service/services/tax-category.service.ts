@@ -4,8 +4,8 @@ import {
   DeletionResponse,
   DeletionResult,
   UpdateTaxCategoryInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { EntityNotFoundError } from "../../common/error/errors";

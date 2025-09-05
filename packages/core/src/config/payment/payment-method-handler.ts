@@ -1,7 +1,7 @@
 import {
   ConfigArg,
   RefundOrderInput,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import {
@@ -14,13 +14,13 @@ import {
   OnTransitionStartFn,
   StateMachineConfig,
 } from "../../common/finite-state-machine/types";
-import { PaymentMetadata } from "../../common/types/common-types";
+import type { PaymentMetadata } from "../../common/types/common-types";
 import { Order, Payment, PaymentMethod } from "../../entity";
 import {
   PaymentState,
   PaymentTransitionData,
 } from "../../service/helpers/payment-state-machine/payment-state";
-import { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
+import type { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
 
 export type OnPaymentTransitionStartReturnType = ReturnType<
   Required<StateMachineConfig<any>>["onTransitionStart"]

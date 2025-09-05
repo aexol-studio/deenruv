@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 

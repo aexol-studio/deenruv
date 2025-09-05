@@ -12,7 +12,7 @@ import {
     NotificationService,
     Permission,
 } from '@deenruv/admin-ui/core';
-import { unique } from '@deenruv/common/lib/unique';
+import { unique } from '@deenruv/common/src/unique';
 import { EMPTY } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

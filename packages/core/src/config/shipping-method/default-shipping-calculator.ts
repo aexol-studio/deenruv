@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 

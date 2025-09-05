@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import {
   CreateAdministratorInput,
   Permission,
-} from "@deenruv/common/lib/generated-types";
-import { normalizeString } from "@deenruv/common/lib/normalize-string";
+} from "@deenruv/common/src/generated-types";
+import { normalizeString } from "@deenruv/common/src/normalize-string";
 import {
   AdministratorService,
   Channel,

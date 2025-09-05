@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationAddCustomersToGroupArgs,
   MutationCreateCustomerGroupArgs,
@@ -7,17 +7,20 @@ import {
   MutationRemoveCustomersFromGroupArgs,
   MutationUpdateCustomerGroupArgs,
   MutationDeleteCustomerGroupsArgs,
-  Permission,
   QueryCustomerGroupArgs,
   QueryCustomerGroupsArgs,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { CustomerGroup } from "../../../entity/customer-group/customer-group.entity";
 import { CustomerGroupService } from "../../../service/services/customer-group.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 

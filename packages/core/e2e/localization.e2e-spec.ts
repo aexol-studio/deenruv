@@ -1,4 +1,4 @@
-import { pick } from "@deenruv/common/lib/pick";
+import { pick } from "@deenruv/common/src/pick";
 import { createTestEnvironment } from "@deenruv/testing";
 import gql from "graphql-tag";
 import path from "path";

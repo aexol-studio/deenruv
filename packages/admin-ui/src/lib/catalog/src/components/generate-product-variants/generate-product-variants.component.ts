@@ -7,7 +7,7 @@ import {
     GetStockLocationListQuery,
     ItemOf,
 } from '@deenruv/admin-ui/core';
-import { generateAllCombinations } from '@deenruv/common/lib/shared-utils';
+import { generateAllCombinations } from '@deenruv/common/src/shared-utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

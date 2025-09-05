@@ -1,5 +1,12 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne, TableInheritance } from "typeorm";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import {
+  type Relation,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  TableInheritance,
+} from "typeorm";
 
 import { DeenruvEntity } from "../base/base.entity";
 import { Channel } from "../channel/channel.entity";
@@ -38,5 +45,5 @@ export abstract class Session extends DeenruvEntity {
 
   @Index()
   @ManyToOne((type) => Channel)
-  activeChannel: Channel | null;
+  activeChannel: Relation<Channel> | null;
 }

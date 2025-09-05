@@ -1,7 +1,6 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   AuthenticationResult,
-  ErrorCode,
   InvalidCredentialsError,
   MissingPasswordError,
   MutationAuthenticateArgs,
@@ -15,7 +14,6 @@ import {
   MutationUpdateCustomerPasswordArgs,
   MutationVerifyCustomerAccountArgs,
   NativeAuthenticationResult,
-  Permission,
   RefreshCustomerVerificationResult,
   RegisterCustomerAccountResult,
   RequestPasswordResetResult,
@@ -25,9 +23,13 @@ import {
   UpdateCustomerEmailAddressResult,
   UpdateCustomerPasswordResult,
   VerifyCustomerAccountResult,
-} from "@deenruv/common/lib/generated-shop-types";
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
-import { Request, Response } from "express";
+} from "@deenruv/common/src/generated-shop-types";
+import {
+  ErrorCode,
+  Permission,
+} from "@deenruv/common/src/generated-shop-types";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+import { type Request, typeResponse } from "express";
 
 import { isGraphQlErrorResult } from "../../../common/error/error-result";
 import { ForbiddenError } from "../../../common/error/errors";

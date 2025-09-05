@@ -1,6 +1,6 @@
-import { JobState } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { isObject } from "@deenruv/common/lib/shared-utils";
+import { JobState } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { isObject } from "@deenruv/common/src/shared-utils";
 import { from, interval, mergeMap, race, Subject, Subscription } from "rxjs";
 import { filter, switchMap, take, throttleTime } from "rxjs/operators";
 

@@ -1,5 +1,5 @@
 import { Orderable } from "../../../common/types/common-types";
-import { idsAreEqual } from "../../../common/utils";
+import { type IDsAreEqual } from "../../../common/utils";
 import { DeenruvEntity } from "../../../entity/base/base.entity";
 
 /**

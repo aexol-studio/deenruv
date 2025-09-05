@@ -4,12 +4,12 @@ import {
   OrderLineInput,
   StockLevelInput,
   StockMovementListOptions,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
 import { In } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { idsAreEqual } from "../../common/utils";
+import { type IDsAreEqual } from "../../common/utils";
 import { ConfigService } from "../../config/config.service";
 import { ShippingCalculator } from "../../config/shipping-method/shipping-calculator";
 import { ShippingEligibilityChecker } from "../../config/shipping-method/shipping-eligibility-checker";

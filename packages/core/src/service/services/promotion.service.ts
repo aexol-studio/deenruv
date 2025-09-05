@@ -1,24 +1,24 @@
 import { Injectable } from "@nestjs/common";
-import { ApplyCouponCodeResult } from "@deenruv/common/lib/generated-shop-types";
-import {
+import { ApplyCouponCodeResult } from "@deenruv/common/src/generated-shop-types";
+import type {
   AssignPromotionsToChannelInput,
   ConfigurableOperation,
   ConfigurableOperationDefinition,
   CreatePromotionInput,
   CreatePromotionResult,
   DeletionResponse,
-  DeletionResult,
   RemovePromotionsFromChannelInput,
   UpdatePromotionInput,
   UpdatePromotionResult,
-} from "@deenruv/common/lib/generated-types";
-import { omit } from "@deenruv/common/lib/omit";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import { DeletionResult } from "@deenruv/common/src/generated-types";
+import { omit } from "@deenruv/common/src/omit";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 import { In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import {
   ErrorResultUnion,
   JustErrorResults,

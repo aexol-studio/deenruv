@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { filterAsync } from "@deenruv/common/lib/filter-async";
-import { AdjustmentType } from "@deenruv/common/lib/generated-types";
+import { filterAsync } from "@deenruv/common/src/filter-async";
+import { AdjustmentType } from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
 import { CacheKey } from "../../../common/constants";
 import { InternalServerError } from "../../../common/error/errors";
-import { idsAreEqual } from "../../../common/utils";
+import { type IDsAreEqual } from "../../../common/utils";
 import { ConfigService } from "../../../config/config.service";
 import { OrderLine, TaxRate, TaxCategory } from "../../../entity";
 import { Order } from "../../../entity/order/order.entity";

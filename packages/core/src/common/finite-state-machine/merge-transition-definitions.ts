@@ -1,4 +1,4 @@
-import { simpleDeepClone } from "@deenruv/common/lib/simple-deep-clone";
+import { simpleDeepClone } from "@deenruv/common/src/simple-deep-clone";
 
 import { Transitions } from "./types";
 

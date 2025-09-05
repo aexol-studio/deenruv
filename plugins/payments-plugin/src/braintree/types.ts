@@ -1,5 +1,5 @@
-import { PaymentMetadata } from "@deenruv/core";
-import { ConfigArgValues } from "@deenruv/core/dist/common/configurable-operation";
+import type { PaymentMetadata } from "@deenruv/core";
+import { ConfigArgValues } from "@deenruv/core/src/common/configurable-operation";
 import "@deenruv/core/dist/entity/custom-entity-fields";
 import { Environment, Transaction } from "braintree";
 
@@ -11,7 +11,7 @@ export type PaymentMethodArgsHash = ConfigArgValues<
 
 // Note: deep import is necessary here because CustomCustomerFields is also extended in the Stripe
 // plugin. Reference: https://github.com/microsoft/TypeScript/issues/46617
-declare module "@deenruv/core/dist/entity/custom-entity-fields" {
+declare module "@deenruv/core/src/entity/custom-entity-fields" {
   interface CustomCustomerFields {
     braintreeCustomerId?: string;
   }

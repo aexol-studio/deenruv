@@ -1,4 +1,10 @@
-import { Entity, Index, ManyToOne, TableInheritance } from "typeorm";
+import {
+  Entity,
+  Index,
+  ManyToOne,
+  type Relation,
+  TableInheritance,
+} from "typeorm";
 
 import { DeenruvEntity } from "../base/base.entity";
 import { User } from "../user/user.entity";
@@ -16,5 +22,5 @@ import { User } from "../user/user.entity";
 export abstract class AuthenticationMethod extends DeenruvEntity {
   @Index()
   @ManyToOne((type) => User, (user) => user.authenticationMethods)
-  user: User;
+  user: Relation<User>;
 }

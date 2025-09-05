@@ -1,4 +1,4 @@
-import { AdjustmentType } from "@deenruv/common/lib/generated-shop-types";
+import { AdjustmentType } from "@deenruv/common/src/generated-shop-types";
 import {
   AccountRegistrationEvent,
   CurrencyCode,

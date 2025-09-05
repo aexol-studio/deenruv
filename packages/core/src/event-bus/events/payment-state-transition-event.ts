@@ -1,7 +1,7 @@
 import { RequestContext } from "../../api/common/request-context";
 import { Order } from "../../entity/order/order.entity";
 import { Payment } from "../../entity/payment/payment.entity";
-import { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
+import type { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
 import { DeenruvEvent } from "../deenruv-event";
 
 /**

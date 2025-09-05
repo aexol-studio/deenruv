@@ -22,8 +22,8 @@ import {
     TypedBaseDetailComponent,
     UpdateProductVariantInput,
 } from '@deenruv/admin-ui/core';
-import { pick } from '@deenruv/common/lib/pick';
-import { unique } from '@deenruv/common/lib/unique';
+import { pick } from '@deenruv/common/src/pick';
+import { unique } from '@deenruv/common/src/unique';
 import { combineLatest, concat, Observable } from 'rxjs';
 import {
     distinctUntilChanged,

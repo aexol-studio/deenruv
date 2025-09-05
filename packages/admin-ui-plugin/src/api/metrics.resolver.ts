@@ -2,7 +2,7 @@ import { Args, Query, Resolver } from "@nestjs/graphql";
 import { Allow, Ctx, Permission, RequestContext } from "@deenruv/core";
 
 import { MetricsService } from "../service/metrics.service";
-import { MetricSummary, MetricSummaryInput } from "../types";
+import type { MetricSummary, MetricSummaryInput } from "../types";
 
 @Resolver()
 export class MetricsResolver {

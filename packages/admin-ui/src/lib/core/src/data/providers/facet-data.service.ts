@@ -1,5 +1,5 @@
 import { WatchQueryFetchPolicy } from '@apollo/client/core';
-import { pick } from '@deenruv/common/lib/pick';
+import { pick } from '@deenruv/common/src/pick';
 
 import * as Codegen from '../../common/generated-types';
 import {

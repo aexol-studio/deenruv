@@ -1,16 +1,16 @@
 import {
   AuthenticationResult as ShopAuthenticationResult,
   PasswordValidationError,
-} from "@deenruv/common/lib/generated-shop-types";
-import {
+} from "@deenruv/common/src/generated-shop-types";
+import type {
   AuthenticationResult as AdminAuthenticationResult,
   CurrentUser,
   CurrentUserChannel,
   MutationAuthenticateArgs,
   MutationLoginArgs,
   Success,
-} from "@deenruv/common/lib/generated-types";
-import { Request, Response } from "express";
+} from "@deenruv/common/src/generated-types";
+import { type Request, type Response } from "express";
 
 import { isGraphQlErrorResult } from "../../../common/error/error-result";
 import { ForbiddenError } from "../../../common/error/errors";
@@ -27,7 +27,7 @@ import { AdministratorService } from "../../../service/services/administrator.se
 import { AuthService } from "../../../service/services/auth.service";
 import { UserService } from "../../../service/services/user.service";
 import { extractSessionToken } from "../../common/extract-session-token";
-import { ApiType } from "../../common/get-api-type";
+import { type ApiType } from "../../common/get-api-type";
 import { RequestContext } from "../../common/request-context";
 import { setSessionToken } from "../../common/set-session-token";
 

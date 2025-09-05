@@ -1,22 +1,24 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import {
+import type {
   AssignCollectionsToChannelInput,
   ConfigurableOperation,
   ConfigurableOperationDefinition,
   CreateCollectionInput,
   DeletionResponse,
-  DeletionResult,
-  JobState,
   MoveCollectionInput,
-  Permission,
   PreviewCollectionVariantsInput,
   RemoveCollectionsFromChannelInput,
   UpdateCollectionInput,
-} from "@deenruv/common/lib/generated-types";
-import { pick } from "@deenruv/common/lib/pick";
-import { ROOT_COLLECTION_NAME } from "@deenruv/common/lib/shared-constants";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import {
+  Permission,
+  DeletionResult,
+  JobState,
+} from "@deenruv/common/src/generated-types";
+import { pick } from "@deenruv/common/src/pick";
+import { ROOT_COLLECTION_NAME } from "@deenruv/common/src/shared-constants";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 import { merge } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { In, IsNull } from "typeorm";
@@ -25,14 +27,14 @@ import {
   RequestContext,
   SerializedRequestContext,
 } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import {
   ForbiddenError,
   IllegalOperationError,
   UserInputError,
 } from "../../common/error/errors";
 import { ListQueryOptions } from "../../common/types/common-types";
-import { Translated } from "../../common/types/locale-types";
+import { type Translated } from "../../common/types/locale-types";
 import { assertFound, idsAreEqual } from "../../common/utils";
 import { ConfigService } from "../../config/config.service";
 import { Logger } from "../../config/logger/deenruv-logger";

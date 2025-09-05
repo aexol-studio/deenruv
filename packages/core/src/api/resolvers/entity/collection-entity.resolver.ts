@@ -2,13 +2,13 @@ import { Logger } from "@nestjs/common";
 import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import {
   CollectionBreadcrumb,
-  ConfigurableOperation,
+  type ConfigurableOperation,
   ProductVariantListOptions,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { ListQueryOptions } from "../../../common/types/common-types";
-import { Translated } from "../../../common/types/locale-types";
+import { type Translated } from "../../../common/types/locale-types";
 import { CollectionFilter } from "../../../config/catalog/collection-filter";
 import { Asset, Collection, Product, ProductVariant } from "../../../entity";
 import { LocaleStringHydrator } from "../../../service/helpers/locale-string-hydrator/locale-string-hydrator";
@@ -16,10 +16,13 @@ import { AssetService } from "../../../service/services/asset.service";
 import { CollectionService } from "../../../service/services/collection.service";
 import { ProductVariantService } from "../../../service/services/product-variant.service";
 import { ConfigurableOperationCodec } from "../../common/configurable-operation-codec";
-import { ApiType } from "../../common/get-api-type";
+import { type ApiType } from "../../common/get-api-type";
 import { RequestContext } from "../../common/request-context";
 import { Api } from "../../decorators/api.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 
 @Resolver("Collection")

@@ -1,6 +1,6 @@
-import { JobState } from "@deenruv/common/lib/generated-types";
-import { pick } from "@deenruv/common/lib/pick";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
+import { JobState } from "@deenruv/common/src/generated-types";
+import { pick } from "@deenruv/common/src/pick";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
 import ms from "ms";
 import { interval, Observable } from "rxjs";
 import {
@@ -17,7 +17,7 @@ import { isInspectableJobQueueStrategy } from "../config/job-queue/inspectable-j
 import { JobQueueStrategy } from "../config/job-queue/job-queue-strategy";
 
 import { Job } from "./job";
-import { JobConfig, JobData } from "./types";
+import type { JobConfig, JobData } from "./types";
 
 /**
  * @description

@@ -3,12 +3,12 @@ import {
   CreateAdministratorInput,
   DeletionResult,
   UpdateAdministratorInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
 import { In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import {
   EntityNotFoundError,
   InternalServerError,

@@ -1,4 +1,4 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { ChildEntity, Column } from "typeorm";
 
 import { AuthenticationMethod } from "./authentication-method.entity";

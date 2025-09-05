@@ -4,10 +4,10 @@ import {
   CreateProductOptionGroupInput,
   CreateProductOptionInput,
   CreateProductVariantInput,
-} from "@deenruv/common/lib/generated-types";
-import { normalizeString } from "@deenruv/common/lib/normalize-string";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import { normalizeString } from "@deenruv/common/src/normalize-string";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { TransactionalConnection } from "../../../connection/transactional-connection";

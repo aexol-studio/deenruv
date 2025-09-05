@@ -1,8 +1,8 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { Permission } from "@deenruv/common/lib/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
-import { Translated } from "../../../common/types/locale-types";
+import { type Translated } from "../../../common/types/locale-types";
 import { assertFound } from "../../../common/utils";
 import { ProductOption } from "../../../entity/product-option/product-option.entity";
 import { ProductOptionGroup } from "../../../entity/product-option-group/product-option-group.entity";

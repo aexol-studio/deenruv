@@ -1,5 +1,5 @@
 import { Mutation, Resolver } from "@nestjs/graphql";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import {
   ActiveOrderService,
   Ctx,

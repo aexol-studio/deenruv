@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { ActiveRouteData, ExtensionMessage, MessageResponse } from '@deenruv/common/lib/extension-host-types';
-import { assertNever } from '@deenruv/common/lib/shared-utils';
+import { assertNever } from '@deenruv/common/src/shared-utils';
 import { parse } from 'graphql';
 import { merge, Observer, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';

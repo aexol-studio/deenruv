@@ -29,9 +29,9 @@ import {
     UpdateFacetInput,
     UpdateFacetValueInput,
 } from '@deenruv/admin-ui/core';
-import { SortOrder } from '@deenruv/common/lib/generated-types';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { SortOrder } from '@deenruv/common/src/generated-types';
+import { normalizeString } from '@deenruv/common/src/normalize-string';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 import { gql } from 'apollo-angular';
 import { BehaviorSubject, combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
 import { debounceTime, map, mergeMap, switchMap, take, takeUntil } from 'rxjs/operators';

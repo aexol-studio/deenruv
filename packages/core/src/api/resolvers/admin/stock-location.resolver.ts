@@ -1,15 +1,15 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   MutationAssignStockLocationsToChannelArgs,
   MutationCreateStockLocationArgs,
   MutationDeleteStockLocationArgs,
   MutationDeleteStockLocationsArgs,
   MutationRemoveStockLocationsFromChannelArgs,
   MutationUpdateStockLocationArgs,
-  Permission,
   QueryStockLocationArgs,
   QueryStockLocationsArgs,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { StockLocationService } from "../../../service/services/stock-location.service";
 import { RequestContext } from "../../common/request-context";

@@ -5,7 +5,7 @@ import type { PaginatedList } from "@deenruv/core";
 import {
   Logger,
   Ctx,
-  RelationPaths,
+  type RelationPaths,
   Relations,
   RequestContext,
   TransactionalConnection,

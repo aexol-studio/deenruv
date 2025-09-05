@@ -1,5 +1,5 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
-import { Omit } from "@deenruv/common/lib/omit";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { Omit } from "@deenruv/common/src/omit";
 import {
   Injector,
   RequestContext,

@@ -1,5 +1,5 @@
 import { INestApplication } from "@nestjs/common";
-import { GlobalFlag } from "@deenruv/common/lib/generated-types";
+import { GlobalFlag } from "@deenruv/common/src/generated-types";
 import {
   bootstrap,
   Importer,

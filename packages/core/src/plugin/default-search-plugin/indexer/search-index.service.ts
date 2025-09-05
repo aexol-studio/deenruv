@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { assertNever } from "@deenruv/common/lib/shared-utils";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { assertNever } from "@deenruv/common/src/shared-utils";
 import { Observable } from "rxjs";
 
 import { RequestContext } from "../../../api/common/request-context";

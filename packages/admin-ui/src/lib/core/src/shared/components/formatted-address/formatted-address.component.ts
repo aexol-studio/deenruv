@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { AddressFragment, OrderAddress } from '../../../common/generated-types';
+import { AddressFragment, type OrderAddress } from '../../../common/generated-types';
 
 @Component({
     selector: 'vdr-formatted-address',

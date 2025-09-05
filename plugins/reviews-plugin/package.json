@@ -26,9 +26,9 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.685.0",
     "@aws-sdk/s3-request-presigner": "^3.726.1",
-    "@deenruv/admin-types": "workspace:^",
-    "@deenruv/common": "workspace:^",
-    "@deenruv/react-ui-devkit": "workspace:^",
+    "@deenruv/admin-types": "workspace:*",
+    "@deenruv/common": "workspace:*",
+    "@deenruv/react-ui-devkit": "workspace:*",
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",
     "date-fns": "^4.1.0",
@@ -44,7 +44,7 @@
     "recharts": "^2.12.7"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "@graphql-typed-document-node/core": "3.2.0",
     "@types/express": "^4.17.21",
     "@types/react": "^18.2.0",

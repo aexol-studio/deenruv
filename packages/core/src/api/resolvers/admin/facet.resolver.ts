@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationAssignFacetsToChannelArgs,
   MutationCreateFacetArgs,
@@ -10,17 +10,17 @@ import {
   MutationRemoveFacetsFromChannelArgs,
   MutationUpdateFacetArgs,
   MutationUpdateFacetValuesArgs,
-  Permission,
   QueryFacetArgs,
   QueryFacetsArgs,
   QueryFacetValuesArgs,
   RemoveFacetFromChannelResult,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { EntityNotFoundError } from "../../../common/error/errors";
 import { ErrorResultUnion } from "../../../common/error/error-result";
-import { Translated } from "../../../common/types/locale-types";
+import type { Translated } from "../../../common/types/locale-types";
 import { ConfigService } from "../../../config/config.service";
 import { Facet } from "../../../entity/facet/facet.entity";
 import { FacetValue } from "../../../entity/facet-value/facet-value.entity";
@@ -28,7 +28,10 @@ import { FacetValueService } from "../../../service/services/facet-value.service
 import { FacetService } from "../../../service/services/facet.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 

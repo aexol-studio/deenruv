@@ -3,7 +3,7 @@ import {
   LogicalOperator,
   PriceRange,
   SortOrder,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 import { DeepRequired, ID, UserInputError } from "@deenruv/core";
 
 import { SearchConfig } from "./options";

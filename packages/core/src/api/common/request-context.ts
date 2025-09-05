@@ -2,17 +2,17 @@ import {
   CurrencyCode,
   LanguageCode,
   Permission,
-} from "@deenruv/common/lib/generated-types";
-import { ID, JsonCompatible } from "@deenruv/common/lib/shared-types";
-import { isObject } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type JsonCompatible } from "@deenruv/common/src/shared-types";
+import { isObject } from "@deenruv/common/src/shared-utils";
 import { Request } from "express";
 import { TFunction } from "i18next";
 
-import { idsAreEqual } from "../../common/utils";
+import { type IDsAreEqual } from "../../common/utils";
 import { CachedSession } from "../../config/session-cache/session-cache-strategy";
 import { Channel } from "../../entity/channel/channel.entity";
 
-import { ApiType } from "./get-api-type";
+import { type ApiType } from "./get-api-type";
 import DataLoader from "dataloader";
 
 export type SerializedRequestContext = {

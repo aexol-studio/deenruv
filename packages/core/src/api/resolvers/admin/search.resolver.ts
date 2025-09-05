@@ -2,11 +2,11 @@ import { Mutation, Query, ResolveField, Resolver } from "@nestjs/graphql";
 import {
   Permission,
   SearchResponse,
-} from "@deenruv/common/lib/generated-types";
-import { Omit } from "@deenruv/common/lib/omit";
+} from "@deenruv/common/src/generated-types";
+import { Omit } from "@deenruv/common/src/omit";
 
 import { InternalServerError } from "../../../common/error/errors";
-import { Translated } from "../../../common/types/locale-types";
+import type { Translated } from "../../../common/types/locale-types";
 import { Collection, FacetValue } from "../../../entity";
 import { Allow } from "../../decorators/allow.decorator";
 

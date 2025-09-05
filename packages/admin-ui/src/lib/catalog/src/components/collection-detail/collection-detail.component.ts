@@ -13,8 +13,8 @@ import {
     COLLECTION_FRAGMENT,
     CollectionDetailQueryDocument,
     CollectionFragment,
-    ConfigurableOperation,
-    ConfigurableOperationDefinition,
+    type ConfigurableOperation,
+    type ConfigurableOperationDefinition,
     ConfigurableOperationInput,
     CreateCollectionInput,
     createUpdatedTranslatable,
@@ -32,7 +32,7 @@ import {
     unicodePatternValidator,
     UpdateCollectionInput,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/src/normalize-string';
 import { gql } from 'apollo-angular';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';

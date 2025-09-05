@@ -1,5 +1,5 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { ChildEntity, Index, ManyToOne } from "typeorm";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type Relation, ChildEntity, Index, ManyToOne } from "typeorm";
 
 import { EntityId } from "../entity-id.decorator";
 import { OrderModification } from "../order-modification/order-modification.entity";
@@ -21,7 +21,7 @@ export class OrderModificationLine extends OrderLineReference {
 
   @Index()
   @ManyToOne((type) => OrderModification, (modification) => modification.lines)
-  modification: OrderModification;
+  modification: Relation<OrderModification>;
 
   @EntityId()
   modificationId: ID;

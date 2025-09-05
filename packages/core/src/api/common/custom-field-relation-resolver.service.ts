@@ -1,7 +1,37 @@
 import { Injectable } from "@nestjs/common";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { FindOptionsUtils } from "typeorm/find-options/FindOptionsUtils";
-
+import type { ID } from "@deenruv/common/src/shared-types";
+const FindOptionsUtils = {
+  joinEagerRelations: (
+    qb: any,
+    alias: string,
+    metadata: any,
+    parentJoinPath?: string,
+  ) => {
+    metadata.relations
+      .filter((relation: any) => relation.isEager)
+      .forEach((relation: any) => {
+        const relationAlias = parentJoinPath
+          ? `${parentJoinPath}_${relation.propertyName}`
+          : `${alias}_${relation.propertyName}`;
+        const joinPath = parentJoinPath
+          ? `${parentJoinPath}.${relation.propertyName}`
+          : `${alias}.${relation.propertyName}`;
+        if (
+          !qb.expressionMap.joinAttributes.find(
+            (j: any) => j.alias === relationAlias,
+          )
+        ) {
+          qb.leftJoinAndSelect(joinPath, relationAlias);
+          FindOptionsUtils.joinEagerRelations(
+            qb,
+            relationAlias,
+            relation.inverseEntityMetadata,
+            joinPath,
+          );
+        }
+      });
+  },
+};
 import { Translatable } from "../../common/types/locale-types";
 import { ConfigService } from "../../config/config.service";
 import { RelationCustomFieldConfig } from "../../config/custom-field/custom-field-types";

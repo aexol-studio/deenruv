@@ -1,6 +1,6 @@
 import {
   DeenruvEntity,
-  DeepPartial,
+  type DeepPartial,
   LanguageCode,
   Translation,
 } from "@deenruv/core";

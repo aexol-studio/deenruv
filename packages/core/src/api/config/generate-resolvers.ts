@@ -1,5 +1,5 @@
 import { IFieldResolver, IResolvers } from "@graphql-tools/utils";
-import { StockMovementType } from "@deenruv/common/lib/generated-types";
+import { StockMovementType } from "@deenruv/common/src/generated-types";
 import { GraphQLSchema } from "graphql";
 import { GraphQLDateTime, GraphQLJSON } from "graphql-scalars";
 
@@ -20,7 +20,7 @@ import { Logger } from "../../config/logger/deenruv-logger";
 import { Region } from "../../entity/region/region.entity";
 import { getPluginAPIExtensions } from "../../plugin/plugin-metadata";
 import { CustomFieldRelationResolverService } from "../common/custom-field-relation-resolver.service";
-import { ApiType } from "../common/get-api-type";
+import { type ApiType } from "../common/get-api-type";
 import { RequestContext } from "../common/request-context";
 import { userHasPermissionsOnCustomField } from "../common/user-has-permissions-on-custom-field";
 

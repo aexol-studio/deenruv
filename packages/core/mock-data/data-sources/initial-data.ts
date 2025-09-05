@@ -1,4 +1,4 @@
-import { LanguageCode, Permission } from "@deenruv/common/lib/generated-types";
+import { LanguageCode, Permission } from "@deenruv/common/src/generated-types";
 
 import { InitialData } from "../../src/data-import";
 

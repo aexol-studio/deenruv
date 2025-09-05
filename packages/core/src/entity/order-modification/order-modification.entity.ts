@@ -1,5 +1,5 @@
-import { OrderAddress } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type OrderAddress } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  type Relation,
 } from "typeorm";
 
 import { Calculated } from "../../common/calculated-decorator";
@@ -39,7 +40,7 @@ export class OrderModification extends DeenruvEntity {
   @ManyToOne((type) => Order, (order) => order.modifications, {
     onDelete: "CASCADE",
   })
-  order: Order;
+  order: Relation<Order>;
 
   @OneToMany((type) => OrderModificationLine, (line) => line.modification)
   lines: OrderModificationLine[];

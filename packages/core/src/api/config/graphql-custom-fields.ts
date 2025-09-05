@@ -1,7 +1,7 @@
 import {
   assertNever,
   getGraphQlInputName,
-} from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/shared-utils";
 import {
   buildSchema,
   extendSchema,

@@ -2,8 +2,8 @@ import { Module, Provider, Type as NestType } from "@nestjs/common";
 import { MODULE_METADATA } from "@nestjs/common/constants";
 import { ModuleMetadata } from "@nestjs/common/interfaces";
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { pick } from "@deenruv/common/lib/pick";
-import { Type } from "@deenruv/common/lib/shared-types";
+import { pick } from "@deenruv/common/src/pick";
+import { type Type } from "@deenruv/common/src/shared-types";
 import { DocumentNode, GraphQLScalarType } from "graphql";
 
 import { RuntimeDeenruvConfig } from "../config/deenruv-config";

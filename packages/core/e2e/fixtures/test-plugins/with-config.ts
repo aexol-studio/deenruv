@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import { ConfigModule, DeenruvPlugin } from "@deenruv/core";
 
 @DeenruvPlugin({

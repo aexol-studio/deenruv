@@ -4,11 +4,11 @@ import {
   ID,
   Order,
   OrderService,
-  RelationPaths,
+  type RelationPaths,
   RequestContext,
 } from "@deenruv/core";
 import { PLUGIN_INIT_OPTIONS } from "../constants";
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types.js";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types.js";
 import { ResolveField, Resolver } from "@nestjs/graphql";
 import { CopyOrderPluginOptions } from "../types.js";
 

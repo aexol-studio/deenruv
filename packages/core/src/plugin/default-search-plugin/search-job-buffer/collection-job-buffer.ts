@@ -1,5 +1,5 @@
-import { ID } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 
 import { Job } from "../../../job-queue/job";
 import { JobBuffer } from "../../../job-queue/job-buffer/job-buffer";

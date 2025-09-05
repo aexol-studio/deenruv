@@ -1,15 +1,15 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationCreateTaxCategoryArgs,
   MutationDeleteTaxCategoryArgs,
   MutationUpdateTaxCategoryArgs,
   MutationDeleteTaxCategoriesArgs,
-  Permission,
   QueryTaxCategoriesArgs,
   QueryTaxCategoryArgs,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { TaxCategory } from "../../../entity/tax-category/tax-category.entity";
 import { TaxCategoryService } from "../../../service/services/tax-category.service";

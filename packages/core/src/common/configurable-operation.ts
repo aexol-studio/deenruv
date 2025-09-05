@@ -1,5 +1,5 @@
 // prettier-ignore
-import {
+import type {
     ConfigArg,
     ConfigArgDefinition,
     ConfigurableOperationDefinition,
@@ -7,14 +7,14 @@ import {
     LocalizedString,
     Maybe,
     StringFieldOption,
-} from '@deenruv/common/lib/generated-types';
-import {
+} from '@deenruv/common/src/generated-types';
+import type {
   ConfigArgType,
   DefaultFormComponentConfig,
   ID,
   UiComponentConfig,
-} from "@deenruv/common/lib/shared-types";
-import { assertNever } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/shared-types";
+import { assertNever } from "@deenruv/common/src/shared-utils";
 
 import { RequestContext } from "../api/common/request-context";
 

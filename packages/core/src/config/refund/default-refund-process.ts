@@ -1,6 +1,6 @@
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types";
 
-import { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
+import type { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
 
 import { RefundProcess } from "./refund-process";
 

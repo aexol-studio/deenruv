@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { Permission } from "@deenruv/common/lib/generated-types";
-import { Request, Response } from "express";
-import { GraphQLResolveInfo } from "graphql";
+import { Permission } from "@deenruv/common/src/generated-types";
+import { type Request, type Response } from "express";
+import { type GraphQLResolveInfo } from "graphql";
 
 import { REQUEST_CONTEXT_KEY } from "../../common/constants";
 import { ForbiddenError } from "../../common/error/errors";

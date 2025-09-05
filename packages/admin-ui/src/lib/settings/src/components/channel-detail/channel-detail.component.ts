@@ -17,7 +17,7 @@ import {
     TypedBaseDetailComponent,
     UpdateChannelInput,
 } from '@deenruv/admin-ui/core';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
 import { gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map, mergeMap, take, takeUntil } from 'rxjs/operators';

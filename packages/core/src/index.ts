@@ -20,11 +20,11 @@ export * from "./data-import/index";
 export * from "./service/index";
 export * from "./i18n/index";
 export * from "./worker/index";
-export * from "@deenruv/common/lib/shared-types";
+export * from "@deenruv/common/src/shared-types";
 export {
   Permission,
   LanguageCode,
   CurrencyCode,
   AssetType,
   AdjustmentType,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";

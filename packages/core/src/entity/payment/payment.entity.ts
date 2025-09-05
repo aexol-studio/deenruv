@@ -1,8 +1,15 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import {
+  type Relation,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
-import { PaymentMetadata } from "../../common/types/common-types";
-import { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
+import type { PaymentMetadata } from "../../common/types/common-types";
+import type { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
 import { DeenruvEntity } from "../base/base.entity";
 import { Money } from "../money.decorator";
 import { Order } from "../order/order.entity";
@@ -37,7 +44,7 @@ export class Payment extends DeenruvEntity {
 
   @Index()
   @ManyToOne((type) => Order, (order) => order.payments)
-  order: Order;
+  order: Relation<Order>;
 
   @OneToMany((type) => Refund, (refund) => refund.payment)
   refunds: Refund[];

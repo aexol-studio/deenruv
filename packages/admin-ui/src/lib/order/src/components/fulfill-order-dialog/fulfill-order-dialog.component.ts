@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { UntypedFormControl } from '@angular/forms';
 import {
     configurableDefinitionToInstance,
-    ConfigurableOperation,
-    ConfigurableOperationDefinition,
+    type ConfigurableOperation,
+    type ConfigurableOperationDefinition,
     configurableOperationValueIsValid,
     DataService,
     Dialog,

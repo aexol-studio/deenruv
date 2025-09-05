@@ -11,7 +11,7 @@ import {
     PaymentWithRefundsFragment,
     RefundOrderInput,
 } from '@deenruv/admin-ui/core';
-import { summate } from '@deenruv/common/lib/shared-utils';
+import { summate } from '@deenruv/common/src/shared-utils';
 import { getRefundablePayments, RefundablePayment } from '../../common/get-refundable-payments';
 
 type SelectionLine = { quantity: number; cancel: boolean };

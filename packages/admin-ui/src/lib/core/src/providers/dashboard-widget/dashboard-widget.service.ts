@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 
 import { Permission } from '../../common/generated-types';
 

@@ -1,4 +1,4 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { DeepPartial } from "@deenruv/common/src/shared-types";
 import { describe, expect, it } from "vitest";
 
 import { Calculated } from "../../common/index";

@@ -1,4 +1,9 @@
-import { DeepPartial, ID, ProductVariant, DeenruvEntity } from "@deenruv/core";
+import {
+  type DeepPartial,
+  ID,
+  ProductVariant,
+  DeenruvEntity,
+} from "@deenruv/core";
 import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity()

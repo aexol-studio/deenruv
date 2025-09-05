@@ -1,4 +1,4 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -6,6 +6,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  type Relation,
 } from "typeorm";
 
 import { SoftDeletable } from "../../common/types/common-types";
@@ -49,11 +50,11 @@ export class ProductOption
     (translation) => translation.base,
     { eager: true },
   )
-  translations: Array<Translation<ProductOption>>;
+  translations: Relation<Array<Translation<ProductOption>>>;
 
   @Index()
   @ManyToOne((type) => ProductOptionGroup, (group) => group.options)
-  group: ProductOptionGroup;
+  group: Relation<ProductOptionGroup>;
 
   @EntityId()
   groupId: ID;

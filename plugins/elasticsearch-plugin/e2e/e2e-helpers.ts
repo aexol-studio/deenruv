@@ -1,5 +1,5 @@
 import { Client } from "@elastic/elasticsearch";
-import { SortOrder } from "@deenruv/common/lib/generated-types";
+import { SortOrder } from "@deenruv/common/src/generated-types";
 import { SimpleGraphQLClient } from "@deenruv/testing";
 import { expect } from "vitest";
 

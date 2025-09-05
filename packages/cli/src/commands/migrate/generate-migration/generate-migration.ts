@@ -7,7 +7,7 @@ import {
   spinner,
   text,
 } from "@clack/prompts";
-import { unique } from "@deenruv/common/lib/unique";
+import { unique } from "@deenruv/common/src/unique";
 import { generateMigration, DeenruvConfig } from "@deenruv/core";
 import * as fs from "fs-extra";
 import path from "path";

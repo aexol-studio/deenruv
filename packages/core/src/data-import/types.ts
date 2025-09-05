@@ -2,8 +2,8 @@ import {
   ConfigurableOperationInput,
   LanguageCode,
   Permission,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { Zone } from "../entity/zone/zone.entity";
 

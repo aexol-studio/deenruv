@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomFieldType } from '@deenruv/common/lib/shared-types';
-import { assertNever } from '@deenruv/common/lib/shared-utils';
+import { CustomFieldType } from '@deenruv/common/src/shared-types';
+import { assertNever } from '@deenruv/common/src/shared-utils';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CustomFieldConfig } from '../../common/generated-types';

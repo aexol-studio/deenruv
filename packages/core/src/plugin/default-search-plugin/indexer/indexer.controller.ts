@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { JobState, LanguageCode } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
-import { unique } from "@deenruv/common/lib/unique";
+import { JobState, LanguageCode } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { unique } from "@deenruv/common/src/unique";
 import { Observable } from "rxjs";
 import { Equal, FindManyOptions, FindOptionsWhere, In, IsNull } from "typeorm";
 
@@ -25,7 +25,7 @@ import { ProductVariantService } from "../../../service/services/product-variant
 import { PLUGIN_INIT_OPTIONS } from "../constants";
 import { SearchIndexItem } from "../entities/search-index-item.entity";
 import {
-  DefaultSearchPluginInitOptions,
+  type DefaultSearchPluginInitOptions,
   ProductChannelMessageData,
   ReindexMessageResponse,
   UpdateAssetMessageData,

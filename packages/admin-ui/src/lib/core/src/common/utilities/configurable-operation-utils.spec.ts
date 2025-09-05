@@ -1,5 +1,5 @@
 import {
-    ConfigurableOperation,
+    type ConfigurableOperation,
     getDefaultConfigArgValue,
     toConfigurableOperationInput,
 } from '@deenruv/admin-ui/core';

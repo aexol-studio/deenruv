@@ -2,7 +2,7 @@ import {
   LanguageCode,
   LogicalOperator,
   SortOrder,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 import { DeepRequired } from "@deenruv/core";
 import { describe, expect, it } from "vitest";
 

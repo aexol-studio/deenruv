@@ -1,5 +1,5 @@
-import { JobState } from "@deenruv/common/lib/generated-types";
-import { ID, JsonCompatible } from "@deenruv/common/lib/shared-types";
+import { JobState } from "@deenruv/common/src/generated-types";
+import { type ID, type JsonCompatible } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../api/common/request-context";
 

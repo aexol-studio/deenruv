@@ -3,16 +3,16 @@ import {
   CurrencyCode,
   LanguageCode,
   Permission,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import { Request } from "express";
-import { GraphQLResolveInfo } from "graphql";
+import { type GraphQLResolveInfo } from "graphql";
 import ms from "ms";
 
-import { ApiType, getApiType } from "../../../api/common/get-api-type";
+import { type ApiType, getApiType } from "../../../api/common/get-api-type";
 import { RequestContext } from "../../../api/common/request-context";
 import { UserInputError } from "../../../common/error/errors";
-import { idsAreEqual } from "../../../common/utils";
+import { type IDsAreEqual } from "../../../common/utils";
 import { ConfigService } from "../../../config/config.service";
 import {
   CachedSession,

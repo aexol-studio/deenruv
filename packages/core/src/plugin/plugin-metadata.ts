@@ -1,7 +1,7 @@
 import { DynamicModule } from "@nestjs/common";
 import { MODULE_METADATA } from "@nestjs/common/constants";
-import { Type } from "@deenruv/common/lib/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
+import { type Type } from "@deenruv/common/src/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
 
 import {
   APIExtensionDefinition,

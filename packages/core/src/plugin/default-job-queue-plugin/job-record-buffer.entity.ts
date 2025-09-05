@@ -1,8 +1,8 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { Column, Entity } from "typeorm";
 
 import { DeenruvEntity } from "../../entity/base/base.entity";
-import { JobConfig } from "../../job-queue/types";
+import type { JobConfig } from "../../job-queue/types";
 
 @Entity()
 export class JobRecordBuffer extends DeenruvEntity {

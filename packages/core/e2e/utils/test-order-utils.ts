@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import { PaymentMethodHandler } from "@deenruv/core";
 import { SimpleGraphQLClient } from "@deenruv/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";

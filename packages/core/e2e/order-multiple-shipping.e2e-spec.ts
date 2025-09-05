@@ -1,4 +1,4 @@
-import { summate } from "@deenruv/common/lib/shared-utils";
+import { summate } from "@deenruv/common/src/shared-utils";
 import {
   defaultShippingCalculator,
   defaultShippingEligibilityChecker,

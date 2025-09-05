@@ -23,12 +23,12 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "@deenruv/common": "workspace:^",
-    "@deenruv/inpost": "workspace:^",
-    "@deenruv/ui-devkit": "workspace:^",
-    "@deenruv/react-ui-devkit": "workspace:^",
-    "@deenruv/admin-types": "workspace:^",
-    "@deenruv/admin-ui": "workspace:^",
+    "@deenruv/common": "workspace:*",
+    "@deenruv/inpost": "workspace:*",
+    "@deenruv/ui-devkit": "workspace:*",
+    "@deenruv/react-ui-devkit": "workspace:*",
+    "@deenruv/admin-types": "workspace:*",
+    "@deenruv/admin-ui": "workspace:*",
     "axios": "^1.7.7",
     "react-i18next": "^14.0.5",
     "react-router-dom": "^6.22.1",
@@ -41,7 +41,7 @@
     "replicate": "1.0.1"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "typescript": "5.3.3",
     "@graphql-typed-document-node/core": "3.2.0",
     "@types/react": "^18.2.0",

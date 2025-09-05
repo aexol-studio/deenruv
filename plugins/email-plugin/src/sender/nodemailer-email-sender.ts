@@ -1,5 +1,5 @@
-import { normalizeString } from "@deenruv/common/lib/normalize-string";
-import { assertNever } from "@deenruv/common/lib/shared-utils";
+import { normalizeString } from "@deenruv/common/src/normalize-string";
+import { assertNever } from "@deenruv/common/src/shared-utils";
 import { Logger } from "@deenruv/core";
 import fs from "fs-extra";
 import { createTransport } from "nodemailer";

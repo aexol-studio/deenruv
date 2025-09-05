@@ -23,7 +23,7 @@ _Example_
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { CustomFieldConfig } from '@deenruv/common/lib/generated-types';
+import { CustomFieldConfig } from '@deenruv/common/src/generated-types';
 import {
     DataService,
     SharedModule,

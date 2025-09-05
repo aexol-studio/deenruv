@@ -1,4 +1,4 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -7,6 +7,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  type Relation,
 } from "typeorm";
 
 import { ChannelAware, SoftDeletable } from "../../common/types/common-types";
@@ -59,7 +60,7 @@ export class Product
   @ManyToOne((type) => Asset, (asset) => asset.featuredInProducts, {
     onDelete: "SET NULL",
   })
-  featuredAsset: Asset;
+  featuredAsset: Relation<Asset>;
 
   @OneToMany((type) => ProductAsset, (productAsset) => productAsset.product)
   assets: ProductAsset[];

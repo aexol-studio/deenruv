@@ -1,5 +1,5 @@
 import { OnApplicationBootstrap } from "@nestjs/common";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/lib/shared-constants";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
 import {
   Asset,
   Channel,

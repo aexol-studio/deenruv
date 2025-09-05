@@ -29,8 +29,8 @@
     "rxjs": "7.8.1"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
-    "@deenruv/common": "workspace:^",
+    "@deenruv/core": "workspace:*",
+    "@deenruv/common": "workspace:*",
     "@types/node-fetch": "^2.6.11",
     "rimraf": "^5.0.5",
     "rxjs": "7.8.1"

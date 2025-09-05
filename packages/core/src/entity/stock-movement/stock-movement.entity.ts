@@ -1,6 +1,13 @@
-import { StockMovementType } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne, TableInheritance } from "typeorm";
+import { StockMovementType } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import {
+  type Relation,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  TableInheritance,
+} from "typeorm";
 
 import { DeenruvEntity } from "../base/base.entity";
 import { EntityId } from "../entity-id.decorator";
@@ -24,7 +31,7 @@ export abstract class StockMovement extends DeenruvEntity {
 
   @Index()
   @ManyToOne((type) => ProductVariant, (variant) => variant.stockMovements)
-  productVariant: ProductVariant;
+  productVariant: Relation<ProductVariant>;
 
   @Index()
   @ManyToOne(

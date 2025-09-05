@@ -1,6 +1,6 @@
-import { TaxLine } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
+import type { TaxLine } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { Column, Entity, Index, ManyToOne, type Relation } from "typeorm";
 
 import {
   grossPriceOf,
@@ -8,7 +8,7 @@ import {
   taxComponentOf,
   taxPayableOn,
 } from "../../common/tax-utils";
-import { idsAreEqual } from "../../common/utils";
+import { type IDsAreEqual } from "../../common/utils";
 import { HasCustomFields } from "../../config/custom-field/custom-field-types";
 import { DeenruvEntity } from "../base/base.entity";
 import { CustomTaxRateFields } from "../custom-entity-fields";
@@ -59,7 +59,7 @@ export class TaxRate extends DeenruvEntity implements HasCustomFields {
     (customerGroup) => customerGroup.taxRates,
     { nullable: true },
   )
-  customerGroup?: CustomerGroup;
+  customerGroup?: Relation<CustomerGroup>;
 
   @Column((type) => CustomTaxRateFields)
   customFields: CustomTaxRateFields;

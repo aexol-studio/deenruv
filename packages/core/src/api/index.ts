@@ -1,4 +1,4 @@
-export { ApiType } from "./common/get-api-type";
+export { type ApiType } from "./common/get-api-type";
 export * from "./common/request-context";
 export * from "./common/extract-session-token";
 export * from "./decorators/allow.decorator";

@@ -1,13 +1,14 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   AuthenticationResult,
   MutationAuthenticateArgs,
   MutationLoginArgs,
   NativeAuthenticationResult,
-  Permission,
   Success,
-} from "@deenruv/common/lib/generated-types";
-import { Request, Response } from "express";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
+
+import { type Request, type Response } from "express";
 
 import { NativeAuthStrategyError } from "../../../common/error/generated-graphql-admin-errors";
 import { NATIVE_AUTH_STRATEGY_NAME } from "../../../config/auth/native-authentication-strategy";

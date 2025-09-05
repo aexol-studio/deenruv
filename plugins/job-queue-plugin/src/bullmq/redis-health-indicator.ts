@@ -9,7 +9,7 @@ import { RedisConnection } from "bullmq";
 import { timer } from "rxjs";
 
 import { BULLMQ_PLUGIN_OPTIONS, loggerCtx } from "./constants";
-import { BullMQPluginOptions } from "./types";
+import type { BullMQPluginOptions } from "./types";
 
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {

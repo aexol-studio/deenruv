@@ -1,4 +1,4 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types.js";
+import { DeepPartial } from "@deenruv/common/src/shared-types.js";
 import { DeenruvEntity } from "@deenruv/core";
 import { Entity, Column, ManyToOne } from "typeorm";
 import { MerchantPlatformSettingsEntity } from "./platform-integration-settings.entity.js";

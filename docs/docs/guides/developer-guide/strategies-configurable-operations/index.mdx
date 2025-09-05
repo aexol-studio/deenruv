@@ -102,7 +102,7 @@ export const config: DeenruvConfig = {
 This config will be passed to the strategy's constructor:
 
 ```ts title="src/config/my-stock-location-strategy.ts"
-import { ID, ProductVariant, RequestContext, StockLevel, StockLocationStrategy } from '@deenruv/core';
+import { type ID, ProductVariant, RequestContext, StockLevel, StockLocationStrategy } from '@deenruv/core';
 
 export class MyStockLocationStrategy implements StockLocationStrategy {
     constructor(private options: { maxDistance: number }) {}

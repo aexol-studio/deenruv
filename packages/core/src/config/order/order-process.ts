@@ -8,7 +8,7 @@ import {
 import { InjectableStrategy } from "../../common/types/injectable-strategy";
 import {
   CustomOrderStates,
-  OrderState,
+  type OrderState,
   OrderTransitionData,
 } from "../../service/helpers/order-state-machine/order-state";
 

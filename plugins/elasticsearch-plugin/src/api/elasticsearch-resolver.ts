@@ -9,10 +9,10 @@ import {
 import {
   Job as GraphQLJob,
   Permission,
-  QuerySearchArgs,
+  type QuerySearchArgs,
   SearchResponse,
-} from "@deenruv/common/lib/generated-types";
-import { Omit } from "@deenruv/common/lib/omit";
+} from "@deenruv/common/src/generated-types";
+import { Omit } from "@deenruv/common/src/omit";
 import {
   Allow,
   Collection,

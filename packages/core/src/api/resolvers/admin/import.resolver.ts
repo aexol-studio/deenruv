@@ -1,8 +1,8 @@
 import { Args, Mutation, Resolver } from "@nestjs/graphql";
 import {
-  MutationImportProductsArgs,
+  type MutationImportProductsArgs,
   Permission,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
 import { Importer } from "../../../data-import/providers/importer/importer";
 import { RequestContext } from "../../common/request-context";

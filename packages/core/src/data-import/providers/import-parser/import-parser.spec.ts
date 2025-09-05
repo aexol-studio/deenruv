@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import fs from "fs-extra";
 import path from "path";
 import { beforeAll, describe, expect, it } from "vitest";

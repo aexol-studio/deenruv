@@ -1,6 +1,6 @@
 import { BooleanOperator as BooleanOperatorInput } from "@/components/templates/DetailList/_components/operators/BooleanOperator.js";
 import { DateOperator as DateOperatorInput } from "@/components/templates/DetailList/_components/operators/DateOperator.js";
-import { IDOperator as IDOperatorInput } from "@/components/templates/DetailList/_components/operators/IDOperator.js";
+import { type IDOperator as IDOperatorInput } from "@/components/templates/DetailList/_components/operators/IDOperator.js";
 import { NumberOperator } from "@/components/templates/DetailList/_components/operators/NumberOperator.js";
 import { StringOperator as StringOperatorInput } from "@/components/templates/DetailList/_components/operators/StringOperator.js";
 import { FilterInputType } from "@/components/templates/DetailList/_components/types.js";

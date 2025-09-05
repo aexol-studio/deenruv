@@ -1,4 +1,4 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { ChildEntity, ManyToOne } from "typeorm";
 
 import { Order } from "../order/order.entity";

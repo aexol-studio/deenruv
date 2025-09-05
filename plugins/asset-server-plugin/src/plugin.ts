@@ -3,7 +3,7 @@ import {
   NestModule,
   OnApplicationBootstrap,
 } from "@nestjs/common";
-import { Type } from "@deenruv/common/lib/shared-types";
+import { type Type } from "@deenruv/common/src/shared-types";
 import {
   AssetStorageStrategy,
   Logger,
@@ -14,7 +14,7 @@ import {
   DeenruvPlugin,
 } from "@deenruv/core";
 import { createHash } from "crypto";
-import express, { NextFunction, Request, Response } from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import fs from "fs-extra";
 import path from "path";
 
@@ -25,6 +25,7 @@ import { HashedAssetNamingStrategy } from "./hashed-asset-naming-strategy";
 import { SharpAssetPreviewStrategy } from "./sharp-asset-preview-strategy";
 import { transformImage } from "./transform-image";
 import { AssetServerOptions, ImageTransformPreset } from "./types";
+export { configureS3AssetStorage } from "./s3-asset-storage-strategy";
 
 async function getFileType(buffer: Buffer) {
   const { fileTypeFromBuffer } = await import("file-type");

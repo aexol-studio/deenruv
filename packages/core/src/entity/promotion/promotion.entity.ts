@@ -1,9 +1,9 @@
-import {
+import type {
   Adjustment,
-  AdjustmentType,
   ConfigurableOperation,
-} from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { AdjustmentType } from "@deenruv/common/src/generated-shop-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

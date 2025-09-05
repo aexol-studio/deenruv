@@ -1,7 +1,7 @@
-import { ConfigArgType } from '@deenruv/common/lib/shared-types';
-import { assertNever } from '@deenruv/common/lib/shared-utils';
+import { ConfigArgType } from '@deenruv/common/src/shared-types';
+import { assertNever } from '@deenruv/common/src/shared-utils';
 
-import {
+import type {
     ConfigArgDefinition,
     ConfigurableOperation,
     ConfigurableOperationDefinition,

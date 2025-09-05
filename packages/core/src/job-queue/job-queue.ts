@@ -1,4 +1,4 @@
-import { JobState } from "@deenruv/common/lib/generated-types";
+import { JobState } from "@deenruv/common/src/generated-types";
 import { Subject, Subscription } from "rxjs";
 import { throttleTime } from "rxjs/operators";
 
@@ -8,7 +8,12 @@ import { Logger } from "../config/logger/deenruv-logger";
 import { Job } from "./job";
 import { JobBufferService } from "./job-buffer/job-buffer.service";
 import { SubscribableJob } from "./subscribable-job";
-import { CreateQueueOptions, JobConfig, JobData, JobOptions } from "./types";
+import type {
+  CreateQueueOptions,
+  JobConfig,
+  JobData,
+  JobOptions,
+} from "./types";
 
 /**
  * @description

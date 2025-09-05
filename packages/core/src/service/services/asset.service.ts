@@ -10,11 +10,15 @@ import {
   LogicalOperator,
   Permission,
   UpdateAssetInput,
-} from "@deenruv/common/lib/generated-types";
-import { omit } from "@deenruv/common/lib/omit";
-import { ID, PaginatedList, Type } from "@deenruv/common/lib/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import { omit } from "@deenruv/common/src/omit";
+import {
+  type ID,
+  type PaginatedList,
+  type Type,
+} from "@deenruv/common/src/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { unique } from "@deenruv/common/src/unique";
 import { ReadStream as FSReadStream } from "fs";
 import { ReadStream } from "fs-extra";
 import { IncomingMessage } from "http";
@@ -23,10 +27,17 @@ import path from "path";
 import { Readable, Stream } from "stream";
 import { In, IsNull } from "typeorm";
 import { FindOneOptions } from "typeorm/find-options/FindOneOptions";
-import { camelCase } from "typeorm/util/StringUtils";
-
+function camelCase(str: string, firstCapital?: boolean): string {
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 && !firstCapital
+        ? word.toLowerCase()
+        : word.toUpperCase();
+    })
+    .replace(/\s+/g, "");
+}
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import { isGraphQlErrorResult } from "../../common/error/error-result";
 import { ForbiddenError, InternalServerError } from "../../common/error/errors";
 import { MimeTypeError } from "../../common/error/generated-graphql-admin-errors";

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/lib/shared-constants";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
 import {
   DefaultLogger,
   EventBus,

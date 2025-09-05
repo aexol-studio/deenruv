@@ -1,4 +1,4 @@
-import { OrderType } from "@deenruv/common/lib/generated-types";
+import { OrderType } from "@deenruv/common/src/generated-types";
 import {
   CreatePaymentResult,
   LanguageCode,

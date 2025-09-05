@@ -1,12 +1,12 @@
 import { OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
-import { SearchReindexResponse } from "@deenruv/common/lib/generated-types";
-import { ID, Type } from "@deenruv/common/lib/shared-types";
+import { SearchReindexResponse } from "@deenruv/common/src/generated-types";
+import { type ID, type Type } from "@deenruv/common/src/shared-types";
 import { buffer, debounceTime, delay, filter, map } from "rxjs/operators";
 import { Column } from "typeorm";
 
 import { Injector } from "../../common";
-import { idsAreEqual } from "../../common/utils";
+import { type IDsAreEqual } from "../../common/utils";
 import { EventBus } from "../../event-bus/event-bus";
 import { AssetEvent } from "../../event-bus/events/asset-event";
 import { CollectionModificationEvent } from "../../event-bus/events/collection-modification-event";
@@ -30,7 +30,7 @@ import { FulltextSearchService } from "./fulltext-search.service";
 import { IndexerController } from "./indexer/indexer.controller";
 import { SearchIndexService } from "./indexer/search-index.service";
 import { SearchJobBufferService } from "./search-job-buffer/search-job-buffer.service";
-import { DefaultSearchPluginInitOptions } from "./types";
+import { type DefaultSearchPluginInitOptions } from "./types";
 
 export interface DefaultSearchReindexResponse extends SearchReindexResponse {
   timeTaken: number;

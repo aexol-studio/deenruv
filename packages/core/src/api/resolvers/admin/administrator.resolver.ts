@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationAssignRoleToAdministratorArgs,
   MutationCreateAdministratorArgs,
@@ -7,17 +7,20 @@ import {
   MutationDeleteAdministratorsArgs,
   MutationUpdateActiveAdministratorArgs,
   MutationUpdateAdministratorArgs,
-  Permission,
   QueryAdministratorArgs,
   QueryAdministratorsArgs,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import { Administrator } from "../../../entity/administrator/administrator.entity";
 import { AdministratorService } from "../../../service/services/administrator.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 

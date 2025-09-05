@@ -1,8 +1,8 @@
 import {
   CreateCollectionInput,
   UpdateCollectionInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api";
 import { Collection } from "../../entity";

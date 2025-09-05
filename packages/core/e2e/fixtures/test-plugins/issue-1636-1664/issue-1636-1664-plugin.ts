@@ -1,6 +1,6 @@
 import { OnApplicationBootstrap } from "@nestjs/common";
 import { Args, Query, Resolver } from "@nestjs/graphql";
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import {
   Asset,
   Channel,

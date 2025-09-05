@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Args, Query, Resolver } from "@nestjs/graphql";
-import { QueryOrdersArgs } from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+import { type QueryOrdersArgs } from "@deenruv/common/src/generated-types";
+import { PaginatedList } from "@deenruv/common/src/shared-types";
 import {
   Ctx,
   Order,
@@ -9,7 +9,7 @@ import {
   RequestContext,
   DeenruvPlugin,
   Relations,
-  RelationPaths,
+  type RelationPaths,
   PluginCommonModule,
 } from "@deenruv/core";
 import gql from "graphql-tag";

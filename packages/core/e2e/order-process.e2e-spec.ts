@@ -2,7 +2,7 @@ import {
   CustomOrderProcess,
   defaultOrderProcess,
   mergeConfig,
-  OrderState,
+  type OrderState,
   TransactionalConnection,
 } from "@deenruv/core";
 import {

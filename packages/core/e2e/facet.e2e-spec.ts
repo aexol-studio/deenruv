@@ -1,4 +1,4 @@
-import { pick } from "@deenruv/common/lib/pick";
+import { pick } from "@deenruv/common/src/pick";
 import {
   createTestEnvironment,
   E2E_DEFAULT_CHANNEL_TOKEN,

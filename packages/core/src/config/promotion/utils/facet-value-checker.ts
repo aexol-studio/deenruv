@@ -1,9 +1,9 @@
-import { ID } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 
 import { RequestContext } from "../../../api";
 import { TtlCache } from "../../../common/ttl-cache";
-import { idsAreEqual } from "../../../common/utils";
+import { type IDsAreEqual } from "../../../common/utils";
 import { TransactionalConnection } from "../../../connection/transactional-connection";
 import { OrderLine } from "../../../entity/order-line/order-line.entity";
 import { ProductVariant } from "../../../entity/product-variant/product-variant.entity";

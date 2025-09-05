@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   AddFulfillmentToOrderResult,
   CancelOrderResult,
   CancelPaymentResult,
@@ -19,14 +19,14 @@ import {
   MutationTransitionOrderToStateArgs,
   MutationTransitionPaymentToStateArgs,
   MutationUpdateOrderNoteArgs,
-  Permission,
   QueryOrderArgs,
   QueryOrdersArgs,
   RefundOrderResult,
   SettlePaymentResult,
   TransitionPaymentToStateResult,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import {
   ErrorResultUnion,
@@ -37,9 +37,9 @@ import { Fulfillment } from "../../../entity/fulfillment/fulfillment.entity";
 import { Order } from "../../../entity/order/order.entity";
 import { Payment } from "../../../entity/payment/payment.entity";
 import { Refund } from "../../../entity/refund/refund.entity";
-import { FulfillmentState } from "../../../service/helpers/fulfillment-state-machine/fulfillment-state";
-import { OrderState } from "../../../service/helpers/order-state-machine/order-state";
-import { PaymentState } from "../../../service/helpers/payment-state-machine/payment-state";
+import type { FulfillmentState } from "../../../service/helpers/fulfillment-state-machine/fulfillment-state";
+import type { OrderState } from "../../../service/helpers/order-state-machine/order-state";
+import type { PaymentState } from "../../../service/helpers/payment-state-machine/payment-state";
 import { OrderService } from "../../../service/services/order.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";

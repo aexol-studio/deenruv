@@ -2,8 +2,8 @@ import {
   LogicalOperator,
   SearchInput,
   SearchResult,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import {
   Injector,
   PLUGIN_INIT_OPTIONS,
@@ -11,17 +11,17 @@ import {
   TransactionalConnection,
   UserInputError,
 } from "@deenruv/core";
-import { SearchIndexItem } from "@deenruv/core/dist/plugin/default-search-plugin/entities/search-index-item.entity";
-import { SearchStrategy } from "@deenruv/core/dist/plugin/default-search-plugin/search-strategy/search-strategy";
-import { getFieldsToSelect } from "@deenruv/core/dist/plugin/default-search-plugin/search-strategy/search-strategy-common";
+import { SearchIndexItem } from "@deenruv/core/src/plugin/default-search-plugin/entities/search-index-item.entity";
+import { SearchStrategy } from "@deenruv/core/src/plugin/default-search-plugin/search-strategy/search-strategy";
+import { getFieldsToSelect } from "@deenruv/core/src/plugin/default-search-plugin/search-strategy/search-strategy-common";
 import {
   applyLanguageConstraints,
   createCollectionIdCountMap,
   createFacetIdCountMap,
   createPlaceholderFromId,
   mapToSearchResult,
-} from "@deenruv/core/dist/plugin/default-search-plugin/search-strategy/search-strategy-utils";
-import { DefaultSearchPluginInitOptions } from "@deenruv/core/dist/plugin/default-search-plugin/types";
+} from "@deenruv/core/src/plugin/default-search-plugin/search-strategy/search-strategy-utils";
+import { type DefaultSearchPluginInitOptions } from "@deenruv/core/src/plugin/default-search-plugin/types";
 import { Brackets, SelectQueryBuilder } from "typeorm";
 
 /**

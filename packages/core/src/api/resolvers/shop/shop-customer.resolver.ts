@@ -1,14 +1,13 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   MutationDeleteCustomerAddressArgs,
   MutationUpdateCustomerArgs,
   Success,
-} from "@deenruv/common/lib/generated-shop-types";
-import {
+} from "@deenruv/common/src/generated-shop-types";
+import type {
   MutationCreateCustomerAddressArgs,
   MutationUpdateCustomerAddressArgs,
-  Permission,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
 import {
   ForbiddenError,
@@ -21,6 +20,7 @@ import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 @Resolver()
 export class ShopCustomerResolver {

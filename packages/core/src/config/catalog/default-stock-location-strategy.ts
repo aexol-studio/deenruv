@@ -1,8 +1,8 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { Injector } from "../../common/injector";
-import { idsAreEqual } from "../../common/utils";
+import { type IDsAreEqual } from "../../common/utils";
 import { TransactionalConnection } from "../../connection/transactional-connection";
 import { OrderLine } from "../../entity/order-line/order-line.entity";
 import { StockLevel } from "../../entity/stock-level/stock-level.entity";

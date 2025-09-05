@@ -3,8 +3,8 @@ import { NestApplicationContextOptions } from "@nestjs/common/interfaces/nest-ap
 import { NestApplicationOptions } from "@nestjs/common/interfaces/nest-application-options.interface";
 import { NestFactory } from "@nestjs/core";
 import { getConnectionToken } from "@nestjs/typeorm";
-import { DEFAULT_COOKIE_NAME } from "@deenruv/common/lib/shared-constants";
-import { Type } from "@deenruv/common/lib/shared-types";
+import { DEFAULT_COOKIE_NAME } from "@deenruv/common/src/shared-constants";
+import { type Type } from "@deenruv/common/src/shared-types";
 import cookieSession = require("cookie-session");
 import { satisfies } from "semver";
 import {

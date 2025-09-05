@@ -15,7 +15,7 @@ This example shows how new [TypeORM database entities](https://typeorm.io/entiti
 ## Create the entity class
 
 ```ts title="src/plugins/reviews/entities/product-review.entity.ts"
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
+import { DeepPartial } from '@deenruv/common/src/shared-types';
 import { DeenruvEntity, Product, EntityId, ID } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 

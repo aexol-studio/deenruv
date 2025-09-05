@@ -22,7 +22,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import {
+import type {
     ConfigArg,
     ConfigArgDefinition,
     ConfigurableOperation,

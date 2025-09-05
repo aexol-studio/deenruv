@@ -3,7 +3,7 @@ import { ReviewsService } from "../services/reviews.service.js";
 import {
   Ctx,
   Customer,
-  RelationPaths,
+  type RelationPaths,
   Relations,
   RequestContext,
 } from "@deenruv/core";

@@ -2,8 +2,6 @@ import fs from "fs-extra";
 import path from "path";
 import pc from "picocolors";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { MysqlDriver } from "typeorm/driver/mysql/MysqlDriver";
-import { camelCase } from "typeorm/util/StringUtils";
 
 import { preBootstrapConfig } from "./bootstrap";
 import { resetConfig } from "./config/config-helpers";
@@ -149,45 +147,25 @@ export async function generateMigration(
 
   // mysql is exceptional here because it uses ` character in to escape names in queries, that's why for mysql
   // we are using simple quoted string instead of template string syntax
-  if (connection.driver instanceof MysqlDriver) {
-    sqlInMemory.upQueries.forEach((upQuery) => {
-      upSqls.push(
-        '        await queryRunner.query("' +
-          upQuery.query.replace(new RegExp('"', "g"), '\\"') +
-          '", ' +
-          JSON.stringify(upQuery.parameters) +
-          ");",
-      );
-    });
-    sqlInMemory.downQueries.forEach((downQuery) => {
-      downSqls.push(
-        '        await queryRunner.query("' +
-          downQuery.query.replace(new RegExp('"', "g"), '\\"') +
-          '", ' +
-          JSON.stringify(downQuery.parameters) +
-          ");",
-      );
-    });
-  } else {
-    sqlInMemory.upQueries.forEach((upQuery) => {
-      upSqls.push(
-        "        await queryRunner.query(`" +
-          upQuery.query.replace(new RegExp("`", "g"), "\\`") +
-          "`, " +
-          JSON.stringify(upQuery.parameters) +
-          ");",
-      );
-    });
-    sqlInMemory.downQueries.forEach((downQuery) => {
-      downSqls.push(
-        "        await queryRunner.query(`" +
-          downQuery.query.replace(new RegExp("`", "g"), "\\`") +
-          "`, " +
-          JSON.stringify(downQuery.parameters) +
-          ");",
-      );
-    });
-  }
+
+  sqlInMemory.upQueries.forEach((upQuery) => {
+    upSqls.push(
+      "        await queryRunner.query(`" +
+        upQuery.query.replace(new RegExp("`", "g"), "\\`") +
+        "`, " +
+        JSON.stringify(upQuery.parameters) +
+        ");",
+    );
+  });
+  sqlInMemory.downQueries.forEach((downQuery) => {
+    downSqls.push(
+      "        await queryRunner.query(`" +
+        downQuery.query.replace(new RegExp("`", "g"), "\\`") +
+        "`, " +
+        JSON.stringify(downQuery.parameters) +
+        ");",
+    );
+  });
 
   if (upSqls.length) {
     if (options.name) {
@@ -266,6 +244,16 @@ async function disableForeignKeysForSqLite<T>(
 /**
  * Gets contents of the migration file.
  */
+
+function camelCase(str: string, firstCapital?: boolean): string {
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 && !firstCapital
+        ? word.toLowerCase()
+        : word.toUpperCase();
+    })
+    .replace(/\s+/g, "");
+}
 function getTemplate(
   name: string,
   timestamp: number,

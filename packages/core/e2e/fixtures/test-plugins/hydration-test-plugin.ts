@@ -3,7 +3,7 @@ import {
   Asset,
   ChannelService,
   Ctx,
-  DeepPartial,
+  type DeepPartial,
   EntityHydrator,
   ID,
   LanguageCode,

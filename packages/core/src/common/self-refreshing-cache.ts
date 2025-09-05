@@ -1,4 +1,4 @@
-import { Json } from "@deenruv/common/lib/shared-types";
+import { type Json } from "@deenruv/common/src/shared-types";
 
 import { Logger } from "../config/logger/deenruv-logger";
 

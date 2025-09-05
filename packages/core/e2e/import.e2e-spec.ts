@@ -1,4 +1,4 @@
-import { omit } from "@deenruv/common/lib/omit";
+import { omit } from "@deenruv/common/src/omit";
 import { User } from "@deenruv/core";
 import { createTestEnvironment } from "@deenruv/testing";
 import * as fs from "fs";

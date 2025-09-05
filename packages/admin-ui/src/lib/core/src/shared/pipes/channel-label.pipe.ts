@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
 
 @Pipe({
     name: 'channelCodeToLabel',

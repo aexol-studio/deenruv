@@ -1,5 +1,5 @@
-import { StockMovementType } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { StockMovementType } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { ChildEntity, ManyToOne } from "typeorm";
 
 import { OrderLine } from "../order-line/order-line.entity";

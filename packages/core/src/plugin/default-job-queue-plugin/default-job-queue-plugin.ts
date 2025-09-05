@@ -1,4 +1,4 @@
-import { Type } from "@deenruv/common/lib/shared-types";
+import { type Type } from "@deenruv/common/src/shared-types";
 
 import { Job } from "../../job-queue/job";
 import { BackoffStrategy } from "../../job-queue/polling-job-queue-strategy";

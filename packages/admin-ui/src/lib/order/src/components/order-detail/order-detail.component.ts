@@ -19,7 +19,7 @@ import {
     TimelineHistoryEntry,
     TypedBaseDetailComponent,
 } from '@deenruv/admin-ui/core';
-import { assertNever, summate } from '@deenruv/common/lib/shared-utils';
+import { assertNever, summate } from '@deenruv/common/src/shared-utils';
 import { gql } from 'apollo-angular';
 import { EMPTY, forkJoin, Observable, of, Subject } from 'rxjs';
 import { map, mapTo, startWith, switchMap, take } from 'rxjs/operators';

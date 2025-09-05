@@ -10,19 +10,19 @@ import {
   ProductVariantFilterParameter,
   RemoveProductVariantsFromChannelInput,
   UpdateProductVariantInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 import { In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import { RequestContextCacheService } from "../../cache/request-context-cache.service";
 import { ForbiddenError, UserInputError } from "../../common/error/errors";
 import { roundMoney } from "../../common/round-money";
 import { ListQueryOptions } from "../../common/types/common-types";
-import { Translated } from "../../common/types/locale-types";
-import { idsAreEqual } from "../../common/utils";
+import { type Translated } from "../../common/types/locale-types";
+import { type IDsAreEqual } from "../../common/utils";
 import { UpdatedProductVariantPrice } from "../../config/catalog/product-variant-price-update-strategy";
 import { ConfigService } from "../../config/config.service";
 import { TransactionalConnection } from "../../connection/transactional-connection";

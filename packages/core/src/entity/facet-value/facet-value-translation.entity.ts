@@ -1,6 +1,6 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { type Relation, Column, Entity, Index, ManyToOne } from "typeorm";
 
 import { Translation } from "../../common/types/locale-types";
 import { DeenruvEntity } from "../base/base.entity";
@@ -25,7 +25,7 @@ export class FacetValueTranslation
   @ManyToOne((type) => FacetValue, (base) => base.translations, {
     onDelete: "CASCADE",
   })
-  base: FacetValue;
+  base: Relation<FacetValue>;
 
   @Column((type) => CustomFacetValueFieldsTranslation)
   customFields: CustomFacetValueFieldsTranslation;

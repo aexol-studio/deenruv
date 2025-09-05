@@ -1,6 +1,6 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { type Relation, Column, Entity, Index, ManyToOne } from "typeorm";
 
 import { Translation } from "../../common/types/locale-types";
 import { HasCustomFields } from "../../config/custom-field/custom-field-types";
@@ -30,7 +30,7 @@ export class ProductTranslation
 
   @Index()
   @ManyToOne((type) => Product, (base) => base.translations)
-  base: Product;
+  base: Relation<Product>;
 
   @Column((type) => CustomProductFieldsTranslation)
   customFields: CustomProductFieldsTranslation;

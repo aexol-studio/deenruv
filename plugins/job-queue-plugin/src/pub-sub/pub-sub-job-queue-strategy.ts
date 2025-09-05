@@ -1,5 +1,5 @@
 import { Message, PubSub, Subscription, Topic } from "@google-cloud/pubsub";
-import { JobState } from "@deenruv/common/lib/generated-types";
+import { JobState } from "@deenruv/common/src/generated-types";
 import {
   InjectableJobQueueStrategy,
   Injector,

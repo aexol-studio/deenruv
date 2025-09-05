@@ -440,7 +440,7 @@ In the video transcoding example above, we could modify the `transcodeForProduct
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { ID, Product, TransactionalConnection } from '@deenruv/core';
+import { type ID, Product, TransactionalConnection } from '@deenruv/core';
 
 @Injectable()
 class ProductVideoService implements OnModuleInit {

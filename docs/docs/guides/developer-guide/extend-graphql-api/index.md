@@ -194,7 +194,7 @@ Using the `ProductReview` entity from the [Define a database entity guide](/guid
 As a reminder, here is the `ProductReview` entity:
 
 ```ts title="src/plugins/reviews/product-review.entity.ts"
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
+import { DeepPartial } from '@deenruv/common/src/shared-types';
 import { VendureEntity, Product, EntityId, ID } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 

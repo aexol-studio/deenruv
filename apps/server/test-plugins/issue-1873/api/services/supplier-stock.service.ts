@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import type {
   ListQueryOptions,
   PaginatedList,
-  RelationPaths,
+  type RelationPaths,
   RequestContext,
 } from "@deenruv/core";
 import { ListQueryBuilder } from "@deenruv/core";

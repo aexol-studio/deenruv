@@ -1,5 +1,5 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type Relation, Column, Entity, Index, ManyToOne } from "typeorm";
 
 import { DeenruvEntity } from "../base/base.entity";
 import { EntityId } from "../entity-id.decorator";
@@ -26,7 +26,7 @@ export class StockLevel extends DeenruvEntity {
     (productVariant) => productVariant.stockLevels,
     { onDelete: "CASCADE" },
   )
-  productVariant: ProductVariant;
+  productVariant: Relation<ProductVariant>;
 
   @EntityId()
   productVariantId: ID;

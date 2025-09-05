@@ -1,5 +1,5 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { ChildEntity, Index, ManyToOne } from "typeorm";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type Relation, ChildEntity, Index, ManyToOne } from "typeorm";
 
 import { EntityId } from "../entity-id.decorator";
 import { Fulfillment } from "../fulfillment/fulfillment.entity";
@@ -21,7 +21,7 @@ export class FulfillmentLine extends OrderLineReference {
 
   @Index()
   @ManyToOne((type) => Fulfillment, (fulfillment) => fulfillment.lines)
-  fulfillment: Fulfillment;
+  fulfillment: Relation<Fulfillment>;
 
   @EntityId()
   fulfillmentId: ID;

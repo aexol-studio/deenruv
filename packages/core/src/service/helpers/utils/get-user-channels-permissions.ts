@@ -1,6 +1,6 @@
-import { Permission } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import { Permission } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 
 import { Role } from "../../../entity/role/role.entity";
 import { User } from "../../../entity/user/user.entity";

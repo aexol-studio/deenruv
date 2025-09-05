@@ -1,7 +1,7 @@
 import { OnModuleInit } from "@nestjs/common";
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
-import { omit } from "@deenruv/common/lib/omit";
-import { pick } from "@deenruv/common/lib/pick";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+import { omit } from "@deenruv/common/src/omit";
+import { pick } from "@deenruv/common/src/pick";
 import {
   AccountRegistrationEvent,
   EventBus,

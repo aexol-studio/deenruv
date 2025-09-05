@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
-import { ApiType } from "../../api/common/get-api-type";
+import { type ApiType } from "../../api/common/get-api-type";
 import { RequestContext } from "../../api/common/request-context";
 import { InternalServerError } from "../../common/error/errors";
 import { InvalidCredentialsError } from "../../common/error/generated-graphql-admin-errors";

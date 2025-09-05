@@ -1,9 +1,9 @@
-import { AssetType } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+import { AssetType } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import { lastValueFrom, Observable, Observer } from "rxjs";
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations";
 
-import { RelationPaths } from "../api/decorators/relations.decorator";
+import { type RelationPaths } from "../api/decorators/relations.decorator";
 import { DeenruvEntity } from "../entity/base/base.entity";
 
 /**

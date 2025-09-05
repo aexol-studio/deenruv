@@ -7,7 +7,7 @@ import {
   mergeConfig,
   Order,
   OrderPlacedStrategy,
-  OrderState,
+  type OrderState,
   PaymentMethodHandler,
   RequestContext,
   TransactionalConnection,

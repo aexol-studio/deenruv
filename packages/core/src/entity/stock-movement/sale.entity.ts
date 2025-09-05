@@ -1,6 +1,6 @@
-import { StockMovementType } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { ChildEntity, Index, ManyToOne } from "typeorm";
+import { StockMovementType } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { type Relation, ChildEntity, Index, ManyToOne } from "typeorm";
 
 import { OrderLine } from "../order-line/order-line.entity";
 
@@ -23,5 +23,5 @@ export class Sale extends StockMovement {
 
   // @Index() omitted as it would conflict with the orderLineId index from the Allocation entity
   @ManyToOne((type) => OrderLine, (line) => line.sales)
-  orderLine: OrderLine;
+  orderLine: Relation<OrderLine>;
 }

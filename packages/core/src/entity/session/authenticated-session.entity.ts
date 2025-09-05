@@ -1,5 +1,5 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { ChildEntity, Column, Index, ManyToOne } from "typeorm";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { type Relation, ChildEntity, Column, Index, ManyToOne } from "typeorm";
 
 import { User } from "../user/user.entity";
 
@@ -23,7 +23,7 @@ export class AuthenticatedSession extends Session {
    */
   @Index()
   @ManyToOne((type) => User, (user) => user.sessions)
-  user: User;
+  user: Relation<User>;
 
   /**
    * @description

@@ -5,10 +5,10 @@ import {
   LanguageCode,
   Permission,
   ProductTranslationInput,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 import { IsNull } from "typeorm";
 
-import { idsAreEqual } from "../../../common";
+import { type IDsAreEqual } from "../../../common";
 import { InternalServerError } from "../../../common/error/errors";
 import { Injector } from "../../../common/injector";
 import { TransactionalConnection } from "../../../connection/transactional-connection";

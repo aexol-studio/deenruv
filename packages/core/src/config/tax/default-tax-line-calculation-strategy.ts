@@ -1,4 +1,4 @@
-import { TaxLine } from "@deenruv/common/lib/generated-types";
+import type { TaxLine } from "@deenruv/common/src/generated-types";
 
 import {
   CalculateTaxLinesArgs,

@@ -3,7 +3,7 @@ import { CircleX } from "lucide-react";
 
 import { BooleanOperator } from "./BooleanOperator";
 import { DateOperator } from "./DateOperator";
-import { IDOperator } from "./IDOperator";
+import { type IDOperator } from "./IDOperator";
 import { NumberOperator } from "./NumberOperator";
 import { StringOperator } from "./StringOperator";
 import { FilterInputType, FilterInputTypeUnion } from "../types";

@@ -1,6 +1,6 @@
 import {
   Customer,
-  DeepPartial,
+  type DeepPartial,
   Product,
   ProductVariant,
   DeenruvEntity,

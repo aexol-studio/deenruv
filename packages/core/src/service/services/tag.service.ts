@@ -4,9 +4,9 @@ import {
   DeletionResponse,
   DeletionResult,
   UpdateTagInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList, Type } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList, type Type } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 
 import { RequestContext } from "../../api/common/request-context";
 import { ListQueryOptions, Taggable } from "../../common/types/common-types";

@@ -10,7 +10,7 @@ import {
     ServerConfigService,
     TypedBaseListComponent,
 } from '@deenruv/admin-ui/core';
-import { Order } from '@deenruv/common/lib/generated-types';
+import { Order } from '@deenruv/common/src/generated-types';
 import { tap } from 'rxjs/operators';
 
 @Component({

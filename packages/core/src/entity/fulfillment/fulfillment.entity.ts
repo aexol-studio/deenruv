@@ -1,8 +1,8 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 
 import { HasCustomFields } from "../../config/custom-field/custom-field-types";
-import { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
+import type { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
 import { DeenruvEntity } from "../base/base.entity";
 import { CustomFulfillmentFields } from "../custom-entity-fields";
 import { Order } from "../order/order.entity";

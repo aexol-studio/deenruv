@@ -1,8 +1,8 @@
 import {
   LogicalOperator,
   SearchResult,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 import { Brackets, SelectQueryBuilder } from "typeorm";
 
 import { RequestContext } from "../../../api/common/request-context";
@@ -11,7 +11,7 @@ import { UserInputError } from "../../../common/error/errors";
 import { TransactionalConnection } from "../../../connection/transactional-connection";
 import { PLUGIN_INIT_OPTIONS } from "../constants";
 import { SearchIndexItem } from "../entities/search-index-item.entity";
-import { DefaultSearchPluginInitOptions, SearchInput } from "../types";
+import type { DefaultSearchPluginInitOptions, SearchInput } from "../types";
 
 import { SearchStrategy } from "./search-strategy";
 import { getFieldsToSelect } from "./search-strategy-common";

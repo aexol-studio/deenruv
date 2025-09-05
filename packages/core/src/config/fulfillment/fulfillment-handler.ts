@@ -1,4 +1,4 @@
-import { ConfigArg, OrderLineInput } from "@deenruv/common/lib/generated-types";
+import { ConfigArg, OrderLineInput } from "@deenruv/common/src/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import {
@@ -10,7 +10,7 @@ import {
 import { OnTransitionStartFn } from "../../common/finite-state-machine/types";
 import { Fulfillment } from "../../entity/fulfillment/fulfillment.entity";
 import { Order } from "../../entity/order/order.entity";
-import {
+import type {
   FulfillmentState,
   FulfillmentTransitionData,
 } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";

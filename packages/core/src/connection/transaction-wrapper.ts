@@ -1,8 +1,12 @@
 import { from, lastValueFrom, Observable, of } from "rxjs";
 import { retryWhen, take, tap } from "rxjs/operators";
 import { Connection, EntityManager, QueryRunner } from "typeorm";
-import { TransactionAlreadyStartedError } from "typeorm/error/TransactionAlreadyStartedError";
 
+class TransactionAlreadyStartedError extends Error {
+  constructor() {
+    super("A transaction is already started for this connection");
+  }
+}
 import { RequestContext } from "../api/common/request-context";
 import {
   TransactionIsolationLevel,

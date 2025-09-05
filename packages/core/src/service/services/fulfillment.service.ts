@@ -2,14 +2,14 @@ import { Injectable } from "@nestjs/common";
 import {
   ConfigurableOperationInput,
   OrderLineInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { isObject } from "@deenruv/common/lib/shared-utils";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { isObject } from "@deenruv/common/src/shared-utils";
+import { unique } from "@deenruv/common/src/unique";
 import { In, Not } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { RelationPaths } from "../../api/decorators/relations.decorator";
+import { type RelationPaths } from "../../api/decorators/relations.decorator";
 import {
   CreateFulfillmentError,
   FulfillmentStateTransitionError,
@@ -25,7 +25,7 @@ import { EventBus } from "../../event-bus/event-bus";
 import { FulfillmentEvent } from "../../event-bus/events/fulfillment-event";
 import { FulfillmentStateTransitionEvent } from "../../event-bus/events/fulfillment-state-transition-event";
 import { CustomFieldRelationService } from "../helpers/custom-field-relation/custom-field-relation.service";
-import { FulfillmentState } from "../helpers/fulfillment-state-machine/fulfillment-state";
+import type { FulfillmentState } from "../helpers/fulfillment-state-machine/fulfillment-state";
 import { FulfillmentStateMachine } from "../helpers/fulfillment-state-machine/fulfillment-state-machine";
 
 /**

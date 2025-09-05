@@ -5,7 +5,7 @@ import { BULLMQ_PLUGIN_OPTIONS } from "./constants";
 import { RedisHealthCheckStrategy } from "./redis-health-check-strategy";
 import { RedisHealthIndicator } from "./redis-health-indicator";
 import { RedisJobBufferStorageStrategy } from "./redis-job-buffer-storage-strategy";
-import { BullMQPluginOptions } from "./types";
+import type { BullMQPluginOptions } from "./types";
 
 /**
  * @description

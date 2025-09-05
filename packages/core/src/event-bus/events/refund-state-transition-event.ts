@@ -1,7 +1,7 @@
 import { RequestContext } from "../../api/common/request-context";
 import { Order } from "../../entity/order/order.entity";
 import { Refund } from "../../entity/refund/refund.entity";
-import { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
+import type { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
 import { DeenruvEvent } from "../deenruv-event";
 
 /**

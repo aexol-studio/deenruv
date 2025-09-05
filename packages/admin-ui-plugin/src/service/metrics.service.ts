@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { assertNever } from "@deenruv/common/lib/shared-utils";
+import { assertNever } from "@deenruv/common/src/shared-utils";
 import {
   ConfigService,
   Logger,
@@ -26,7 +26,7 @@ import {
   OrderTotalMetric,
 } from "../config/metrics-strategies";
 import { loggerCtx } from "../constants";
-import {
+import type {
   MetricInterval,
   MetricSummary,
   MetricSummaryEntry,

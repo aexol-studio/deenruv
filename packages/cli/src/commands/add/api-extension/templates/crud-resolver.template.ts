@@ -2,8 +2,8 @@ import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import {
   DeletionResponse,
   Permission,
-} from "@deenruv/common/lib/generated-types";
-import { CustomFieldsObject } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { CustomFieldsObject } from "@deenruv/common/src/shared-types";
 import {
   Allow,
   Ctx,
@@ -15,7 +15,7 @@ import {
   ID,
   TranslationInput,
   ListQueryOptions,
-  RelationPaths,
+  type RelationPaths,
 } from "@deenruv/core";
 
 class TemplateEntity extends DeenruvEntity {

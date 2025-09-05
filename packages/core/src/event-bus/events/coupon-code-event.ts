@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { DeenruvEvent } from "../deenruv-event";

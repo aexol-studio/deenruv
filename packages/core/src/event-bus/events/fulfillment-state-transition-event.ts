@@ -1,6 +1,6 @@
 import { RequestContext } from "../../api/common/request-context";
 import { Fulfillment } from "../../entity/fulfillment/fulfillment.entity";
-import { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
+import type { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
 import { DeenruvEvent } from "../deenruv-event";
 
 /**

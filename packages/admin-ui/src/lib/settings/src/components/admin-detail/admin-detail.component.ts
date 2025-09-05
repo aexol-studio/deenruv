@@ -16,8 +16,8 @@ import {
     TypedBaseDetailComponent,
     UpdateAdministratorInput,
 } from '@deenruv/admin-ui/core';
-import { CUSTOMER_ROLE_CODE } from '@deenruv/common/lib/shared-constants';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { CUSTOMER_ROLE_CODE } from '@deenruv/common/src/shared-constants';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 import { gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';

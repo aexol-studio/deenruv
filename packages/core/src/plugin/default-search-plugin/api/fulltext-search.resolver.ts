@@ -8,11 +8,11 @@ import {
 } from "@nestjs/graphql";
 import {
   Permission,
-  QuerySearchArgs,
+  type QuerySearchArgs,
   SearchInput,
   SearchResponse,
-} from "@deenruv/common/lib/generated-types";
-import { Omit } from "@deenruv/common/lib/omit";
+} from "@deenruv/common/src/generated-types";
+import { Omit } from "@deenruv/common/src/omit";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { Allow } from "../../../api/decorators/allow.decorator";

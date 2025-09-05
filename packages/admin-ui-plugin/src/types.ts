@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/core";
+import type { ID } from "@deenruv/core";
 
 export type MetricSummary = {
   interval: MetricInterval;

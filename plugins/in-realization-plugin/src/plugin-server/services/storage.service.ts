@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { CreateAssetInput } from "@deenruv/common/lib/generated-types";
+import { CreateAssetInput } from "@deenruv/common/src/generated-types";
 import { InRealizationPluginOptions, PLUGIN_INIT_OPTIONS } from "../consts.js";
 import { Logger } from "@deenruv/core";
 import { Readable } from "stream";

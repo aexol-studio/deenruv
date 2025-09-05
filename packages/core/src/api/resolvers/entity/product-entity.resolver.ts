@@ -1,10 +1,10 @@
 import { Args, Info, Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { ProductVariantListOptions } from "@deenruv/common/lib/generated-types";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/lib/shared-constants";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+import { ProductVariantListOptions } from "@deenruv/common/src/generated-types";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
-import { Translated } from "../../../common/types/locale-types";
-import { idsAreEqual } from "../../../common/utils";
+import { type Translated } from "../../../common/types/locale-types";
+import { type IDsAreEqual } from "../../../common/utils";
 import { Asset } from "../../../entity/asset/asset.entity";
 import { Channel } from "../../../entity/channel/channel.entity";
 import { Collection } from "../../../entity/collection/collection.entity";
@@ -19,10 +19,13 @@ import { FacetValueService } from "../../../service/services/facet-value.service
 import { ProductOptionGroupService } from "../../../service/services/product-option-group.service";
 import { ProductVariantService } from "../../../service/services/product-variant.service";
 import { ProductService } from "../../../service/services/product.service";
-import { ApiType } from "../../common/get-api-type";
+import { type ApiType } from "../../common/get-api-type";
 import { RequestContext } from "../../common/request-context";
 import { Api } from "../../decorators/api.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 
 @Resolver("Product")

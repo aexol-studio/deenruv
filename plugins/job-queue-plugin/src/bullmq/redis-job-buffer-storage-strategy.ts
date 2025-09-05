@@ -2,13 +2,13 @@ import {
   Injector,
   Job,
   JobBufferStorageStrategy,
-  JobConfig,
+  type JobConfig,
   Logger,
 } from "@deenruv/core";
 import { Cluster, Redis, RedisOptions } from "ioredis";
 
 import { BULLMQ_PLUGIN_OPTIONS, loggerCtx } from "./constants";
-import { BullMQPluginOptions } from "./types";
+import type { BullMQPluginOptions } from "./types";
 
 const BUFFER_LIST_PREFIX = "deenruv-job-buffer";
 

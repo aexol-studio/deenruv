@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import { ConfigService } from "@deenruv/core";
 import { createTestEnvironment } from "@deenruv/testing";
 import gql from "graphql-tag";

@@ -1,4 +1,4 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -7,10 +7,11 @@ import {
   JoinTable,
   ManyToOne,
   OneToMany,
+  type Relation,
 } from "typeorm";
 
-import { PaymentMetadata } from "../../common/types/common-types";
-import { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
+import type { PaymentMetadata } from "../../common/types/common-types";
+import type { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
 import { DeenruvEntity } from "../base/base.entity";
 import { EntityId } from "../entity-id.decorator";
 import { Money } from "../money.decorator";
@@ -63,7 +64,7 @@ export class Refund extends DeenruvEntity {
   @Index()
   @ManyToOne((type) => Payment, (payment) => payment.refunds)
   @JoinColumn()
-  payment: Payment;
+  payment: Relation<Payment>;
 
   @EntityId()
   paymentId: ID;

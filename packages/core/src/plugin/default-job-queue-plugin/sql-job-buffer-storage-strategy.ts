@@ -2,7 +2,7 @@ import { Injector } from "../../common/injector";
 import { TransactionalConnection } from "../../connection/transactional-connection";
 import { Job } from "../../job-queue/job";
 import { JobBufferStorageStrategy } from "../../job-queue/job-buffer/job-buffer-storage-strategy";
-import { JobConfig } from "../../job-queue/types";
+import type { JobConfig } from "../../job-queue/types";
 
 import { JobRecordBuffer } from "./job-record-buffer.entity";
 

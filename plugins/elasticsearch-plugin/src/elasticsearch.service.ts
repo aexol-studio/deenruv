@@ -5,7 +5,7 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from "@nestjs/common";
-import { SearchResultAsset } from "@deenruv/common/lib/generated-types";
+import { SearchResultAsset } from "@deenruv/common/src/generated-types";
 import {
   Collection,
   CollectionService,

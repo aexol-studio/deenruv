@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { OrderType } from "@deenruv/common/lib/generated-types";
-import { pick } from "@deenruv/common/lib/pick";
+import { OrderType } from "@deenruv/common/src/generated-types";
+import { pick } from "@deenruv/common/src/pick";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { ConfigService } from "../../../config/config.service";

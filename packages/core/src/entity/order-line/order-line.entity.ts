@@ -1,12 +1,20 @@
-import {
+import type {
   Adjustment,
-  AdjustmentType,
   Discount,
   TaxLine,
-} from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { summate } from "@deenruv/common/lib/shared-utils";
-import { Column, Entity, Index, ManyToOne, OneToMany, OneToOne } from "typeorm";
+} from "@deenruv/common/src/generated-types";
+import { AdjustmentType } from "@deenruv/common/src/generated-types";
+
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { summate } from "@deenruv/common/src/shared-utils";
+import {
+  type Relation,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
 import { Calculated } from "../../common/calculated-decorator";
 import { roundMoney } from "../../common/round-money";
@@ -46,7 +54,7 @@ export class OrderLine extends DeenruvEntity implements HasCustomFields {
    */
   @Index()
   @ManyToOne((type) => Channel, { nullable: true, onDelete: "SET NULL" })
-  sellerChannel?: Channel;
+  sellerChannel?: Relation<Channel>;
 
   @EntityId({ nullable: true })
   sellerChannelId?: ID;
@@ -80,14 +88,14 @@ export class OrderLine extends DeenruvEntity implements HasCustomFields {
     (productVariant) => productVariant.lines,
     { onDelete: "CASCADE" },
   )
-  productVariant: ProductVariant;
+  productVariant: Relation<ProductVariant>;
 
   @EntityId()
   productVariantId: ID;
 
   @Index()
   @ManyToOne((type) => TaxCategory)
-  taxCategory: TaxCategory;
+  taxCategory: Relation<TaxCategory>;
 
   @Index()
   @ManyToOne((type) => Asset, (asset) => asset.featuredInVariants, {

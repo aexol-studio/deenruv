@@ -22,7 +22,7 @@ _Example_
 
 ```ts
 import { Injectable } from '@nestjs/common';
-import { ID, RequestContext, EntityHydrator, ProductVariantService } from '@deenruv/core';
+import { type ID, RequestContext, EntityHydrator, ProductVariantService } from '@deenruv/core';
 
 @Injectable()
 export class MyService {

@@ -1,6 +1,6 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
 
-import { idsAreEqual } from "../../../common/utils";
+import { type IDsAreEqual } from "../../../common/utils";
 import { Refund } from "../../../entity/refund/refund.entity";
 import { PaymentService } from "../../../service/services/payment.service";
 import { RequestContext } from "../../common/request-context";

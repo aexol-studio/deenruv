@@ -1,4 +1,4 @@
-import { ID, SerializedRequestContext } from "@deenruv/core";
+import { type ID, SerializedRequestContext } from "@deenruv/core";
 
 export interface ReplicateSimpleBGOptions {
   envs: {

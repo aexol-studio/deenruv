@@ -3,7 +3,7 @@ import {
   LanguageCode,
   Permission,
   PromotionTranslationInput,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 
 import { isGraphQlErrorResult } from "../../../common/error/error-result";
 import { Injector } from "../../../common/injector";

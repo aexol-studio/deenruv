@@ -1,10 +1,10 @@
-import { pick } from "@deenruv/common/lib/pick";
+import { pick } from "@deenruv/common/src/pick";
 import {
   DefaultOrderPlacedStrategy,
   manualFulfillmentHandler,
   mergeConfig,
   Order,
-  OrderState,
+  type OrderState,
   RequestContext,
 } from "@deenruv/core";
 import {

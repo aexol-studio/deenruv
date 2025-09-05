@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { FormBuilder, UntypedFormArray, UntypedFormGroup, Validators } from '@angular/forms';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
-    ConfigurableOperation,
-    ConfigurableOperationDefinition,
+    type ConfigurableOperation,
+    type ConfigurableOperationDefinition,
     ConfigurableOperationInput,
     CreatePromotionInput,
     createUpdatedTranslatable,

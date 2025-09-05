@@ -1,4 +1,4 @@
-import { ID } from "@deenruv/common/lib/shared-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { LogLevel } from "../../config/logger/deenruv-logger";
 import { coreEntitiesMap } from "../../entity/entities";

@@ -16,7 +16,7 @@ import {
  * @example
  * ```ts
  * import { Injectable } from '\@nestjs/common';
- * import { ID, Product, RequestContext, TransactionalConnection, TranslatorService } from '\@deenruv/core';
+ * import { type ID, Product, RequestContext, TransactionalConnection, TranslatorService } from '\@deenruv/core';
  *
  * \@Injectable()
  * export class ProductService {

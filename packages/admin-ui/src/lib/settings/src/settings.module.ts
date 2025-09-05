@@ -18,7 +18,7 @@ import {
     PageService,
     SharedModule,
 } from '@deenruv/admin-ui/core';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
 
 import { AddCountryToZoneDialogComponent } from './components/add-country-to-zone-dialog/add-country-to-zone-dialog.component';
 import { AdminDetailComponent } from './components/admin-detail/admin-detail.component';

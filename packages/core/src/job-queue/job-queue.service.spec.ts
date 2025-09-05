@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
-import { JobState } from "@deenruv/common/lib/generated-types";
+import { JobState } from "@deenruv/common/src/generated-types";
 import { Subject } from "rxjs";
 import { take } from "rxjs/operators";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

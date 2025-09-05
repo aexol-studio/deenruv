@@ -3,11 +3,11 @@ import {
   GraphQLRequestListener,
   GraphQLServerContext,
 } from "@apollo/server";
-import { isObject } from "@deenruv/common/lib/shared-utils";
+import { isObject } from "@deenruv/common/src/shared-utils";
 import { DocumentNode } from "graphql";
 
 import { GraphqlValueTransformer } from "../common/graphql-value-transformer";
-import { IdCodecService } from "../common/id-codec.service";
+import { type IDCodecService } from "../common/id-codec.service";
 
 /**
  * Encodes the ids of outgoing responses according to the configured EntityIdStrategy.

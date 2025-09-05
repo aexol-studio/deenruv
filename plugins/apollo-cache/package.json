@@ -26,7 +26,7 @@
     "@nestjs/graphql": "^12.2.0"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "rimraf": "^5.0.10"
   }
 }

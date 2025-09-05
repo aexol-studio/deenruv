@@ -6,8 +6,8 @@ import {
   TestShippingMethodInput,
   TestShippingMethodQuote,
   TestShippingMethodResult,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { grossPriceOf, netPriceOf } from "../../common/tax-utils";

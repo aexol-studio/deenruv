@@ -1,5 +1,5 @@
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne } from "typeorm";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type Relation, Column, Entity, Index, ManyToOne } from "typeorm";
 
 import { OrderableAsset } from "../asset/orderable-asset.entity";
 
@@ -17,5 +17,5 @@ export class ProductAsset extends OrderableAsset {
   @ManyToOne((type) => Product, (product) => product.assets, {
     onDelete: "CASCADE",
   })
-  product: Product;
+  product: Relation<Product>;
 }

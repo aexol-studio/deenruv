@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DefaultFormComponentId, DefaultFormComponentUiConfig } from '@deenruv/common/lib/shared-types';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { DefaultFormComponentId, DefaultFormComponentUiConfig } from '@deenruv/common/src/shared-types';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 

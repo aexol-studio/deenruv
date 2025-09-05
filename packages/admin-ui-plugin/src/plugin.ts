@@ -2,13 +2,13 @@ import { MiddlewareConsumer, NestModule } from "@nestjs/common";
 import {
   DEFAULT_AUTH_TOKEN_HEADER_KEY,
   DEFAULT_CHANNEL_TOKEN_KEY,
-} from "@deenruv/common/lib/shared-constants";
+} from "@deenruv/common/src/shared-constants";
 import {
   AdminUiAppConfig,
   AdminUiAppDevModeConfig,
   AdminUiConfig,
   Type,
-} from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/shared-types";
 import {
   ConfigService,
   createProxyHandler,

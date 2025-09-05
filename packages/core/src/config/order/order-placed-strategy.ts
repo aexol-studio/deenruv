@@ -1,7 +1,7 @@
 import { RequestContext } from "../../api/common/request-context";
 import { InjectableStrategy } from "../../common/types/injectable-strategy";
 import { Order } from "../../entity/order/order.entity";
-import { OrderState } from "../../service/helpers/order-state-machine/order-state";
+import type { OrderState } from "../../service/helpers/order-state-machine/order-state";
 
 /**
  * @description

@@ -1,5 +1,5 @@
 import { Args, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   QueryCollectionArgs,
   QueryCollectionsArgs,
   QueryFacetArgs,
@@ -7,16 +7,16 @@ import {
   QueryProductArgs,
   QueryProductsArgs,
   SearchResponse,
-} from "@deenruv/common/lib/generated-shop-types";
-import { Omit } from "@deenruv/common/lib/omit";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-shop-types";
+import { Omit } from "@deenruv/common/src/omit";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
 
 import {
   InternalServerError,
   UserInputError,
 } from "../../../common/error/errors";
 import { ListQueryOptions } from "../../../common/types/common-types";
-import { Translated } from "../../../common/types/locale-types";
+import { type Translated } from "../../../common/types/locale-types";
 import { Collection } from "../../../entity/collection/collection.entity";
 import { Facet } from "../../../entity/facet/facet.entity";
 import { Product } from "../../../entity/product/product.entity";
@@ -25,7 +25,10 @@ import { FacetValueService } from "../../../service/services/facet-value.service
 import { ProductVariantService } from "../../../service/services/product-variant.service";
 import { ProductService } from "../../../service/services/product.service";
 import { RequestContext } from "../../common/request-context";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { FacetValue } from "../../../entity/index.js";
 

@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import { Channel, RequestContext } from "@deenruv/core";
 import { Request, Router } from "express";
 import fs from "fs-extra";

@@ -5,7 +5,7 @@ import {
   Transitions,
 } from "../../common/finite-state-machine/types";
 import { InjectableStrategy } from "../../common/types/injectable-strategy";
-import {
+import type {
   CustomFulfillmentStates,
   FulfillmentState,
   FulfillmentTransitionData,

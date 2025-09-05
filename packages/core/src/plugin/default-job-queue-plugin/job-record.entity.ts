@@ -1,5 +1,5 @@
-import { JobState } from "@deenruv/common/lib/generated-types";
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { JobState } from "@deenruv/common/src/generated-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import { Column, Entity } from "typeorm";
 
 import { DeenruvEntity } from "../../entity/base/base.entity";

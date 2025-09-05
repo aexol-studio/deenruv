@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import {
   ManualPaymentInput,
   RefundOrderInput,
-} from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { summate } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { summate } from "@deenruv/common/src/shared-utils";
 import { In } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
@@ -15,8 +15,8 @@ import {
   RefundStateTransitionError,
 } from "../../common/error/generated-graphql-admin-errors";
 import { IneligiblePaymentMethodError } from "../../common/error/generated-graphql-shop-errors";
-import { PaymentMetadata } from "../../common/types/common-types";
-import { idsAreEqual } from "../../common/utils";
+import type { PaymentMetadata } from "../../common/types/common-types";
+import { type IDsAreEqual } from "../../common/utils";
 import { Logger } from "../../config/logger/deenruv-logger";
 import { PaymentMethodHandler } from "../../config/payment/payment-method-handler";
 import { TransactionalConnection } from "../../connection/transactional-connection";
@@ -31,7 +31,7 @@ import { Refund } from "../../entity/refund/refund.entity";
 import { EventBus } from "../../event-bus/event-bus";
 import { PaymentStateTransitionEvent } from "../../event-bus/events/payment-state-transition-event";
 import { RefundStateTransitionEvent } from "../../event-bus/events/refund-state-transition-event";
-import { PaymentState } from "../helpers/payment-state-machine/payment-state";
+import type { PaymentState } from "../helpers/payment-state-machine/payment-state";
 import { PaymentStateMachine } from "../helpers/payment-state-machine/payment-state-machine";
 import { RefundStateMachine } from "../helpers/refund-state-machine/refund-state-machine";
 

@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationAddMembersToZoneArgs,
   MutationCreateZoneArgs,
@@ -7,12 +7,11 @@ import {
   MutationDeleteZonesArgs,
   MutationRemoveMembersFromZoneArgs,
   MutationUpdateZoneArgs,
-  Permission,
   QueryZoneArgs,
   QueryZonesArgs,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
-
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 import { Zone } from "../../../entity/zone/zone.entity";
 import { ZoneService } from "../../../service/services/zone.service";
 import { RequestContext } from "../../common/request-context";

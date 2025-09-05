@@ -1,12 +1,19 @@
-import {
+import type {
   Adjustment,
   AdjustmentType,
   Discount,
   TaxLine,
-} from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
-import { summate } from "@deenruv/common/lib/shared-utils";
-import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
+} from "@deenruv/common/src/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { summate } from "@deenruv/common/src/shared-utils";
+import {
+  type Relation,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
 import { OrderLine } from "..";
 import { Calculated } from "../../common/calculated-decorator";
@@ -43,7 +50,7 @@ export class ShippingLine extends DeenruvEntity {
   @ManyToOne((type) => Order, (order) => order.shippingLines, {
     onDelete: "CASCADE",
   })
-  order: Order;
+  order: Relation<Order>;
 
   @Money()
   listPrice: number;

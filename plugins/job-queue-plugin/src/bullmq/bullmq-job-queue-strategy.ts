@@ -1,5 +1,5 @@
-import { JobListOptions, JobState } from "@deenruv/common/lib/generated-types";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
+import { JobListOptions, JobState } from "@deenruv/common/src/generated-types";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
 import {
   ID,
   Injector,
@@ -27,7 +27,7 @@ import { filter, takeUntil } from "rxjs/operators";
 import { ALL_JOB_TYPES, BULLMQ_PLUGIN_OPTIONS, loggerCtx } from "./constants";
 import { RedisHealthIndicator } from "./redis-health-indicator";
 import { getJobsByType } from "./scripts/get-jobs-by-type";
-import { BullMQPluginOptions, CustomScriptDefinition } from "./types";
+import type { BullMQPluginOptions, CustomScriptDefinition } from "./types";
 
 const QUEUE_NAME = "deenruv-job-queue";
 const DEFAULT_CONCURRENCY = 3;

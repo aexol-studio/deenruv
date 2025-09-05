@@ -1,7 +1,7 @@
 import { ArgumentsHost, ExecutionContext } from "@nestjs/common";
 import { GqlContextType, GqlExecutionContext } from "@nestjs/graphql";
-import { Request, Response } from "express";
-import { GraphQLResolveInfo } from "graphql";
+import { type Request, type Response } from "express";
+import { type GraphQLResolveInfo } from "graphql";
 
 import { InternalServerError } from "../../common/error/errors";
 

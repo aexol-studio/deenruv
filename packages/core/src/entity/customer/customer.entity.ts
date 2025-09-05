@@ -1,4 +1,4 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
 import {
   Column,
   Entity,
@@ -7,6 +7,7 @@ import {
   ManyToMany,
   OneToMany,
   OneToOne,
+  type Relation,
 } from "typeorm";
 
 import { ChannelAware, SoftDeletable } from "../../common/types/common-types";
@@ -64,7 +65,7 @@ export class Customer
 
   @OneToOne((type) => User, { eager: true })
   @JoinColumn()
-  user?: User;
+  user?: Relation<User>;
 
   @Column((type) => CustomCustomerFields)
   customFields: CustomCustomerFields;

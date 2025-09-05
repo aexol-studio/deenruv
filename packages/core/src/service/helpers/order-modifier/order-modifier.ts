@@ -1,15 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import {
-  AdjustmentType,
+import type {
   CancelOrderInput,
-  HistoryEntryType,
   ModifyOrderInput,
   ModifyOrderResult,
   OrderLineInput,
   RefundOrderInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { getGraphQlInputName, summate } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/generated-types";
+import {
+  HistoryEntryType,
+  AdjustmentType,
+} from "@deenruv/common/src/generated-shop-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { getGraphQlInputName, summate } from "@deenruv/common/src/shared-utils";
 
 import { RequestContext } from "../../../api/common/request-context";
 import {

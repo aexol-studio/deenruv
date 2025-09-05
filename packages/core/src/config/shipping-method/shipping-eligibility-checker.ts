@@ -1,5 +1,5 @@
-import { ConfigArg } from "@deenruv/common/lib/generated-types";
-import { Json } from "@deenruv/common/lib/shared-types";
+import { ConfigArg } from "@deenruv/common/src/generated-types";
+import { Json } from "@deenruv/common/src/shared-types";
 import { createHash } from "crypto";
 
 import { RequestContext } from "../../api/common/request-context";

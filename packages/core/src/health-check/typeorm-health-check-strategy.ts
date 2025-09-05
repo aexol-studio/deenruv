@@ -1,5 +1,5 @@
 import {
-  HealthIndicatorFunction,
+  type HealthIndicatorFunction,
   TypeOrmHealthIndicator,
 } from "@nestjs/terminus";
 

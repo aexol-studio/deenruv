@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 
 import { MockTranslatePipe } from '../../../../../testing/translate.pipe.mock';

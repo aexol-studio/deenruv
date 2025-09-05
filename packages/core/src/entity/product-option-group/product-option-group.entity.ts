@@ -1,5 +1,12 @@
-import { DeepPartial } from "@deenruv/common/lib/shared-types";
-import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
+import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import {
+  type Relation,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
 import { SoftDeletable } from "../../common/types/common-types";
 import {
@@ -49,7 +56,7 @@ export class ProductOptionGroup
 
   @Index()
   @ManyToOne((type) => Product, (product) => product.optionGroups)
-  product: Product;
+  product: Relation<Product>;
 
   @Column((type) => CustomProductOptionGroupFields)
   customFields: CustomProductOptionGroupFields;

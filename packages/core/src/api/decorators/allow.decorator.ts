@@ -1,5 +1,5 @@
 import { SetMetadata } from "@nestjs/common";
-import { Permission } from "@deenruv/common/lib/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 export const PERMISSIONS_METADATA_KEY = "__permissions__";
 

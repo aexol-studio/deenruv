@@ -19,14 +19,14 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
   },
   "dependencies": {
-    "@deenruv/common": "workspace:^",
-    "@deenruv/react-ui-devkit": "workspace:^"
+    "@deenruv/common": "workspace:*",
+    "@deenruv/react-ui-devkit": "workspace:*"
   },
   "peerDependencies": {
     "@deenruv/core": "^0.1.0"
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "rimraf": "^5.0.10",
     "typescript": "5.3.3"
   }

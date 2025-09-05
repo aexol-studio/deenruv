@@ -1,7 +1,7 @@
 import {
   CurrencyCode,
   LanguageCode,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { CachedSession } from "../../config/session-cache/session-cache-strategy";

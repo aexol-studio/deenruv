@@ -31,8 +31,8 @@
     "stripe": "13.x"
   },
   "dependencies": {
-    "@deenruv/common": "workspace:^",
-    "@deenruv/testing": "workspace:^",
+    "@deenruv/common": "workspace:*",
+    "@deenruv/testing": "workspace:*",
     "@nestjs/common": "^10.3.10",
     "@nestjs/core": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
@@ -54,7 +54,7 @@
     }
   },
   "devDependencies": {
-    "@deenruv/core": "workspace:^",
+    "@deenruv/core": "workspace:*",
     "@mollie/api-client": "^3.7.0",
     "@types/body-parser": "^1.19.5",
     "@types/braintree": "^3.3.11",

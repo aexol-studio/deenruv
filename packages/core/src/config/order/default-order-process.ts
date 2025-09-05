@@ -1,6 +1,6 @@
-import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
-import { ID } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+import type { ID } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 
 import { RequestContext } from "../../api/common/request-context";
 import { TransactionalConnection } from "../../connection/transactional-connection";
@@ -10,7 +10,7 @@ import { OrderModification } from "../../entity/order-modification/order-modific
 import { Payment } from "../../entity/payment/payment.entity";
 import { ProductVariant } from "../../entity/product-variant/product-variant.entity";
 import { OrderPlacedEvent } from "../../event-bus/events/order-placed-event";
-import { OrderState } from "../../service/helpers/order-state-machine/order-state";
+import type { OrderState } from "../../service/helpers/order-state-machine/order-state";
 import {
   orderItemsAreDelivered,
   orderItemsArePartiallyDelivered,

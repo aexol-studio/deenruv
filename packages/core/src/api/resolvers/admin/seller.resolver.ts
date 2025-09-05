@@ -1,15 +1,15 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationCreateSellerArgs,
   MutationDeleteSellerArgs,
   MutationDeleteSellersArgs,
   MutationUpdateSellerArgs,
-  Permission,
   QuerySellerArgs,
   QuerySellersArgs,
   SellerList,
-} from "@deenruv/common/lib/generated-types";
+} from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { Seller } from "../../../entity/seller/seller.entity";
 import { SellerService } from "../../../service/services/seller.service";

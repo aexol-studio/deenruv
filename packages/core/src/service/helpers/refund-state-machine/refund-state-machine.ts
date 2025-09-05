@@ -15,7 +15,7 @@ import { Logger } from "../../../config/logger/deenruv-logger";
 import { Order } from "../../../entity/order/order.entity";
 import { Refund } from "../../../entity/refund/refund.entity";
 
-import { RefundState, RefundTransitionData } from "./refund-state";
+import { type RefundState, RefundTransitionData } from "./refund-state";
 
 @Injectable()
 export class RefundStateMachine {

@@ -15,7 +15,7 @@ import {
   OrderService,
   OrderStateTransitionEvent,
   Payment,
-  PaymentMetadata,
+  type PaymentMetadata,
   PaymentMethod,
   PaymentMethodService,
   RequestContext,
@@ -34,7 +34,7 @@ import {
 } from "../constants.js";
 import { przelewy24BlikPaymentMethodHandler } from "../handlers/przelewy24-blik.handler.js";
 import { przelewy24PaymentMethodHandler } from "../handlers/przelewy24.handler.js";
-import { ConfigArgValues } from "@deenruv/core/dist/common/configurable-operation.js";
+import { ConfigArgValues } from "@deenruv/core/src/common/configurable-operation.js";
 import {
   getPrzelewy24SecretsByChannel,
   getAxios,

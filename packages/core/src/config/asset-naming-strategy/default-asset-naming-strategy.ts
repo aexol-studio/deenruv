@@ -1,4 +1,4 @@
-import { normalizeString } from "@deenruv/common/lib/normalize-string";
+import { normalizeString } from "@deenruv/common/src/normalize-string";
 import path from "path";
 
 import { RequestContext } from "../../api/common/request-context";

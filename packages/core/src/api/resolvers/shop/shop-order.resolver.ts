@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   ActiveOrderResult,
   AddPaymentToOrderResult,
   ApplyCouponCodeResult,
@@ -15,7 +15,6 @@ import {
   MutationSetOrderShippingMethodArgs,
   MutationTransitionOrderToStateArgs,
   PaymentMethodQuote,
-  Permission,
   QueryOrderArgs,
   QueryOrderByCodeArgs,
   RemoveOrderItemsResult,
@@ -24,9 +23,10 @@ import {
   ShippingMethodQuote,
   TransitionOrderToStateResult,
   UpdateOrderItemsResult,
-} from "@deenruv/common/lib/generated-shop-types";
-import { QueryCountriesArgs } from "@deenruv/common/lib/generated-types";
-import { unique } from "@deenruv/common/lib/unique";
+} from "@deenruv/common/src/generated-shop-types";
+import type { QueryCountriesArgs } from "@deenruv/common/src/generated-types";
+import { unique } from "@deenruv/common/src/unique";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import {
   ErrorResultUnion,
@@ -37,8 +37,8 @@ import {
   AlreadyLoggedInError,
   NoActiveOrderError,
 } from "../../../common/error/generated-graphql-shop-errors";
-import { Translated } from "../../../common/types/locale-types";
-import { idsAreEqual } from "../../../common/utils";
+import { type Translated } from "../../../common/types/locale-types";
+import { type IDsAreEqual } from "../../../common/utils";
 import {
   ACTIVE_ORDER_INPUT_FIELD_NAME,
   ConfigService,
@@ -47,7 +47,7 @@ import {
 import { Country } from "../../../entity";
 import { Order } from "../../../entity/order/order.entity";
 import { ActiveOrderService, CountryService } from "../../../service";
-import { OrderState } from "../../../service/helpers/order-state-machine/order-state";
+import type { OrderState } from "../../../service/helpers/order-state-machine/order-state";
 import { CustomerService } from "../../../service/services/customer.service";
 import { OrderService } from "../../../service/services/order.service";
 import { SessionService } from "../../../service/services/session.service";

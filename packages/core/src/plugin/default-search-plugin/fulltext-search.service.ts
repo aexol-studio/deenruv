@@ -2,8 +2,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import {
   SearchInput,
   SearchResponse,
-} from "@deenruv/common/lib/generated-types";
-import { Omit } from "@deenruv/common/lib/omit";
+} from "@deenruv/common/src/generated-types";
+import { Omit } from "@deenruv/common/src/omit";
 
 import { RequestContext } from "../../api/common/request-context";
 import { InternalServerError } from "../../common/error/errors";
@@ -23,7 +23,7 @@ import { MysqlSearchStrategy } from "./search-strategy/mysql-search-strategy";
 import { PostgresSearchStrategy } from "./search-strategy/postgres-search-strategy";
 import { SearchStrategy } from "./search-strategy/search-strategy";
 import { SqliteSearchStrategy } from "./search-strategy/sqlite-search-strategy";
-import { DefaultSearchPluginInitOptions } from "./types";
+import { type DefaultSearchPluginInitOptions } from "./types";
 
 /**
  * Search indexing and full-text search for supported databases. See the various

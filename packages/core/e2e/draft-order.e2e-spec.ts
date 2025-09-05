@@ -1,11 +1,11 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import {
   DefaultLogger,
   DefaultOrderPlacedStrategy,
   mergeConfig,
   Order,
   orderPercentageDiscount,
-  OrderState,
+  type OrderState,
   RequestContext,
 } from "@deenruv/core";
 import {

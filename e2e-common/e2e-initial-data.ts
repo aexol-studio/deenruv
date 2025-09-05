@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
 import { InitialData } from "@deenruv/core/dist/data-import/index";
 
 export const initialData: InitialData = {

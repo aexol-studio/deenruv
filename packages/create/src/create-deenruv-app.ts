@@ -32,7 +32,7 @@ let projectName: string | undefined;
 
 // Set the environment variable which can then be used to
 // conditionally modify behaviour of core or plugins.
-const createEnvVar: import("@deenruv/common/lib/shared-constants").CREATING_DEENRUV_APP =
+const createEnvVar: import("@deenruv/common/src/shared-constants").CREATING_DEENRUV_APP =
   "CREATING_DEENRUV_APP";
 process.env[createEnvVar] = "true";
 

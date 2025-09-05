@@ -1,7 +1,7 @@
 import { Logger, OnApplicationBootstrap } from "@nestjs/common";
 import { Args, Query, Resolver } from "@nestjs/graphql";
-import { LanguageCode } from "@deenruv/common/lib/generated-types";
-import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
 import {
   Ctx,
   Customer,

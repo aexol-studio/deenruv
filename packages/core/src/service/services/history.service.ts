@@ -1,13 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { UpdateCustomerInput as UpdateCustomerShopInput } from "@deenruv/common/lib/generated-shop-types";
+import { UpdateCustomerInput as UpdateCustomerShopInput } from "@deenruv/common/src/generated-shop-types";
 import {
   HistoryEntryListOptions,
   HistoryEntryType,
   OrderLineInput,
   UpdateAddressInput,
   UpdateCustomerInput,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList, Type } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import {
+  type ID,
+  type PaginatedList,
+  type Type,
+} from "@deenruv/common/src/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { TransactionalConnection } from "../../connection/transactional-connection";
@@ -17,11 +21,11 @@ import { HistoryEntry } from "../../entity/history-entry/history-entry.entity";
 import { OrderHistoryEntry } from "../../entity/history-entry/order-history-entry.entity";
 import { EventBus } from "../../event-bus";
 import { HistoryEntryEvent } from "../../event-bus/events/history-entry-event";
-import { FulfillmentState } from "../helpers/fulfillment-state-machine/fulfillment-state";
+import type { FulfillmentState } from "../helpers/fulfillment-state-machine/fulfillment-state";
 import { ListQueryBuilder } from "../helpers/list-query-builder/list-query-builder";
 import { OrderState } from "../helpers/order-state-machine/order-state";
-import { PaymentState } from "../helpers/payment-state-machine/payment-state";
-import { RefundState } from "../helpers/refund-state-machine/refund-state";
+import { type PaymentState } from "../helpers/payment-state-machine/payment-state";
+import type { RefundState } from "../helpers/refund-state-machine/refund-state";
 
 import { AdministratorService } from "./administrator.service";
 

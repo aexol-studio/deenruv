@@ -6,9 +6,9 @@ import {
   JobState,
   NumberOperators,
   StringOperators,
-} from "@deenruv/common/lib/generated-types";
-import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
+} from "@deenruv/common/src/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
 
 import { Injector } from "../common";
 import { InspectableJobQueueStrategy } from "../config/job-queue/inspectable-job-queue-strategy";

@@ -1,7 +1,7 @@
 import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import {
   Api,
-  ApiType,
+  type ApiType,
   ListQueryBuilder,
   Product,
   TransactionalConnection,

@@ -1,5 +1,5 @@
 import { ApolloLink } from '@apollo/client/core';
-import { omit } from '@deenruv/common/lib/omit';
+import { omit } from '@deenruv/common/src/omit';
 
 /**
  * The "__typename" property added by Apollo Client causes errors when posting the entity

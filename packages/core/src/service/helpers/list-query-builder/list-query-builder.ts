@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { LogicalOperator } from "@deenruv/common/lib/generated-types";
-import { ID, Type } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import { LogicalOperator } from "@deenruv/common/src/generated-types";
+import { type ID, type Type } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 import {
   Brackets,
   FindOneOptions,
@@ -13,7 +13,7 @@ import {
 import { BetterSqlite3Driver } from "typeorm/driver/better-sqlite3/BetterSqlite3Driver";
 import { SqljsDriver } from "typeorm/driver/sqljs/SqljsDriver";
 
-import { ApiType, RequestContext } from "../../../api";
+import { type ApiType, RequestContext } from "../../../api";
 import {
   FilterParameter,
   ListQueryOptions,

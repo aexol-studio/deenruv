@@ -1,4 +1,4 @@
-import { SUPER_ADMIN_USER_IDENTIFIER } from "@deenruv/common/lib/shared-constants";
+import { SUPER_ADMIN_USER_IDENTIFIER } from "@deenruv/common/src/shared-constants";
 import {
   createErrorResultGuard,
   createTestEnvironment,

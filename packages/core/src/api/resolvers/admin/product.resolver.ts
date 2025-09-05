@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import {
+import type {
   DeletionResponse,
   MutationAddOptionGroupToProductArgs,
   MutationAssignProductsToChannelArgs,
@@ -16,18 +16,18 @@ import {
   MutationUpdateProductArgs,
   MutationUpdateProductsArgs,
   MutationUpdateProductVariantsArgs,
-  Permission,
   QueryProductArgs,
   QueryProductsArgs,
   QueryProductVariantArgs,
   QueryProductVariantsArgs,
   RemoveOptionGroupFromProductResult,
-} from "@deenruv/common/lib/generated-types";
-import { PaginatedList, ID } from "@deenruv/common/lib/shared-types";
+} from "@deenruv/common/src/generated-types";
+import { type PaginatedList, type ID } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/src/generated-types";
 
 import { ErrorResultUnion } from "../../../common/error/error-result";
 import { UserInputError } from "../../../common/error/errors";
-import { Translated } from "../../../common/types/locale-types";
+import { type Translated } from "../../../common/types/locale-types";
 import { Product } from "../../../entity/product/product.entity";
 import { ProductVariant } from "../../../entity/product-variant/product-variant.entity";
 import { FacetValueService } from "../../../service/services/facet-value.service";
@@ -35,7 +35,10 @@ import { ProductVariantService } from "../../../service/services/product-variant
 import { ProductService } from "../../../service/services/product.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
+import {
+  type RelationPaths,
+  Relations,
+} from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 

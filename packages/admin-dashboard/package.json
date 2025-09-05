@@ -1,11 +1,11 @@
 {
   "name": "@deenruv/admin-dashboard",
   "version": "0.1.39",
-  "main": "dist/index.js",
-  "style": "dist/index.css",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "style": "src/root.css",
+  "types": "src/root.d.ts",
   "files": [
-    "dist/**/*"
+    "src/**/*"
   ],
   "scripts": {
     "watch": "tspc --watch",

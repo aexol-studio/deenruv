@@ -1,5 +1,5 @@
-import { Type } from "@deenruv/common/lib/shared-types";
-import { unique } from "@deenruv/common/lib/unique";
+import { type Type } from "@deenruv/common/src/shared-types";
+import { unique } from "@deenruv/common/src/unique";
 import { OrderByCondition } from "typeorm";
 import { DataSource } from "typeorm/data-source/DataSource";
 import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";

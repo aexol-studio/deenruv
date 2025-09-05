@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
-import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
+import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
