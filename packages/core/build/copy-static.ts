@@ -5,7 +5,9 @@ import path from "path";
 
 const SCHEMAS_GLOB = "**/*.graphql";
 const MESSAGES_GLOB = "i18n/messages/**/*";
-const DEST_DIR = path.join(__dirname, "../dist");
+// Copy into dist/src so that runtime modules compiled to dist/src can find the
+// schema and i18n files via __dirname (e.g. dist/src/api/schema/...)
+const DEST_DIR = path.join(__dirname, "../dist/src");
 
 function copyFiles(sourceGlob: string, destinationDir: string) {
   const srcDir = path.join(__dirname, "../src");
