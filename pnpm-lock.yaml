@@ -2849,6 +2849,9 @@ importers:
       '@deenruv/react-ui-devkit':
         specifier: workspace:*
         version: link:../../packages/react-ui-devkit
+      '@deenruv/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
       '@nestjs/graphql':
         specifier: ^12.2.0
         version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
