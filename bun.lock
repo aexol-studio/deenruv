@@ -1146,6 +1146,7 @@
         "@deenruv/admin-ui": "workspace:*",
         "@deenruv/common": "workspace:*",
         "@deenruv/react-ui-devkit": "workspace:*",
+        "@deenruv/testing": "workspace:*",
         "@deenruv/ui-devkit": "workspace:*",
         "@nestjs/common": "~10.3.10",
         "@nestjs/graphql": "~12.2.0",
@@ -1302,6 +1303,7 @@
       "dependencies": {
         "@deenruv/common": "workspace:*",
         "@deenruv/react-ui-devkit": "workspace:*",
+        "@deenruv/testing": "workspace:*",
         "@nestjs/graphql": "^12.2.0",
         "libphonenumber-js": "^1.12.6",
       },
