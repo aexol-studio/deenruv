@@ -22,6 +22,7 @@
     "@nestjs/graphql": "^12.2.0",
     "@deenruv/common": "workspace:*",
     "@deenruv/react-ui-devkit": "workspace:*",
+    "@deenruv/testing": "workspace:*",
     "libphonenumber-js": "^1.12.6"
   },
   "peerDependencies": {
