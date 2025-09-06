@@ -147,6 +147,7 @@ export async function generateMigration(
 
   // mysql is exceptional here because it uses ` character in to escape names in queries, that's why for mysql
   // we are using simple quoted string instead of template string syntax
+  // @KAMIL i skipped mysql support for now as we dont use it
 
   sqlInMemory.upQueries.forEach((upQuery) => {
     upSqls.push(

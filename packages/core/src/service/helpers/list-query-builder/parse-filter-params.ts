@@ -8,6 +8,11 @@ const DateUtils = {
     function pad(n: number): string {
       return n < 10 ? "0" + n : n.toString();
     }
+    function pad3(n: number): string {
+      if (n < 10) return "00" + n;
+      if (n < 100) return "0" + n;
+      return n.toString();
+    }
     return (
       date.getUTCFullYear() +
       "-" +
@@ -19,7 +24,9 @@ const DateUtils = {
       ":" +
       pad(date.getUTCMinutes()) +
       ":" +
-      pad(date.getUTCSeconds())
+      pad(date.getUTCSeconds()) +
+      "." +
+      pad3(date.getUTCMilliseconds())
     );
   },
 };
@@ -233,12 +240,12 @@ function buildWhereCondition(
     case "lte":
       return {
         clause: `${fieldName} <= :arg${argIndex}`,
-        parameters: { [`arg${argIndex}`]: operand },
+        parameters: { [`arg${argIndex}`]: convertDate(operand) },
       };
     case "gte":
       return {
         clause: `${fieldName} >= :arg${argIndex}`,
-        parameters: { [`arg${argIndex}`]: operand },
+        parameters: { [`arg${argIndex}`]: convertDate(operand) },
       };
     case "between":
       return {

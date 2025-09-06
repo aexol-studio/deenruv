@@ -16,6 +16,6 @@
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "exclude": ["node_modules", "admin_ui", "dist", "static", "./test-plugins", "./load-tesing", "./example-plugins", "cockroachdb-search-strategy.ts"],
+    "exclude": ["node_modules", "admin-ui", "dist", "static", "./test-plugins", "./load-tesing", "./example-plugins", "cockroachdb-search-strategy.ts"],
     "ts-node": { "files": true }
 }
