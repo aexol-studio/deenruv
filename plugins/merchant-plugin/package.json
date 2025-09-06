@@ -28,6 +28,7 @@
     "@deenruv/react-ui-devkit": "workspace:*",
     "@deenruv/ui-devkit": "workspace:*",
     "@deenruv/admin-ui": "workspace:*",
+    "@deenruv/testing": "workspace:*",
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",
     "date-fns": "^4.1.0",
