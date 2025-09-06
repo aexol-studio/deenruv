@@ -10,16 +10,30 @@
   "homepage": "https://www.deenruv.io/",
   "license": "MIT",
   "directories": {
-    "lib": "lib"
+    "lib": "lib",
+    "src": "src"
   },
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "publishConfig": {
     "access": "public"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "bundle": "./src/index.ts"
+    },
+    "./*": {
+      "import": "./lib/*.js",
+      "require": "./lib/*.js",
+      "bundle": "./src/*.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
