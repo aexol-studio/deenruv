@@ -13,21 +13,20 @@
  * @docsCategory common
  * @since 2.0.0
  */
-import * as path from 'node:path';
+import * as path from "node:path";
 
 function getCorePackageVersion(): string {
   const candidates = [
     // When running from TS sources (e.g. ts-node)
-    path.join(__dirname, '..', 'package.json'),
+    path.join(__dirname, "..", "package.json"),
     // When running compiled code from dist/src
-    path.join(__dirname, '..', '..', 'package.json'),
+    path.join(__dirname, "..", "..", "package.json"),
   ];
 
   for (const candidate of candidates) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const pkg = require(candidate);
-      if (pkg && typeof pkg.version === 'string') {
+      if (pkg && typeof pkg.version === "string") {
         return pkg.version as string;
       }
     } catch {
@@ -37,16 +36,15 @@ function getCorePackageVersion(): string {
 
   // Fallback: resolve via package exports if available
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pkg = require('@deenruv/core/package.json');
-    if (pkg && typeof pkg.version === 'string') {
+    const pkg = require("@deenruv/core/package.json");
+    if (pkg && typeof pkg.version === "string") {
       return pkg.version as string;
     }
   } catch {
     // ignore
   }
 
-  return '0.0.0';
+  return "0.0.0";
 }
 
 export const DEENRUV_VERSION: string = getCorePackageVersion();

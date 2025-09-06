@@ -48,8 +48,6 @@ export class TypeORMHealthCheckStrategy implements HealthCheckStrategy {
   getHealthIndicator(): HealthIndicatorFunction {
     const key = this.options?.key || "database";
     const timeout = this.options?.timeout ?? 1000;
-    //@KAMIL help us
-    // return () => indicator.pingCheck(key, { timeout });
-    return () => Promise.resolve({ database: { status: "up" } });
+    return () => indicator.pingCheck(key, { timeout });
   }
 }
