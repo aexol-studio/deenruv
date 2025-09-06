@@ -17,5 +17,6 @@
         "newLine": "LF",
         "resolveJsonModule": true,
         "outDir": "../../dist/plugin-server"
-    }
+    },
+    "exclude": ["**/*.test.ts", "**/*.spec.ts", "dist", "node_modules"],
 }
