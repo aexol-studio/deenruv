@@ -6,7 +6,7 @@
   "engines": {
     "node": ">= 18"
   },
-  "workspaces": ["packages/*", "plugins/*", "apps/*"],
+  "workspaces": ["packages/*", "plugins/*"],
   "scripts": {
     "test": "pnpm -r --workspace-concurrency=1 test",
     "lint": "pnpm -r --workspace-concurrency=1 lint",

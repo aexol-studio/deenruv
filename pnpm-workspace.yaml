@@ -1,7 +1,6 @@
 packages:
   - packages/*
   - plugins/*
-  - apps/*
 onlyBuiltDependencies:
   - '@apollo/protobufjs'
   - '@nestjs/core'
