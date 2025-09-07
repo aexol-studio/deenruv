@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/common",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "typesVersions": {
     "*": {
       "generated-types": ["lib/generated-types.d.ts"],

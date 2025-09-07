@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/admin-dashboard",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "main": "src/index.ts",
   "style": "src/root.css",
   "types": "src/root.d.ts",
