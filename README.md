@@ -192,8 +192,8 @@ If we want to merge our develop to main and publish packages we have to do the f
 _(For the sake of this example lets say our version is 1.1.15)_
 
 1. `Start on develop`
-2. `pnpm -r exec pnpm version patch command`
-3. `pnpm run lint:fix command`
+2. `pnpm -r exec pnpm version patch`
+3. `pnpm run lint:fix`
 4. `Push it into develop`
 5. `Go into gitlab and create merge request into main branch`
 6. `Merge it after build succeed`
