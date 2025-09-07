@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "rimraf lib && node -r ts-node/register build.ts && npm run compile",
+    "xbuild": "rimraf lib && node -r ts-node/register build.ts && npm run compile",
     "watch": "tsc -p ./tsconfig.build.json --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",

@@ -5,8 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "node scripts/set-version.js && ng serve",
-    "build:app": "ng build deenruv-admin --configuration production",
-    "build": "node scripts/copy-package-json.js && node scripts/set-version.js && node scripts/build-public-api.js && ng build deenruv-admin-lib --configuration production && node scripts/compile-styles.js",
+    "xbuild:app": "ng build deenruv-admin --configuration production",
+    "xbuild": "node scripts/copy-package-json.js && node scripts/set-version.js && node scripts/build-public-api.js && ng build deenruv-admin-lib --configuration production && node scripts/compile-styles.js",
     "watch": "ng build --watch=true",
     "test:ui": "ng test --watch=false --browsers=ChromeHeadlessCI --progress=false",
     "lint": "eslint .",

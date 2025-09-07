@@ -1,4 +1,3 @@
-import { AdminUiPlugin } from "@deenruv/admin-ui-plugin";
 import {
   AssetServerPlugin,
   configureS3AssetStorage,
@@ -36,7 +35,6 @@ import {
   RequestContext,
   TranslatorService,
 } from "@deenruv/core";
-import { customAdminUi } from "./compile-admin-ui.js";
 
 interface ProductData extends ProductVariant {
   communicateID: string;
@@ -299,11 +297,11 @@ export const devConfig: DeenruvConfig = {
     }),
     InpostPlugin.init({}),
     // Przelewy24Plugin.init({}),
-    AdminUiPlugin.init({
-      route: "admin",
-      port: 5001,
-      app: customAdminUi({ devMode: true, recompile: true }),
-    }),
+    // AdminUiPlugin.init({
+    //   route: "admin",
+    //   port: 5001,
+    //   app: customAdminUi({ devMode: true, recompile: true }),
+    // }),
     EmailPlugin.init({
       handlers: [],
       templatePath: path.join(__dirname, "../static/email/templates"),

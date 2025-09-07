@@ -83,19 +83,17 @@
     "src/**/*",
     "cli/**/*"
   ],
-  "peerDependencies": {
-    "@nestjs/core": "^10.3.10",
+  "dependencies": {
     "@nestjs/testing": "^10.3.10",
-    "@nestjs/typeorm": "^10.0.2",
     "typeorm": "^0.3.20",
     "graphql": "~16.9.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.5",
     "graphql-tag": "^2.12.6",
     "graphql-upload": "^16.0.2",
-    "rxjs": "7.8.1"
-  },
-  "dependencies": {
+    "rxjs": "7.8.1",
+    "@nestjs/typeorm": "^10.0.2",
+    "@nestjs/core": "^10.3.10",
     "@apollo/server": "^4.10.4",
     "@apollographql/graphql-playground-html": "^1.6.29",
     "@deenruv/common": "workspace:*",

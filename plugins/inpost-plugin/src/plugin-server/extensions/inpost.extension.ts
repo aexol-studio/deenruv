@@ -1,4 +1,5 @@
-import gql from "graphql-tag";
+import * as _ from "graphql";
+import { gql } from "graphql-tag";
 
 export const AdminExtension = gql`
   input SetInpostShippingMethodConfigInput {

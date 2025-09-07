@@ -1,3 +1,4 @@
+import * as _ from "graphql";
 import { gql } from "graphql-tag";
 
 export const APIExtension = gql`
