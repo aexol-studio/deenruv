@@ -26,12 +26,12 @@
     ".": {
       "import": "./lib/index.js",
       "require": "./lib/index.js",
-      "bundle": "./src/index.ts"
+      "bun": "./src/index.ts"
     },
     "./*": {
       "import": "./lib/*.js",
       "require": "./lib/*.js",
-      "bundle": "./src/*.ts"
+      "bun": "./src/*.ts"
     }
   },
   "repository": {
