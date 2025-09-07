@@ -5,7 +5,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "xsxabuild:test": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "populate": "tsx populate-dev-server.ts",
