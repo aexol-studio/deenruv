@@ -2759,6 +2759,25 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
 
+  plugins/order-reminder-plugin:
+    dependencies:
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+    devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      typescript:
+        specifier: ^5.3.3
+        version: 5.4.2
+
   plugins/payments-plugin:
     dependencies:
       '@deenruv/common':
@@ -3603,23 +3622,23 @@ packages:
       react: '>=17.0.2'
 
   '@aexol/dev-translate-config@0.0.8':
-    resolution: {integrity: sha512-KnO49EbYNpZgJhPdofb2WK4eFQ0OHMMWynVKyaJWkmiRJzJ6KHCFcoG7caQou0Wdfzj9La4lq7btZaflXKL3+Q==, tarball: https://registry.npmjs.org/@aexol/dev-translate-config/-/dev-translate-config-0.0.8.tgz}
+    resolution: {integrity: sha512-KnO49EbYNpZgJhPdofb2WK4eFQ0OHMMWynVKyaJWkmiRJzJ6KHCFcoG7caQou0Wdfzj9La4lq7btZaflXKL3+Q==}
 
   '@aexol/dev-translate-core@0.0.8':
-    resolution: {integrity: sha512-cJ2LNqL+ylgFB+ZL9hnLUeK4RQ2wdSdRjemOs5OgLKQxJSmK4v8kMArJEj8xIp/Y9rmug3ItwtCoBIXBfH9ZlA==, tarball: https://registry.npmjs.org/@aexol/dev-translate-core/-/dev-translate-core-0.0.8.tgz}
+    resolution: {integrity: sha512-cJ2LNqL+ylgFB+ZL9hnLUeK4RQ2wdSdRjemOs5OgLKQxJSmK4v8kMArJEj8xIp/Y9rmug3ItwtCoBIXBfH9ZlA==}
 
   '@aexol/dev-translate-core@0.1.9':
-    resolution: {integrity: sha512-zHOEj+mNEob6XgXEBqmCA4VtfNNTQ4HSu64seg/sttJwZMgDtLOS2U3L1hd4IiXAlZmoJjMC1vwf+c7qTi9yEw==, tarball: https://registry.npmjs.org/@aexol/dev-translate-core/-/dev-translate-core-0.1.9.tgz}
+    resolution: {integrity: sha512-zHOEj+mNEob6XgXEBqmCA4VtfNNTQ4HSu64seg/sttJwZMgDtLOS2U3L1hd4IiXAlZmoJjMC1vwf+c7qTi9yEw==}
 
   '@aexol/dev-translate-watch@0.1.9':
-    resolution: {integrity: sha512-Bth81qnCmZl7aBRSrShSDdQOrzkJELq7s338gzXF6CYywW24R8Vq5DDWakbgiCnvQM7HVTdcVuUl946SMoIgGQ==, tarball: https://registry.npmjs.org/@aexol/dev-translate-watch/-/dev-translate-watch-0.1.9.tgz}
+    resolution: {integrity: sha512-Bth81qnCmZl7aBRSrShSDdQOrzkJELq7s338gzXF6CYywW24R8Vq5DDWakbgiCnvQM7HVTdcVuUl946SMoIgGQ==}
 
   '@aexol/dev-translate@0.0.8':
-    resolution: {integrity: sha512-szyUM6kz4/oBSsjpiogczUPiJ4lMnIyjwAqHpxB8pjOeStH1UWs47YefRUcP0ldr2tjelw9N6Aa19eRu5RkdrQ==, tarball: https://registry.npmjs.org/@aexol/dev-translate/-/dev-translate-0.0.8.tgz}
+    resolution: {integrity: sha512-szyUM6kz4/oBSsjpiogczUPiJ4lMnIyjwAqHpxB8pjOeStH1UWs47YefRUcP0ldr2tjelw9N6Aa19eRu5RkdrQ==}
     hasBin: true
 
   '@aexol/vite-plugin-dev-translate@0.1.9':
-    resolution: {integrity: sha512-3tvByPafq8pNAWGTMuTNym6UGzwQoNILHPsOIia4ClaXXZnngg6iXQGk7Ndy6KgnzFwFhrU12JTTC+ApEW61Bg==, tarball: https://registry.npmjs.org/@aexol/vite-plugin-dev-translate/-/vite-plugin-dev-translate-0.1.9.tgz}
+    resolution: {integrity: sha512-3tvByPafq8pNAWGTMuTNym6UGzwQoNILHPsOIia4ClaXXZnngg6iXQGk7Ndy6KgnzFwFhrU12JTTC+ApEW61Bg==}
     peerDependencies:
       vite: '>=5'
 
