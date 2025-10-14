@@ -59,13 +59,13 @@ export class FacetService {
     private customFieldRelationService: CustomFieldRelationService,
     private eventBus: EventBus,
     private translator: TranslatorService,
-    private roleService: RoleService,
+    private roleService: RoleService
   ) {}
 
   findAll(
     ctx: RequestContext,
     options?: ListQueryOptions<Facet>,
-    relations?: RelationPaths<Facet>,
+    relations?: RelationPaths<Facet>
   ): Promise<PaginatedList<Translated<Facet>>> {
     return this.listQueryBuilder
       .build(Facet, options, {
@@ -76,10 +76,7 @@ export class FacetService {
       .getManyAndCount()
       .then(([facets, totalItems]) => {
         const items = facets.map((facet) =>
-          this.translator.translate(facet, ctx, [
-            "values",
-            ["values", "facet"],
-          ]),
+          this.translator.translate(facet, ctx, ["values", ["values", "facet"]])
         );
         return {
           items,
@@ -91,7 +88,7 @@ export class FacetService {
   findOne(
     ctx: RequestContext,
     facetId: ID,
-    relations?: RelationPaths<Facet>,
+    relations?: RelationPaths<Facet>
   ): Promise<Translated<Facet> | undefined> {
     return this.connection
       .findOneInChannel(ctx, Facet, facetId, ctx.channelId, {
@@ -104,7 +101,7 @@ export class FacetService {
               "values",
               ["values", "facet"],
             ])) ??
-          undefined,
+          undefined
       );
   }
 
@@ -113,17 +110,17 @@ export class FacetService {
    */
   findByCode(
     facetCode: string,
-    lang: LanguageCode,
+    lang: LanguageCode
   ): Promise<Translated<Facet> | undefined>;
   findByCode(
     ctx: RequestContext,
     facetCode: string,
-    lang: LanguageCode,
+    lang: LanguageCode
   ): Promise<Translated<Facet> | undefined>;
   findByCode(
     ctxOrFacetCode: RequestContext | string,
     facetCodeOrLang: string | LanguageCode,
-    lang?: LanguageCode,
+    lang?: LanguageCode
   ): Promise<Translated<Facet> | undefined> {
     const relations = ["values", "values.facet"];
     const [repository, facetCode, languageCode] =
@@ -154,7 +151,7 @@ export class FacetService {
               "values",
               ["values", "facet"],
             ])) ??
-          undefined,
+          undefined
       );
   }
 
@@ -164,7 +161,7 @@ export class FacetService {
    */
   async findByFacetValueId(
     ctx: RequestContext,
-    id: ID,
+    id: ID
   ): Promise<Translated<Facet> | undefined> {
     const facet = await this.connection
       .getRepository(ctx, Facet)
@@ -180,7 +177,7 @@ export class FacetService {
 
   async create(
     ctx: RequestContext,
-    input: CreateFacetInput,
+    input: CreateFacetInput
   ): Promise<Translated<Facet>> {
     const facet = await this.translatableSaver.create({
       ctx,
@@ -197,17 +194,17 @@ export class FacetService {
         ctx,
         Facet,
         input,
-        facet,
+        facet
       );
     await this.eventBus.publish(
-      new FacetEvent(ctx, facetWithRelations, "created", input),
+      new FacetEvent(ctx, facetWithRelations, "created", input)
     );
     return assertFound(this.findOne(ctx, facet.id));
   }
 
   async update(
     ctx: RequestContext,
-    input: UpdateFacetInput,
+    input: UpdateFacetInput
   ): Promise<Translated<Facet>> {
     const facet = await this.translatableSaver.update({
       ctx,
@@ -224,7 +221,7 @@ export class FacetService {
       ctx,
       Facet,
       input,
-      facet,
+      facet
     );
     await this.eventBus.publish(new FacetEvent(ctx, facet, "updated", input));
     return assertFound(this.findOne(ctx, facet.id));
@@ -233,7 +230,7 @@ export class FacetService {
   async delete(
     ctx: RequestContext,
     id: ID,
-    force: boolean = false,
+    force: boolean = false
   ): Promise<DeletionResponse> {
     const facet = await this.connection.getEntityOrThrow(ctx, Facet, id, {
       relations: ["values"],
@@ -244,7 +241,7 @@ export class FacetService {
     if (facet.values.length) {
       const counts = await this.facetValueService.checkFacetValueUsage(
         ctx,
-        facet.values.map((fv) => fv.id),
+        facet.values.map((fv) => fv.id)
       );
       productCount = counts.productCount;
       variantCount = counts.variantCount;
@@ -265,13 +262,13 @@ export class FacetService {
     if (!isInUse) {
       await this.connection.getRepository(ctx, Facet).remove(facet);
       await this.eventBus.publish(
-        new FacetEvent(ctx, deletedFacet, "deleted", id),
+        new FacetEvent(ctx, deletedFacet, "deleted", id)
       );
       result = DeletionResult.DELETED;
     } else if (force) {
       await this.connection.getRepository(ctx, Facet).remove(facet);
       await this.eventBus.publish(
-        new FacetEvent(ctx, deletedFacet, "deleted", id),
+        new FacetEvent(ctx, deletedFacet, "deleted", id)
       );
       message = ctx.translate("message.facet-force-deleted", i18nVars);
       result = DeletionResult.DELETED;
@@ -321,22 +318,34 @@ export class FacetService {
    */
   async assignFacetsToChannel(
     ctx: RequestContext,
-    input: AssignFacetsToChannelInput,
+    input: AssignFacetsToChannelInput
   ): Promise<Array<Translated<Facet>>> {
     const hasPermission = await this.roleService.userHasAnyPermissionsOnChannel(
       ctx,
       input.channelId,
-      [Permission.UpdateFacet, Permission.UpdateCatalog],
+      [Permission.UpdateFacet, Permission.UpdateCatalog]
     );
     if (!hasPermission) {
       throw new ForbiddenError();
     }
     const facetsToAssign = await this.connection
       .getRepository(ctx, Facet)
-      .find({ where: { id: In(input.facetIds) }, relations: ["values"] });
+      .find({
+        where: {
+          id: In(input.facetIds),
+          // WATCH OUT! This is workaround to prevent gathering facet values from all channels
+          // which would happen if we used the InChannel method. We only want to assign the
+          // facet values which are already assigned to the channel, the others will be assigned
+          // below. Bcs creating facet values always assigns them to the current channel when this operation is performed which can lead to duplicate
+          // facet values codes with diffrent IDs.
+          values: { channels: { id: ctx.channelId } },
+        },
+        relations: ["values"],
+      });
+
     const valuesToAssign = facetsToAssign.reduce(
       (values, facet) => [...values, ...facet.values],
-      [] as FacetValue[],
+      [] as FacetValue[]
     );
 
     await Promise.all<any>([
@@ -348,7 +357,7 @@ export class FacetService {
       ...valuesToAssign.map(async (value) =>
         this.channelService.assignToChannels(ctx, FacetValue, value.id, [
           input.channelId,
-        ]),
+        ])
       ),
     ]);
 
@@ -358,10 +367,10 @@ export class FacetService {
         Facet,
         facetsToAssign.map((f) => f.id),
         ctx.channelId,
-        {},
+        {}
       )
       .then((facets) =>
-        facets.map((facet) => translateDeep(facet, ctx.languageCode)),
+        facets.map((facet) => translateDeep(facet, ctx.languageCode))
       );
   }
 
@@ -371,12 +380,12 @@ export class FacetService {
    */
   async removeFacetsFromChannel(
     ctx: RequestContext,
-    input: RemoveFacetsFromChannelInput,
+    input: RemoveFacetsFromChannelInput
   ): Promise<Array<ErrorResultUnion<RemoveFacetFromChannelResult, Facet>>> {
     const hasPermission = await this.roleService.userHasAnyPermissionsOnChannel(
       ctx,
       input.channelId,
-      [Permission.DeleteFacet, Permission.DeleteCatalog],
+      [Permission.DeleteFacet, Permission.DeleteCatalog]
     );
     if (!hasPermission) {
       throw new ForbiddenError();
@@ -384,7 +393,7 @@ export class FacetService {
     const defaultChannel = await this.channelService.getDefaultChannel(ctx);
     if (idsAreEqual(input.channelId, defaultChannel.id)) {
       throw new UserInputError(
-        "error.items-cannot-be-removed-from-default-channel",
+        "error.items-cannot-be-removed-from-default-channel"
       );
     }
     const facetsToRemove = await this.connection
@@ -402,7 +411,7 @@ export class FacetService {
         const counts = await this.facetValueService.checkFacetValueUsage(
           ctx,
           facet.values.map((fv) => fv.id),
-          input.channelId,
+          input.channelId
         );
         productCount = counts.productCount;
         variantCount = counts.variantCount;
@@ -424,8 +433,8 @@ export class FacetService {
             facet.values.map((fv) =>
               this.channelService.removeFromChannels(ctx, FacetValue, fv.id, [
                 input.channelId,
-              ]),
-            ),
+              ])
+            )
           );
           result = await this.findOne(ctx, facet.id);
           if (result) {
@@ -437,7 +446,7 @@ export class FacetService {
               facetCode: facet.code,
               productCount,
               variantCount,
-            }),
+            })
           );
         }
       }
