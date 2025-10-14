@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/ts-node-register",
-    "version": "0.1.41",
+    "version": "0.1.42",
     "description": "ts-node register hook",
     "repository": {
         "type": "git",
