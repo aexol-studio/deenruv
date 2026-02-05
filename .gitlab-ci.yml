@@ -6,7 +6,7 @@ include:
     inputs:
       matrix:
         - APP: docs
-          APP_ROOT: apps/docs
+          APP_ROOT: .
           DOCKERFILE: apps/docs/Dockerfile
 
 .build_artifacts: &build_artifacts
