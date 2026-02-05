@@ -3048,6 +3048,9 @@ importers:
       graphql-zeus:
         specifier: ^5.4.2
         version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@22.17.1)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+      ioredis:
+        specifier: ^5.4.1
+        version: 5.6.1
       lucide-react:
         specifier: ^0.460.0
         version: 0.460.0(react@18.3.1)
