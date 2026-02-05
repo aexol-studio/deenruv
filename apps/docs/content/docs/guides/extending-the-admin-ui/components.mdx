@@ -1,0 +1,301 @@
+---
+title: 'Components'
+description: 'Complete catalog of components in @deenruv/react-ui-devkit — templates, universal, molecules, and atoms'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The `@deenruv/react-ui-devkit` provides over 70 components organized by complexity and purpose. All components are styled with the Deenruv theme and support dark mode.
+
+## Component Categories
+
+| Category | Count | Purpose |
+|---|---|---|
+| **Template** | 2 | Full page layouts (list and detail pages) |
+| **Core** | 4 | Plugin injection markers and renderers |
+| **Universal** | 15 | Business-logic components for common admin patterns |
+| **Molecule** | 13 | Composed components built from atoms |
+| **Atom** | 42 | shadcn/ui-based primitives |
+
+## Template Components
+
+These are the most important components for building admin pages. They provide complete page layouts with built-in plugin injection points.
+
+| Component | Description |
+|---|---|
+| `DetailList` | Full-featured list page with table, pagination, filtering, sorting, and bulk actions |
+| `DetailView` | Detail/edit page layout with tabs, sidebar, actions, and plugin injection points |
+
+<Callout type="info">
+For a deep dive into `DetailList` and `DetailView`, see the [Templates](/docs/guides/extending-the-admin-ui/templates) guide.
+</Callout>
+
+```tsx
+import { DetailList, DetailView } from '@deenruv/react-ui-devkit';
+```
+
+## Core Components
+
+Components used by the admin panel's plugin system:
+
+| Component | Description |
+|---|---|
+| `DetailViewMarker` | Plugin injection marker for detail views (toggle with Ctrl+Q) |
+| `ListViewMarker` | Plugin injection marker for list views (toggle with Ctrl+Q) |
+| `Renderer` | Dynamic component renderer for plugin-injected content |
+| `EntityCustomFields` | Renders custom field inputs for any entity type |
+
+### `EntityCustomFields`
+
+Automatically renders form inputs for all custom fields defined on an entity:
+
+```tsx
+import { EntityCustomFields } from '@deenruv/react-ui-devkit';
+
+function ProductDetail({ product }) {
+  return (
+    <div>
+      {/* Standard product fields */}
+      <Input value={product.name} />
+
+      {/* Render all custom fields for this entity */}
+      <EntityCustomFields
+        entityType="Product"
+        entity={product}
+        onFieldChange={(fieldName, value) => {
+          // Handle custom field updates
+        }}
+      />
+    </div>
+  );
+}
+```
+
+## Universal Components (15)
+
+Reusable business-logic components for common admin patterns:
+
+| Component | Description |
+|---|---|
+| `DialogProductPicker` | Product selection dialog with search and filtering |
+| `RichTextEditor` | Tiptap-based rich text editor with formatting toolbar |
+| `AssetsModalInput` | Asset picker with modal browser for selecting images/files |
+| `ConfirmationDialog` | Confirmation dialog with customizable title, message, and actions |
+| `PageBlock` | Page section wrapper with title and description |
+| `CustomCard` | Styled card component with consistent admin theme |
+| `CustomCardHeader` | Card header with title, description, and action slots |
+| `EmptyState` | Empty state placeholder with icon and message |
+| `FacetIdsSelector` | Multi-selector for facet values |
+| `DraggableSelect` | Drag-and-drop reorderable select component |
+| `SimpleTimePicker` | Time-only picker input |
+| `DateTimePicker` | Combined date and time picker |
+| `DateTimeInput` | Date/time input field |
+| `EntityChannelManager` | Channel assignment manager for entities |
+| `CustomerSearch` | Customer search with autocomplete |
+
+### Usage Examples
+
+#### PageBlock
+
+Wraps a section of a page with a title and description:
+
+```tsx
+import { PageBlock } from '@deenruv/react-ui-devkit';
+
+<PageBlock title="Product Details" description="Basic product information">
+  <Input label="Name" value={name} onChange={setName} />
+  <Input label="Slug" value={slug} onChange={setSlug} />
+</PageBlock>
+```
+
+#### ConfirmationDialog
+
+```tsx
+import { ConfirmationDialog } from '@deenruv/react-ui-devkit';
+
+<ConfirmationDialog
+  title="Delete Product"
+  description="Are you sure? This action cannot be undone."
+  onConfirm={handleDelete}
+  onCancel={() => setOpen(false)}
+/>
+```
+
+#### RichTextEditor
+
+```tsx
+import { RichTextEditor } from '@deenruv/react-ui-devkit';
+
+<RichTextEditor
+  value={description}
+  onChange={setDescription}
+/>
+```
+
+#### AssetsModalInput
+
+```tsx
+import { AssetsModalInput } from '@deenruv/react-ui-devkit';
+
+<AssetsModalInput
+  value={selectedAssets}
+  onChange={setSelectedAssets}
+/>
+```
+
+### Universal Table Actions (5)
+
+Pre-built table actions for common entity operations:
+
+| Component | Description |
+|---|---|
+| `ManageEntityToChannelsDialog` | Dialog for assigning entities to channels |
+| `DeleteEntityFromChannelsDialog` | Dialog for removing entities from channels |
+| `EntityChannelManagementRowAction` | Row-level channel management action |
+| `EntityChannelManagementBulkAction` | Bulk channel management action |
+| `EntityFacetManagementBulkAction` | Bulk facet assignment action |
+
+### Universal Utilities
+
+| Function | Description |
+|---|---|
+| `createDialogFunction` | Create a dialog trigger function from a dialog component |
+| `createDialogFromComponentFunction` | Create a dialog from an existing component |
+
+```tsx
+import { createDialogFunction, ConfirmationDialog } from '@deenruv/react-ui-devkit';
+
+const showConfirmation = createDialogFunction(ConfirmationDialog);
+
+// Usage
+const confirmed = await showConfirmation({
+  title: 'Confirm',
+  description: 'Are you sure?',
+});
+```
+
+## Molecule Components (13)
+
+Composed components that combine multiple atoms:
+
+| Component | Description |
+|---|---|
+| `PaymentMethodImage` | Payment method icon/image display |
+| `OrderStateBadge` | Color-coded order state badge |
+| `SimpleSelect` | Simplified select dropdown |
+| `SimpleTooltip` | Simplified tooltip wrapper |
+| `SortButton` | Column sort toggle button |
+| `TranslationSelect` | Language/translation picker |
+| `ListTable` | Data table for list views |
+| `SearchInput` | Search input with built-in debounce |
+| `CustomFieldsModal` | Modal for editing custom fields |
+| `ImageWithPreview` | Image thumbnail with lightbox preview |
+| `ErrorMessage` | Styled error message display |
+| `ListBadge` | Badge for list item status |
+| `ContextMenu` | Right-click context menu |
+
+### Usage Examples
+
+#### SearchInput
+
+```tsx
+import { SearchInput } from '@deenruv/react-ui-devkit';
+
+<SearchInput
+  value={searchTerm}
+  onChange={setSearchTerm}
+  placeholder="Search products..."
+/>
+```
+
+#### SimpleSelect
+
+```tsx
+import { SimpleSelect } from '@deenruv/react-ui-devkit';
+
+<SimpleSelect
+  value={status}
+  onChange={setStatus}
+  options={[
+    { label: 'Active', value: 'active' },
+    { label: 'Draft', value: 'draft' },
+    { label: 'Archived', value: 'archived' },
+  ]}
+/>
+```
+
+#### OrderStateBadge
+
+```tsx
+import { OrderStateBadge } from '@deenruv/react-ui-devkit';
+
+<OrderStateBadge state={order.state} />
+```
+
+## Atom Components (42)
+
+shadcn/ui-based primitive components styled with the Deenruv theme. All atoms support dark mode and follow the admin panel's design system.
+
+| Component | Description |
+|---|---|
+| `Accordion` | Collapsible content sections |
+| `AlertDialog` | Modal alert with actions |
+| `AssetUploadButton` | Button for uploading assets |
+| `AspectRatio` | Fixed aspect ratio container |
+| `Badge` | Status/label badge |
+| `Breadcrumb` | Navigation breadcrumbs |
+| `Button` | Primary action button |
+| `Calendar` | Date picker calendar |
+| `Card` | Content card container |
+| `Chart` | Data visualization chart |
+| `Checkbox` | Checkbox input |
+| `Command` | Command palette component |
+| `Dialog` | Modal dialog |
+| `Drawer` | Slide-out drawer |
+| `DropdownMenu` | Dropdown menu with items |
+| `FacetedFilter` | Multi-facet filter component |
+| `Form` | Form wrapper with validation |
+| `HoverCard` | Hover-triggered content card |
+| `ImagePlaceholder` | Placeholder for missing images |
+| `Input` | Text input field |
+| `Label` | Form field label |
+| `LanguagePicker` | Language selection dropdown |
+| `MultipleSelector` | Multi-value selector |
+| `Pagination` | Page navigation component |
+| `Popover` | Popover content panel |
+| `Progress` | Progress bar indicator |
+| `RadioGroup` | Radio button group |
+| `ScrollArea` | Custom scrollbar container |
+| `Select` | Single-value select dropdown |
+| `Separator` | Visual separator line |
+| `Sheet` | Side sheet panel |
+| `Skeleton` | Loading placeholder |
+| `Sonner` | Toast notification system |
+| `Spinner` | Loading spinner |
+| `Switch` | Toggle switch |
+| `Table` | Data table |
+| `Tabs` | Tab navigation |
+| `Textarea` | Multi-line text input |
+| `Timeline` | Timeline display component |
+| `Toggle` | Toggle button |
+| `ToggleGroup` | Group of toggle buttons |
+| `Tooltip` | Hover tooltip |
+
+### Import Examples
+
+```tsx
+import {
+  Button,
+  Input,
+  Card,
+  Dialog,
+  Table,
+  Badge,
+  Tabs,
+  Select,
+  Switch,
+  Spinner,
+} from '@deenruv/react-ui-devkit';
+```
+
+All atom components follow the shadcn/ui API patterns. Refer to the [shadcn/ui documentation](https://ui.shadcn.com/docs) for detailed props and usage of each atom.

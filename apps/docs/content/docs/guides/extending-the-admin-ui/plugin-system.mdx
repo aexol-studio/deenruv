@@ -1,0 +1,475 @@
+---
+title: 'Plugin System'
+description: 'Deep dive into the Deenruv admin UI plugin system — all extension points, location IDs, and folder conventions'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+The Deenruv admin UI plugin system allows you to extend virtually every part of the admin dashboard. Plugins are defined using the `createDeenruvUIPlugin` function, which provides full TypeScript type safety for all extension points.
+
+## `createDeenruvUIPlugin`
+
+This is an identity function that validates and types your plugin definition:
+
+```ts
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+
+export const MyPlugin = createDeenruvUIPlugin({
+  name: 'my-plugin-ui',
+  version: '1.0.0',
+  // ...extension points
+});
+```
+
+## Extension Points
+
+The plugin definition supports 15 extension points:
+
+| Extension Point | Type | Description |
+|---|---|---|
+| `name` | `string` | Plugin name (required) |
+| `version` | `string` | Plugin version (required) |
+| `config` | `T` | Custom plugin configuration object |
+| `pages` | `PluginPage[]` | Custom routes (auto-prefixed: `admin-ui/extensions/{name}/{path}`) |
+| `tables` | `DeenruvUITable[]` | List view columns, row actions, bulk actions |
+| `tabs` | `DeenruvTabs[]` | Detail view tabs |
+| `actions` | `{ inline?, dropdown? }` | Detail view action buttons |
+| `components` | `DeenruvUIDetailComponent[]` | Inject into detail views and sidebars |
+| `modals` | `DeenruvUIModalComponent[]` | Inject into modals |
+| `widgets` | `Widget[]` | Dashboard widgets |
+| `inputs` | `PluginComponent[]` | Custom field input overrides |
+| `navMenuGroups` | `PluginNavigationGroup[]` | Navigation menu groups |
+| `navMenuLinks` | `PluginNavigationLink[]` | Navigation links |
+| `notifications` | `Notification[]` | Polling notifications |
+| `translations` | `{ ns, data }` | i18n translation bundles |
+
+### Pages
+
+Define custom routes for your plugin. Paths are automatically prefixed with `admin-ui/extensions/{plugin-name}/`:
+
+```tsx
+pages: [
+  { path: '', element: <MyListPage /> },         // /admin-ui/extensions/my-plugin-ui/
+  { path: 'new', element: <MyCreatePage /> },     // /admin-ui/extensions/my-plugin-ui/new
+  { path: ':id', element: <MyDetailPage /> },     // /admin-ui/extensions/my-plugin-ui/:id
+],
+```
+
+### Tables
+
+Extend existing list views with additional columns, row actions, and bulk actions:
+
+```tsx
+tables: [
+  {
+    locationId: 'products-list-view',
+    columns: [
+      {
+        header: 'Review Score',
+        accessorKey: 'customFields.reviewScore',
+        cell: ({ row }) => <StarRating value={row.original.customFields?.reviewScore} />,
+      },
+    ],
+    rowActions: [
+      {
+        label: 'View Reviews',
+        onClick: (row) => navigate(`/reviews/${row.original.id}`),
+      },
+    ],
+    bulkActions: [
+      {
+        label: 'Export Reviews',
+        onClick: (selectedRows) => exportReviews(selectedRows),
+      },
+    ],
+  },
+],
+```
+
+### Tabs
+
+Add custom tabs to detail views:
+
+```tsx
+tabs: [
+  {
+    locationId: 'products-detail-view',
+    tab: {
+      id: 'reviews',
+      label: 'Reviews',
+      component: ProductReviewsTab,
+    },
+    hideSidebar: false,              // Hide the sidebar when this tab is active
+    sidebarReplacement: null,        // Replace sidebar content
+    disabled: false,                 // Disable the tab
+  },
+],
+```
+
+### Actions
+
+Add action buttons to detail views:
+
+```tsx
+actions: {
+  inline: [
+    {
+      locationId: 'products-detail-view',
+      component: ({ entity }) => (
+        <Button onClick={() => generateReport(entity.id)}>
+          Generate Report
+        </Button>
+      ),
+    },
+  ],
+  dropdown: [
+    {
+      locationId: 'orders-detail-view',
+      label: 'Send custom email',
+      onClick: (entity) => sendEmail(entity.id),
+    },
+  ],
+},
+```
+
+### Components
+
+Inject custom components into detail views and sidebars:
+
+```tsx
+components: [
+  // Inject into the main area of the product detail view
+  {
+    id: 'products-detail-view',
+    tab: 'product',                    // Only show on a specific tab
+    component: MyProductComponent,
+  },
+  // Inject into the sidebar (append -sidebar to the location ID)
+  {
+    id: 'products-detail-view-sidebar',
+    tab: 'product',
+    component: MyProductSidebar,
+  },
+],
+```
+
+<Callout type="info">
+To inject into a detail view sidebar, append `-sidebar` to the location ID. You can optionally filter by `tab` to only show the component on a specific tab.
+</Callout>
+
+### Modals
+
+Inject components into admin panel modals:
+
+```tsx
+modals: [
+  {
+    id: 'manual-order-state',
+    component: MyOrderStateComponent,
+  },
+],
+```
+
+### Widgets
+
+Register dashboard widgets:
+
+```tsx
+widgets: [
+  {
+    id: 'sales-chart',
+    title: 'Sales Overview',
+    component: SalesChartWidget,
+    size: { width: 2, height: 1 },
+    sizes: [
+      { width: 1, height: 1 },
+      { width: 2, height: 1 },
+      { width: 2, height: 2 },
+    ],
+  },
+],
+```
+
+### Inputs
+
+Override custom field inputs with your own components:
+
+```tsx
+inputs: [
+  {
+    id: 'my-custom-color-picker',
+    component: ColorPickerInput,
+  },
+],
+```
+
+### Navigation
+
+Add navigation groups and links:
+
+```tsx
+navMenuGroups: [
+  {
+    id: 'my-plugin-group',
+    label: 'My Plugin',
+    placement: 'after:assortment-group',
+  },
+],
+navMenuLinks: [
+  {
+    id: 'my-plugin-link',
+    labelId: 'nav.myPlugin',
+    href: '',
+    groupId: 'assortment-group',  // Use BASE_GROUP_ID values
+    icon: ListIcon,
+  },
+],
+```
+
+### Top Navigation
+
+Add components to the top navigation bar:
+
+```tsx
+topNavigationComponents: [
+  { id: 'my-status-indicator', component: StatusIndicator },
+],
+topNavigationActionsMenu: [
+  { label: 'Quick Action', onClick: () => doSomething(), icon: ZapIcon },
+],
+```
+
+### Notifications
+
+Register polling-based notifications:
+
+```tsx
+notifications: [
+  {
+    id: 'pending-reviews',
+    fetch: async () => {
+      const result = await apiClient('query')({
+        pendingReviews: [
+          {},
+          { totalItems: true },
+        ],
+      });
+      return { count: result.pendingReviews.totalItems };
+    },
+    interval: 30000,   // Poll every 30 seconds
+    placements: {
+      main: (data) => ({
+        name: 'pending-reviews',
+        title: 'Pending Reviews',
+        description: `${data.count} reviews need approval`,
+        icon: <StarIcon />,
+        when: (data) => data.count > 0,
+      }),
+      navigation: [
+        {
+          id: 'my-plugin-link',
+          component: (data) => <Badge>{data.count}</Badge>,
+        },
+      ],
+    },
+  },
+],
+```
+
+### Translations
+
+Register i18n translation bundles for your plugin:
+
+```tsx
+translations: {
+  ns: 'my-plugin',
+  data: {
+    en: { 'my-plugin': { nav: { myPlugin: 'My Plugin' } } },
+    pl: { 'my-plugin': { nav: { myPlugin: 'Moja wtyczka' } } },
+  },
+},
+```
+
+## Location IDs
+
+Location IDs are string identifiers that target specific views in the admin panel.
+
+### List Locations (21)
+
+Used with `tables` to extend list views:
+
+| Location ID | Entity Type |
+|---|---|
+| `assets-list-view` | Asset |
+| `admins-list-view` | Administrator |
+| `channels-list-view` | Channel |
+| `collections-list-view` | Collection |
+| `countries-list-view` | Country |
+| `customerGroups-list-view` | CustomerGroup |
+| `customers-list-view` | Customer |
+| `facets-list-view` | Facet |
+| `facet-values-list` | FacetValue |
+| `orders-list-view` | Order |
+| `paymentMethods-list-view` | PaymentMethod |
+| `products-list-view` | Product |
+| `productVariants-list-view` | ProductVariant |
+| `promotions-list-view` | Promotion |
+| `roles-list-view` | Role |
+| `sellers-list-view` | Seller |
+| `shippingMethods-list-view` | ShippingMethod |
+| `stockLocations-list` | StockLocation |
+| `stockLocations-list-view` | StockLocation |
+| `taxCategories-list-view` | TaxCategory |
+| `taxRates-list-view` | TaxRate |
+| `zones-list-view` | Zone |
+
+### Detail Locations (20)
+
+Used with `tabs`, `actions`, and `components` to extend detail views:
+
+| Location ID | Entity Type |
+|---|---|
+| `admins-detail-view` | Administrator |
+| `channels-detail-view` | Channel |
+| `collections-detail-view` | Collection |
+| `countries-detail-view` | Country |
+| `customerGroups-detail-view` | CustomerGroup |
+| `customers-detail-view` | Customer |
+| `facets-detail-view` | Facet |
+| `globalSettings-detail-view` | GlobalSettings |
+| `orders-detail-view` | Order |
+| `orders-summary` | Order |
+| `paymentMethods-detail-view` | PaymentMethod |
+| `products-detail-view` | Product |
+| `promotions-detail-view` | Promotion |
+| `roles-detail-view` | Role |
+| `sellers-detail-view` | Seller |
+| `shippingMethods-detail-view` | ShippingMethod |
+| `stockLocations-detail-view` | StockLocation |
+| `taxCategories-detail-view` | TaxCategory |
+| `taxRates-detail-view` | TaxRate |
+| `zones-detail-view` | Zone |
+
+<Callout type="info">
+To inject into the **sidebar** of a detail view, append `-sidebar` to the location ID. For example, `products-detail-view-sidebar`.
+</Callout>
+
+### Modal Locations
+
+| Location ID | Type |
+|---|---|
+| `manual-order-state` | Order state transition modal |
+
+### Navigation Group IDs
+
+Use the `BASE_GROUP_ID` enum values to target existing navigation groups:
+
+```ts
+import { BASE_GROUP_ID } from '@deenruv/react-ui-devkit';
+
+// Available group IDs:
+BASE_GROUP_ID.SHOP          // 'shop-group'
+BASE_GROUP_ID.ASSORTMENT    // 'assortment-group'
+BASE_GROUP_ID.USERS         // 'users-group'
+BASE_GROUP_ID.PROMOTIONS    // 'promotions-group'
+BASE_GROUP_ID.SHIPPING      // 'shipping-group'
+BASE_GROUP_ID.SETTINGS      // 'settings-group'
+```
+
+## Full Plugin Example
+
+Here is a complete example of a plugin that uses all major extension points:
+
+```tsx title="src/plugin-ui/index.tsx"
+import { createDeenruvUIPlugin, BASE_GROUP_ID, apiClient } from '@deenruv/react-ui-devkit';
+import { StarIcon, ListIcon } from 'lucide-react';
+import { ReviewsListPage } from './pages/ReviewsListPage';
+import { ReviewDetailPage } from './pages/ReviewDetailPage';
+import { ProductReviewsTab } from './components/ProductReviewsTab';
+import { ReviewsSidebar } from './components/ReviewsSidebar';
+import { ReviewsWidget } from './components/ReviewsWidget';
+import en from './locales/en';
+import pl from './locales/pl';
+
+const PLUGIN_NAME = 'reviews-plugin-ui';
+
+export const ReviewsPlugin = createDeenruvUIPlugin({
+  name: PLUGIN_NAME,
+  version: '1.0.0',
+
+  translations: {
+    ns: 'reviews',
+    data: { en, pl },
+  },
+
+  pages: [
+    { path: '', element: <ReviewsListPage /> },
+    { path: ':id', element: <ReviewDetailPage /> },
+  ],
+
+  navMenuLinks: [
+    {
+      id: 'reviews-link',
+      labelId: 'nav.reviews',
+      href: '',
+      groupId: BASE_GROUP_ID.ASSORTMENT,
+      icon: StarIcon,
+    },
+  ],
+
+  tabs: [
+    {
+      locationId: 'products-detail-view',
+      tab: {
+        id: 'reviews',
+        label: 'Reviews',
+        component: ProductReviewsTab,
+      },
+    },
+  ],
+
+  components: [
+    {
+      id: 'products-detail-view-sidebar',
+      tab: 'reviews',
+      component: ReviewsSidebar,
+    },
+  ],
+
+  widgets: [
+    {
+      id: 'recent-reviews',
+      title: 'Recent Reviews',
+      component: ReviewsWidget,
+      size: { width: 2, height: 1 },
+    },
+  ],
+
+  notifications: [
+    {
+      id: 'pending-reviews',
+      fetch: async () => {
+        const result = await apiClient('query')({
+          pendingReviews: [{}, { totalItems: true }],
+        });
+        return { count: result.pendingReviews.totalItems };
+      },
+      interval: 30000,
+      placements: {
+        main: (data) => ({
+          name: 'pending-reviews',
+          title: 'Pending Reviews',
+          description: `${data.count} reviews awaiting approval`,
+          icon: <StarIcon />,
+          when: (data) => data.count > 0,
+        }),
+      },
+    },
+  ],
+});
+```
+
+## Plugin View Markers
+
+Press **Ctrl+Q** in the admin panel to toggle plugin view markers. This highlights all injection points in the current view, making it easy to see where your plugin components will be rendered.

@@ -1,0 +1,109 @@
+---
+title: 'Admin UI Development Overview'
+description: 'Learn how to extend the Deenruv admin panel with custom plugins using @deenruv/react-ui-devkit'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The `@deenruv/react-ui-devkit` package is the official UI plugin development kit for the Deenruv Admin Panel. It provides everything you need to build type-safe plugins that extend the admin dashboard with custom pages, components, navigation, widgets, notifications, and more.
+
+## What Does react-ui-devkit Provide?
+
+### Plugin System
+
+A type-safe plugin definition system with **15 extension points** that let you inject custom functionality into every part of the admin panel — pages, tables, tabs, actions, sidebars, navigation, dashboard widgets, notifications, and more.
+
+### Location-Based Injection
+
+A comprehensive set of injection locations across the admin panel:
+
+- **21 list locations** — extend list views for products, orders, customers, and more
+- **20 detail locations** — extend detail/edit views with tabs, sidebar components, and actions
+- **Modal locations** — inject into admin panel modals
+
+### Component Library
+
+Over **70 components** organized by complexity:
+
+| Category | Count | Description |
+|---|---|---|
+| Atom | 42 | shadcn/ui-based primitives (Button, Input, Table, Dialog, etc.) |
+| Molecule | 13 | Composed components (SearchInput, SortButton, ListTable, etc.) |
+| Universal | 15 | Business-logic components (RichTextEditor, AssetPicker, etc.) |
+| Template | 2 | Full page layouts (DetailList, DetailView) |
+| Core | 4 | Injection markers and renderers |
+
+### Hooks
+
+Purpose-built hooks for admin panel development:
+
+- **`useGFFLP`** — Type-safe form state management driven by GraphQL ModelTypes
+- **`useList`** — Paginated list management with sorting, filtering, and URL search params
+- **`useTranslation`** — i18n hook bound to the Deenruv i18n instance
+- **`useAssets`** — Asset management with pagination and search
+- Plus: `useDebounce`, `useLocalStorage`, `useValidators`, `useErrorHandler`
+
+### GraphQL Client
+
+Zeus Thunder-based GraphQL client with automatic `customFields` injection:
+
+- **`apiClient`** — Standard queries and mutations
+- **`apiUploadClient`** — File upload mutations
+- **`useQuery` / `useLazyQuery` / `useMutation`** — React hooks for declarative data fetching
+
+### State Management
+
+Zustand-based global stores:
+
+- **`useSettings`** — Language, theme, auth token, selected channel
+- **`useServer`** — Server config, channels, permissions
+- **`useOrder`** — Order detail view state
+- **`useGlobalSearch`** — Global search state
+
+### Navigation & Routing
+
+Type-safe route helpers and customizable admin navigation with group IDs.
+
+### i18n
+
+Built-in translation system with per-plugin namespaces.
+
+### Dashboard Widgets
+
+Resizable, configurable dashboard widgets that plugins can register.
+
+### Notifications
+
+Polling-based notification system with configurable placements.
+
+## Architecture Overview
+
+A typical Deenruv plugin with UI consists of two parts:
+
+```
+plugins/my-plugin/
+  src/
+    my-plugin.plugin.ts     # Server-side plugin (@DeenruvPlugin decorator)
+    plugin-ui/
+      index.tsx              # UI plugin definition (createDeenruvUIPlugin)
+      components/            # React components
+      pages/                 # Page components for routes
+      locales/               # Translation files
+      graphql/               # Queries, mutations, selectors
+```
+
+The **server plugin** handles backend logic (entities, services, resolvers), while the **UI plugin** defines how the admin panel is extended (pages, navigation, components).
+
+<Callout type="info">
+Plugin UI pages are automatically prefixed with `admin-ui/extensions/{plugin-name}/`, so you only need to define relative paths within your plugin.
+</Callout>
+
+## Next Steps
+
+- [Getting Started](/docs/guides/extending-the-admin-ui/getting-started) — Create your first admin UI plugin
+- [Plugin System](/docs/guides/extending-the-admin-ui/plugin-system) — Deep dive into all extension points
+- [Hooks](/docs/guides/extending-the-admin-ui/hooks) — Form, list, and translation hooks
+- [Components](/docs/guides/extending-the-admin-ui/components) — Full component catalog
+- [Templates](/docs/guides/extending-the-admin-ui/templates) — DetailList and DetailView page layouts
+- [GraphQL Client](/docs/guides/extending-the-admin-ui/graphql-client) — Data fetching and mutations
+- [State Management](/docs/guides/extending-the-admin-ui/state-management) — Zustand stores

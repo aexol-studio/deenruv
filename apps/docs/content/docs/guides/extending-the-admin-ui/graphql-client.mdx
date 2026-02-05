@@ -1,0 +1,348 @@
+---
+title: 'GraphQL Client'
+description: 'GraphQL integration in @deenruv/react-ui-devkit — apiClient, hooks, and the selectors pattern'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+The `@deenruv/react-ui-devkit` provides a GraphQL client built on Zeus Thunder. It supports standard queries, mutations, file uploads, and automatic `customFields` injection into all queries.
+
+## `apiClient`
+
+The primary GraphQL client for queries and mutations. Uses the Zeus Thunder syntax for type-safe operations.
+
+### Queries
+
+```ts
+import { apiClient } from '@deenruv/react-ui-devkit';
+
+// Simple query
+const result = await apiClient('query')({
+  product: [
+    { id: 'product-123' },
+    {
+      id: true,
+      name: true,
+      slug: true,
+      description: true,
+      enabled: true,
+      featuredAsset: {
+        id: true,
+        preview: true,
+      },
+      // customFields are automatically injected!
+    },
+  ],
+});
+
+console.log(result.product.name);
+```
+
+### Mutations
+
+```ts
+import { apiClient } from '@deenruv/react-ui-devkit';
+
+const updated = await apiClient('mutation')({
+  updateProduct: [
+    {
+      input: {
+        id: 'product-123',
+        enabled: true,
+        translations: [
+          {
+            languageCode: LanguageCode.en,
+            name: 'Updated Product',
+            slug: 'updated-product',
+            description: 'New description',
+          },
+        ],
+      },
+    },
+    {
+      id: true,
+      name: true,
+      slug: true,
+    },
+  ],
+});
+```
+
+### List Queries with Pagination
+
+```ts
+const result = await apiClient('query')({
+  products: [
+    {
+      options: {
+        take: 25,
+        skip: 0,
+        sort: { name: SortOrder.ASC },
+        filter: { name: { contains: 'hoodie' } },
+      },
+    },
+    {
+      totalItems: true,
+      items: {
+        id: true,
+        name: true,
+        slug: true,
+        enabled: true,
+      },
+    },
+  ],
+});
+
+console.log(result.products.totalItems);
+console.log(result.products.items);
+```
+
+<Callout type="info">
+**Custom fields are auto-injected.** The `apiClient` automatically adds `customFields` selection to all queries via GraphQL AST manipulation. You do not need to manually request them.
+</Callout>
+
+## `apiUploadClient`
+
+A specialized client for file upload mutations using multipart form data:
+
+```ts
+import { apiUploadClient } from '@deenruv/react-ui-devkit';
+
+const result = await apiUploadClient('mutation')({
+  createAssets: [
+    {
+      input: [
+        { file: myFile },     // File object from input/drag-drop
+      ],
+    },
+    {
+      '...on Asset': {
+        id: true,
+        name: true,
+        source: true,
+        preview: true,
+      },
+      '...on MimeTypeError': {
+        errorCode: true,
+        message: true,
+      },
+    },
+  ],
+});
+```
+
+## React Hooks
+
+### `useQuery`
+
+Declarative GraphQL queries that execute automatically on mount and re-execute when dependencies change:
+
+```ts
+import { useQuery } from '@deenruv/react-ui-devkit';
+
+function ProductDetail({ productId }: { productId: string }) {
+  const { data, loading, error, runQuery } = useQuery(
+    (vars) =>
+      apiClient('query')({
+        product: [
+          { id: vars.id },
+          {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+          },
+        ],
+      }),
+    {
+      initialVariables: { id: productId },
+      onSuccess: (data) => {
+        // Populate form with fetched data
+        setField('name', data.product.name);
+        setField('slug', data.product.slug);
+      },
+      stopRefetchOnChannelChange: false,
+    },
+  );
+
+  if (loading) return <Spinner />;
+  if (error) return <ErrorMessage message={error} />;
+
+  return <div>{data?.product.name}</div>;
+}
+```
+
+#### Options
+
+| Option | Type | Description |
+|---|---|---|
+| `initialVariables` | `object` | Variables passed to the query on first execution |
+| `onSuccess` | `(data) => void` | Callback when query completes successfully |
+| `stopRefetchOnChannelChange` | `boolean` | If `true`, don't refetch when the active channel changes (default: `false`) |
+
+#### Return Value
+
+| Property | Type | Description |
+|---|---|---|
+| `data` | `T \| undefined` | Query result data |
+| `loading` | `boolean` | Whether the query is in progress |
+| `error` | `string \| undefined` | Error message if query failed |
+| `runQuery` | `(vars?) => Promise<T>` | Manually re-execute the query with optional new variables |
+
+### `useLazyQuery`
+
+Like `useQuery`, but does **not** execute automatically. The query only runs when you call the returned function:
+
+```ts
+import { useLazyQuery } from '@deenruv/react-ui-devkit';
+
+function SearchComponent() {
+  const { data, loading, runQuery } = useLazyQuery((vars) =>
+    apiClient('query')({
+      search: [
+        { input: { term: vars.term, take: 10 } },
+        {
+          totalItems: true,
+          items: { productId: true, productName: true },
+        },
+      ],
+    }),
+  );
+
+  const handleSearch = (term: string) => {
+    runQuery({ term });
+  };
+
+  return (
+    <div>
+      <SearchInput onChange={handleSearch} />
+      {loading && <Spinner />}
+      {data?.search.items.map((item) => (
+        <div key={item.productId}>{item.productName}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+### `useMutation`
+
+React hook for GraphQL mutations:
+
+```ts
+import { useMutation } from '@deenruv/react-ui-devkit';
+
+function DeleteButton({ productId }: { productId: string }) {
+  const { loading, runMutation } = useMutation((vars) =>
+    apiClient('mutation')({
+      deleteProduct: [
+        { id: vars.id },
+        { result: true },
+      ],
+    }),
+  );
+
+  return (
+    <Button
+      disabled={loading}
+      onClick={() => runMutation({ id: productId })}
+    >
+      Delete
+    </Button>
+  );
+}
+```
+
+## Selectors Pattern
+
+For complex or reused query selections, extract them into selector objects:
+
+```ts title="graphql/selectors.ts"
+export const productSelector = {
+  id: true,
+  name: true,
+  slug: true,
+  description: true,
+  enabled: true,
+  featuredAsset: {
+    id: true,
+    preview: true,
+  },
+  variants: {
+    id: true,
+    name: true,
+    sku: true,
+    priceWithTax: true,
+    stockOnHand: true,
+  },
+} as const;
+
+export const productListSelector = {
+  totalItems: true,
+  items: {
+    id: true,
+    name: true,
+    slug: true,
+    enabled: true,
+    featuredAsset: { preview: true },
+  },
+} as const;
+```
+
+```ts title="graphql/queries.ts"
+import { apiClient } from '@deenruv/react-ui-devkit';
+import { productSelector, productListSelector } from './selectors';
+
+export const getProduct = (id: string) =>
+  apiClient('query')({
+    product: [{ id }, productSelector],
+  });
+
+export const getProducts = (options: ListQueryOptions) =>
+  apiClient('query')({
+    products: [{ options }, productListSelector],
+  });
+```
+
+```ts title="graphql/mutations.ts"
+import { apiClient } from '@deenruv/react-ui-devkit';
+import { productSelector } from './selectors';
+
+export const updateProduct = (input: UpdateProductInput) =>
+  apiClient('mutation')({
+    updateProduct: [{ input }, productSelector],
+  });
+```
+
+This pattern keeps your GraphQL selections DRY and makes it easy to ensure consistent data shapes across queries and mutations.
+
+## `deenruvAPICall`
+
+The low-level API call function used internally by `apiClient` and `apiUploadClient`. It handles:
+
+- **Authentication** — Injects `Bearer` token from the settings store
+- **Channel token** — Injects the active channel token
+- **Language code** — Passes the current language code as a parameter
+- **Custom fields injection** — Manipulates the GraphQL AST to add `customFields` selection
+- **Error handling** — Parses and normalizes GraphQL errors
+
+<Callout type="warn">
+You typically don't need to use `deenruvAPICall` directly. Use `apiClient` or `apiUploadClient` instead, which provide a higher-level type-safe API.
+</Callout>
+
+## Organizing GraphQL Code
+
+Follow this convention for plugin GraphQL code:
+
+```
+plugin-ui/
+  graphql/
+    index.ts           # Re-exports
+    queries.ts         # Query functions
+    mutations.ts       # Mutation functions
+    selectors.ts       # Reusable selection objects
+    scalars.ts         # Custom scalar definitions (if needed)
+```
+
+This keeps GraphQL concerns separated from component code and makes queries easy to find and reuse.

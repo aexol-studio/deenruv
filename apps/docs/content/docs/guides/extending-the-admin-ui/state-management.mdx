@@ -1,0 +1,243 @@
+---
+title: 'State Management'
+description: 'Zustand-based global stores in @deenruv/react-ui-devkit — settings, server, orders, and more'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The `@deenruv/react-ui-devkit` uses Zustand for global state management. Several stores are provided out of the box for accessing admin panel state such as authentication, channel selection, server configuration, and more.
+
+## `useSettings`
+
+The main persisted settings store for the admin panel. It holds authentication state, UI preferences, and the active channel/language.
+
+```ts
+import { useSettings } from '@deenruv/react-ui-devkit';
+
+function MyComponent() {
+  // Select individual values for optimal re-renders
+  const token = useSettings((s) => s.token);
+  const selectedChannel = useSettings((s) => s.selectedChannel);
+  const translationsLanguage = useSettings((s) => s.translationsLanguage);
+  const logIn = useSettings((s) => s.logIn);
+  const logOut = useSettings((s) => s.logOut);
+
+  // Check authentication
+  if (!token) {
+    return <div>Not authenticated</div>;
+  }
+
+  return (
+    <div>
+      <p>Channel: {selectedChannel?.code}</p>
+      <p>Language: {translationsLanguage}</p>
+      <Button onClick={logOut}>Log Out</Button>
+    </div>
+  );
+}
+```
+
+### Key Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `token` | `string \| null` | Current auth Bearer token |
+| `selectedChannel` | `Channel \| null` | Currently active channel |
+| `translationsLanguage` | `LanguageCode` | Language for entity translations |
+| `theme` | `'light' \| 'dark'` | Current UI theme |
+| `logIn` | `(credentials) => Promise<void>` | Log in action |
+| `logOut` | `() => void` | Log out action |
+
+<Callout type="info">
+`useSettings` is persisted — its state survives page reloads. Use Zustand's selector pattern (as shown above) to only subscribe to the specific values your component needs. This prevents unnecessary re-renders.
+</Callout>
+
+## `useServer`
+
+Holds server connection state, available channels, permissions, and global configuration:
+
+```ts
+import { useServer } from '@deenruv/react-ui-devkit';
+
+function ChannelPicker() {
+  const channels = useServer((s) => s.channels);
+  const permissions = useServer((s) => s.permissions);
+  const serverConfig = useServer((s) => s.serverConfig);
+
+  return (
+    <div>
+      <p>Available channels: {channels.length}</p>
+      <p>Custom fields config: {JSON.stringify(serverConfig?.customFieldConfig)}</p>
+      {permissions.includes('CreateProduct') && (
+        <Button>Create Product</Button>
+      )}
+    </div>
+  );
+}
+```
+
+### Key Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `channels` | `Channel[]` | All available channels |
+| `permissions` | `string[]` | Current user's permissions |
+| `serverConfig` | `ServerConfig` | Server configuration including custom field definitions |
+
+## `useOrder`
+
+Order-specific state management for the order detail view:
+
+```ts
+import { useOrder } from '@deenruv/react-ui-devkit';
+
+function OrderActions() {
+  const order = useOrder((s) => s.order);
+  const refetch = useOrder((s) => s.refetch);
+
+  return (
+    <div>
+      <p>Order #{order?.code} — {order?.state}</p>
+      <Button onClick={refetch}>Refresh</Button>
+    </div>
+  );
+}
+```
+
+## `useGlobalSearch`
+
+Global search state for the admin panel search bar:
+
+```ts
+import { useGlobalSearch } from '@deenruv/react-ui-devkit';
+
+function SearchComponent() {
+  const searchTerm = useGlobalSearch((s) => s.searchTerm);
+  const setSearchTerm = useGlobalSearch((s) => s.setSearchTerm);
+  const results = useGlobalSearch((s) => s.results);
+
+  return (
+    <div>
+      <Input
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search..."
+      />
+      {results.map((result) => (
+        <div key={result.id}>{result.name}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+## `GlobalStoreProvider` / `useGlobalStore`
+
+Context-based global store provider for app-wide state. Used by the admin panel internally:
+
+```ts
+import { useGlobalStore } from '@deenruv/react-ui-devkit';
+
+function MyComponent() {
+  const globalState = useGlobalStore();
+  // Access app-wide state
+}
+```
+
+## When to Use Stores vs Plugin Config
+
+| Use Case | Approach |
+|---|---|
+| Access auth token, language, channel | `useSettings` |
+| Check user permissions | `useServer` |
+| Access server configuration | `useServer` |
+| Store plugin-specific settings | Plugin `config` property |
+| Temporary UI state | React `useState` or `useReducer` |
+| Form state | `useGFFLP` or `useFFLP` |
+| List/pagination state | `useList` |
+
+### Plugin Config for Custom Settings
+
+If your plugin needs its own configuration, use the `config` extension point:
+
+```tsx
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+
+interface MyPluginConfig {
+  apiEndpoint: string;
+  maxItems: number;
+  features: {
+    enableNotifications: boolean;
+    enableWidgets: boolean;
+  };
+}
+
+export const MyPlugin = createDeenruvUIPlugin<MyPluginConfig>({
+  name: 'my-plugin-ui',
+  version: '1.0.0',
+  config: {
+    apiEndpoint: '/api/my-plugin',
+    maxItems: 50,
+    features: {
+      enableNotifications: true,
+      enableWidgets: false,
+    },
+  },
+  // ...other extension points
+});
+```
+
+## Best Practices
+
+### Use Selectors for Performance
+
+Always use selector functions with Zustand stores to prevent unnecessary re-renders:
+
+```ts
+// ✅ Good — only re-renders when token changes
+const token = useSettings((s) => s.token);
+
+// ❌ Bad — re-renders on every store update
+const settings = useSettings();
+const token = settings.token;
+```
+
+### Derive State When Possible
+
+Instead of storing derived values, compute them from existing store state:
+
+```ts
+function MyComponent() {
+  const token = useSettings((s) => s.token);
+  const isAuthenticated = !!token;   // Derived, not stored
+
+  const permissions = useServer((s) => s.permissions);
+  const canCreateProducts = permissions.includes('CreateProduct');  // Derived
+}
+```
+
+### Combine with React Query Patterns
+
+The Zustand stores work well alongside the `useQuery` / `useMutation` hooks for data fetching:
+
+```ts
+function ProductPage() {
+  // Global state from stores
+  const channel = useSettings((s) => s.selectedChannel);
+  const language = useSettings((s) => s.translationsLanguage);
+
+  // Data fetching with hooks
+  const { data, loading } = useQuery(
+    (vars) => apiClient('query')({
+      product: [{ id: vars.id }, productSelector],
+    }),
+    { initialVariables: { id: productId } },
+  );
+
+  // Form state with useGFFLP
+  const { state, setField } = useGFFLP('Product', 'name', 'slug')({
+    name: { initialValue: data?.product.name ?? '' },
+    slug: { initialValue: data?.product.slug ?? '' },
+  });
+}
+```

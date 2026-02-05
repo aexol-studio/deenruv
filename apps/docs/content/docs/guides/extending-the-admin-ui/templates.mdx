@@ -1,0 +1,401 @@
+---
+title: 'Templates'
+description: 'Deep dive into DetailList and DetailView — the key components for building admin pages'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+The two template components — `DetailList` and `DetailView` — are the foundation for building admin pages in Deenruv. They provide complete page layouts with built-in support for the plugin injection system, so any plugin can extend your pages with additional columns, tabs, sidebar components, and actions.
+
+## `DetailList` — List Pages
+
+`DetailList` creates a full-featured list page with:
+
+- Data table with configurable columns
+- Pagination (URL search param–based)
+- Column sorting
+- Filtering
+- Bulk actions
+- Row actions
+- Plugin injection points (`ListViewMarker`)
+
+### Basic Usage
+
+```tsx
+import { DetailList, apiClient, useTranslation } from '@deenruv/react-ui-devkit';
+
+export function ProductListPage() {
+  const { t } = useTranslation('catalog');
+
+  return (
+    <DetailList
+      title={t('products.title')}
+      listType="products"
+      route={(options) =>
+        apiClient('query')({
+          products: [
+            {
+              options: {
+                take: options.perPage,
+                skip: (options.page - 1) * options.perPage,
+                sort: options.sort
+                  ? { [options.sort.key]: options.sort.sortDir }
+                  : undefined,
+                filter: options.filter,
+              },
+            },
+            {
+              totalItems: true,
+              items: {
+                id: true,
+                name: true,
+                slug: true,
+                enabled: true,
+                featuredAsset: { preview: true },
+              },
+            },
+          ],
+        }).then((r) => r.products)
+      }
+      columns={[
+        {
+          header: t('products.name'),
+          accessorKey: 'name',
+        },
+        {
+          header: t('products.slug'),
+          accessorKey: 'slug',
+        },
+        {
+          header: t('products.enabled'),
+          accessorKey: 'enabled',
+          cell: ({ row }) => (
+            <Badge variant={row.original.enabled ? 'default' : 'secondary'}>
+              {row.original.enabled ? 'Active' : 'Draft'}
+            </Badge>
+          ),
+        },
+      ]}
+    />
+  );
+}
+```
+
+### With Sorting and Filtering
+
+```tsx
+<DetailList
+  title="Orders"
+  listType="orders"
+  route={(options) =>
+    apiClient('query')({
+      orders: [
+        {
+          options: {
+            take: options.perPage,
+            skip: (options.page - 1) * options.perPage,
+            sort: options.sort
+              ? { [options.sort.key]: options.sort.sortDir }
+              : undefined,
+            filter: options.filter,
+          },
+        },
+        {
+          totalItems: true,
+          items: {
+            id: true,
+            code: true,
+            state: true,
+            totalWithTax: true,
+            orderPlacedAt: true,
+            customer: { firstName: true, lastName: true },
+          },
+        },
+      ],
+    }).then((r) => r.orders)
+  }
+  columns={[
+    { header: 'Code', accessorKey: 'code' },
+    {
+      header: 'Customer',
+      accessorKey: 'customer',
+      cell: ({ row }) => {
+        const c = row.original.customer;
+        return c ? `${c.firstName} ${c.lastName}` : '—';
+      },
+    },
+    {
+      header: 'State',
+      accessorKey: 'state',
+      cell: ({ row }) => <OrderStateBadge state={row.original.state} />,
+    },
+    {
+      header: 'Total',
+      accessorKey: 'totalWithTax',
+      cell: ({ row }) => formatCurrency(row.original.totalWithTax),
+    },
+  ]}
+/>
+```
+
+### With Bulk Actions and Row Actions
+
+```tsx
+<DetailList
+  title="Reviews"
+  listType="reviews"
+  route={fetchReviews}
+  columns={reviewColumns}
+  bulkActions={[
+    {
+      label: 'Approve Selected',
+      onClick: async (selectedRows) => {
+        await apiClient('mutation')({
+          approveReviews: [
+            { ids: selectedRows.map((r) => r.id) },
+            { success: true },
+          ],
+        });
+      },
+    },
+    {
+      label: 'Reject Selected',
+      onClick: async (selectedRows) => {
+        await apiClient('mutation')({
+          rejectReviews: [
+            { ids: selectedRows.map((r) => r.id) },
+            { success: true },
+          ],
+        });
+      },
+    },
+  ]}
+  rowActions={[
+    {
+      label: 'View',
+      onClick: (row) => navigate(ROUTES.to(row.id)),
+    },
+    {
+      label: 'Delete',
+      onClick: async (row) => {
+        await apiClient('mutation')({
+          deleteReview: [{ id: row.id }, { success: true }],
+        });
+      },
+    },
+  ]}
+/>
+```
+
+### Plugin Extensibility
+
+`DetailList` automatically renders a `ListViewMarker` based on the `listType` prop. Other plugins can extend your list by targeting the corresponding list location ID:
+
+```tsx
+// In your list page
+<DetailList listType="products" ... />
+
+// In another plugin — extending the products list
+tables: [
+  {
+    locationId: 'products-list-view',
+    columns: [
+      { header: 'Reviews', accessorKey: 'customFields.reviewCount' },
+    ],
+  },
+],
+```
+
+## `DetailView` — Detail/Edit Pages
+
+`DetailView` creates a detail page layout with:
+
+- Tab navigation
+- Sidebar area
+- Action buttons (inline and dropdown)
+- Plugin injection points (`DetailViewMarker`)
+- Form integration
+
+### Basic Usage
+
+```tsx
+import { DetailView, useGFFLP, apiClient, useTranslation } from '@deenruv/react-ui-devkit';
+
+export function ProductDetailPage() {
+  const { id } = useParams();
+  const { t } = useTranslation('catalog');
+
+  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+    'UpdateProductInput',
+    'name',
+    'slug',
+    'description',
+    'enabled',
+  )({
+    name: {
+      initialValue: '',
+      validate: (v) => (!v ? ['Required'] : undefined),
+    },
+    slug: { initialValue: '' },
+    description: { initialValue: '' },
+    enabled: { initialValue: true },
+  });
+
+  return (
+    <DetailView
+      title={state.name?.value || t('product.new')}
+      locationId="products-detail-view"
+      tabs={[
+        {
+          id: 'product',
+          label: t('tabs.product'),
+          content: (
+            <div className="space-y-4">
+              <PageBlock title={t('product.basicInfo')}>
+                <Input
+                  label={t('product.name')}
+                  value={state.name?.value ?? ''}
+                  onChange={(e) => setField('name', e.target.value)}
+                  error={state.name?.errors?.[0]}
+                />
+                <Input
+                  label={t('product.slug')}
+                  value={state.slug?.value ?? ''}
+                  onChange={(e) => setField('slug', e.target.value)}
+                />
+                <RichTextEditor
+                  value={state.description?.value ?? ''}
+                  onChange={(v) => setField('description', v)}
+                />
+              </PageBlock>
+            </div>
+          ),
+        },
+        {
+          id: 'variants',
+          label: t('tabs.variants'),
+          content: <VariantsTab productId={id} />,
+        },
+      ]}
+      sidebar={
+        <div className="space-y-4">
+          <CustomCard>
+            <CustomCardHeader title={t('product.status')} />
+            <Switch
+              checked={state.enabled?.value ?? true}
+              onCheckedChange={(v) => setField('enabled', v)}
+            />
+          </CustomCard>
+        </div>
+      }
+      actions={
+        <Button
+          onClick={async () => {
+            if (!checkIfAllFieldsAreValid()) return;
+            await saveProduct();
+          }}
+        >
+          {t('common.save')}
+        </Button>
+      }
+    />
+  );
+}
+```
+
+### Tab Configuration
+
+Tabs in `DetailView` support several options:
+
+```tsx
+tabs={[
+  {
+    id: 'main',
+    label: 'Main Info',
+    content: <MainInfoForm />,
+  },
+  {
+    id: 'media',
+    label: 'Media',
+    content: <MediaManager />,
+    // Hide the sidebar for this tab
+    hideSidebar: true,
+  },
+  {
+    id: 'seo',
+    label: 'SEO',
+    content: <SeoForm />,
+    // Replace sidebar content for this tab
+    sidebarReplacement: <SeoSidebar />,
+  },
+]}
+```
+
+### Plugin Extensibility
+
+`DetailView` automatically renders `DetailViewMarker` components based on the `locationId`. Other plugins can extend your detail page:
+
+```tsx
+// In your detail page
+<DetailView locationId="products-detail-view" ... />
+
+// In another plugin — adding a tab
+tabs: [
+  {
+    locationId: 'products-detail-view',
+    tab: {
+      id: 'reviews',
+      label: 'Reviews',
+      component: ProductReviewsTab,
+    },
+  },
+],
+
+// In another plugin — adding a sidebar component
+components: [
+  {
+    id: 'products-detail-view-sidebar',
+    tab: 'reviews',
+    component: ReviewsSidebar,
+  },
+],
+
+// In another plugin — adding action buttons
+actions: {
+  inline: [
+    {
+      locationId: 'products-detail-view',
+      component: ({ entity }) => (
+        <Button onClick={() => doSomething(entity.id)}>
+          Custom Action
+        </Button>
+      ),
+    },
+  ],
+},
+```
+
+## Combining Templates
+
+A typical plugin uses `DetailList` for the list page and `DetailView` for the detail page:
+
+```tsx title="src/plugin-ui/index.tsx"
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+import { ReviewsListPage } from './pages/ReviewsListPage';
+import { ReviewDetailPage } from './pages/ReviewDetailPage';
+
+export const ReviewsPlugin = createDeenruvUIPlugin({
+  name: 'reviews-plugin-ui',
+  version: '1.0.0',
+  pages: [
+    { path: '', element: <ReviewsListPage /> },       // Uses DetailList
+    { path: ':id', element: <ReviewDetailPage /> },    // Uses DetailView
+  ],
+  // ...
+});
+```
+
+<Callout type="info">
+Both `DetailList` and `DetailView` are fully compatible with the plugin injection system. Any registered plugin can extend your pages by targeting the appropriate location IDs.
+</Callout>

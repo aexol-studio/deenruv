@@ -1,0 +1,366 @@
+---
+title: 'Hooks'
+description: 'All hooks provided by @deenruv/react-ui-devkit — form management, lists, translations, assets, and more'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+The `@deenruv/react-ui-devkit` package provides a set of purpose-built React hooks for building admin UI plugins. These hooks handle common patterns like form state, paginated lists, translations, and asset management.
+
+## `useGFFLP` — Form State Management
+
+The primary form hook. `useGFFLP` (GraphQL Form Field Layout Props) creates type-safe form state driven by GraphQL `ModelTypes`. It picks specific fields from a GraphQL type and provides validation, error tracking, and state management.
+
+### Basic Usage
+
+```ts
+import { useGFFLP } from '@deenruv/react-ui-devkit';
+
+// Pick fields from the 'Product' GraphQL model type
+const {
+  state,
+  setField,
+  setState,
+  checkIfAllFieldsAreValid,
+  haveValidFields,
+  clearErrors,
+  clearAllForm,
+} = useGFFLP('Product', 'name', 'slug', 'description')({
+  name: {
+    initialValue: '',
+    validate: (value) => (!value ? ['Name is required'] : undefined),
+  },
+  slug: { initialValue: '' },
+  description: { initialValue: '' },
+});
+```
+
+### Accessing State
+
+```ts
+// Each field in state has: value, initialValue, errors, validatedValue
+const productName = state.name?.value;
+const nameErrors = state.name?.errors;        // string[] | undefined
+const isNameValid = state.name?.validatedValue; // set after validation
+```
+
+### Updating Fields
+
+```ts
+// Update a single field
+setField('name', 'My New Product');
+
+// Supports dot notation for nested fields
+setField('translations.name', 'Mon Produit');
+
+// Set all fields at once
+setState({
+  name: { value: 'Product A', initialValue: '', errors: undefined },
+  slug: { value: 'product-a', initialValue: '', errors: undefined },
+});
+```
+
+### Validation
+
+```ts
+// Run all validators and check if form is valid
+const allValid = checkIfAllFieldsAreValid();
+
+// Check current validity without triggering validators
+const isValid = haveValidFields;
+
+// Clear all validation errors
+clearErrors();
+
+// Reset entire form to initial values
+clearAllForm();
+```
+
+### Using with DetailView
+
+```tsx
+function ProductForm({ productId }: { productId: string }) {
+  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+    'UpdateProductInput',
+    'name',
+    'slug',
+    'description',
+    'enabled',
+  )({
+    name: {
+      initialValue: '',
+      validate: (v) => (!v ? ['Required'] : undefined),
+    },
+    slug: { initialValue: '' },
+    description: { initialValue: '' },
+    enabled: { initialValue: true },
+  });
+
+  const handleSave = async () => {
+    if (!checkIfAllFieldsAreValid()) return;
+    await apiClient('mutation')({
+      updateProduct: [
+        {
+          input: {
+            id: productId,
+            enabled: state.enabled?.value,
+            translations: [
+              {
+                languageCode: LanguageCode.en,
+                name: state.name?.value ?? '',
+                slug: state.slug?.value ?? '',
+                description: state.description?.value ?? '',
+              },
+            ],
+          },
+        },
+        { id: true },
+      ],
+    });
+  };
+
+  return (
+    <form>
+      <Input
+        value={state.name?.value ?? ''}
+        onChange={(e) => setField('name', e.target.value)}
+      />
+      {state.name?.errors?.map((err) => (
+        <ErrorMessage key={err}>{err}</ErrorMessage>
+      ))}
+      {/* ...more fields */}
+      <Button onClick={handleSave}>Save</Button>
+    </form>
+  );
+}
+```
+
+### Return Value Reference
+
+| Property | Type | Description |
+|---|---|---|
+| `state` | `Partial<Record<K, GFFLPFormField<T>>>` | Current form state with `value`, `initialValue`, `errors`, `validatedValue` per field |
+| `setField` | `(field, value) => void` | Update a single field (supports dot notation) |
+| `setState` | `(value) => void` | Set all fields at once |
+| `checkIfAllFieldsAreValid` | `() => boolean` | Run all validators, return validity |
+| `haveValidFields` | `boolean` | Whether all validated fields have valid values |
+| `clearErrors` | `() => void` | Clear all validation errors |
+| `clearAllForm` | `() => void` | Reset form to initial values |
+
+## `useFFLP` — Lower-Level Form Hook
+
+Used internally by `useGFFLP`. Use directly when you need form state **without** GraphQL `ModelTypes` binding:
+
+```ts
+import { useFFLP } from '@deenruv/react-ui-devkit';
+
+const { state, setField, checkIfAllFieldsAreValid } = useFFLP<{
+  email: string;
+  age: number;
+}>({
+  email: {
+    initialValue: '',
+    validate: (v) => (!v.includes('@') ? ['Invalid email'] : undefined),
+  },
+  age: { initialValue: 0 },
+});
+```
+
+## `useList` — Paginated Lists
+
+Manages paginated list state with URL search params for sorting, filtering, and pagination. Returns a pre-built `Paginate` JSX element.
+
+### Basic Usage
+
+```ts
+import { useList, apiClient } from '@deenruv/react-ui-devkit';
+
+const {
+  Paginate,           // Pre-built pagination JSX component
+  objects,            // Current page items
+  total,              // Total item count
+  setSort,            // Set sort column
+  setFilter,          // Set filter object
+  setFilterField,     // Set individual filter field
+  removeFilterField,  // Remove individual filter field
+  resetFilter,        // Clear all filters
+  optionInfo,         // Current { page, perPage, sort, filter, filterOperator }
+  refetch,            // Manual refetch
+  isFilterOn,         // Whether any filters are active
+} = useList({
+  route: (options) =>
+    apiClient('query')({
+      products: [
+        {
+          options: {
+            take: options.perPage,
+            skip: (options.page - 1) * options.perPage,
+            sort: options.sort
+              ? { [options.sort.key]: options.sort.sortDir }
+              : undefined,
+            filter: options.filter,
+          },
+        },
+        { totalItems: true, items: { id: true, name: true, slug: true } },
+      ],
+    }).then((r) => r.products),
+  listType: 'products',
+});
+```
+
+### Using with DetailList Template
+
+The `useList` hook is used internally by the `DetailList` template component. If you're building a standard list page, prefer `DetailList` for a higher-level API. Use `useList` directly when you need full control over the list layout.
+
+### Return Value Reference
+
+| Property | Type | Description |
+|---|---|---|
+| `Paginate` | `JSX.Element` | Pre-built pagination component |
+| `objects` | `T[]` | Current page items |
+| `total` | `number` | Total count across all pages |
+| `setSort` | `(sort) => void` | Set sorting column and direction |
+| `setFilter` | `(filter) => void` | Set the full filter object |
+| `setFilterField` | `(field, value) => void` | Set a single filter field |
+| `removeFilterField` | `(field) => void` | Remove a single filter field |
+| `resetFilter` | `() => void` | Clear all filters |
+| `optionInfo` | `object` | Current page, perPage, sort, filter, filterOperator |
+| `refetch` | `() => void` | Trigger a manual refetch |
+| `isFilterOn` | `boolean` | Whether any filter is active |
+
+## `useTranslation` — Internationalization
+
+<Callout type="error">
+**Never import `react-i18next` directly.** Always use `useTranslation` from `@deenruv/react-ui-devkit`. This hook binds to the global Deenruv i18n instance via `window.__DEENRUV_SETTINGS__.i18n`, ensuring your translations work correctly with the admin panel's language system.
+</Callout>
+
+### Basic Usage
+
+```ts
+import { useTranslation } from '@deenruv/react-ui-devkit';
+
+const { t, tEntity, i18n } = useTranslation('my-plugin-namespace');
+
+// Standard translation
+t('my.key');                                    // "My translated string"
+
+// Entity-aware translation with pluralization
+tEntity('entity.title', 'Product', 'one');      // "Product"
+tEntity('entity.title', 'Product', 'many');     // "Products"
+tEntity('entity.title', 'Product', 5);          // "5 Products"
+```
+
+### In Components
+
+```tsx
+function MyComponent() {
+  const { t } = useTranslation('reviews');
+
+  return (
+    <div>
+      <h1>{t('page.title')}</h1>
+      <p>{t('page.description')}</p>
+    </div>
+  );
+}
+```
+
+## `useAssets` — Asset Management
+
+Manages asset browsing with pagination, text search, and tag filtering:
+
+```ts
+import { useAssets } from '@deenruv/react-ui-devkit';
+
+const {
+  assets,           // Current page of assets
+  isPending,        // Loading state
+  error,            // Error message
+  totalItems,       // Total asset count
+  refetchData,      // Manual refetch
+  page, setPage,
+  perPage, setPerPage,
+  searchTerm, setSearchTerm,
+  searchTags, setSearchTags,
+  totalPages,
+} = useAssets();
+```
+
+### Return Value Reference
+
+| Property | Type | Description |
+|---|---|---|
+| `assets` | `Asset[]` | Current page of assets |
+| `isPending` | `boolean` | Whether a fetch is in progress |
+| `error` | `string \| undefined` | Error message if fetch failed |
+| `totalItems` | `number` | Total number of assets |
+| `refetchData` | `() => void` | Trigger manual refetch |
+| `page` / `setPage` | `number` / `(n) => void` | Current page |
+| `perPage` / `setPerPage` | `number` / `(n) => void` | Items per page |
+| `searchTerm` / `setSearchTerm` | `string` / `(s) => void` | Text search query |
+| `searchTags` / `setSearchTags` | `string[]` / `(tags) => void` | Tag filter |
+| `totalPages` | `number` | Calculated total pages |
+
+## `useDebounce`
+
+Re-exported from the `use-debounce` package. Debounces a value with a configurable delay:
+
+```ts
+import { useDebounce } from '@deenruv/react-ui-devkit';
+
+const [debouncedSearch] = useDebounce(searchTerm, 300);
+```
+
+## `useLocalStorage`
+
+Persistent state management using browser localStorage:
+
+```ts
+import { useLocalStorage } from '@deenruv/react-ui-devkit';
+
+const [viewMode, setViewMode] = useLocalStorage('plugin-view-mode', 'grid');
+```
+
+## `useValidators`
+
+Provides common validation functions for use with form hooks:
+
+```ts
+import { useValidators } from '@deenruv/react-ui-devkit';
+
+const { required, email, minLength, maxLength } = useValidators();
+
+const { state } = useGFFLP('Customer', 'emailAddress')({
+  emailAddress: {
+    initialValue: '',
+    validate: email,
+  },
+});
+```
+
+## `useErrorHandler`
+
+Centralized error handling for GraphQL and API errors:
+
+```ts
+import { useErrorHandler } from '@deenruv/react-ui-devkit';
+
+const { handleError } = useErrorHandler();
+
+try {
+  await apiClient('mutation')({ /* ... */ });
+} catch (error) {
+  handleError(error);
+}
+```
+
+## `useCustomSearchParams`
+
+Helper for managing URL search parameters in list views. Used internally by `useList`:
+
+```ts
+import { useCustomSearchParams } from '@deenruv/react-ui-devkit';
+
+const { searchParams, setSearchParam } = useCustomSearchParams();
+```

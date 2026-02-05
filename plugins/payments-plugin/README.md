@@ -1,6 +1,122 @@
-# Payments plugin
+# @deenruv/payments-plugin
 
-For documentation, see [docs.deenruv.io/reference/core-plugins/payments-plugin/](https://docs.deenruv.io/reference/core-plugins/payments-plugin/)
+A collection of payment provider integrations for Deenruv, including Stripe, Mollie, and Braintree. Each provider is a separate sub-plugin that can be used independently.
+
+## Installation
+
+```bash
+pnpm add @deenruv/payments-plugin
+```
+
+Additionally, install the client library for your chosen payment provider(s):
+
+```bash
+# Stripe
+pnpm add stripe
+
+# Mollie
+pnpm add @mollie/api-client
+
+# Braintree
+pnpm add braintree
+```
+
+## Sub-Plugins
+
+### StripePlugin
+
+Processes payments via the [Stripe](https://stripe.com/docs) Payment Intents API with webhook-based order settlement.
+
+```typescript
+import { StripePlugin } from '@deenruv/payments-plugin/package/stripe';
+
+plugins: [
+  StripePlugin.init({
+    storeCustomersInStripe: true,
+  }),
+];
+```
+
+**Options:**
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `storeCustomersInStripe` | `boolean` | Stores Deenruv customers as Stripe customers (adds `stripeCustomerId` custom field) |
+
+**API Extensions (Shop):**
+
+- `createStripePaymentIntent` mutation - Creates a Stripe PaymentIntent and returns a client secret
+
+**Webhook:** Listens at `/payments/stripe` for `payment_intent.succeeded` and `payment_intent.payment_failed` events.
+
+### MolliePlugin
+
+Processes payments via the [Mollie](https://docs.mollie.com/) Order API with support for multiple payment methods including pay-later options (Klarna).
+
+```typescript
+import { MolliePlugin } from '@deenruv/payments-plugin/package/mollie';
+
+plugins: [
+  MolliePlugin.init({
+    deenruvHost: 'https://your-deenruv-server.io',
+  }),
+];
+```
+
+**Options:**
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `deenruvHost` | `string` | Your Deenruv server host URL (used for Mollie webhooks) |
+| `enabledPaymentMethodsParams` | `fn` | Optional function to provide additional params (locale, billingCountry) to the Mollie methods API |
+
+**API Extensions (Shop):**
+
+- `createMolliePaymentIntent` mutation - Creates a Mollie payment and returns a redirect URL
+- `molliePaymentMethods` query - Lists available Mollie payment methods
+
+**API Extensions (Admin):**
+
+- Mollie-specific admin resolvers for payment management
+
+### BraintreePlugin
+
+Processes payments via [Braintree](https://www.braintreepayments.com/) with Drop-in UI integration and optional vault (stored payment methods).
+
+```typescript
+import { BraintreePlugin } from '@deenruv/payments-plugin/package/braintree';
+import { Environment } from 'braintree';
+
+plugins: [
+  BraintreePlugin.init({
+    environment: Environment.Sandbox,
+    storeCustomersInBraintree: true,
+  }),
+];
+```
+
+**Options:**
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `storeCustomersInBraintree` | `boolean` | Enables Braintree vault for stored payment methods (adds `braintreeCustomerId` custom field) |
+
+**API Extensions (Shop):**
+
+- `generateBraintreeClientToken` query - Generates a client token for the Braintree Drop-in UI
+
+## Features
+
+- Stripe Payment Intents API with webhook-based settlement
+- Mollie Order API with 20+ payment methods including pay-later (Klarna)
+- Braintree Drop-in UI with vault for stored payment methods
+- Webhook handlers for async payment confirmation
+- Customer storage in payment provider for returning customers
+- Custom fields added to Order/Customer entities as needed
+
+## Admin UI
+
+Server-only plugin. Payment methods are configured through the standard Deenruv Admin UI PaymentMethod settings.
 
 ## Development
 
