@@ -19,7 +19,7 @@ checking out the fragment should also include `customer` `shippingAddress` and `
 
 ## Add a customer
 
-Every order must be associated with a customer. If the customer is not logged in, then the [`setCustomerForOrder`](/docs/reference/graphql-api/shop/mutations#setcustomerfororder) mutation must be called. This will create a new Customer record if the provided email address does not already exist in the database.
+Every order must be associated with a customer. If the customer is not logged in, then the `setCustomerForOrder` mutation must be called. This will create a new Customer record if the provided email address does not already exist in the database.
 
 <Callout type="info">
 If the customer is already logged in, then this step is skipped.
@@ -60,7 +60,7 @@ mutation SetCustomerForOrder($input: CreateCustomerInput!) {
 
 ## Set the shipping address
 
-The [`setOrderShippingAddress`](/docs/reference/graphql-api/shop/mutations#setordershippingaddress) mutation must be called to set the shipping address for the order.
+The `setOrderShippingAddress` mutation must be called to set the shipping address for the order.
 
 <Tabs items={['Mutation', 'Variables']}>
 <Tab value="Mutation">
@@ -185,7 +185,7 @@ query GetCustomerAddresses {
 
 ## Set the shipping method
 
-Now that we know the shipping address, we can check which shipping methods are available with the [`eligibleShippingMethods`](/docs/reference/graphql-api/shop/queries#eligibleshippingmethods) query.
+Now that we know the shipping address, we can check which shipping methods are available with the `eligibleShippingMethods` query.
 
 <Tabs items={['Query', 'Result']}>
 <Tab value="Query">
@@ -233,7 +233,7 @@ query GetShippingMethods {
 The results can then be displayed to the customer so they can choose the desired shipping method. If there is only a single
 result, then it can be automatically selected.
 
-The desired shipping method's id is the passed to the [`setOrderShippingMethod`](/docs/reference/graphql-api/shop/mutations#setordershippingmethod) mutation.
+The desired shipping method's id is the passed to the `setOrderShippingMethod` mutation.
 
 ```graphql
 mutation SetShippingMethod($id: [ID!]!) {
@@ -249,7 +249,7 @@ mutation SetShippingMethod($id: [ID!]!) {
 
 ## Add payment
 
-The [`eligiblePaymentMethods`](/docs/reference/graphql-api/shop/queries#eligiblepaymentmethods) query can be used to get a list of available payment methods.
+The `eligiblePaymentMethods` query can be used to get a list of available payment methods.
 This list can then be displayed to the customer, so they can choose the desired payment method.
 
 <Tabs items={['Query', 'Result']}>
@@ -300,7 +300,7 @@ query GetPaymentMethods {
 </Tabs>
 
 Next, we need to transition the order to the `ArrangingPayment` state. This state ensures that no other changes can be made to the order
-while the payment is being arranged. The [`transitionOrderToState`](/docs/reference/graphql-api/shop/mutations#transitionordertostate) mutation is used to transition the order to the `ArrangingPayment` state.
+while the payment is being arranged. The `transitionOrderToState` mutation is used to transition the order to the `ArrangingPayment` state.
 
 <Tabs items={['Query', 'Variables']}>
 <Tab value="Query">
@@ -335,10 +335,10 @@ mutation TransitionToState($state: String!) {
 At this point, your storefront will use an integration with the payment provider to collect the customer's payment details, and then
 the exact sequence of API calls will depend on the payment integration.
 
-The [`addPaymentToOrder`](/docs/reference/graphql-api/shop/mutations#addpaymenttoorder) mutation is the general-purpose mutation for adding a payment to an order.
+The `addPaymentToOrder` mutation is the general-purpose mutation for adding a payment to an order.
 It accepts a `method` argument which must correspond to the `code` of the selected payment method, and a `metadata` argument which is a JSON object containing any additional information required by that particular integration.
 
-For example, the demo data populated in a new Deenruv installation includes a "Standard Payment" method, which uses the [`dummyPaymentHandler`](/docs/reference/typescript-api/payment/dummy-payment-handler) to simulate a payment provider. Here's how you would add a payment using this method:
+For example, the demo data populated in a new Deenruv installation includes a "Standard Payment" method, which uses the `dummyPaymentHandler` to simulate a payment provider. Here's how you would add a payment using this method:
 
 <Tabs items={['Mutation', 'Variables']}>
 <Tab value="Mutation">
@@ -376,15 +376,15 @@ Other payment integrations have specific setup instructions you must follow:
 
 ### Stripe
 
-Our [`StripePlugin docs`](/docs/reference/core-plugins/payments-plugin/stripe-plugin) describe how to set up your checkout to use Stripe.
+Our `StripePlugin` docs describe how to set up your checkout to use Stripe.
 
 ### Braintree
 
-Our [`BraintreePlugin` docs](/docs/reference/core-plugins/payments-plugin/braintree-plugin) describe how to set up your checkout to use Braintree.
+Our `BraintreePlugin` docs describe how to set up your checkout to use Braintree.
 
 ### Mollie
 
-Our [`MolliePlugin` docs](/docs/reference/core-plugins/payments-plugin/mollie-plugin) describe how to set up your checkout to use Mollie.
+Our `MolliePlugin` docs describe how to set up your checkout to use Mollie.
 
 ### Other payment providers
 
@@ -392,7 +392,7 @@ For more information on how to integrate with a payment provider, see the [Payme
 
 ## Display confirmation
 
-Once the checkout has completed, the order will no longer be considered "active" (see the [`OrderPlacedStrategy`](/docs/reference/typescript-api/orders/order-placed-strategy)) and so the [`activeOrder`](/docs/reference/graphql-api/shop/queries#activeorder) query will return `null`. Instead, the [`orderByCode`](/docs/reference/graphql-api/shop/queries#orderbycode) query can be used to retrieve the order by its code to display a confirmation page.
+Once the checkout has completed, the order will no longer be considered "active" (see the `OrderPlacedStrategy`) and so the `activeOrder` query will return `null`. Instead, the `orderByCode` query can be used to retrieve the order by its code to display a confirmation page.
 
 <Tabs items={['Query', 'Variables']}>
 <Tab value="Query">
@@ -419,5 +419,5 @@ query GetOrderByCode($code: String!) {
 
 <Callout type="info">
 By default Deenruv will only allow access to the order by code for the first 2 hours after the order is placed if the customer is not logged in.
-This is to prevent a malicious user from guessing order codes and viewing other customers' orders. This can be configured via the [`OrderByCodeAccessStrategy`](/docs/reference/typescript-api/orders/order-by-code-access-strategy).
+This is to prevent a malicious user from guessing order codes and viewing other customers' orders. This can be configured via the `OrderByCodeAccessStrategy`.
 </Callout>

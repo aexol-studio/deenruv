@@ -5,3 +5,38 @@
 @source "../**/*.{js,ts,jsx,tsx,mdx}";
 @source "../../content/**/*.mdx";
 @source "../../../node_modules/fumadocs-ui/dist/**/*.js";
+
+/* Custom landing page styles */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--fd-background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--fd-muted-foreground) / 0.3);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--fd-muted-foreground) / 0.5);
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--fd-primary) / 0.3);
+  color: hsl(var(--fd-foreground));
+}
+
+/* Tabular nums for animated counters */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

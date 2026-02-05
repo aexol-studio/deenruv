@@ -70,7 +70,7 @@ export function formatCurrency(value: number, currencyCode: string, locale?: str
 }
 ```
 
-If you are building an Admin UI extension, you can use the built-in [`LocaleCurrencyPipe`](/docs/reference/admin-ui-api/pipes/locale-currency-pipe/):
+If you are building an Admin UI extension, you can use the built-in `LocaleCurrencyPipe`:
 
 ```html title="src/plugins/my-plugin/ui/components/my-component/my.component.html"
 <div>Variant price: {{ variant.price | localeCurrency : variant.currencyCode }}</div>
@@ -82,14 +82,14 @@ Deenruv supports multiple currencies out-of-the-box. The available currencies mu
 (see the [Channels, Currencies & Prices section](/docs/guides/core-concepts/channels/#channels-currencies--prices)), and then
 a price may be set on a `ProductVariant` in each of the available currencies.
 
-When using multiple currencies, the [ProductVariantPriceSelectionStrategy](/docs/reference/typescript-api/configuration/product-variant-price-selection-strategy/)
+When using multiple currencies, the `ProductVariantPriceSelectionStrategy`
 is used to determine which of the available prices to return when fetching the details of a `ProductVariant`. The default strategy
 is to return the price in the currency of the current session request context, which is determined firstly by any `?currencyCode=XXX` query parameter
 on the request, and secondly by the `defaultCurrencyCode` of the Channel.
 
 ## The GraphQL `Money` scalar
 
-In the GraphQL APIs, we use a custom [`Money` scalar type](/docs/reference/graphql-api/admin/object-types/#money) to represent
+In the GraphQL APIs, we use a custom `Money` scalar type to represent
 all monetary values. We do this for two reasons:
 
 1. The built-in `Int` type is that the GraphQL spec imposes an upper limit of
@@ -117,7 +117,7 @@ then you should also use the `Money` scalar for any monetary values.
 ## The `@Money()` decorator
 
 When [defining new database entities](/docs/guides/developer-guide/database-entity), if you need to store a monetary value, then rather than using the TypeORM `@Column()`
-decorator, you should use Deenruv's [`@Money()` decorator](/docs/reference/typescript-api/money/money-decorator).
+decorator, you should use Deenruv's `@Money()` decorator.
 
 Using this decorator allows Deenruv to correctly store the value in the database according to the configured `MoneyStrategy` (see below).
 
@@ -159,7 +159,7 @@ class Quote extends DeenruvEntity {
 ## Advanced configuration: MoneyStrategy
 
 For advanced use-cases, it is possible to configure aspects of how Deenruv handles monetary values internally by defining
-a custom [`MoneyStrategy`](/docs/reference/typescript-api/money/money-strategy/).
+a custom `MoneyStrategy`.
 
 The `MoneyStrategy` allows you to define:
 
@@ -167,8 +167,8 @@ The `MoneyStrategy` allows you to define:
 - How rounding is applied internally
 - The precision represented by the monetary value (since v2.2.0)
 
-For example, in addition to the [`DefaultMoneyStrategy`](/docs/reference/typescript-api/money/default-money-strategy), Deenruv
-also provides the [`BigIntMoneyStrategy`](/docs/reference/typescript-api/money/big-int-money-strategy) which stores monetary values
+For example, in addition to the `DefaultMoneyStrategy`, Deenruv
+also provides the `BigIntMoneyStrategy` which stores monetary values
 using the `bigint` data type, allowing much larger amounts to be stored.
 
 Here's how you would configure your server to use this strategy:

@@ -43,7 +43,7 @@ and be able to view their past orders.
 
 ## Roles & Permissions
 
-Both the `Customer` and `Administrator` entities relate to a single [`User`](/docs/reference/typescript-api/entities/user) entity which in turn has one or more [`Roles`](/docs/reference/typescript-api/entities/role) for controlling permissions.
+Both the `Customer` and `Administrator` entities relate to a single `User` entity which in turn has one or more `Roles` for controlling permissions.
 
 
 
@@ -63,7 +63,7 @@ All other roles can be user-defined. Here's an example of an "Inventory Manager"
 
 ## Native authentication
 
-By default, Deenruv uses a username/email address and password to authenticate users, which is implemented by the [`NativeAuthenticationStrategy`](/docs/reference/typescript-api/auth/native-authentication-strategy).
+By default, Deenruv uses a username/email address and password to authenticate users, which is implemented by the `NativeAuthenticationStrategy`.
 
 There is a `login` mutation available in both the Shop API and Admin API which allows a customer or administrator to authenticate using
 native authentication:
@@ -89,13 +89,13 @@ See the [Managing Sessions guide](/docs/guides/storefront/connect-api#managing-s
 
 ## External authentication
 
-In addition to the built-in `NativeAuthenticationStrategy`, it is possible to define a custom [`AuthenticationStrategy`](/docs/reference/typescript-api/auth/authentication-strategy) which allows your Deenruv server to support other authentication methods such as:
+In addition to the built-in `NativeAuthenticationStrategy`, it is possible to define a custom `AuthenticationStrategy` which allows your Deenruv server to support other authentication methods such as:
 
 -   Social logins (Facebook, Google, GitHub, etc.)
 -   Single Sign-On (SSO) providers such as Keycloak, Auth0, etc.
 -   Alternative factors such as SMS, TOTP, etc.
 
-Custom authentication strategies are set via the [`DeenruvConfig.authOptions` object](/docs/reference/typescript-api/auth/auth-options#shopauthenticationstrategy):
+Custom authentication strategies are set via the `DeenruvConfig.authOptions` object:
 
 ```ts title="src/deenruv-config.ts"
 import { DeenruvConfig, NativeAuthenticationStrategy } from '@deenruv/core';
@@ -121,4 +121,4 @@ export const config: DeenruvConfig = {
 
 In the above example, we define the strategies available for authenticating in the Shop API and the Admin API. The `NativeAuthenticationStrategy` is the only one actually provided by Deenruv out-of-the-box, and this is the default username/email + password strategy.
 
-The other strategies would be custom-built (or provided by future npm packages) by creating classes that implement the [`AuthenticationStrategy` interface](/docs/reference/typescript-api/auth/authentication-strategy).
+The other strategies would be custom-built (or provided by future npm packages) by creating classes that implement the `AuthenticationStrategy` interface.

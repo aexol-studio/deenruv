@@ -61,7 +61,7 @@ is used to perform tasks such as authentication, logging, and error handling. Th
 ### Express middleware
 
 At the lowest level, Deenruv makes use of the popular Express server library. [Express middleware](https://expressjs.com/en/guide/using-middleware.html)
-can be added to the sever via the [`apiOptions.middleware`](/docs/reference/typescript-api/configuration/api-options#middleware) config property. There are hundreds of tried-and-tested Express
+can be added to the sever via the `apiOptions.middleware` config property. There are hundreds of tried-and-tested Express
 middleware packages available, and they can be used to add functionality such as CORS, compression, rate-limiting, etc.
 
 Here's a simple example demonstrating Express middleware which will log a message whenever a request is received to the
@@ -190,7 +190,7 @@ export const config: DeenruvConfig = {
 Apollo Server (the underlying GraphQL server library used by Deenruv) allows you to define
 [plugins](https://www.apollographql.com/docs/apollo-server/integrations/plugins/) which can be used to hook into various
 stages of the GraphQL request lifecycle and perform tasks such as data transformation. These are defined via the
-[`apiOptions.apolloServerPlugins`](/docs/reference/typescript-api/configuration/api-options#apolloserverplugins) config property.
+`apiOptions.apolloServerPlugins` config property.
 
 ## Resolvers
 
@@ -218,7 +218,7 @@ export class ShopProductsResolver {
 
 - The `@Resolver()` decorator marks this class as a resolver.
 - The `@Query()` decorator marks the `product()` method as a resolver function.
-- The `@Ctx()` decorator injects the [`RequestContext` object](/docs/reference/typescript-api/request/request-context/), which contains information about the current request, such as the current user, the active channel, the active language, etc. The `RequestContext` is a key part of the Deenruv architecture, and is used throughout the application to provide context to the various services and plugins. In general, your resolver functions should always accept a `RequestContext` as the first argument, and pass it through to the services.
+- The `@Ctx()` decorator injects the `RequestContext` object, which contains information about the current request, such as the current user, the active channel, the active language, etc. The `RequestContext` is a key part of the Deenruv architecture, and is used throughout the application to provide context to the various services and plugins. In general, your resolver functions should always accept a `RequestContext` as the first argument, and pass it through to the services.
 - The `@Args()` decorator injects the arguments passed to the query, in this case the `id` that we provided in our query.
 
 As you can see, the resolver function is very simple, and simply delegates the work to the `ProductService` which is
@@ -286,8 +286,8 @@ export class WishlistResolver {
 
 ### `@Allow()`
 
-The [`Allow` decorator](/docs/reference/typescript-api/request/allow-decorator) is exported by the `@deenruv/core` package. It is used to control access to queries and mutations. It takes a list
-of [Permissions](/docs/reference/typescript-api/common/permission/) and if the current user does not have at least one of the
+The `Allow` decorator is exported by the `@deenruv/core` package. It is used to control access to queries and mutations. It takes a list
+of `Permissions` and if the current user does not have at least one of the
 permissions, then the query or mutation will return an error.
 
 ```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
@@ -306,7 +306,7 @@ export class WishlistResolver {
 
 ### `@Transaction()`
 
-The [`Transaction` decorator](/docs/reference/typescript-api/request/transaction-decorator/) is exported by the `@deenruv/core` package. It is used to wrap a resolver function in a database transaction. It is
+The `Transaction` decorator is exported by the `@deenruv/core` package. It is used to wrap a resolver function in a database transaction. It is
 normally used with mutations, since queries typically do not modify data.
 
 ```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
@@ -333,8 +333,8 @@ this object to the service layer, the services and thus database calls can acces
 
 ### `@Ctx()`
 
-The [`Ctx` decorator](/docs/reference/typescript-api/request/ctx-decorator/) is exported by the `@deenruv/core` package. It is used to inject the
-[`RequestContext` object](/docs/reference/typescript-api/request/request-context/) into a resolver function. The `RequestContext` contains information about the
+The `Ctx` decorator is exported by the `@deenruv/core` package. It is used to inject the
+`RequestContext` object into a resolver function. The `RequestContext` contains information about the
 current request, such as the current user, the active channel, the active language, etc. The `RequestContext` is a key part
 of the Deenruv architecture, and is used throughout the application to provide context to the various services and plugins.
 

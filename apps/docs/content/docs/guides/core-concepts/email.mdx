@@ -10,16 +10,16 @@ when their order has been shipped. This is usually done via email, but can also 
 
 ## Email
 
-Email is the most common way to notify customers of events, so a default Deenruv installation includes our [EmailPlugin](/docs/reference/core-plugins/email-plugin).
+Email is the most common way to notify customers of events, so a default Deenruv installation includes our `EmailPlugin`.
 
 The EmailPlugin by default uses [Nodemailer](https://nodemailer.com/about/) to send emails via a variety of
 different transports, including SMTP, SendGrid, Mailgun, and more.
-The plugin is configured with a list of [EmailEventHandlers](/docs/reference/core-plugins/email-plugin/email-event-handler) which are responsible for
+The plugin is configured with a list of `EmailEventHandlers` which are responsible for
 sending emails in response to specific events.
 
 <Callout type="info">
 This guide will cover some of the main concepts of the EmailPlugin, but for a more in-depth look at how to configure
-and use it, see the [EmailPlugin API docs](/docs/reference/core-plugins/email-plugin).
+and use it, see the `EmailPlugin API docs`.
 </Callout>
 
 Here's an illustration of the flow of an email being sent:
@@ -74,7 +74,7 @@ To recap:
 - It optionally filters those events to determine whether an email should be sent
 - It specifies the details of the email to be sent, including the recipient, subject, template variables, etc.
 
-The full range of methods available when setting up an EmailEventHandler can be found in the [EmailEventHandler API docs](/docs/reference/core-plugins/email-plugin/email-event-handler).
+The full range of methods available when setting up an EmailEventHandler can be found in the `EmailEventHandler API docs`.
 
 ### Email variables
 

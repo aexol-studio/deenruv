@@ -630,9 +630,9 @@ To filter by "Nikkon" **or** "Sony", we would use:
 ## Listing custom product data
 
 If you have defined custom fields on the `Product` or `ProductVariant` entity, you might want to include these in the
-search results. With the [`DefaultSearchPlugin`](/docs/reference/typescript-api/default-search-plugin/) this is
+search results. With the `DefaultSearchPlugin` this is
 not possible, as this plugin is designed to be a minimal and simple search implementation.
 
-Instead, you can use the [`ElasticsearchPlugin`](/docs/reference/core-plugins/elasticsearch-plugin/) which
+Instead, you can use the `ElasticsearchPlugin` which
 provides advanced features which allow you to index custom data. The Elasticsearch plugin is designed as a drop-in
 replacement for the `DefaultSearchPlugin`, so you can simply swap out the plugins in your `deenruv-config.ts` file.

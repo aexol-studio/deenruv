@@ -5,7 +5,7 @@ description: 'Learn about Collections - how to organize and categorize your prod
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-[`Collections`](/docs/reference/typescript-api/entities/collection/) are used to categorize and organize your catalog. A collection
+`Collections` are used to categorize and organize your catalog. A collection
 contains multiple product variants, and a product variant can belong to multiple collections. Collections can be nested to
 create a hierarchy of categories, which is typically used to create a menu structure in the storefront.
 
@@ -20,7 +20,7 @@ for many purposes, such as:
 
 ## Collection filters
 
-The specific product variants that belong to a collection are determined by the collection's [`CollectionFilters`](/docs/reference/typescript-api/configuration/collection-filter/).
+The specific product variants that belong to a collection are determined by the collection's `CollectionFilters`.
 A collection filter is a piece of logic which is used to determine whether a product variant should be included in the collection. By default, Deenruv
 includes a number of collection filters:
 
@@ -55,7 +55,7 @@ in the child collection.
 
 ### Creating a collection filter
 
-You can create your own custom collection filters with the [`CollectionFilter`](/docs/reference/typescript-api/configuration/collection-filter/) class. This class
+You can create your own custom collection filters with the `CollectionFilter` class. This class
 is a [configurable operation](/docs/guides/developer-guide/strategies-configurable-operations/#configurable-operations) where the specific
 filtering logic is implemented in the `apply()` method passed to its constructor.
 

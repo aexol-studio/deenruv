@@ -79,7 +79,7 @@ export class ProductReviewAdminResolver {
 ## Service
 
 Finally, we need to implement the `findAll()` method on the `ProductReviewService`. Here we will use the
-[`ListQueryBuilder`](/docs/reference/typescript-api/data-access/list-query-builder/) to build the list query. The
+`ListQueryBuilder` to build the list query. The
 `ListQueryBuilder` will take care of
 
 ```ts title="src/plugins/reviews/services/product-review.service.ts"
@@ -290,7 +290,7 @@ input ProductReviewFilterParameter {
 ```
 
 Next we need to update our `ProductReviewService` to be able to handle filtering on this new field using the
-[customPropertyMap](/docs/reference/typescript-api/data-access/list-query-builder/#custompropertymap) option:
+`customPropertyMap` option:
 
 ```ts title="src/plugins/reviews/services/product-review.service.ts"
 import { Injectable } from '@nestjs/common';

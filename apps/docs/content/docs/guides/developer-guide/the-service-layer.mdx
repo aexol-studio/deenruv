@@ -16,8 +16,8 @@ Services are classes which, in NestJS terms, are [providers](https://docs.nestjs
 follow all the rules of NestJS providers, including dependency injection, scoping, etc.
 </Callout>
 
-Services are generally scoped to a specific domain or entity. For instance, in the Deenruv core, there is a [`Product` entity](/docs/reference/typescript-api/entities/product),
-and a corresponding [`ProductService`](/docs/reference/typescript-api/services/product-service) which contains all the methods for interacting with products.
+Services are generally scoped to a specific domain or entity. For instance, in the Deenruv core, there is a `Product` entity,
+and a corresponding `ProductService` which contains all the methods for interacting with products.
 
 Here's a simplified example of a `ProductService`, including an implementation of the `findOne()` method that was
 used in the example in the [previous section](/docs/guides/developer-guide/the-api-layer/#resolvers):
@@ -62,7 +62,7 @@ export class ProductService {
 
 ## Using core services
 
-All the internal Deenruv services can be used in your own plugins and scripts. They are listed in the [Services API reference](/docs/reference/typescript-api/services/) and
+All the internal Deenruv services can be used in your own plugins and scripts. They are listed in the `Services API reference` and
 can be imported from the `@deenruv/core` package.
 
 To make use of a core service in your own plugin, you need to ensure your plugin is importing the `PluginCommonModule` and
@@ -94,7 +94,7 @@ export class MyService {
 ## Accessing the database
 
 One of the main responsibilities of the service layer is to interact with the database. For this, you will be using
-the [`TransactionalConnection` class](/docs/reference/typescript-api/data-access/transactional-connection/), which is a wrapper
+the `TransactionalConnection` class, which is a wrapper
 around the [TypeORM `DataSource` object](https://typeorm.io/data-source-api). The primary purpose of the `TransactionalConnection`
 is to ensure that database operations can be performed within a transaction (which is essential for ensuring data integrity), even
 across multiple services. Furthermore, it exposes some helper methods which make it easier to perform common operations.
@@ -262,7 +262,7 @@ const product = await this.connection
 ### Using the EntityHydrator
 
 But what about when we do not control the code which fetches the entity from the database? For instance, we might be implementing
-a function which gets an entity passed to it by Deenruv. In this case, we can use the [`EntityHydrator`](/docs/reference/typescript-api/data-access/entity-hydrator/)
+a function which gets an entity passed to it by Deenruv. In this case, we can use the `EntityHydrator`
 to ensure that a given relation is "hydrated" (i.e. joined) before we use it:
 
 ```ts
@@ -291,7 +291,7 @@ const myShippingCalculator = new ShippingCalculator({
 ### Joining relations in built-in service methods
 
 Many of the core services allow an optional `relations` argument in their `findOne()` and `findMany()` and related methods.
-This allows you to specify which relations should be joined when the query is executed. For instance, in the [`ProductService`](/docs/reference/typescript-api/services/product-service)
+This allows you to specify which relations should be joined when the query is executed. For instance, in the `ProductService`
 there is a `findOne()` method which allows you to specify which relations should be joined:
 
 ```ts

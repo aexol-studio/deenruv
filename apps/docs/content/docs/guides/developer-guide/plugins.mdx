@@ -29,7 +29,7 @@ This allows for a clean separation of concerns and makes it easy to add or remov
 ## Core Plugins
 
 Deenruv provides a set of core plugins covering common functionality such as assets handling,
-email sending, and search. For documentation on these, see the [Core Plugins reference](/docs/reference/core-plugins/).
+email sending, and search. For documentation on these, see the `Core Plugins reference`.
 
 ## Plugin basics
 
@@ -68,7 +68,7 @@ export const config: DeenruvConfig = {
 ```
 
 The key feature is the `@DeenruvPlugin()` decorator, which marks the class as a Deenruv plugin and accepts a configuration
-object on the type [`VendurePluginMetadata`](/docs/reference/typescript-api/plugin/deenruv-plugin-metadata/).
+object on the type `VendurePluginMetadata`.
 
 A VendurePlugin is actually an enhanced version of a [NestJS Module](https://docs.nestjs.com/modules), and supports
 all the metadata properties that NestJS modules support:
@@ -105,7 +105,7 @@ can make use of any of the [NestJS lifecycle hooks](https://docs.nestjs.com/fund
 <Callout type="warn">
 Note that lifecycle hooks are run in both the server and worker contexts.
 If you have code that should only run either in the server context or worker context,
-you can inject the [ProcessContext provider](/docs/reference/typescript-api/common/process-context/).
+you can inject the `ProcessContext provider`.
 </Callout>
 
 ### Configure
@@ -228,7 +228,7 @@ export class WishlistItem extends VendureEntity {
 
 Let's break down what's happening here:
 
-- The `WishlistItem` entity extends the [`VendureEntity` class](/docs/reference/typescript-api/entities/deenruv-entity/). This is a base class which provides the `id`, `createdAt` and `updatedAt` fields, and all custom entities should extend it.
+- The `WishlistItem` entity extends the `VendureEntity` class. This is a base class which provides the `id`, `createdAt` and `updatedAt` fields, and all custom entities should extend it.
 - The `@Entity()` decorator marks this class as a TypeORM entity.
 - The `@ManyToOne()` decorator defines a many-to-one relationship with the `ProductVariant` entity. This means that each `WishlistItem` will be associated with a single `ProductVariant`.
 - The `productVariantId` column is not strictly necessary, but it allows us to always have access to the ID of the related `ProductVariant` without having to load the entire `ProductVariant` entity from the database.
@@ -411,8 +411,8 @@ export class WishlistService {
 Let's break down what's happening here:
 
 - The `WishlistService` class is decorated with the `@Injectable()` decorator. This is a standard NestJS decorator which tells the NestJS dependency injection (DI) system that this class can be injected into other classes. All your services should be decorated with this decorator.
-- The arguments passed to the constructor will be injected by the NestJS DI system. The `connection` argument is a [TransactionalConnection](/docs/reference/typescript-api/data-access/transactional-connection/) instance, which is used to access and manipulate data in the database. The [`ProductVariantService`](/docs/reference/typescript-api/services/product-variant-service/) argument is a built-in Deenruv service which contains methods relating to ProductVariants.
-- The [`RequestContext`](/docs/reference/typescript-api/request/request-context/) object is usually the first argument to any service method, and contains information and context about the current request as well as any open database transactions. It should always be passed to the methods of the `TransactionalConnection`.
+- The arguments passed to the constructor will be injected by the NestJS DI system. The `connection` argument is a `TransactionalConnection` instance, which is used to access and manipulate data in the database. The `ProductVariantService` argument is a built-in Deenruv service which contains methods relating to ProductVariants.
+- The `RequestContext` object is usually the first argument to any service method, and contains information and context about the current request as well as any open database transactions. It should always be passed to the methods of the `TransactionalConnection`.
 
 The service is then registered with the plugin metadata as a provider:
 

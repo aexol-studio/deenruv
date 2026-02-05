@@ -89,7 +89,7 @@ For the remainder of this guide, we will list just the body of the query or muta
 
 ## Get the active order
 
-This fragment can then be used in subsequent queries and mutations. Let's start with a query to get the active order using the [`activeOrder` query](/docs/reference/graphql-api/shop/queries#activeorder):
+This fragment can then be used in subsequent queries and mutations. Let's start with a query to get the active order using the `activeOrder` query:
 
 ```graphql
 query GetActiveOrder {
@@ -101,7 +101,7 @@ query GetActiveOrder {
 
 ## Add an item
 
-To add an item to the active order, we use the [`addItemToOrder` mutation](/docs/reference/graphql-api/shop/mutations#additemtoorder), as we have seen in the [Product Detail Page guide](/docs/guides/storefront/product-detail).
+To add an item to the active order, we use the `addItemToOrder` mutation, as we have seen in the [Product Detail Page guide](/docs/guides/storefront/product-detail).
 
 ```graphql
 mutation AddItemToOrder($productVariantId: ID!, $quantity: Int!) {
@@ -128,7 +128,7 @@ See the [Configurable Products guide](/docs/guides/how-to/configurable-products)
 
 ## Remove an item
 
-To remove an item from the active order, we use the [`removeOrderLine` mutation](/docs/reference/graphql-api/shop/mutations#removeorderline),
+To remove an item from the active order, we use the `removeOrderLine` mutation,
 and pass the `id` of the `OrderLine` to remove.
 
 ```graphql
@@ -145,7 +145,7 @@ mutation RemoveItemFromOrder($orderLineId: ID!) {
 
 ## Change the quantity of an item
 
-To change the quantity of an item in the active order, we use the [`adjustOrderLine` mutation](/docs/reference/graphql-api/shop/mutations#adjustorderline).
+To change the quantity of an item in the active order, we use the `adjustOrderLine` mutation.
 
 ```graphql
 mutation AdjustOrderLine($orderLineId: ID!, $quantity: Int!) {
@@ -167,7 +167,7 @@ See the [Configurable Products guide](/docs/guides/how-to/configurable-products)
 ## Applying a coupon code
 
 If you have defined any [Promotions](/docs/guides/core-concepts/promotions) which use coupon codes, you can apply the a coupon code to the active order
-using the [`applyCouponCode` mutation](/docs/reference/graphql-api/shop/mutations#applycouponcode).
+using the `applyCouponCode` mutation.
 
 ```graphql
 mutation ApplyCouponCode($couponCode: String!) {
@@ -183,7 +183,7 @@ mutation ApplyCouponCode($couponCode: String!) {
 
 ## Removing a coupon code
 
-To remove a coupon code from the active order, we use the [`removeCouponCode` mutation](/docs/reference/graphql-api/shop/mutations#removecouponcode).
+To remove a coupon code from the active order, we use the `removeCouponCode` mutation.
 
 ```graphql
 mutation RemoveCouponCode($couponCode: String!) {

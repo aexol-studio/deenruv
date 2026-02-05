@@ -27,7 +27,7 @@ GraphQL requests are made over HTTP, so you can use any HTTP client such as the 
 
 ## Managing Sessions
 
-Deenruv supports two ways to manage user sessions: **cookies** and **bearer token**. The method you choose depends on your requirements, and is specified by the [`authOptions.tokenMethod` property](/docs/reference/typescript-api/auth/auth-options/#tokenmethod) of the DeenruvConfig. By default, both are enabled on the server:
+Deenruv supports two ways to manage user sessions: **cookies** and **bearer token**. The method you choose depends on your requirements, and is specified by the `authOptions.tokenMethod` property of the DeenruvConfig. By default, both are enabled on the server:
 
 ```ts title="src/deenruv-config.ts"
 import { DeenruvConfig } from '@deenruv/core';
@@ -48,7 +48,7 @@ Using cookies is the simpler approach for browser-based applications, since the 
 
     For example, if using a fetch-based client (such as [Apollo client](https://www.apollographql.com/docs/react/recipes/authentication/#cookie)) you would set `credentials: 'include'` or if using [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials), you would set `withCredentials: true`
 
-2. When using cookie-based sessions, you should set the [`authOptions.cookieOptions.secret` property](/docs/reference/typescript-api/auth/cookie-options#secret) to some secret string which will be used to sign the cookies sent to clients to prevent tampering. This string could be hard-coded in your config file, or (better) reside in an environment variable:
+2. When using cookie-based sessions, you should set the `authOptions.cookieOptions.secret` property to some secret string which will be used to sign the cookies sent to clients to prevent tampering. This string could be hard-coded in your config file, or (better) reside in an environment variable:
 
     ```ts title="src/deenruv-config.ts"
     import { DeenruvConfig } from '@deenruv/core';
@@ -76,7 +76,7 @@ Using bearer tokens involves a bit more work on your part: you'll need to manual
 
 The workflow would be as follows:
 
-1. Certain mutations and queries initiate a session (e.g. logging in, adding an item to an order etc.). When this happens, the response will contain a HTTP header which [by default is called `'deenruv-auth-token'`](/docs/reference/typescript-api/auth/auth-options#authtokenheaderkey).
+1. Certain mutations and queries initiate a session (e.g. logging in, adding an item to an order etc.). When this happens, the response will contain a HTTP header which by default is called `'deenruv-auth-token'`.
 2. So your http client would need to check for the presence of this header each time it receives a response from the server.
 3. If the `'deenruv-auth-token'` header is present, read the value and store it because this is your bearer token.
 4. Attach this bearer token to each subsequent request as `Authorization: Bearer <token>`.
@@ -105,7 +105,7 @@ export async function request(query: string, variables: any) {
 
 ### Session duration
 
-The duration of a session is determined by the [AuthOptions.sessionDuration](/docs/reference/typescript-api/auth/auth-options#sessionduration) config
+The duration of a session is determined by the `AuthOptions.sessionDuration` config
 property. Sessions will automatically extend (or "refresh") when a user interacts with the API, so in effect the `sessionDuration` signifies the
 length of time that a session will stay valid since the last API call.
 
@@ -141,12 +141,12 @@ If no channel token is specified, then the **default channel** will be used.
 </Callout>
 
 <Callout type="info">
-The header name `deenruv-token` is the default, but can be changed using the [`apiOptions.channelTokenKey`](/docs/reference/typescript-api/configuration/api-options/#channeltokenkey) config option.
+The header name `deenruv-token` is the default, but can be changed using the `apiOptions.channelTokenKey` config option.
 </Callout>
 
 ## Setting language
 
-If you have translations of your products, collections, facets etc, you can specify the language for the request by setting the `languageCode` query string on the request. The value should be one of the ISO 639-1 codes defined by the [`LanguageCode` enum](/docs/reference/typescript-api/common/language-code/).
+If you have translations of your products, collections, facets etc, you can specify the language for the request by setting the `languageCode` query string on the request. The value should be one of the ISO 639-1 codes defined by the `LanguageCode` enum.
 
 ```
 POST http://localhost:3000/shop-api?languageCode=de

@@ -15,7 +15,7 @@ Customers can register accounts and thereby gain the ability to:
 
 ## Querying the active customer
 
-The [`activeCustomer` query](/docs/reference/graphql-api/shop/queries#activecustomer) will return a [`Customer`](/docs/reference/graphql-api/shop/object-types#customer) object if the customer is registered and logged in, otherwise it will return `null`. This can be used in the storefront header for example to
+The `activeCustomer` query will return a `Customer` object if the customer is registered and logged in, otherwise it will return `null`. This can be used in the storefront header for example to
 determine whether to display a "sign in" or "my account" link.
 
 <Tabs items={['Query', 'Result']}>
@@ -55,7 +55,7 @@ query GetCustomerAddresses {
 
 ## Logging in and out
 
-The [`login` mutation](/docs/reference/graphql-api/shop/mutations#login) is used to attempt to log in using email address and password.
+The `login` mutation is used to attempt to log in using email address and password.
 Given correct credentials, a new authenticated session will begin for that customer.
 
 <Tabs items={['Query', 'Variables', 'Result']}>
@@ -104,7 +104,7 @@ mutation LogIn($emailAddress: String!, $password: String!, $rememberMe: Boolean!
 </Tab>
 </Tabs>
 
-The [`logout` mutation](/docs/reference/graphql-api/shop/mutations#logout) will end an authenticated customer session.
+The `logout` mutation will end an authenticated customer session.
 
 <Tabs items={['Query', 'Result']}>
 <Tab value="Query">
@@ -135,17 +135,17 @@ mutation LogOut {
 
 <Callout type="info">
 The `login` mutation, as well as the following mutations related to registration & password recovery only
-apply when using the built-in [`NativeAuthenticationStrategy`](/docs/reference/typescript-api/auth/native-authentication-strategy).
+apply when using the built-in `NativeAuthenticationStrategy`.
 
-If you are using alternative authentication strategies in your storefront, you would use the [`authenticate` mutation](/docs/reference/graphql-api/shop/mutations#authenticate) as covered in the [External Authentication guide](/docs/guides/core-concepts/auth#external-authentication).
+If you are using alternative authentication strategies in your storefront, you would use the `authenticate` mutation as covered in the [External Authentication guide](/docs/guides/core-concepts/auth#external-authentication).
 </Callout>
 
 ## Registering a customer account
 
-The [`registerCustomerAccount` mutation](/docs/reference/graphql-api/shop/mutations#registercustomeraccount) is used to register a new customer account.
+The `registerCustomerAccount` mutation is used to register a new customer account.
 
 There are three possible registration flows:
-If [`authOptions.requireVerification`](/docs/reference/typescript-api/auth/auth-options#requireverification) is set to `true` (the default):
+If `authOptions.requireVerification` is set to `true` (the default):
 
 1. **The Customer is registered _with_ a password**. A verificationToken will be created (and typically emailed to the Customer). That
    verificationToken would then be passed to the verifyCustomerAccount mutation _without_ a password. The Customer is then
@@ -216,7 +216,7 @@ Note that in the variables above, we did **not** specify a password, as this wil
 If a password _does_ get passed at this step, then it won't be needed at the verification step. This is a decision
 you can make based on the desired user experience of your storefront.
 
-Upon registration, the [EmailPlugin](/docs/reference/core-plugins/email-plugin) will generate an email to the
+Upon registration, the `EmailPlugin` will generate an email to the
 customer containing a link to the verification page. In a default Deenruv installation this is set in the deenruv config file:
 
 ```ts title="src/deenruv-config.ts"
@@ -235,7 +235,7 @@ EmailPlugin.init({
 }),
 ```
 
-The verification page needs to get the token from the query string, and pass it to the [`verifyCustomerAccount` mutation](/docs/reference/graphql-api/shop/mutations#verifycustomeraccount):
+The verification page needs to get the token from the query string, and pass it to the `verifyCustomerAccount` mutation:
 
 <Tabs items={['Mutation', 'Variables', 'Result']}>
 <Tab value="Mutation">
@@ -288,7 +288,7 @@ Here's how to implement a password reset flow. It is conceptually very similar t
 
 
 
-A password reset is triggered by the [`requestPasswordReset` mutation](/docs/reference/graphql-api/shop/mutations#requestpasswordreset):
+A password reset is triggered by the `requestPasswordReset` mutation:
 
 <Tabs items={['Mutation', 'Variables', 'Result']}>
 <Tab value="Mutation">
@@ -334,7 +334,7 @@ mutation RequestPasswordReset($emailAddress: String!) {
 
 Again, this mutation will trigger an event which the EmailPlugin's default email handlers will pick up and send
 an email to the customer. The password reset page then needs to get the token from the url and pass it to the
-[`resetPassword` mutation](/docs/reference/graphql-api/shop/mutations#resetpassword):
+`resetPassword` mutation:
 
 <Tabs items={['Mutation', 'Variables', 'Result']}>
 <Tab value="Mutation">

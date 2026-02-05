@@ -15,15 +15,15 @@ of key points of extensibility to the developer.
 
 Examples of strategies include:
 
--   [`OrderCodeStrategy`](/docs/reference/typescript-api/orders/order-code-strategy/) - determines how order codes are generated
--   [`StockLocationStrategy`](/docs/reference/typescript-api/products-stock/stock-location-strategy/) - determines which stock locations are used to fulfill an order
--   [`ActiveOrderStrategy`](/docs/reference/typescript-api/orders/active-order-strategy/) - determines how the active order in the Shop API is selected
--   [`AssetStorageStrategy`](/docs/reference/typescript-api/assets/asset-storage-strategy/) - determines where uploaded assets are stored
--   [`GuestCheckoutStrategy`](/docs/reference/typescript-api/orders/guest-checkout-strategy/) - defines rules relating to guest checkouts
--   [`OrderItemPriceCalculationStrategy`](/docs/reference/typescript-api/orders/order-item-price-calculation-strategy/) - determines how items are priced when added to the order
--   [`TaxLineCalculationStrategy`](/docs/reference/typescript-api/tax/tax-line-calculation-strategy/) - determines how tax is calculated for an order line
+-   `OrderCodeStrategy` - determines how order codes are generated
+-   `StockLocationStrategy` - determines which stock locations are used to fulfill an order
+-   `ActiveOrderStrategy` - determines how the active order in the Shop API is selected
+-   `AssetStorageStrategy` - determines where uploaded assets are stored
+-   `GuestCheckoutStrategy` - defines rules relating to guest checkouts
+-   `OrderItemPriceCalculationStrategy` - determines how items are priced when added to the order
+-   `TaxLineCalculationStrategy` - determines how tax is calculated for an order line
 
-As an example, let's take the [`OrderCodeStrategy`](/docs/reference/typescript-api/orders/order-code-strategy/). This strategy
+As an example, let's take the `OrderCodeStrategy`. This strategy
 determines how codes are generated when new orders are created. By default, Deenruv will use the built-in `DefaultOrderCodeStrategy`
 which generates a random 16-character string.
 
@@ -49,7 +49,7 @@ export class MyOrderCodeStrategy implements OrderCodeStrategy {
 
 <Callout type="info">
 All strategies can make use of existing services by using the `init()` method. This is because all strategies
-extend the underlying [`InjectableStrategy` interface](/docs/reference/typescript-api/common/injectable-strategy). In
+extend the underlying `InjectableStrategy` interface. In
 this example we are assuming that we already created an `OrderCodeService` which contains all the specific logic for
 connecting to our backend service which generates the order codes.
 </Callout>
@@ -81,7 +81,7 @@ Strategies can use two optional lifecycle methods:
 ### Passing options to a strategy
 
 Sometimes you might want to pass some configuration options to a strategy.
-For example, imagine you want to create a custom [`StockLocationStrategy`](/docs/reference/typescript-api/products-stock/stock-location-strategy/) which
+For example, imagine you want to create a custom `StockLocationStrategy` which
 selects a location within a given proximity to the customer's address. You might want to pass the maximum distance to the strategy
 in your config:
 
@@ -127,12 +127,12 @@ at runtime.
 
 Deenruv uses the following configurable operations:
 
--   [`CollectionFilter`](/docs/reference/typescript-api/configuration/collection-filter/) - determines which products are included in a collection
--   [`PaymentMethodHandler`](/docs/reference/typescript-api/payment/payment-method-handler/) - determines how payments are processed
--   [`PromotionCondition`](/docs/reference/typescript-api/promotions/promotion-condition/) - determines whether a promotion is applicable
--   [`PromotionAction`](/docs/reference/typescript-api/promotions/promotion-action/) - determines what happens when a promotion is applied
--   [`ShippingEligibilityChecker`](/docs/reference/typescript-api/shipping/shipping-eligibility-checker/) - determines whether a shipping method is available
--   [`ShippingCalculator`](/docs/reference/typescript-api/shipping/shipping-calculator/) - determines how shipping costs are calculated
+-   `CollectionFilter` - determines which products are included in a collection
+-   `PaymentMethodHandler` - determines how payments are processed
+-   `PromotionCondition` - determines whether a promotion is applicable
+-   `PromotionAction` - determines what happens when a promotion is applied
+-   `ShippingEligibilityChecker` - determines whether a shipping method is available
+-   `ShippingCalculator` - determines how shipping costs are calculated
 
 Whereas strategies are typically used to provide a single implementation of a particular feature, configurable operations
 are used to provide a set of implementations which can be selected from at runtime.
@@ -247,7 +247,7 @@ The following properties are used to configure the argument:
 
 **Required**
 
-[`ConfigArgType`](/docs/reference/typescript-api/configurable-operation-def/config-arg-type)
+`ConfigArgType`
 
 The following types are available: `string`, `int`, `float`, `boolean`, `datetime`, `ID`.
 
@@ -255,7 +255,7 @@ The following types are available: `string`, `int`, `float`, `boolean`, `datetim
 
 *Optional*
 
-[`LocalizedStringArray`](/docs/reference/typescript-api/configurable-operation-def/localized-string-array/)
+`LocalizedStringArray`
 
 A human-readable label for the argument. This is used in the Admin UI.
 
@@ -263,7 +263,7 @@ A human-readable label for the argument. This is used in the Admin UI.
 
 *Optional*
 
-[`LocalizedStringArray`](/docs/reference/typescript-api/configurable-operation-def/localized-string-array/)
+`LocalizedStringArray`
 
 A human-readable description for the argument. This is used in the Admin UI as a tooltip.
 

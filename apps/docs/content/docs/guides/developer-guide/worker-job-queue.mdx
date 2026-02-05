@@ -17,7 +17,7 @@ Put another way, the Worker executes **jobs** which have been placed in the **jo
 
 ## The worker
 
-The worker is started by calling the [`bootstrapWorker()`](/docs/reference/typescript-api/worker/bootstrap-worker/) function with the same
+The worker is started by calling the `bootstrapWorker()` function with the same
 configuration as is passed to the main server `bootstrap()`. In a standard Deenruv installation, this is found
 in the `index-worker.ts` file:
 
@@ -37,13 +37,13 @@ bootstrapWorker(config)
 The Worker is a NestJS standalone application. This means it is almost identical to the main server app,
 but does not have any network layer listening for requests. The server communicates with the worker
 via a "job queue" architecture. The exact implementation of the job queue is dependent on the
-configured [`JobQueueStrategy`](/docs/reference/typescript-api/job-queue/job-queue-strategy/), but by default
+configured `JobQueueStrategy`, but by default
 the worker polls the database for new jobs.
 
 ### Multiple workers
 
 It is possible to run multiple workers in parallel to better handle heavy loads. Using the
-[`JobQueueOptions.activeQueues`](/docs/reference/typescript-api/job-queue/job-queue-options#activequeues) configuration, it is even possible to have particular workers dedicated
+`JobQueueOptions.activeQueues` configuration, it is even possible to have particular workers dedicated
 to one or more specific types of jobs. For example, if your application does video transcoding,
 you might want to set up a dedicated worker just for that task:
 
@@ -85,7 +85,7 @@ bootstrap(config)
 ### ProcessContext
 
 Sometimes your code may need to be aware of whether it is being run as part of a server or worker process.
-In this case you can inject the [`ProcessContext`](/docs/reference/typescript-api/common/process-context/) provider and query it like this:
+In this case you can inject the `ProcessContext` provider and query it like this:
 
 ```ts title="src/plugins/my-plugin/services/my.service.ts"
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
@@ -141,16 +141,16 @@ of a single worker).
 
 ### JobQueueStrategy
 
-The actual queue part is defined by the configured [`JobQueueStrategy`](/docs/reference/typescript-api/job-queue/job-queue-strategy/).
+The actual queue part is defined by the configured `JobQueueStrategy`.
 
-If no strategy is defined, Deenruv uses an [in-memory store](/docs/reference/typescript-api/job-queue/in-memory-job-queue-strategy/)
+If no strategy is defined, Deenruv uses an `in-memory store`
 of the contents of each queue. While this has the advantage
 of requiring no external dependencies, it is not suitable for production because when the server is stopped, the entire
 queue will be lost and any pending jobs will never be processed. Moreover, it cannot be used when running the worker
 as a separate process.
 
-A better alternative is to use the [DefaultJobQueuePlugin](/docs/reference/typescript-api/job-queue/default-job-queue-plugin/)
-(which will be used in a standard `@deenruv/create` installation), which configures Deenruv to use the [SqlJobQueueStrategy](/docs/reference/typescript-api/job-queue/sql-job-queue-strategy).
+A better alternative is to use the `DefaultJobQueuePlugin`
+(which will be used in a standard `@deenruv/create` installation), which configures Deenruv to use the `SqlJobQueueStrategy`.
 This strategy uses the database as a queue, and means that even if the Deenruv server stops, pending jobs will be persisted and upon re-start, they will be processed.
 
 It is also possible to implement your own JobQueueStrategy to take advantage of other technologies.
@@ -159,12 +159,12 @@ one of these if the default database-based approach does not meet your performan
 
 ### Job Queue Performance
 
-It is common for larger Deenruv projects to define multiple custom job queues, When using the [DefaultJobQueuePlugin](/docs/reference/typescript-api/job-queue/default-job-queue-plugin/)
+It is common for larger Deenruv projects to define multiple custom job queues, When using the `DefaultJobQueuePlugin`
 with many queues, performance may be impacted. This is because the `SqlJobQueueStrategy` uses polling to check for
 new jobs in the database. Each queue will (by default) query the database every 200ms. So if there are 10 queues,
 this will result in a constant 50 queries/second.
 
-In this case it is recommended to try the [BullMQJobQueuePlugin](/docs/reference/core-plugins/job-queue-plugin/bull-mqjob-queue-plugin/),
+In this case it is recommended to try the `BullMQJobQueuePlugin`,
 which uses an efficient push-based strategy built on Redis.
 
 ## Using Job Queues in a plugin
@@ -216,7 +216,7 @@ The resolver just defines how to handle the new `addVideoToProduct` mutation, de
 Use `npx deenruv add` to easily add a job queue to a service.
 </Callout>
 
-The [`JobQueueService`](/docs/reference/typescript-api/job-queue/job-queue-service/) creates and manages job queues. The queue is created when the
+The `JobQueueService` creates and manages job queues. The queue is created when the
 application starts up (see [NestJS lifecycle events](https://docs.nestjs.com/fundamentals/lifecycle-events)), and then we can use the `add()` method to add jobs to the queue.
 
 ```ts title="src/plugins/product-video/services/product-video.service.ts"
@@ -290,10 +290,10 @@ will add a transcoding job to the queue.
 
 <Callout type="info">
 Plugin code typically gets executed on both the server _and_ the worker. Therefore, you sometimes need to explicitly check
-what context you are in. This can be done with the [ProcessContext](/docs/reference/typescript-api/common/process-context/) provider.
+what context you are in. This can be done with the `ProcessContext` provider.
 </Callout>
 
-Finally, the `ProductVideoPlugin` brings it all together, extending the GraphQL API, defining the required CustomField to store the transcoded video URL, and registering our service and resolver. The [PluginCommonModule](/docs/reference/typescript-api/plugin/plugin-common-module/) is imported as it exports the `JobQueueService`.
+Finally, the `ProductVideoPlugin` brings it all together, extending the GraphQL API, defining the required CustomField to store the transcoded video URL, and registering our service and resolver. The `PluginCommonModule` is imported as it exports the `JobQueueService`.
 
 ```ts title="src/plugins/product-video/product-video.plugin.ts"
 import gql from 'graphql-tag';
@@ -322,10 +322,10 @@ export class ProductVideoPlugin {}
 
 ### Passing the RequestContext
 
-It is common to need to pass the [RequestContext object](/docs/reference/typescript-api/request/request-context) to the `process` function of a job, since `ctx` is required by many Deenruv
+It is common to need to pass the `RequestContext` object to the `process` function of a job, since `ctx` is required by many Deenruv
 service methods that you may be using inside your `process` function. However, the `RequestContext` object itself is not serializable,
-so it cannot be passed directly to the `JobQueue.add()` method. Instead, you can serialize the `RequestContext` using the [`RequestContext.serialize()`
-method](/docs/reference/typescript-api/request/request-context/#serialize), and then deserialize it in the `process` function using the static `deserialize` method:
+so it cannot be passed directly to the `JobQueue.add()` method. Instead, you can serialize the `RequestContext` using the `RequestContext.serialize()`
+method, and then deserialize it in the `process` function using the static `deserialize` method:
 
 ```ts
 import { Injectable, OnModuleInit } from '@nestjs/common';

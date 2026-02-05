@@ -1,4 +1,0 @@
-{
-  "title": "Shop API",
-  "pages": ["index", "queries", "mutations", "object-types", "input-types", "enums"]
-}

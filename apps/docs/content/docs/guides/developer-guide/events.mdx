@@ -5,7 +5,7 @@ description: 'Learn how to subscribe to and publish events in Deenruv - the Even
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-Deenruv emits events which can be subscribed to by plugins. These events are published by the [EventBus](/docs/reference/typescript-api/events/event-bus/) and
+Deenruv emits events which can be subscribed to by plugins. These events are published by the `EventBus` and
 likewise the `EventBus` is used to subscribe to events.
 
 An event exists for virtually all significant actions which occur in the system, such as:
@@ -22,66 +22,66 @@ A full list of the available events follows.
 <div className="grid grid-cols-2 gap-4">
 <div>
 
-- [`AccountRegistrationEvent`](/docs/reference/typescript-api/events/event-types#accountregistrationevent)
-- [`AccountVerifiedEvent`](/docs/reference/typescript-api/events/event-types#accountverifiedevent)
-- [`AdministratorEvent`](/docs/reference/typescript-api/events/event-types#administratorevent)
-- [`AssetChannelEvent`](/docs/reference/typescript-api/events/event-types#assetchannelevent)
-- [`AssetEvent`](/docs/reference/typescript-api/events/event-types#assetevent)
-- [`AttemptedLoginEvent`](/docs/reference/typescript-api/events/event-types#attemptedloginevent)
-- [`ChangeChannelEvent`](/docs/reference/typescript-api/events/event-types#changechannelevent)
-- [`ChannelEvent`](/docs/reference/typescript-api/events/event-types#channelevent)
-- [`CollectionEvent`](/docs/reference/typescript-api/events/event-types#collectionevent)
-- [`CollectionModificationEvent`](/docs/reference/typescript-api/events/event-types#collectionmodificationevent)
-- [`CountryEvent`](/docs/reference/typescript-api/events/event-types#countryevent)
-- [`CouponCodeEvent`](/docs/reference/typescript-api/events/event-types#couponcodeevent)
-- [`CustomerAddressEvent`](/docs/reference/typescript-api/events/event-types#customeraddressevent)
-- [`CustomerEvent`](/docs/reference/typescript-api/events/event-types#customerevent)
-- [`CustomerGroupChangeEvent`](/docs/reference/typescript-api/events/event-types#customergroupchangeevent)
-- [`CustomerGroupEvent`](/docs/reference/typescript-api/events/event-types#customergroupevent)
-- [`FacetEvent`](/docs/reference/typescript-api/events/event-types#facetevent)
-- [`FacetValueEvent`](/docs/reference/typescript-api/events/event-types#facetvalueevent)
-- [`FulfillmentEvent`](/docs/reference/typescript-api/events/event-types#fulfillmentevent)
-- [`FulfillmentStateTransitionEvent`](/docs/reference/typescript-api/events/event-types#fulfillmentstatetransitionevent)
-- [`GlobalSettingsEvent`](/docs/reference/typescript-api/events/event-types#globalsettingsevent)
-- [`HistoryEntryEvent`](/docs/reference/typescript-api/events/event-types#historyentryevent)
-- [`IdentifierChangeEvent`](/docs/reference/typescript-api/events/event-types#identifierchangeevent)
-- [`IdentifierChangeRequestEvent`](/docs/reference/typescript-api/events/event-types#identifierchangerequestevent)
-- [`InitializerEvent`](/docs/reference/typescript-api/events/event-types#initializerevent)
-- [`LoginEvent`](/docs/reference/typescript-api/events/event-types#loginevent)
-- [`LogoutEvent`](/docs/reference/typescript-api/events/event-types#logoutevent)
-- [`OrderEvent`](/docs/reference/typescript-api/events/event-types#orderevent)
+- `AccountRegistrationEvent`
+- `AccountVerifiedEvent`
+- `AdministratorEvent`
+- `AssetChannelEvent`
+- `AssetEvent`
+- `AttemptedLoginEvent`
+- `ChangeChannelEvent`
+- `ChannelEvent`
+- `CollectionEvent`
+- `CollectionModificationEvent`
+- `CountryEvent`
+- `CouponCodeEvent`
+- `CustomerAddressEvent`
+- `CustomerEvent`
+- `CustomerGroupChangeEvent`
+- `CustomerGroupEvent`
+- `FacetEvent`
+- `FacetValueEvent`
+- `FulfillmentEvent`
+- `FulfillmentStateTransitionEvent`
+- `GlobalSettingsEvent`
+- `HistoryEntryEvent`
+- `IdentifierChangeEvent`
+- `IdentifierChangeRequestEvent`
+- `InitializerEvent`
+- `LoginEvent`
+- `LogoutEvent`
+- `OrderEvent`
 
 </div>
 <div>
 
-- [`OrderLineEvent`](/docs/reference/typescript-api/events/event-types#orderlineevent)
-- [`OrderPlacedEvent`](/docs/reference/typescript-api/events/event-types#orderplacedevent)
-- [`OrderStateTransitionEvent`](/docs/reference/typescript-api/events/event-types#orderstatetransitionevent)
-- [`PasswordResetEvent`](/docs/reference/typescript-api/events/event-types#passwordresetevent)
-- [`PasswordResetVerifiedEvent`](/docs/reference/typescript-api/events/event-types#passwordresetverifiedevent)
-- [`PaymentMethodEvent`](/docs/reference/typescript-api/events/event-types#paymentmethodevent)
-- [`PaymentStateTransitionEvent`](/docs/reference/typescript-api/events/event-types#paymentstatetransitionevent)
-- [`ProductChannelEvent`](/docs/reference/typescript-api/events/event-types#productchannelevent)
-- [`ProductEvent`](/docs/reference/typescript-api/events/event-types#productevent)
-- [`ProductOptionEvent`](/docs/reference/typescript-api/events/event-types#productoptionevent)
-- [`ProductOptionGroupChangeEvent`](/docs/reference/typescript-api/events/event-types#productoptiongroupchangeevent)
-- [`ProductOptionGroupEvent`](/docs/reference/typescript-api/events/event-types#productoptiongroupevent)
-- [`ProductVariantChannelEvent`](/docs/reference/typescript-api/events/event-types#productvariantchannelevent)
-- [`ProductVariantEvent`](/docs/reference/typescript-api/events/event-types#productvariantevent)
-- [`PromotionEvent`](/docs/reference/typescript-api/events/event-types#promotionevent)
-- [`ProvinceEvent`](/docs/reference/typescript-api/events/event-types#provinceevent)
-- [`RefundStateTransitionEvent`](/docs/reference/typescript-api/events/event-types#refundstatetransitionevent)
-- [`RoleChangeEvent`](/docs/reference/typescript-api/events/event-types#rolechangeevent)
-- [`RoleEvent`](/docs/reference/typescript-api/events/event-types#roleevent)
-- [`SearchEvent`](/docs/reference/typescript-api/events/event-types#searchevent)
-- [`SellerEvent`](/docs/reference/typescript-api/events/event-types#sellerevent)
-- [`ShippingMethodEvent`](/docs/reference/typescript-api/events/event-types#shippingmethodevent)
-- [`StockMovementEvent`](/docs/reference/typescript-api/events/event-types#stockmovementevent)
-- [`TaxCategoryEvent`](/docs/reference/typescript-api/events/event-types#taxcategoryevent)
-- [`TaxRateEvent`](/docs/reference/typescript-api/events/event-types#taxrateevent)
-- [`TaxRateModificationEvent`](/docs/reference/typescript-api/events/event-types#taxratemodificationevent)
-- [`ZoneEvent`](/docs/reference/typescript-api/events/event-types#zoneevent)
-- [`ZoneMembersEvent`](/docs/reference/typescript-api/events/event-types#zonemembersevent)
+- `OrderLineEvent`
+- `OrderPlacedEvent`
+- `OrderStateTransitionEvent`
+- `PasswordResetEvent`
+- `PasswordResetVerifiedEvent`
+- `PaymentMethodEvent`
+- `PaymentStateTransitionEvent`
+- `ProductChannelEvent`
+- `ProductEvent`
+- `ProductOptionEvent`
+- `ProductOptionGroupChangeEvent`
+- `ProductOptionGroupEvent`
+- `ProductVariantChannelEvent`
+- `ProductVariantEvent`
+- `PromotionEvent`
+- `ProvinceEvent`
+- `RefundStateTransitionEvent`
+- `RoleChangeEvent`
+- `RoleEvent`
+- `SearchEvent`
+- `SellerEvent`
+- `ShippingMethodEvent`
+- `StockMovementEvent`
+- `TaxCategoryEvent`
+- `TaxRateEvent`
+- `TaxRateModificationEvent`
+- `ZoneEvent`
+- `ZoneMembersEvent`
 
 </div>
 </div>
@@ -189,7 +189,7 @@ export class MyPluginService {
 
 ## Creating custom events
 
-You can create your own custom events by extending the [`DeenruvEvent`](/docs/reference/typescript-api/events/deenruv-event) class. For example, to create a custom event which is triggered when a customer submits a review, you could do this:
+You can create your own custom events by extending the `DeenruvEvent` class. For example, to create a custom event which is triggered when a customer submits a review, you could do this:
 
 ```ts title="src/plugins/reviews/events/review-submitted.event.ts"
 import { ID, RequestContext, DeenruvEvent } from '@deenruv/core';
@@ -235,7 +235,7 @@ export class ProductReviewService {
 
 ### Entity events
 
-There is a special event class [`VendureEntityEvent`](/docs/reference/typescript-api/events/deenruv-entity-event) for events relating to the creation, update or deletion of entities. Let's say you have a custom entity (see [defining a database entity](/docs/guides/developer-guide/database-entity)) `BlogPost` and you want to trigger an event whenever a new `BlogPost` is created, updated or deleted:
+There is a special event class `VendureEntityEvent` for events relating to the creation, update or deletion of entities. Let's say you have a custom entity (see [defining a database entity](/docs/guides/developer-guide/database-entity)) `BlogPost` and you want to trigger an event whenever a new `BlogPost` is created, updated or deleted:
 
 ```ts title="src/plugins/blog/events/blog-post-event.ts"
 import { ID, RequestContext, VendureEntityEvent } from '@deenruv/core';
