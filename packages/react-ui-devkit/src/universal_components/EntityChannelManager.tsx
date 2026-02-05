@@ -112,7 +112,6 @@ export const EntityChannelManager: React.FC<EntityChannelManagerProps> = ({
         });
         onRemoveSuccess?.();
       } catch (e) {
-        console.log(e);
         toast.error(t("error.mutation"));
       }
     },
@@ -189,7 +188,6 @@ export const EntityChannelManager: React.FC<EntityChannelManagerProps> = ({
       });
     } catch (e) {
       toast.error(t("error.mutation"));
-      console.log(e);
     }
   }, [entityCode, entitySlug, entityId, entityName, entity]);
 

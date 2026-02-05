@@ -8,8 +8,8 @@ export function priceFormatter<T>(
   price: number | { from: number; to: number },
   code?: T extends CurrencyCode ? CurrencyCode : T,
 ): string {
-  const currencyCode = code || CurrencyCode.PLN;
-  //TODO: more universal solution
+  // Default to USD as the most widely recognized international currency fallback
+  const currencyCode = code || CurrencyCode.USD;
   const translations: Partial<Record<CurrencyCode, { country: string }>> = {
     [CurrencyCode.USD]: {
       country: "en-US",

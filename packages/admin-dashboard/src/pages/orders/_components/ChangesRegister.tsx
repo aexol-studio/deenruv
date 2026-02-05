@@ -201,13 +201,13 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
                       );
 
                       const quantity = quantityChange ? Number(quantityChange.added) : 1;
-                      const linePrice = brandNewLine
-                        ? (brandNewLine.value as UnknownObject).discountedLinePrice
+                      const linePrice: number = brandNewLine
+                        ? Number((brandNewLine.value as UnknownObject).discountedLinePrice)
                         : linePriceChange
                           ? Number(linePriceChange.added)
                           : 0;
-                      const linePriceWithTax = brandNewLine
-                        ? (brandNewLine.value as UnknownObject).discountedLinePriceWithTax
+                      const linePriceWithTax: number = brandNewLine
+                        ? Number((brandNewLine.value as UnknownObject).discountedLinePriceWithTax)
                         : linePriceWithTaxChange
                           ? Number(linePriceWithTaxChange.added)
                           : 0;
@@ -257,24 +257,26 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
                 </TableHeader>
                 <TableBody>
                   {changes.surcharges.map((surcharge, index) => {
-                    const item = surcharge.value || {};
+                    const item = (surcharge.value || {}) as Record<string, unknown>;
                     return (
                       <TableRow key={index}>
                         <TableCell className="font-medium">
                           <div className="flex items-center gap-2">
                             <FileText className="size-4 text-blue-500 dark:text-blue-400" />
-                            {item.description || t('changes.unnamedSurcharge', 'Unnamed Surcharge')}
+                            {String(item.description || '') || t('changes.unnamedSurcharge', 'Unnamed Surcharge')}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Tag className="text-muted-foreground size-4" />
-                            <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{item.sku || '—'}</code>
+                            <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
+                              {String(item.sku || '') || '—'}
+                            </code>
                           </div>
                         </TableCell>
-                        <TableCell>{PriceJSX(item.price)}</TableCell>
+                        <TableCell>{PriceJSX(Number(item.price))}</TableCell>
                         <TableCell className="font-medium text-blue-600 dark:text-blue-400">
-                          {PriceJSX(item.priceWithTax)}
+                          {PriceJSX(Number(item.priceWithTax))}
                         </TableCell>
                       </TableRow>
                     );

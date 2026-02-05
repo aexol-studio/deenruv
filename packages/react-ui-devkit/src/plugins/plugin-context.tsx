@@ -112,7 +112,6 @@ export const PluginProvider: FC<
   const getModalComponents = (location: ModalLocationsKeys) =>
     plugins.getModalComponents(location);
   const changePluginStatus = (name: string, status: "active" | "inactive") => {
-    console.log("changePluginStatus", name, status);
     plugins.changePluginStatus(name, status);
     setPlugins(plugins.getPluginMap());
   };

@@ -1,6 +1,10 @@
-// @ts-nocheck
-import { typedGql, scalars, $, GraphQLTypes } from "@deenruv/admin-types";
-import { capitalizeFirstLetter } from "./capitalizeFirstLetter.js";
+import {
+  typedGql,
+  scalars,
+  $,
+  GraphQLTypes,
+  ValueTypes,
+} from "@deenruv/admin-types";
 
 const genericResponseObj = { id: true };
 const genericDeleteObj = { message: true };
@@ -16,15 +20,20 @@ export const getMutation = (
       ? genericDeleteObj
       : genericResponseObj;
 
-  return typedGql("mutation", { scalars })({
+  // Dynamic mutation builder: mutation name and input type are computed at runtime,
+  // so we need targeted type overrides for the Zeus type system
+  const inputType =
+    `${mutationName.charAt(0).toUpperCase() + mutationName.slice(1)}Input!` as const;
+  const mutationObj = {
     [mutationName]: [
       {
-        input: $(
-          "input",
-          `${mutationName.charAt(0).toUpperCase() + mutationName.slice(1)}Input!`,
-        ),
+        // @ts-expect-error - Dynamic input type string can't satisfy GraphQLVariableType union
+        input: $("input", inputType),
       },
       responseObj,
     ],
-  });
+  } as ValueTypes["Mutation"];
+
+  // @ts-expect-error - Dynamic mutation object causes deep type instantiation with Zeus
+  return typedGql("mutation", { scalars })(mutationObj);
 };

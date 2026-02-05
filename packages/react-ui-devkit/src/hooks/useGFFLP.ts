@@ -88,35 +88,39 @@ export const useFFLP = <X>(config: {
         }
       });
     },
-    [state, config],
+    [config],
   );
 
   const checkIfAllFieldsAreValid: () => boolean = useCallback(() => {
-    let newState = { ...state };
-    Object.keys(config).forEach((field) => {
-      const fieldKey = field as keyof X;
-      const fieldValue = newState[fieldKey];
-      if (fieldValue && fieldKey) {
-        const isToBeValidated = !!config[fieldKey]?.validate;
-        const isInvalid = config[fieldKey]?.validate?.(fieldValue.value);
-        const initialValue = fieldValue.initialValue;
-        const value = fieldValue.value;
-        newState = {
-          ...newState,
-          [fieldKey]:
-            isToBeValidated && isInvalid && isInvalid.length > 0
-              ? { initialValue, value, errors: isInvalid }
-              : { initialValue, value, validatedValue: value },
-        };
-      }
+    let isValid = true;
+    _setState((prevState) => {
+      let newState = { ...prevState };
+      Object.keys(config).forEach((field) => {
+        const fieldKey = field as keyof X;
+        const fieldValue = newState[fieldKey];
+        if (fieldValue && fieldKey) {
+          const isToBeValidated = !!config[fieldKey]?.validate;
+          const isInvalid = config[fieldKey]?.validate?.(fieldValue.value);
+          const initialValue = fieldValue.initialValue;
+          const value = fieldValue.value;
+          newState = {
+            ...newState,
+            [fieldKey]:
+              isToBeValidated && isInvalid && isInvalid.length > 0
+                ? { initialValue, value, errors: isInvalid }
+                : { initialValue, value, validatedValue: value },
+          };
+        }
+      });
+      isValid = !Object.keys(config).some(
+        (field) =>
+          config[field as keyof X]?.validate &&
+          !newState[field as keyof X]?.validatedValue,
+      );
+      return newState;
     });
-    _setState(newState);
-    return !Object.keys(config).some(
-      (field) =>
-        config[field as keyof X]?.validate &&
-        !newState[field as keyof X]?.validatedValue,
-    );
-  }, [config, state]);
+    return isValid;
+  }, [config]);
 
   const haveValidFields = useMemo(
     () =>

@@ -20,7 +20,7 @@ import { ServerConfigType } from "@/selectors/BaseSelectors.js";
 import { OrderDetailSelector, OrderDetailType } from "@/selectors/index.js";
 import { ORDER_STATE } from "@/utils/order_state.js";
 
-export type UnknownObject = Record<string, any>;
+export type UnknownObject = Record<string, unknown>;
 
 export type ModifyOrderInput = Omit<
   ResolverInputTypes["ModifyOrderInput"],
@@ -60,7 +60,7 @@ export interface RestChange {
   changed: ChangesTypeKey;
   removed: string | number;
   added: string | number;
-  value?: Record<string, any>;
+  value?: Record<string, unknown>;
 }
 
 export interface ModifyOrderChanges {
@@ -133,17 +133,15 @@ interface Actions {
   setShippingAddress: (
     input: ResolverInputTypes["CreateAddressInput"],
   ) => Promise<OrderDetailType>;
-  setCustomerAndAddressesForDraftOrder: (
-    customerId: string,
-  ) => Promise<OrderDetailType>;
-  changeOrderState: (newStatus: ORDER_STATE) => Promise<{ id: string }>;
+  setCustomerAndAddressesForDraftOrder: (customerId: string) => Promise<void>;
+  changeOrderState: (newStatus: ORDER_STATE) => Promise<{ id: string } | void>;
   cancelOrder: (
     input: Omit<ModelTypes["CancelOrderInput"], "orderId">,
     noOrderRefetch?: boolean,
-  ) => Promise<{ id: string }>;
+  ) => Promise<{ id: string } | void>;
   refundOrder: (
     input: Omit<ModelTypes["RefundOrderInput"], "paymentId">,
-  ) => Promise<{ id: string }>;
+  ) => Promise<{ id: string } | void>;
   cancelAndRefundOrder: (input: {
     cancelShipping: boolean;
     amount: number;
@@ -151,7 +149,7 @@ interface Actions {
     reason: string;
     shipping: number;
     adjustment: number;
-  }) => Promise<{ id: string }>;
+  }) => Promise<{ id: string } | void>;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -206,25 +204,27 @@ const getAllOrderHistory = async (id: string) => {
   return { history };
 };
 
-// @ts-ignore
 export const useOrder = create<Order & Actions>()((set, get) => {
   const setAddress = (
     type: "billing" | "shipping",
     input: ResolverInputTypes["CreateAddressInput"],
   ) => {
     const { order } = get();
-    const mutationName =
-      type === "billing"
-        ? "setDraftOrderBillingAddress"
-        : "setDraftOrderShippingAddress";
-    if (order)
+    if (!order) return;
+    if (type === "billing") {
       return apiClient("mutation")({
-        [(mutationName as "setDraftOrderBillingAddress") ||
-        "setDraftOrderShippingAddress"]: [
+        setDraftOrderBillingAddress: [
           { orderId: order.id, input },
           OrderDetailSelector,
         ],
-      });
+      }).then((resp) => resp.setDraftOrderBillingAddress as OrderDetailType);
+    }
+    return apiClient("mutation")({
+      setDraftOrderShippingAddress: [
+        { orderId: order.id, input },
+        OrderDetailSelector,
+      ],
+    }).then((resp) => resp.setDraftOrderShippingAddress as OrderDetailType);
   };
 
   return {
@@ -244,20 +244,19 @@ export const useOrder = create<Order & Actions>()((set, get) => {
     orderLineCustomFields: null,
     setBillingAddress: async (input) => {
       const { setModifiedOrder, setOrder } = get();
-      return setAddress("billing", input)?.then((resp) => {
-        setModifiedOrder(resp.setDraftOrderBillingAddress);
-        setOrder(resp.setDraftOrderBillingAddress);
-      });
+      const order = await setAddress("billing", input);
+      if (!order) throw new Error("Failed to set billing address");
+      setModifiedOrder(order);
+      setOrder(order);
+      return order;
     },
     setShippingAddress: async (input) => {
       const { setModifiedOrder, setOrder } = get();
-      return setAddress("shipping", input)?.then((resp) => {
-        // @ts-ignore
-        const newOrder = resp.setDraftOrderShippingAddress;
-        setModifiedOrder(newOrder);
-        setOrder(newOrder);
-        return newOrder;
-      });
+      const newOrder = await setAddress("shipping", input);
+      if (!newOrder) throw new Error("Failed to set shipping address");
+      setModifiedOrder(newOrder);
+      setOrder(newOrder);
+      return newOrder;
     },
     setCustomerAndAddressesForDraftOrder: async (id: string) => {
       const { order, setOrder, setBillingAddress, setShippingAddress } = get();
@@ -340,7 +339,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         currentOrder = order;
       } else if (order.state === ORDER_STATE.MODIFYING) {
         mode = "update";
-        console.log("SETTING MOD");
         currentOrder = modifiedOrder ? modifiedOrder : order;
       } else {
         mode = "view";
@@ -591,8 +589,9 @@ export const useOrder = create<Order & Actions>()((set, get) => {
           surcharges: [],
           shippingAddress: [],
           billingAddress: [],
+          shippingMethod: [],
           rest: [],
-        };
+        } satisfies ChangesRegistry;
 
       const { country: _, ...shippingAddress } =
         modifiedOrder?.shippingAddress ?? {};
@@ -654,8 +653,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         "shippingLines.0.price",
         "__typename",
       ]);
-
-      console.log("ORD", order, dryRunOrder);
 
       const latestShippingLinesIndex = Math.max(
         ...rawChanges.resChanges
@@ -719,7 +716,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
     addPaymentToOrder: async (input) => {
       const { setOrder, fetchOrderHistory } = get();
 
-      console.log("ADDING");
       apiClient("mutation")({
         addManualPaymentToOrder: [
           { input },
