@@ -49,3 +49,9 @@ lint:
 
 deploy docker dev:
   needs: []
+
+deploy docker qa:
+  needs: []
+
+deploy docker prod:
+  needs: []
