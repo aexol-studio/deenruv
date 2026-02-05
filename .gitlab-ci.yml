@@ -4,6 +4,7 @@ include:
   - project: 'ci/templates/docker'
     file: ['monorepo.yml']
     inputs:
+      disable_build_deps: true
       matrix:
         - APP: docs
           APP_ROOT: .
