@@ -1,0 +1,4 @@
+{
+  "title": "Reference",
+  "pages": ["index", "typescript-api", "core-plugins", "graphql-api", "admin-ui-api"]
+}

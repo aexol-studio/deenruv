@@ -6,6 +6,6 @@ A headless [GraphQL](https://graphql.org/) ecommerce framework built on [Node.js
 $ npm install @deenruv/core
 ```
 
-### [www.deenruv.io](https://www.deenruv.io/)
+### [deenruv.com](https://deenruv.com/)
 
-See the [Getting Started](https://www.deenruv.io/docs/getting-started/) guide for instructions on use.
+See the [Getting Started](https://deenruv.com/docs/getting-started/) guide for instructions on use.

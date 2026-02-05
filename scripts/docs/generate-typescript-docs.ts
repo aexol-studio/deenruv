@@ -143,7 +143,7 @@ function toHash(title: string): string {
 }
 
 function absOutputPath(outputPath: string): string {
-  return path.join(__dirname, "../../docs/docs/reference/", outputPath);
+  return path.join(__dirname, "../../apps/docs/content/docs/reference/", outputPath);
 }
 
 function getSourceFilePaths(

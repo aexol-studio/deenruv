@@ -12,7 +12,10 @@
     "lint:fix": "pnpm -r lint:fix",
     "docs:generate-typescript-docs": "node --import @deenruv/ts-node-register scripts/docs/generate-typescript-docs.ts",
     "docs:generate-graphql-docs": "node --import @deenruv/ts-node-register scripts/docs/generate-graphql-docs.ts --api=shop && node --import @deenruv/ts-node-register scripts/docs/generate-graphql-docs.ts --api=admin",
-    "docs:build": "pnpm docs:generate-typescript-docs && pnpm docs:generate-graphql-docs",
+    "docs:codegen": "pnpm docs:generate-typescript-docs && pnpm docs:generate-graphql-docs",
+    "docs:dev": "pnpm --filter @deenruv/docs dev",
+    "docs:build": "pnpm docs:codegen && pnpm --filter @deenruv/docs build",
+    "docs:start": "pnpm --filter @deenruv/docs start",
     "codegen": "tsx scripts/codegen/generate-graphql-types.ts",
     "version": "pnpm check-imports && pnpm check-angular-versions && pnpm build && pnpm check-core-type-defs && pnpm generate-changelog && git add CHANGELOG* && git add */version.ts",
     "start:server": "pnpm -filter=@deenruv/server run start",
@@ -105,5 +108,10 @@
     "react": "^18.2.0",
     "typeorm": "^0.3.20"
   },
-  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6"
+  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6",
+  "pnpm": {
+    "overrides": {
+      "lucide-react": "^0.460.0"
+    }
+  }
 }

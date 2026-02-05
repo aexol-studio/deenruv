@@ -25,7 +25,7 @@ will create an order, set Stripe as payment method, and create a payment secret.
 
 1. Get a test api key from your Stripe
    dashboard: https://dashboard.stripe.com/test/apikeys
-2. Use Ngrok or Localtunnel to make your localhost publicly available and create a webhook as described here: https://www.deenruv.io/docs/typescript-api/payments-plugin/stripe-plugin/
+2. Use Ngrok or Localtunnel to make your localhost publicly available and create a webhook as described here: https://deenruv.com/docs/typescript-api/payments-plugin/stripe-plugin/
 3. Create the file `packages/payments-plugin/.env` with these contents:
 
 ```sh

@@ -1,0 +1,71 @@
+# Git
+.git
+.gitignore
+
+# Node modules (will be installed in Docker)
+**/node_modules/
+
+# Build outputs
+**/.next/
+**/out/
+**/dist/
+**/build/
+
+# Package lib folders (compiled output, not source)
+packages/*/lib/
+plugins/*/lib/
+
+# Fumadocs generated
+**/.source/
+
+# Other apps (not needed for docs build)
+# Keep apps/docs but exclude its build artifacts
+apps/server/
+apps/panel/
+
+# Development files
+*.md
+!README.md
+!**/content/**/*.md
+!**/content/**/*.mdx
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker files
+**/Dockerfile
+**/.dockerignore
+docker-compose*.yml
+
+# CI/CD
+.gitlab-ci.yml
+.github/
+
+# Tests
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+**/__tests__/
+**/coverage/
+**/e2e/
+
+# Logs
+*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/.pnpm-debug.log*
+
+# Environment
+.env
+.env.*
+
+# Documentation source (Docusaurus - old)
+docs/

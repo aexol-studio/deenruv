@@ -1,0 +1,16 @@
+{
+  "title": "Building a Storefront",
+  "pages": [
+    "storefront-starters",
+    "connect-api",
+    "codegen",
+    "---Storefront Tasks---",
+    "navigation-menu",
+    "listing-products",
+    "product-detail",
+    "active-order",
+    "checkout-flow",
+    "customer-accounts",
+    "order-workflow"
+  ]
+}

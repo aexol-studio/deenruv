@@ -1,0 +1,4 @@
+{
+  "title": "User Guide",
+  "pages": ["index", "catalog", "orders", "customers", "promotions", "settings", "localization"]
+}

@@ -11,7 +11,7 @@
     "test": "vitest --run",
     "ci": "npm run build"
   },
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "publishConfig": {
     "access": "public"
   },

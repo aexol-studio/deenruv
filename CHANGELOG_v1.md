@@ -2305,7 +2305,7 @@ Fixes broken publish of admin-ui-plugin
     This release also includes updates to many dependencies which in turn have dropped support for Node.js v8. Therefore **Deenruv now supports Node.js v10** or higher.
 
 -   The CollectionAsset entity had a cascade delete defined, which will require a DB migration.
--   The JobQueueService has been completely re-designed. In the event that you are using this service in your Plugins, please see the [API documentation](https://www.deenruv.io/docs/developer-guide/job-queue) on how to use it now.
+-   The JobQueueService has been completely re-designed. In the event that you are using this service in your Plugins, please see the [API documentation](https://deenruv.com/docs/developer-guide/job-queue) on how to use it now.
 
 ## <small>0.10.2 (2020-04-02)</small>
 

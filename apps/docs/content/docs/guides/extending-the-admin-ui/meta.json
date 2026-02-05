@@ -1,0 +1,25 @@
+{
+  "title": "Extending the Admin UI",
+  "pages": [
+    "getting-started",
+    "ui-library",
+    "admin-ui-theming-branding",
+    "adding-ui-translations",
+    "using-other-frameworks",
+    "---Providers---",
+    "nav-menu",
+    "alerts",
+    "add-actions-to-pages",
+    "page-tabs",
+    "custom-form-inputs",
+    "custom-data-table-components",
+    "custom-detail-components",
+    "bulk-actions",
+    "dashboard-widgets",
+    "custom-timeline-components",
+    "---Routes---",
+    "defining-routes",
+    "creating-list-views",
+    "creating-detail-views"
+  ]
+}

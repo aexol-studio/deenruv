@@ -7,7 +7,7 @@ export interface PluginInitOptions {
 }
 
 /**
- * https://www.deenruv.io/docs/developer-guide/customizing-models/
+ * https://deenruv.com/docs/developer-guide/customizing-models/
  * https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules
  */
 declare module "@deenruv/core" {}

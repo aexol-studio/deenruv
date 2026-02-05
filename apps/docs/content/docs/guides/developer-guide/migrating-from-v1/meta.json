@@ -1,0 +1,4 @@
+{
+  "title": "Migrating from v1",
+  "pages": ["index", "breaking-api-changes", "database-migration", "storefront-migration"]
+}

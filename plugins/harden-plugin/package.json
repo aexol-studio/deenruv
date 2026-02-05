@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "publishConfig": {
     "access": "public"
   },

@@ -1,6 +1,12 @@
 include:
   - project: 'ci/templates/node'
     file: ['pnpm-publish.yml']
+  - project: 'ci/templates/docker'
+    file: ['monorepo.yml']
+    inputs:
+      matrix:
+        - APP: docs
+          APP_ROOT: apps/docs
 
 .build_artifacts: &build_artifacts
   artifacts:

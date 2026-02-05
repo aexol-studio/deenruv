@@ -19,7 +19,7 @@
     "dev-server:mollie": "npm run build && DB=sqlite node -r ts-node/register e2e/mollie-dev-server.ts",
     "dev-server:stripe": "npm run build && DB=sqlite node -r ts-node/register e2e/stripe-dev-server.ts"
   },
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "publishConfig": {
     "access": "public"
   },

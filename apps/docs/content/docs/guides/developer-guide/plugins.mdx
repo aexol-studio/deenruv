@@ -1,0 +1,744 @@
+---
+title: 'Plugins'
+description: 'Learn how to create Deenruv plugins to extend functionality - define entities, extend GraphQL APIs, and add custom business logic'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+The heart of Deenruv is its plugin system. Plugins not only allow you to instantly add new functionality to your
+Deenruv server via third-part npm packages, they are also the means by which you build out the custom business
+logic of your application.
+
+Plugins in Deenruv allow one to:
+
+- Modify the DeenruvConfig object, such as defining custom fields on existing entities.
+- Extend the GraphQL APIs, including modifying existing types and adding completely new queries and mutations.
+- Define new database entities and interact directly with the database.
+- Interact with external systems that you need to integrate with.
+- Respond to events such as new orders being placed.
+- Trigger background tasks to run on the worker process.
+
+… and more!
+
+In a typical Deenruv application, custom logic and functionality is implemented as a set of plugins
+which are usually independent of one another. For example, there could be a plugin for each of the following:
+wishlists, product reviews, loyalty points, gift cards, etc.
+This allows for a clean separation of concerns and makes it easy to add or remove functionality as needed.
+
+## Core Plugins
+
+Deenruv provides a set of core plugins covering common functionality such as assets handling,
+email sending, and search. For documentation on these, see the [Core Plugins reference](/docs/reference/core-plugins/).
+
+## Plugin basics
+
+Here's a bare-minimum example of a plugin:
+
+```ts title="src/plugins/avatar-plugin/avatar.plugin.ts"
+import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    configuration: config => {
+        config.customFields.Customer.push({
+            type: 'string',
+            name: 'avatarUrl',
+            label: [{ languageCode: LanguageCode.en, value: 'Avatar URL' }],
+            list: true,
+        });
+        return config;
+    },
+})
+export class AvatarPlugin {}
+```
+
+This plugin does one thing only: it adds a new custom field to the `Customer` entity.
+
+The plugin is then imported into the `DeenruvConfig`:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { AvatarPlugin } from './plugins/avatar-plugin/avatar.plugin';
+
+export const config: DeenruvConfig = {
+    // ...
+    plugins: [AvatarPlugin],
+};
+```
+
+The key feature is the `@DeenruvPlugin()` decorator, which marks the class as a Deenruv plugin and accepts a configuration
+object on the type [`VendurePluginMetadata`](/docs/reference/typescript-api/plugin/deenruv-plugin-metadata/).
+
+A VendurePlugin is actually an enhanced version of a [NestJS Module](https://docs.nestjs.com/modules), and supports
+all the metadata properties that NestJS modules support:
+
+- `imports`: Allows importing other NestJS modules in order to make use of their exported providers.
+- `providers`: The providers (services) that will be instantiated by the Nest injector and that may be shared across this plugin.
+- `controllers`: Controllers allow the plugin to define REST-style endpoints.
+- `exports`: The providers which will be exported from this plugin and made available to other plugins.
+
+Additionally, the `VendurePlugin` decorator adds the following Deenruv-specific properties:
+
+- `configuration`: A function which can modify the `DeenruvConfig` object before the server bootstraps.
+- `shopApiExtensions`: Allows the plugin to extend the GraphQL Shop API with new queries, mutations, resolvers & scalars.
+- `adminApiExtensions`: Allows the plugin to extend the GraphQL Admin API with new queries, mutations, resolvers & scalars.
+- `entities`: Allows the plugin to define new database entities.
+- `compatibility`: Allows the plugin to declare which versions of Deenruv it is compatible with.
+
+<Callout type="info">
+Since a Deenruv plugin is a superset of a NestJS module, this means that many NestJS modules are actually
+valid Deenruv plugins!
+</Callout>
+
+## Plugin lifecycle
+
+Since a VendurePlugin is built on top of the NestJS module system, any plugin (as well as any providers it defines)
+can make use of any of the [NestJS lifecycle hooks](https://docs.nestjs.com/fundamentals/lifecycle-events):
+
+- onModuleInit
+- onApplicationBootstrap
+- onModuleDestroy
+- beforeApplicationShutdown
+- onApplicationShutdown
+
+<Callout type="warn">
+Note that lifecycle hooks are run in both the server and worker contexts.
+If you have code that should only run either in the server context or worker context,
+you can inject the [ProcessContext provider](/docs/reference/typescript-api/common/process-context/).
+</Callout>
+
+### Configure
+
+Another hook that is not strictly a lifecycle hook, but which can be useful to know is the [`configure` method](https://docs.nestjs.com/middleware#applying-middleware) which is
+used by NestJS to apply middleware. This method is called _only_ for the server and _not_ for the worker, since middleware relates
+to the network stack, and the worker has no network part.
+
+```ts
+import { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { EventBus, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { MyMiddleware } from './api/my-middleware';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+})
+export class MyPlugin implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(MyMiddleware).forRoutes('my-custom-route');
+    }
+}
+```
+
+## Create a Plugin via CLI
+
+<Callout type="info">
+Run the `npx deenruv add` command, and select "Create a new Deenruv plugin".
+
+This will guide you through the creation of a new plugin and automate all aspects of the process.
+
+This is the recommended way of creating a new plugin.
+</Callout>
+
+## Writing a plugin from scratch
+
+Although the [Deenruv CLI](/docs/guides/developer-guide/cli/) is the recommended way to create a new plugin, it can be useful to understand the process of creating
+a plugin manually.
+
+In Deenruv **plugins** are used to extend the core functionality of the server. Plugins can be pre-made functionality that you can install via npm, or they can be custom plugins that you write yourself.
+
+For any unit of functionality that you need to add to your project, you'll be creating a Deenruv plugin. By convention, plugins are stored in the `plugins` directory of your project. However, this is not a requirement, and you are free to arrange your plugin files in any way you like.
+
+```txt
+├──src
+    ├── index.ts
+    ├── deenruv-config.ts
+    ├── plugins
+        ├── reviews-plugin
+        ├── cms-plugin
+        ├── wishlist-plugin
+        ├── stock-sync-plugin
+```
+
+<Callout type="info">
+For a complete working example of a Deenruv plugin, see the [real-world-deenruv Reviews plugin](https://github.com/aexol-studio/real-world-deenruv/tree/master/src/plugins/reviews)
+
+You can also use the [Deenruv CLI](/docs/guides/developer-guide/cli) to quickly scaffold a new plugin.
+
+If you intend to write a shared plugin to be distributed as an npm package, see the [deenruv plugin-template repo](https://github.com/aexol-studio/plugin-template)
+</Callout>
+
+In this guide, we will implement a simple but fully-functional **wishlist plugin** step-by-step. The goal of this plugin is to allow signed-in customers to add products to a wishlist, and to view and manage their wishlist.
+
+### Step 1: Create the plugin file
+
+We'll start by creating a new directory to house our plugin, add create the main plugin file:
+
+```txt
+├──src
+    ├── index.ts
+    ├── deenruv-config.ts
+    ├── plugins
+        ├── wishlist-plugin
+            ├── wishlist.plugin.ts
+```
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+})
+export class WishlistPlugin {}
+```
+
+The `PluginCommonModule` will be required in all plugins that you create. It contains the common services that are exposed by Deenruv Core, allowing you to inject them into your plugin's services and resolvers.
+
+### Step 2: Define an entity
+
+Next we will define a new database entity to store the wishlist items. Deenruv uses [TypeORM](https://typeorm.io/) to manage the database schema, and an Entity corresponds to a database table.
+
+First let's create the file to house the entity:
+
+```txt
+├── wishlist-plugin
+    ├── wishlist.plugin.ts
+    ├── entities
+        ├── wishlist-item.entity.ts
+```
+
+By convention, we'll store the entity definitions in the `entities` directory of the plugin. Again, this is not a requirement, but it is a good way to keep your plugin organized.
+
+```ts title="src/plugins/wishlist-plugin/entities/wishlist-item.entity.ts"
+import { DeepPartial, ID, ProductVariant, VendureEntity, EntityId } from '@deenruv/core';
+import { Column, Entity, ManyToOne } from 'typeorm';
+
+@Entity()
+export class WishlistItem extends VendureEntity {
+    constructor(input?: DeepPartial<WishlistItem>) {
+        super(input);
+    }
+
+    @ManyToOne(type => ProductVariant)
+    productVariant: ProductVariant;
+
+    @EntityId()
+    productVariantId: ID;
+}
+```
+
+Let's break down what's happening here:
+
+- The `WishlistItem` entity extends the [`VendureEntity` class](/docs/reference/typescript-api/entities/deenruv-entity/). This is a base class which provides the `id`, `createdAt` and `updatedAt` fields, and all custom entities should extend it.
+- The `@Entity()` decorator marks this class as a TypeORM entity.
+- The `@ManyToOne()` decorator defines a many-to-one relationship with the `ProductVariant` entity. This means that each `WishlistItem` will be associated with a single `ProductVariant`.
+- The `productVariantId` column is not strictly necessary, but it allows us to always have access to the ID of the related `ProductVariant` without having to load the entire `ProductVariant` entity from the database.
+- The `constructor()` is used to create a new instance of the entity. This is not strictly necessary, but it is a good practice to define a constructor which takes a `DeepPartial` of the entity as an argument. This allows us to create new instances of the entity using the `new` keyword, passing in a plain object with the desired properties.
+
+Next we need to register this entity with our plugin:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { WishlistItem } from './entities/wishlist-item.entity';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    entities: [WishlistItem],
+})
+export class WishlistPlugin {}
+```
+
+### Step 3: Add a custom field to the Customer entity
+
+We'll now define a new custom field on the Customer entity which will store a list of WishlistItems. This will allow us to easily query for all wishlist items associated with a particular customer.
+
+Custom fields are defined in the DeenruvConfig object, and in a plugin we use the `configuration` function to modify the config object:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { WishlistItem } from './entities/wishlist-item.entity';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    entities: [WishlistItem],
+    configuration: config => {
+        config.customFields.Customer.push({
+            name: 'wishlistItems',
+            type: 'relation',
+            list: true,
+            entity: WishlistItem,
+            internal: true,
+        });
+        return config;
+    },
+})
+export class WishlistPlugin {}
+```
+
+In this snippet we are pushing a new custom field definition onto the `Customer` entity's `customFields` array, and defining this new field as a list (array) of `WishlistItem` entities. Internally, this will tell TypeORM to update the database schema to store this new field. We set `internal: true` to indicate that this field should not be directly exposed to the GraphQL API as `Customer.customFields.wishlistItems`, but instead should be accessed via a custom resolver we will define later.
+
+In order to make use of this custom field in a type-safe way, we can tell TypeScript about this field in a new file:
+
+```txt
+├── wishlist-plugin
+    ├── wishlist.plugin.ts
+    ├── types.ts
+```
+
+```ts title="src/plugins/wishlist-plugin/types.ts"
+import { WishlistItem } from './entities/wishlist-item.entity';
+
+declare module '@deenruv/core/dist/entity/custom-entity-fields' {
+    interface CustomCustomerFields {
+        wishlistItems: WishlistItem[];
+    }
+}
+```
+
+We can then import this types file in our plugin's main file:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import './types';
+```
+
+### Step 4: Create a service
+
+A "service" is a class which houses the bulk of the business logic of any plugin. A plugin can define multiple services if needed, but each service should be responsible for a single unit of functionality, such as dealing with a particular entity, or performing a particular task.
+
+Let's create a service to handle the wishlist functionality:
+
+```txt
+├── wishlist-plugin
+    ├── wishlist.plugin.ts
+    ├── services
+        ├── wishlist.service.ts
+```
+
+```ts title="src/plugins/wishlist-plugin/services/wishlist.service.ts"
+import { Injectable } from '@nestjs/common';
+import {
+    Customer,
+    ForbiddenError,
+    ID,
+    InternalServerError,
+    ProductVariantService,
+    RequestContext,
+    TransactionalConnection,
+    UserInputError,
+} from '@deenruv/core';
+
+import { WishlistItem } from '../entities/wishlist-item.entity';
+
+@Injectable()
+export class WishlistService {
+    constructor(
+        private connection: TransactionalConnection,
+        private productVariantService: ProductVariantService,
+    ) {}
+
+    async getWishlistItems(ctx: RequestContext): Promise<WishlistItem[]> {
+        try {
+            const customer = await this.getCustomerWithWishlistItems(ctx);
+            return customer.customFields.wishlistItems;
+        } catch (err: any) {
+            return [];
+        }
+    }
+
+    /**
+     * Adds a new item to the active Customer's wishlist.
+     */
+    async addItem(ctx: RequestContext, variantId: ID): Promise<WishlistItem[]> {
+        const customer = await this.getCustomerWithWishlistItems(ctx);
+        const variant = this.productVariantService.findOne(ctx, variantId);
+        if (!variant) {
+            throw new UserInputError(`No ProductVariant with the id ${variantId} could be found`);
+        }
+        const existingItem = customer.customFields.wishlistItems.find(i => i.productVariantId === variantId);
+        if (existingItem) {
+            // Item already exists in wishlist, do not
+            // add it again
+            return customer.customFields.wishlistItems;
+        }
+        const wishlistItem = await this.connection
+            .getRepository(ctx, WishlistItem)
+            .save(new WishlistItem({ productVariantId: variantId }));
+        customer.customFields.wishlistItems.push(wishlistItem);
+        await this.connection.getRepository(ctx, Customer).save(customer, { reload: false });
+        return this.getWishlistItems(ctx);
+    }
+
+    /**
+     * Removes an item from the active Customer's wishlist.
+     */
+    async removeItem(ctx: RequestContext, itemId: ID): Promise<WishlistItem[]> {
+        const customer = await this.getCustomerWithWishlistItems(ctx);
+        const itemToRemove = customer.customFields.wishlistItems.find(i => i.id === itemId);
+        if (itemToRemove) {
+            await this.connection.getRepository(ctx, WishlistItem).remove(itemToRemove);
+            customer.customFields.wishlistItems = customer.customFields.wishlistItems.filter(
+                i => i.id !== itemId,
+            );
+        }
+        await this.connection.getRepository(ctx, Customer).save(customer);
+        return this.getWishlistItems(ctx);
+    }
+
+    /**
+     * Gets the active Customer from the context and loads the wishlist items.
+     */
+    private async getCustomerWithWishlistItems(ctx: RequestContext): Promise<Customer> {
+        if (!ctx.activeUserId) {
+            throw new ForbiddenError();
+        }
+        const customer = await this.connection.getRepository(ctx, Customer).findOne({
+            where: { user: { id: ctx.activeUserId } },
+            relations: {
+                customFields: {
+                    wishlistItems: {
+                        productVariant: true,
+                    },
+                },
+            },
+        });
+        if (!customer) {
+            throw new InternalServerError(`Customer was not found`);
+        }
+        return customer;
+    }
+}
+```
+
+Let's break down what's happening here:
+
+- The `WishlistService` class is decorated with the `@Injectable()` decorator. This is a standard NestJS decorator which tells the NestJS dependency injection (DI) system that this class can be injected into other classes. All your services should be decorated with this decorator.
+- The arguments passed to the constructor will be injected by the NestJS DI system. The `connection` argument is a [TransactionalConnection](/docs/reference/typescript-api/data-access/transactional-connection/) instance, which is used to access and manipulate data in the database. The [`ProductVariantService`](/docs/reference/typescript-api/services/product-variant-service/) argument is a built-in Deenruv service which contains methods relating to ProductVariants.
+- The [`RequestContext`](/docs/reference/typescript-api/request/request-context/) object is usually the first argument to any service method, and contains information and context about the current request as well as any open database transactions. It should always be passed to the methods of the `TransactionalConnection`.
+
+The service is then registered with the plugin metadata as a provider:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { WishlistService } from './services/wishlist.service';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    providers: [WishlistService],
+    entities: [WishlistItem],
+    configuration: config => {
+        // ...
+    },
+})
+export class WishlistPlugin {}
+```
+
+### Step 5: Extend the GraphQL API
+
+This plugin will need to extend the Shop API, adding new mutations and queries to enable the customer to view and manage their wishlist.
+
+First we will create a new file to hold the GraphQL schema extensions:
+
+```txt
+├── wishlist-plugin
+    ├── wishlist.plugin.ts
+    ├── api
+        ├── api-extensions.ts
+```
+
+```ts title="src/plugins/wishlist-plugin/api/api-extensions.ts"
+import gql from 'graphql-tag';
+
+export const shopApiExtensions = gql`
+    type WishlistItem implements Node {
+        id: ID!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        productVariant: ProductVariant!
+        productVariantId: ID!
+    }
+
+    extend type Query {
+        activeCustomerWishlist: [WishlistItem!]!
+    }
+
+    extend type Mutation {
+        addToWishlist(productVariantId: ID!): [WishlistItem!]!
+        removeFromWishlist(itemId: ID!): [WishlistItem!]!
+    }
+`;
+```
+
+<Callout type="info">
+The `graphql-tag` package is a dependency of the Deenruv core package. Depending on the package manager you are using, you may need to install it separately with `yarn add graphql-tag` or `npm install graphql-tag`.
+</Callout>
+
+The `api-extensions.ts` file is where we define the extensions we will be making to the Shop API GraphQL schema. We are defining a new `WishlistItem` type; a new query: `activeCustomerWishlist`; and two new mutations: `addToWishlist` and `removeFromWishlist`. This definition is written in [schema definition language](https://graphql.org/learn/schema/) (SDL), a convenient syntax for defining GraphQL schemas.
+
+Next we need to pass these extensions to our plugin's metadata:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { shopApiExtensions } from './api/api-extensions';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    shopApiExtensions: {
+        schema: shopApiExtensions,
+        resolvers: [],
+    },
+})
+export class WishlistPlugin {}
+```
+
+### Step 6: Create a resolver
+
+Now that we have defined the GraphQL schema extensions, we need to create a resolver to handle the new queries and mutations. A resolver in GraphQL is a function which actually implements the query or mutation defined in the schema. This is done by creating a new file in the `api` directory:
+
+```txt
+├── wishlist-plugin
+    ├── wishlist.plugin.ts
+    ├── api
+        ├── api-extensions.ts
+        ├── wishlist.resolver.ts
+```
+
+```ts title="src/plugins/wishlist-plugin/api/wishlist.resolver.ts"
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Allow, Ctx, Permission, RequestContext, Transaction } from '@deenruv/core';
+
+import { WishlistItem } from '../entities/wishlist-item.entity';
+import { WishlistService } from '../services/wishlist.service';
+
+@Resolver()
+export class WishlistShopResolver {
+    constructor(private wishlistService: WishlistService) {}
+
+    @Query()
+    @Allow(Permission.Owner)
+    activeCustomerWishlist(@Ctx() ctx: RequestContext) {
+        return this.wishlistService.getWishlistItems(ctx);
+    }
+
+    @Mutation()
+    @Transaction()
+    @Allow(Permission.Owner)
+    async addToWishlist(
+        @Ctx() ctx: RequestContext,
+        @Args() { productVariantId }: { productVariantId: string },
+    ) {
+        return this.wishlistService.addItem(ctx, productVariantId);
+    }
+
+    @Mutation()
+    @Transaction()
+    @Allow(Permission.Owner)
+    async removeFromWishlist(@Ctx() ctx: RequestContext, @Args() { itemId }: { itemId: string }) {
+        return this.wishlistService.removeItem(ctx, itemId);
+    }
+}
+```
+
+Resolvers are usually "thin" functions that delegate the actual work to a service. Deenruv, like NestJS itself, makes heavy use of decorators at the API layer to define various aspects of the resolver. Let's break down what's happening here:
+
+- The `@Resolver()` decorator tells the NestJS DI system that this class is a resolver. Since a Resolver is part of the NestJS DI system, we can also inject dependencies into its constructor. In this case we are injecting the `WishlistService` which we created in the previous step.
+- The `@Mutation()` decorator tells Deenruv that this is a mutation resolver. Similarly, `@Query()` decorator defines a query resolver. The name of the method is the name of the query or mutation in the schema.
+- The `@Transaction()` decorator tells Deenruv that this resolver method should be wrapped in a database transaction. This is important because we are performing multiple database operations in this method, and we want them to be atomic.
+- The `@Allow()` decorator tells Deenruv that this mutation is only allowed for users with the `Owner` permission. The `Owner` permission is a special permission which indicates that the active user should be the owner of this operation.
+- The `@Ctx()` decorator tells Deenruv that this method requires access to the `RequestContext` object. Every resolver should have this as the first argument, as it is required throughout the Deenruv request lifecycle.
+
+This resolver is then registered with the plugin metadata:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { shopApiExtensions } from './api/api-extensions';
+import { WishlistShopResolver } from './api/wishlist.resolver';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    shopApiExtensions: {
+        schema: shopApiExtensions,
+        resolvers: [WishlistShopResolver],
+    },
+    configuration: config => {
+        // ...
+    },
+})
+export class WishlistPlugin {}
+```
+
+<Callout type="info">
+More information about resolvers can be found in the [NestJS docs](https://docs.nestjs.com/graphql/resolvers).
+</Callout>
+
+### Step 7: Specify compatibility
+
+Since Deenruv v2.0.0, it is possible for a plugin to specify which versions of Deenruv core it is compatible with. This is especially important if the plugin is intended to be made publicly available via npm or another package registry.
+
+The compatibility is specified via the `compatibility` property in the plugin metadata:
+
+```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
+@DeenruvPlugin({
+    // ...
+    compatibility: '^2.0.0',
+})
+export class WishlistPlugin {}
+```
+
+The value of this property is a [semver range](https://docs.npmjs.com/about-semantic-versioning) which specifies the range of compatible versions. In this case, we are saying that this plugin is compatible with any version of Deenruv core which is `>= 2.0.0 < 3.0.0`.
+
+### Step 8: Add the plugin to the DeenruvConfig
+
+The final step is to add the plugin to the `DeenruvConfig` object. This is done in the `deenruv-config.ts` file:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { WishlistPlugin } from './plugins/wishlist-plugin/wishlist.plugin';
+
+export const config: DeenruvConfig = {
+    // ...
+    plugins: [
+        // ...
+        WishlistPlugin,
+    ],
+};
+```
+
+### Test the plugin
+
+Now that the plugin is installed, we can test it out. Since we have defined a custom field, we'll need to generate and run a migration to add the new column to the database:
+
+```bash
+npm run migration:generate wishlist-plugin
+```
+
+Then start the server:
+
+```bash
+npm run dev
+```
+
+Once the server is running, we should be able to log in as an existing Customer, and then add a product to the wishlist:
+
+<Tabs items={['Login mutation', 'Response']}>
+<Tab value="Login mutation">
+```graphql
+mutation Login {
+    login(username: "alec.breitenberg@gmail.com", password: "test") {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+</Tab>
+<Tab value="Response">
+```json
+{
+    "data": {
+        "login": {
+            "id": "9",
+            "identifier": "alec.breitenberg@gmail.com"
+        }
+    }
+}
+```
+</Tab>
+</Tabs>
+
+<Tabs items={['AddToWishlist mutation', 'Response']}>
+<Tab value="AddToWishlist mutation">
+```graphql
+mutation AddToWishlist {
+    addToWishlist(productVariantId: "7") {
+        id
+        productVariant {
+            id
+            name
+        }
+    }
+}
+```
+</Tab>
+<Tab value="Response">
+```json
+{
+    "data": {
+        "addToWishlist": [
+            {
+                "id": "4",
+                "productVariant": {
+                    "id": "7",
+                    "name": "Wireless Optical Mouse"
+                }
+            }
+        ]
+    }
+}
+```
+</Tab>
+</Tabs>
+
+We can then query the wishlist items:
+
+<Tabs items={['GetWishlist query', 'Response']}>
+<Tab value="GetWishlist query">
+```graphql
+query GetWishlist {
+    activeCustomerWishlist {
+        id
+        productVariant {
+            id
+            name
+        }
+    }
+}
+```
+</Tab>
+<Tab value="Response">
+```json
+{
+    "data": {
+        "activeCustomerWishlist": [
+            {
+                "id": "4",
+                "productVariant": {
+                    "id": "7",
+                    "name": "Wireless Optical Mouse"
+                }
+            }
+        ]
+    }
+}
+```
+</Tab>
+</Tabs>
+
+And finally, we can test removing an item from the wishlist:
+
+<Tabs items={['RemoveFromWishlist mutation', 'Response']}>
+<Tab value="RemoveFromWishlist mutation">
+```graphql
+mutation RemoveFromWishlist {
+    removeFromWishlist(itemId: "4") {
+        id
+        productVariant {
+            name
+        }
+    }
+}
+```
+</Tab>
+<Tab value="Response">
+```json
+{
+    "data": {
+        "removeFromWishlist": []
+    }
+}
+```
+</Tab>
+</Tabs>

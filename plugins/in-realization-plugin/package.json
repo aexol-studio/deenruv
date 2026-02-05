@@ -1,7 +1,7 @@
 {
   "name": "@deenruv/in-realization-plugin",
   "version": "0.1.42",
-  "homepage": "https://www.deenruv.com/",
+  "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
     "dist/**/*"

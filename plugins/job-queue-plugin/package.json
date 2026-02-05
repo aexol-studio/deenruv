@@ -17,7 +17,7 @@
     "e2e-wip": "node e2e/check-connection.js || jest --config ../../e2e-common/jest-config.js --runInBand --package=job-queue-plugin",
     "ci": "npm run build"
   },
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "publishConfig": {
     "access": "public"
   },

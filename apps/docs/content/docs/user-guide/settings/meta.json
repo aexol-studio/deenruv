@@ -1,0 +1,4 @@
+{
+  "title": "Settings",
+  "pages": ["index", "global-settings", "channels", "administrators-roles", "countries-zones", "payment-methods", "shipping-methods", "taxes"]
+}

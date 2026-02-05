@@ -1,0 +1,124 @@
+---
+title: "Auth"
+description: "Authentication and authorization in Deenruv"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+**Authentication** is the process of determining the identity of a user. Common ways of authenticating a user are by asking the user for secret credentials (username & password) or by a third-party authentication provider such as Facebook or Google login.
+
+**Authorization** is a related concept, which means that once we have verified the identity of a user, we can then determine what that user is allowed to do. For example, a user may be authorized to view a product, but not to edit it.
+
+The term **auth** is shorthand for _both_ authentication and authorization.
+
+Auth in Deenruv applies to both **administrators** and **customers**. Authentication is controlled by the configured `AuthenticationStrategies`, and authorization is controlled by the configured `Roles` and `Permissions`.
+
+## Administrator auth
+
+Administrators are required to authenticate before they can perform any operations in the Admin API.
+
+Here is a diagram of the parts that make up Administrator authentication:
+
+
+
+Roles can be created to allow fine-grained control over what a particular administrator has access to (see the section below).
+
+## Customer auth
+
+Customer only need to authenticate if they want to access a restricted operation related to their account, such as
+viewing past orders or updating an address.
+
+Here are the parts that make up Customer authentication:
+
+
+
+### Guest customers
+
+Deenruv also supports **guest customers**, meaning that a customer can place an order without needing to register an account, and thus not getting an
+associated user or role. A guest customer, having no roles and thus no permissions, is then unable to view past orders or access any other restricted API
+operations.
+
+However, a guest customer can at a later point register an account using the same email address, at which point they will get a user with the "Customer" role,
+and be able to view their past orders.
+
+## Roles & Permissions
+
+Both the `Customer` and `Administrator` entities relate to a single [`User`](/docs/reference/typescript-api/entities/user) entity which in turn has one or more [`Roles`](/docs/reference/typescript-api/entities/role) for controlling permissions.
+
+
+
+In the example above, the administrator Sam Bailey has two roles assigned: "Order Manager" and "Catalog Manager". An administrator
+can have any number of roles assigned, and the permissions of all roles are combined to determine the permissions of the
+administrator. In this way, you can have fine-grained control over which administrators can perform which actions.
+
+There are 2 special roles which are created by default and cannot be changed:
+
+-   **SuperAdmin**: This role has all permissions, and cannot be edited or deleted. It is assigned to the first administrator
+    created when the server is started.
+-   **Customer**: This role is assigned to all registered customers.
+
+All other roles can be user-defined. Here's an example of an "Inventory Manager" role being defined in the Admin UI:
+
+
+
+## Native authentication
+
+By default, Deenruv uses a username/email address and password to authenticate users, which is implemented by the [`NativeAuthenticationStrategy`](/docs/reference/typescript-api/auth/native-authentication-strategy).
+
+There is a `login` mutation available in both the Shop API and Admin API which allows a customer or administrator to authenticate using
+native authentication:
+
+```graphql title="Admin API"
+mutation {
+    login(username: "superadmin", password: "superadmin") {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+<Callout type="info">
+See the [Managing Sessions guide](/docs/guides/storefront/connect-api#managing-sessions) for how to manage authenticated sessions in your storefront/client applications.
+</Callout>
+
+## External authentication
+
+In addition to the built-in `NativeAuthenticationStrategy`, it is possible to define a custom [`AuthenticationStrategy`](/docs/reference/typescript-api/auth/authentication-strategy) which allows your Deenruv server to support other authentication methods such as:
+
+-   Social logins (Facebook, Google, GitHub, etc.)
+-   Single Sign-On (SSO) providers such as Keycloak, Auth0, etc.
+-   Alternative factors such as SMS, TOTP, etc.
+
+Custom authentication strategies are set via the [`DeenruvConfig.authOptions` object](/docs/reference/typescript-api/auth/auth-options#shopauthenticationstrategy):
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig, NativeAuthenticationStrategy } from '@deenruv/core';
+
+import { FacebookAuthenticationStrategy } from './plugins/authentication/facebook-authentication-strategy';
+import { GoogleAuthenticationStrategy } from './plugins/authentication/google-authentication-strategy';
+import { KeycloakAuthenticationStrategy } from './plugins/authentication/keycloak-authentication-strategy';
+
+export const config: DeenruvConfig = {
+    authOptions: {
+        shopAuthenticationStrategy: [
+            new NativeAuthenticationStrategy(),
+            new FacebookAuthenticationStrategy(),
+            new GoogleAuthenticationStrategy(),
+        ],
+        adminAuthenticationStrategy: [
+            new NativeAuthenticationStrategy(),
+            new KeycloakAuthenticationStrategy(),
+        ],
+    },
+};
+```
+
+In the above example, we define the strategies available for authenticating in the Shop API and the Admin API. The `NativeAuthenticationStrategy` is the only one actually provided by Deenruv out-of-the-box, and this is the default username/email + password strategy.
+
+The other strategies would be custom-built (or provided by future npm packages) by creating classes that implement the [`AuthenticationStrategy` interface](/docs/reference/typescript-api/auth/authentication-strategy).

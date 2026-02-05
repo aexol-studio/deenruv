@@ -1,7 +1,7 @@
 {
   "name": "@deenruv/react-ui-devkit",
   "version": "0.1.42",
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

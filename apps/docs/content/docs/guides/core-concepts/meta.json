@@ -1,0 +1,19 @@
+{
+  "title": "Core Concepts",
+  "pages": [
+    "auth",
+    "products",
+    "collections",
+    "orders",
+    "customers",
+    "channels",
+    "shipping",
+    "payment",
+    "taxes",
+    "promotions",
+    "stock-control",
+    "money",
+    "email",
+    "images-assets"
+  ]
+}

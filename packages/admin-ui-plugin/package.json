@@ -14,7 +14,7 @@
     "lint:fix": "eslint --fix .",
     "compile": "tsc -p ./tsconfig.build.json"
   },
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "publishConfig": {
     "access": "public"
   },

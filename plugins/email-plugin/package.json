@@ -16,7 +16,7 @@
     "lint:fix": "eslint --fix .",
     "test": "vitest --config vitest.config.mts --run"
   },
-  "homepage": "https://www.deenruv.io/",
+  "homepage": "https://deenruv.com/",
   "publishConfig": {
     "access": "public"
   },

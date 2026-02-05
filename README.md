@@ -2,7 +2,7 @@
 
 Headless commerce platform built on [Node.js](https://nodejs.org) with [GraphQL](https://graphql.org/), [Nest](https://nestjs.com/) & [TypeScript](http://www.typescriptlang.org/), with a focus on developer productivity, ease of customization and highly customizable Admin panel built on [React](https://react.dev/) with [Vite](https://vite.dev/).
 
-### [www.deenruv.com](https://www.deenruv.com/)
+### [deenruv.com](https://deenruv.com/)
 
 -   [Getting Started](https://deenruv.com/docs): Get Deenruv up and running locally in a matter of minutes with a single command
 -   [Demo Storefront](https://deenruv.com/storefront)

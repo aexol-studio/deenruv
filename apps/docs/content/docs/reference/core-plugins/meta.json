@@ -1,0 +1,15 @@
+{
+  "title": "Core Plugins",
+  "pages": [
+    "index",
+    "admin-ui-plugin",
+    "asset-server-plugin",
+    "elasticsearch-plugin",
+    "email-plugin",
+    "harden-plugin",
+    "job-queue-plugin",
+    "payments-plugin",
+    "sentry-plugin",
+    "stellate-plugin"
+  ]
+}

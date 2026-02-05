@@ -1,0 +1,423 @@
+---
+title: Checkout Flow
+description: Learn how to implement the complete checkout flow including customer information, shipping address, shipping method, and payment processing.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Once the customer has added the desired products to the active order, it's time to check out.
+
+This guide assumes that you are using the [default OrderProcess](/docs/guides/core-concepts/orders#the-order-process), so
+if you have defined a custom process, some of these steps may be slightly different.
+
+<Callout type="info">
+In this guide, we will assume that an `ActiveOrder` fragment has been defined, as detailed in the
+[Managing the Active Order guide](/docs/guides/storefront/active-order#define-an-order-fragment), but for the purposes of
+checking out the fragment should also include `customer` `shippingAddress` and `billingAddress` fields.
+</Callout>
+
+## Add a customer
+
+Every order must be associated with a customer. If the customer is not logged in, then the [`setCustomerForOrder`](/docs/reference/graphql-api/shop/mutations#setcustomerfororder) mutation must be called. This will create a new Customer record if the provided email address does not already exist in the database.
+
+<Callout type="info">
+If the customer is already logged in, then this step is skipped.
+</Callout>
+
+<Tabs items={['Mutation', 'Variables']}>
+<Tab value="Mutation">
+
+```graphql
+mutation SetCustomerForOrder($input: CreateCustomerInput!) {
+    setCustomerForOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "input": {
+        "title": "Mr.",
+        "firstName": "Bob",
+        "lastName": "Dobalina",
+        "phoneNumber": "1234556",
+        "emailAddress": "b.dobalina@email.com"
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Set the shipping address
+
+The [`setOrderShippingAddress`](/docs/reference/graphql-api/shop/mutations#setordershippingaddress) mutation must be called to set the shipping address for the order.
+
+<Tabs items={['Mutation', 'Variables']}>
+<Tab value="Mutation">
+
+```graphql
+mutation SetOrderShippingAddress($input: CreateAddressInput!) {
+    setOrderShippingAddress(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "input": {
+        "fullName": "John Doe",
+        "company": "ABC Inc.",
+        "streetLine1": "123 Main St",
+        "streetLine2": "Apt 4B",
+        "city": "New York",
+        "province": "NY",
+        "postalCode": "10001",
+        "countryCode": "US",
+        "phoneNumber": "123-456-7890",
+        "defaultShippingAddress": true,
+        "defaultBillingAddress": false
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+If the customer is logged in, you can check their existing addresses and pre-populate an address form if an existing address is found.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetCustomerAddresses {
+    activeCustomer {
+        id
+        addresses {
+            id
+            fullName
+            company
+            streetLine1
+            streetLine2
+            city
+            province
+            postalCode
+            country {
+                code
+                name
+            }
+            phoneNumber
+            defaultShippingAddress
+            defaultBillingAddress
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "activeCustomer": {
+            "id": "123456",
+            "addresses": [
+                {
+                    "id": "123",
+                    "fullName": "John Doe",
+                    "company": "",
+                    "streetLine1": "123 Main St",
+                    "streetLine2": "Apt 4B",
+                    "city": "New York",
+                    "province": "NY",
+                    "postalCode": "10001",
+                    "country": {
+                        "code": "US",
+                        "name": "United States"
+                    },
+                    "phoneNumber": "123-456-7890",
+                    "defaultShippingAddress": true,
+                    "defaultBillingAddress": false
+                },
+                {
+                    "id": "124",
+                    "fullName": "John Doe",
+                    "company": "",
+                    "streetLine1": "456 Elm St",
+                    "streetLine2": "",
+                    "city": "Los Angeles",
+                    "province": "CA",
+                    "postalCode": "90001",
+                    "country": {
+                        "code": "US",
+                        "name": "United States"
+                    },
+                    "phoneNumber": "987-654-3210",
+                    "defaultShippingAddress": false,
+                    "defaultBillingAddress": true
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Set the shipping method
+
+Now that we know the shipping address, we can check which shipping methods are available with the [`eligibleShippingMethods`](/docs/reference/graphql-api/shop/queries#eligibleshippingmethods) query.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetShippingMethods {
+    eligibleShippingMethods {
+        id
+        price
+        description
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "eligibleShippingMethods": [
+            {
+                "id": "1",
+                "price": 545,
+                "description": "Standard Shipping"
+            },
+            {
+                "id": "2",
+                "price": 1250,
+                "description": "Expedited Shipping"
+            },
+            {
+                "id": "3",
+                "price": 1695,
+                "description": "Overnight Shipping"
+            }
+        ]
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+The results can then be displayed to the customer so they can choose the desired shipping method. If there is only a single
+result, then it can be automatically selected.
+
+The desired shipping method's id is the passed to the [`setOrderShippingMethod`](/docs/reference/graphql-api/shop/mutations#setordershippingmethod) mutation.
+
+```graphql
+mutation SetShippingMethod($id: [ID!]!) {
+    setOrderShippingMethod(shippingMethodId: $id) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+## Add payment
+
+The [`eligiblePaymentMethods`](/docs/reference/graphql-api/shop/queries#eligiblepaymentmethods) query can be used to get a list of available payment methods.
+This list can then be displayed to the customer, so they can choose the desired payment method.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetPaymentMethods {
+    eligiblePaymentMethods {
+        id
+        name
+        code
+        isEligible
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+  "data": {
+    "eligiblePaymentMethods": [
+      {
+        "id": "1",
+        "name": "Stripe",
+        "code": "stripe",
+        "isEligible": true
+      },
+      {
+        "id": "2",
+        "name": "Apple Pay",
+        "code": "apple-pay",
+        "isEligible": true
+      },
+      {
+        "id": "3",
+        "name": "Pay on delivery",
+        "code": "pay-on-delivery",
+        "isEligible": false
+      }
+    ]
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+Next, we need to transition the order to the `ArrangingPayment` state. This state ensures that no other changes can be made to the order
+while the payment is being arranged. The [`transitionOrderToState`](/docs/reference/graphql-api/shop/mutations#transitionordertostate) mutation is used to transition the order to the `ArrangingPayment` state.
+
+<Tabs items={['Query', 'Variables']}>
+<Tab value="Query">
+
+```graphql
+mutation TransitionToState($state: String!) {
+    transitionOrderToState(state: $state) {
+        ...ActiveOrder
+        ... on OrderStateTransitionError {
+            errorCode
+            message
+            transitionError
+            fromState
+            toState
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "state": "ArrangingPayment"
+}
+```
+
+</Tab>
+</Tabs>
+
+At this point, your storefront will use an integration with the payment provider to collect the customer's payment details, and then
+the exact sequence of API calls will depend on the payment integration.
+
+The [`addPaymentToOrder`](/docs/reference/graphql-api/shop/mutations#addpaymenttoorder) mutation is the general-purpose mutation for adding a payment to an order.
+It accepts a `method` argument which must correspond to the `code` of the selected payment method, and a `metadata` argument which is a JSON object containing any additional information required by that particular integration.
+
+For example, the demo data populated in a new Deenruv installation includes a "Standard Payment" method, which uses the [`dummyPaymentHandler`](/docs/reference/typescript-api/payment/dummy-payment-handler) to simulate a payment provider. Here's how you would add a payment using this method:
+
+<Tabs items={['Mutation', 'Variables']}>
+<Tab value="Mutation">
+
+```graphql
+mutation AddPaymentToOrder($input: PaymentInput!) {
+    addPaymentToOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "method": "standard-payment",
+    "metadata": {
+        "shouldDecline": false,
+        "shouldError": false,
+        "shouldErrorOnSettle": false
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Other payment integrations have specific setup instructions you must follow:
+
+### Stripe
+
+Our [`StripePlugin docs`](/docs/reference/core-plugins/payments-plugin/stripe-plugin) describe how to set up your checkout to use Stripe.
+
+### Braintree
+
+Our [`BraintreePlugin` docs](/docs/reference/core-plugins/payments-plugin/braintree-plugin) describe how to set up your checkout to use Braintree.
+
+### Mollie
+
+Our [`MolliePlugin` docs](/docs/reference/core-plugins/payments-plugin/mollie-plugin) describe how to set up your checkout to use Mollie.
+
+### Other payment providers
+
+For more information on how to integrate with a payment provider, see the [Payment](/docs/guides/core-concepts/payment) guide.
+
+## Display confirmation
+
+Once the checkout has completed, the order will no longer be considered "active" (see the [`OrderPlacedStrategy`](/docs/reference/typescript-api/orders/order-placed-strategy)) and so the [`activeOrder`](/docs/reference/graphql-api/shop/queries#activeorder) query will return `null`. Instead, the [`orderByCode`](/docs/reference/graphql-api/shop/queries#orderbycode) query can be used to retrieve the order by its code to display a confirmation page.
+
+<Tabs items={['Query', 'Variables']}>
+<Tab value="Query">
+
+```graphql
+query GetOrderByCode($code: String!) {
+    orderByCode(code: $code) {
+        ...Order
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "code": "PJGY46GCB1EDU9YH"
+}
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="info">
+By default Deenruv will only allow access to the order by code for the first 2 hours after the order is placed if the customer is not logged in.
+This is to prevent a malicious user from guessing order codes and viewing other customers' orders. This can be configured via the [`OrderByCodeAccessStrategy`](/docs/reference/typescript-api/orders/order-by-code-access-strategy).
+</Callout>

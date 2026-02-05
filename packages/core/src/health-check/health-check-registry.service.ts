@@ -36,7 +36,7 @@ import { HealthIndicatorFunction } from "@nestjs/terminus";
  *     private httpIndicator: HttpHealthIndicator
  *   ) {
  *     registry.registerIndicatorFunction(
- *       () => this.httpIndicator.pingCheck('deenruv-docs', 'https://www.deenruv.io/docs/'),
+ *       () => this.httpIndicator.pingCheck('deenruv-docs', 'https://deenruv.com/docs/'),
  *     )
  *   }
  * }

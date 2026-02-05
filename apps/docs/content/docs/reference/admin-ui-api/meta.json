@@ -1,0 +1,23 @@
+{
+  "title": "Admin UI API",
+  "pages": [
+    "index",
+    "action-bar",
+    "alerts",
+    "bulk-actions",
+    "components",
+    "custom-detail-components",
+    "custom-history-entry-components",
+    "custom-table-components",
+    "dashboard-widgets",
+    "directives",
+    "nav-menu",
+    "pipes",
+    "react-components",
+    "react-extensions",
+    "react-hooks",
+    "routes",
+    "services",
+    "tabs"
+  ]
+}
