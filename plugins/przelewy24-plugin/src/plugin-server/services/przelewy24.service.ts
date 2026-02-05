@@ -7,42 +7,41 @@ import {
 } from "@nestjs/common";
 import {
   AssetService,
-  ChannelService,
   EventBus,
   ID,
-  LanguageCode,
   Order,
   OrderService,
   OrderStateTransitionEvent,
   Payment,
   PaymentMetadata,
   PaymentMethod,
-  PaymentMethodService,
   RequestContext,
   TransactionalConnection,
 } from "@deenruv/core";
 import {
   Przelewy24NotificationBody,
   Przelewy24PluginConfiguration,
+  BlikStatus,
 } from "../types.js";
 import { verifyPrzelewy24Payment } from "../verify/index.js";
 import {
-  BLIK_METHOD_NAME,
   loggerCtx,
   PRZELEWY24_METHOD_NAME,
   PRZELEWY24_PLUGIN_OPTIONS,
 } from "../constants.js";
-import { przelewy24BlikPaymentMethodHandler } from "../handlers/przelewy24-blik.handler.js";
-import { przelewy24PaymentMethodHandler } from "../handlers/przelewy24.handler.js";
 import { ConfigArgValues } from "@deenruv/core/dist/common/configurable-operation.js";
 import {
   getPrzelewy24SecretsByChannel,
-  getAxios,
+  getP24Client,
   getSessionId,
-  generateSHA384Hash,
 } from "../utils.js";
-import { AxiosInstance } from "axios";
 import { Przelewy24RegularPaymentEvent } from "../email-events.js";
+import {
+  P24Client,
+  P24Error,
+  verifyTransactionNotificationSign,
+  TransactionNotification,
+} from "@aexol/przelewy24-sdk";
 
 @Injectable()
 export class Przelewy24Service {
@@ -52,13 +51,66 @@ export class Przelewy24Service {
     public readonly orderService: OrderService,
     public readonly assetService: AssetService,
     public connection: TransactionalConnection,
-    private readonly channelService: ChannelService,
-    private readonly paymentMethodService: PaymentMethodService,
     private readonly eventBus: EventBus,
   ) {}
 
   async verifyPayment(body: Przelewy24NotificationBody) {
     return verifyPrzelewy24Payment(this.options, body);
+  }
+
+  /**
+   * Verify webhook signature using SDK's verifyTransactionNotificationSign.
+   * Returns true if signature is valid, false otherwise.
+   * Uses default channel (PLN) for CRC lookup.
+   */
+  verifyWebhookSignature(body: Przelewy24NotificationBody): boolean {
+    try {
+      // Get CRC from channel config (use currency to determine channel)
+      const channel = this.options.currencyCodeToChannel
+        ? this.options.currencyCodeToChannel(body.currency)
+        : "pl-channel"; // Default for PLN
+
+      const secrets = getPrzelewy24SecretsByChannel(this.options, channel);
+      const crc = secrets.PRZELEWY24_CRC;
+
+      // Convert our notification body to SDK's TransactionNotification type
+      const notification: TransactionNotification = {
+        merchantId: body.merchantId,
+        posId: body.posId,
+        sessionId: body.sessionId,
+        amount: body.amount,
+        originAmount: Number(body.originAmount),
+        currency: body.currency,
+        orderId: Number(body.orderId),
+        methodId: body.methodId ?? 0,
+        statement: body.statement,
+        sign: body.sign,
+      };
+
+      const isValid = verifyTransactionNotificationSign(notification, crc);
+
+      if (!isValid) {
+        Logger.warn(
+          `Webhook signature verification failed for sessionId: ${body.sessionId}`,
+          loggerCtx,
+        );
+      }
+
+      return isValid;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      Logger.error(
+        `Error verifying webhook signature: ${errorMessage}`,
+        loggerCtx,
+      );
+      // On error, still perform server-to-server verification as fallback
+      // but log warning that signature check failed
+      Logger.warn(
+        "Webhook signature verification error - will rely on server-to-server verifyTransaction as fallback",
+        loggerCtx,
+      );
+      return false;
+    }
   }
 
   async settlePayment(ctx: RequestContext, paymentId: ID) {
@@ -92,10 +144,61 @@ export class Przelewy24Service {
     return payment;
   }
 
+  async findBlikPaymentByOrderCode(
+    ctx: RequestContext,
+    orderCode: string,
+  ): Promise<Payment | null> {
+    const order = await this.orderService.findOneByCode(ctx, orderCode);
+    if (!order) return null;
+
+    // Find the latest BLIK payment for this order
+    const payments = await this.connection.getRepository(ctx, Payment).find({
+      where: { order: { id: order.id } },
+      relations: ["order"],
+      order: { createdAt: "DESC" },
+    });
+
+    const blikPayment = payments.find(
+      (p) => p.metadata?.public?.paymentMethod === "PRZELEWY24-BLIK",
+    );
+
+    return blikPayment ?? null;
+  }
+
+  async updateBlikStatus(
+    ctx: RequestContext,
+    paymentId: ID,
+    status: BlikStatus,
+  ): Promise<void> {
+    const payment = await this.connection.getRepository(ctx, Payment).findOne({
+      where: { id: paymentId },
+    });
+
+    if (!payment) {
+      Logger.error(`Payment ${paymentId} not found for BLIK status update`, loggerCtx);
+      return;
+    }
+
+    const existingMetadata = payment.metadata ?? {};
+    const existingPublic = existingMetadata.public ?? {};
+
+    await this.connection.getRepository(ctx, Payment).update(paymentId, {
+      metadata: {
+        ...existingMetadata,
+        public: {
+          ...existingPublic,
+          blikStatus: status,
+        },
+      },
+    });
+
+    Logger.debug(`Updated BLIK status for payment ${paymentId} to ${status}`, loggerCtx);
+  }
+
   private async createBlikPayment(
     order: Order,
     metadata: PaymentMetadata,
-    api: AxiosInstance,
+    client: P24Client,
     token: string,
   ) {
     const parsed = Object.keys(metadata ?? {}).length
@@ -107,44 +210,45 @@ export class Przelewy24Service {
       Logger.error(`BLIK code not provided for order ${order.id}`, loggerCtx);
       throw new BadRequestException();
     }
-    const blikResult = await api.post("/paymentMethod/blik/chargeByCode", {
-      token,
-      blikCode,
-    });
-    if (!blikResult || blikResult.data.responseCode !== 0) {
-      if (
-        "data" in blikResult &&
-        blikResult.data &&
-        "code" in blikResult.data &&
-        "error" in blikResult.data
-      ) {
-        let errorMessage = "Unknown error during BLIK payment";
-        switch (blikResult.data.code) {
-          case 28:
-            errorMessage = "INVALID_BLIK_CODE";
-            break;
-          default:
-            break;
-        }
 
-        throw new Error(errorMessage);
-      } else {
-        throw new Error("Unknown error during BLIK payment");
+    try {
+      await client.chargeByCode({ token, blikCode });
+    } catch (err) {
+      if (err instanceof P24Error) {
+        if (err.code === 28) {
+          throw new Error("INVALID_BLIK_CODE");
+        }
+        // Map other P24 error codes to specific error messages
+        Logger.error(
+          `P24 BLIK Error: ${err.message} (code: ${err.code})`,
+          loggerCtx,
+        );
+        throw new Error(`P24_BLIK_ERROR_${err.code}`);
       }
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      Logger.error(
+        `Error during BLIK payment for order ${order.id}`,
+        loggerCtx,
+        msg,
+      );
+      throw new Error(msg);
     }
 
     return {
       token,
       paymentMethod: "PRZELEWY24-BLIK",
+      blikStatus: "pending" as BlikStatus,
     };
   }
 
   private async createRegularPayment(
     ctx: RequestContext,
     order: Order,
+    client: P24Client,
     token: string,
   ) {
-    const paymentUrl = `${this.options.przelewy24Host}/trnRequest/${token}`;
+    const paymentUrl = client.getPaywallUrl(token);
+
     const assigned = order.payments.find(
       (p) => p.method === PRZELEWY24_METHOD_NAME,
     )?.metadata?.public?.paymentUrl;
@@ -185,53 +289,73 @@ export class Przelewy24Service {
       this.options,
       ctx.channel.token,
     );
-    const api = getAxios(przelewy24Secrets);
+    const client = getP24Client(przelewy24Secrets);
     const sessionId = getSessionId(order);
 
-    const secrets = {
-      pos_id: przelewy24Secrets.PRZELEWY24_POS_ID,
-      crc: przelewy24Secrets.PRZELEWY24_CRC,
-    };
-
-    const sum = `{"sessionId":"${sessionId}","merchantId":${
-      secrets["pos_id"]
-    },"amount":${
-      order.subTotalWithTax + order.shippingWithTax
-    },"currency":"PLN","crc":"${secrets["crc"]}"}`;
-
     try {
-      const body = {
-        description: `Zamówienie nr: ${order.id}, ${order.customer?.firstName} ${order.customer?.lastName}, #${order.code}`,
-        language: "pl",
-        country: "PL",
-        currency: "PLN",
-        merchantId: secrets["pos_id"],
-        posId: secrets["pos_id"],
+      // Build PSU data with IP and userAgent
+      const userAgent = ctx.req?.headers?.["user-agent"];
+      const userAgentTruncated =
+        typeof userAgent === "string" ? userAgent.slice(0, 255) : undefined;
+
+      // Extract client IP: prefer x-forwarded-for (first entry), fallback to socket
+      const xForwardedFor = ctx.req?.headers?.["x-forwarded-for"];
+      let clientIp: string | undefined;
+      if (typeof xForwardedFor === "string") {
+        clientIp = xForwardedFor.split(",")[0].trim();
+      } else if (Array.isArray(xForwardedFor) && xForwardedFor.length > 0) {
+        clientIp = xForwardedFor[0].split(",")[0].trim();
+      }
+      if (!clientIp) {
+        clientIp =
+          (ctx.req as { ip?: string } | undefined)?.ip ||
+          ctx.req?.socket?.remoteAddress;
+      }
+
+      // Build PSU object only when IP is available (SDK requires both IP and userAgent)
+      // If no IP, omit PSU entirely to avoid sending empty/invalid data
+      const additional =
+        clientIp && userAgentTruncated
+          ? {
+              PSU: {
+                IP: clientIp,
+                userAgent: userAgentTruncated,
+              },
+            }
+          : undefined;
+
+      const result = await client.registerTransaction({
         sessionId,
         amount: order.subTotalWithTax + order.shippingWithTax,
-        email: order.customer?.emailAddress,
+        currency: "PLN",
+        description: `Zamówienie nr: ${order.id}, ${order.customer?.firstName} ${order.customer?.lastName}, #${order.code}`,
+        email: order.customer?.emailAddress || "",
+        country: "PL",
+        language: "pl",
+        urlReturn: await returnUrl(ctx, { order }),
+        urlStatus: `${apiUrl}/przelewy24/settle`,
+        urlCardPaymentNotification: `${apiUrl}/przelewy24/additional`,
         client: `${order.customer?.firstName} ${order.customer?.lastName}`,
         address: order.billingAddress.streetLine1,
         zip: order.billingAddress.postalCode,
         city: order.billingAddress.city,
         phone: order.customer?.phoneNumber,
-        urlReturn: await returnUrl(ctx, { order }), // THIS IS FOR REDIRECT AFTER PAYMENT
-        urlStatus: `${apiUrl}/przelewy24/settle`, // THIS IS FOR P24 NOTIFICATIONS
-        urlCardPaymentNotification: `${apiUrl}/przelewy24/additional`, // THIS IS FOR BLIK NOTIFICATIONS
         timeLimit: 0,
-        encoding: "UTF-8",
-        sign: generateSHA384Hash(sum),
-      };
-      const result = await api.post("/transaction/register", body);
-      const token = result.data.data.token;
+        ...(additional && { additional }),
+      });
+
+      const token = result.data.token;
+
       const pub =
         method.handler.code === "przelewy24BlikPaymentMethodHandler"
-          ? await this.createBlikPayment(order, metadata, api, token)
-          : await this.createRegularPayment(ctx, order, token);
+          ? await this.createBlikPayment(order, metadata, client, token)
+          : await this.createRegularPayment(ctx, order, client, token);
+
       Logger.log(
         `Payment created for order ${order.id} method ${method.code}, token ${token}`,
         loggerCtx,
       );
+
       return {
         amount: order.totalWithTax,
         state: "Authorized" as const,
@@ -239,8 +363,16 @@ export class Przelewy24Service {
         metadata: { public: pub },
       };
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Unknown error";
-      Logger.error(errorMessage, loggerCtx, errorMessage);
+      if (err instanceof P24Error) {
+        Logger.error(
+          `P24 Error: ${err.message} (code: ${err.code})`,
+          loggerCtx,
+        );
+      } else {
+        const errorMessage =
+          err instanceof Error ? err.message : "Unknown error";
+        Logger.error(errorMessage, loggerCtx, errorMessage);
+      }
       throw err;
     }
   }

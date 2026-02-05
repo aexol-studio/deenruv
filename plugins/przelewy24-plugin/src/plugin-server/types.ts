@@ -1,5 +1,4 @@
 import { Order, RequestContext } from "@deenruv/core";
-import { RedisOptions } from "ioredis";
 import { ALLOWED_MARKETS } from "./constants.js";
 export type AllowedChannels = (typeof ALLOWED_MARKETS)[number];
 
@@ -8,6 +7,14 @@ export type ENVS = {
   PRZELEWY24_CRC: string;
   PRZELEWY24_CLIENT_SECRET: string;
 };
+
+export type BlikStatus = "pending" | "success" | "failed" | "timeout";
+
+export interface BlikStatusResponse {
+  status: BlikStatus;
+  orderState?: string;
+  message?: string;
+}
 
 export type Przelewy24PluginConfiguration = {
   [market in AllowedChannels]: ENVS;
@@ -18,8 +25,7 @@ export type Przelewy24PluginConfiguration = {
     payload: { order: Order },
   ) => Promise<string> | string;
   przelewy24Host: string;
-  /** Optional Redis options for BLIK PubSub multi-instance support */
-  redisOptions?: RedisOptions;
+  currencyCodeToChannel?: (currencyCode: string) => AllowedChannels;
 };
 
 export interface Przelewy24NotificationBody {

@@ -6,11 +6,17 @@ import { Przelewy24Service } from "./services/przelewy24.service.js";
 import { przelewy24BlikPaymentMethodHandler } from "./handlers/przelewy24-blik.handler.js";
 import { przelewy24PaymentMethodHandler } from "./handlers/przelewy24.handler.js";
 import { Przelewy24RegularPaymentEvent } from "./email-events.js";
+import { Przelewy24ShopExtension } from "./extensions/index.js";
+import { Przelewy24ShopResolver } from "./resolvers/index.js";
 
 @DeenruvPlugin({
   compatibility: "0.0.1",
   imports: [PluginCommonModule],
   controllers: [Przelewy24Controller],
+  shopApiExtensions: {
+    schema: Przelewy24ShopExtension,
+    resolvers: [Przelewy24ShopResolver],
+  },
   providers: [
     Przelewy24Service,
     {

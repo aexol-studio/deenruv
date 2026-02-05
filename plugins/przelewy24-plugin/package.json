@@ -25,6 +25,7 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
+    "@aexol/przelewy24-sdk": "^0.1.6",
     "@deenruv/admin-types": "workspace:^",
     "@deenruv/common": "workspace:^",
     "@deenruv/admin-ui": "workspace:^",
@@ -32,7 +33,6 @@
     "@deenruv/react-ui-devkit": "workspace:^",
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",
-    "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "graphql": "~16.9.0",
     "graphql-tag": "^2.12.6",
@@ -42,8 +42,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.5",
     "recharts": "^2.12.7",
-    "xml2js": "^0.6.2",
-    "ioredis": "^5.4.1"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",

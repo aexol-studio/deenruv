@@ -1,6 +1,5 @@
-import axios from "axios";
-import * as crypto from "crypto";
 import { Order } from "@deenruv/core";
+import { P24Client } from "@aexol/przelewy24-sdk";
 import {
   AllowedChannels,
   ENVS,
@@ -11,13 +10,6 @@ import {
   BLIK_METHOD_NAME,
   PRZELEWY24_METHOD_NAME,
 } from "./constants.js";
-
-export const generateSHA384Hash = (sum: string) => {
-  const hash = crypto.createHash("sha384");
-  const data = hash.update(sum, "utf-8");
-  const gen_hash = data.digest("hex");
-  return gen_hash;
-};
 
 export const getSessionId = (order: Order) => {
   const przelewy24payments = order.payments.filter(
@@ -42,23 +34,15 @@ export const getPrzelewy24SecretsByChannel = (
   return options[channel as AllowedChannels];
 };
 
-export const getAxios = (przelewy24Secrets: ENVS) => {
-  const basicAuth =
-    "Basic " +
-    Buffer.from(
-      `${przelewy24Secrets.PRZELEWY24_POS_ID}:${przelewy24Secrets.PRZELEWY24_CLIENT_SECRET}`,
-      "utf-8",
-    ).toString("base64");
-
+export const getP24Client = (przelewy24Secrets: ENVS): P24Client => {
   const baseURL = process.env.PRZELEWY24_URL || "https://sandbox.przelewy24.pl";
-  return axios.create({
-    baseURL: baseURL + "/api/v1",
-    maxRedirects: 0,
-    validateStatus: () => true,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      Authorization: basicAuth,
-    },
+  const isSandbox = baseURL.includes("sandbox");
+
+  return new P24Client({
+    merchantId: Number(przelewy24Secrets.PRZELEWY24_POS_ID),
+    posId: Number(przelewy24Secrets.PRZELEWY24_POS_ID),
+    crc: przelewy24Secrets.PRZELEWY24_CRC,
+    apiKey: przelewy24Secrets.PRZELEWY24_CLIENT_SECRET,
+    sandbox: isSandbox,
   });
 };

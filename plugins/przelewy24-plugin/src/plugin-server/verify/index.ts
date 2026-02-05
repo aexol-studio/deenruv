@@ -3,11 +3,8 @@ import {
   Przelewy24NotificationBody,
   Przelewy24PluginConfiguration,
 } from "../types.js";
-import {
-  generateSHA384Hash,
-  getAxios,
-  getPrzelewy24SecretsByChannel,
-} from "../utils.js";
+import { getPrzelewy24SecretsByChannel, getP24Client } from "../utils.js";
+import { P24Error } from "@aexol/przelewy24-sdk";
 
 const currencyCodeToChannel = (currencyCode: string) => {
   switch (currencyCode) {
@@ -22,30 +19,29 @@ export const verifyPrzelewy24Payment = async (
   options: Przelewy24PluginConfiguration,
   body: Przelewy24NotificationBody,
 ) => {
-  const channel = currencyCodeToChannel(body.currency);
+  let channel: string;
+  if (options.currencyCodeToChannel) {
+    channel = options.currencyCodeToChannel(body.currency);
+  } else {
+    channel = currencyCodeToChannel(body.currency);
+  }
   const przelewy24Secrets = getPrzelewy24SecretsByChannel(options, channel);
-  const secrets = {
-    pos_id: przelewy24Secrets.PRZELEWY24_POS_ID,
-    crc: przelewy24Secrets.PRZELEWY24_CRC,
-  };
+  const client = getP24Client(przelewy24Secrets);
 
-  const api = getAxios(przelewy24Secrets);
-  const sum = `{"sessionId":"${body.sessionId}","orderId":${body.orderId},"amount":${body.amount},"currency":"${body.currency}","crc":"${secrets["crc"]}"}`;
   try {
-    const result = await api.put("/transaction/verify", {
-      merchantId: body.merchantId || secrets["pos_id"],
-      posId: body.posId || secrets["pos_id"],
+    const result = await client.verifyTransaction({
       sessionId: body.sessionId,
+      orderId: Number(body.orderId),
       amount: body.amount,
       currency: body.currency,
-      orderId: body.orderId,
-      sign: generateSHA384Hash(sum),
     });
-    if (!result.data.data) {
-      throw new Error("malformed przelewy24 verify response");
-    }
-    return result.data.data.status;
+    return result.data.status;
   } catch (e) {
+    if (e instanceof P24Error) {
+      throw new InternalServerError("P24 verification failed", {
+        err: `${e.message} (code: ${e.code})`,
+      });
+    }
     throw new InternalServerError("Internal Server Error", { err: `${e}` });
   }
 };
