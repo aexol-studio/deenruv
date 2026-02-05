@@ -45,3 +45,6 @@ test:
 
 lint:
   <<: *build_artifacts
+
+deploy docker dev:
+  needs: []
