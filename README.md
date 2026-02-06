@@ -214,6 +214,15 @@ chore: update dependencies
 - [Demo Admin Panel](https://deenruv.com/admin-ui)
 - [Demo Storefront](https://deenruv.com/storefront)
 
+## Attribution
+
+Deenruv is derived from [Vendure](https://github.com/vendure-ecommerce/vendure),
+an open-source headless commerce framework created by
+[Michael Bromley](https://github.com/michaelbromley) and licensed under the
+MIT License. The original project was forked in 2025 and has since undergone
+significant modifications. We gratefully acknowledge the foundational work of
+the Vendure project and its contributors.
+
 ## License
 
 MIT — see [LICENSE](LICENSE) file.

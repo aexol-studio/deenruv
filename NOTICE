@@ -1,0 +1,18 @@
+Deenruv
+Copyright (c) 2025-present Aexol
+
+This project is a derivative work based on Vendure
+(https://github.com/vendure-ecommerce/vendure),
+originally created by Michael Bromley.
+
+Vendure
+Copyright (c) 2018-2025 Michael Bromley
+Licensed under the MIT License
+
+The original Vendure source code was forked in 2025 and has since been
+substantially modified. The modifications include, but are not limited to:
+a new React-based admin panel, additional plugins, architectural changes,
+and rebranding.
+
+All original MIT License terms and copyright notices are preserved in
+the LICENSE file at the root of this repository.
