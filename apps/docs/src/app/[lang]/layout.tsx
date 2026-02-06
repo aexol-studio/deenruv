@@ -1,35 +1,40 @@
-import '../globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { RootProvider } from 'fumadocs-ui/provider/next';
-import { defineI18nUI } from 'fumadocs-ui/i18n';
-import { i18n } from '@/lib/i18n';
+import "../globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { RootProvider } from "fumadocs-ui/provider/next";
+import { defineI18nUI } from "fumadocs-ui/i18n";
+import { i18n } from "@/lib/i18n";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 const { provider } = defineI18nUI(i18n, {
   translations: {
     en: {
-      displayName: 'English',
+      displayName: "English",
     },
     pl: {
-      displayName: 'Polski',
-      search: 'Szukaj w dokumentacji',
-      searchNoResult: 'Brak wyników',
-      toc: 'Na tej stronie',
-      tocNoHeadings: 'Brak nagłówków',
-      lastUpdate: 'Ostatnia aktualizacja',
-      chooseTheme: 'Wybierz motyw',
-      nextPage: 'Następna strona',
-      previousPage: 'Poprzednia strona',
-      chooseLanguage: 'Wybierz język',
+      displayName: "Polski",
+      search: "Szukaj w dokumentacji",
+      searchNoResult: "Brak wyników",
+      toc: "Na tej stronie",
+      tocNoHeadings: "Brak nagłówków",
+      lastUpdate: "Ostatnia aktualizacja",
+      chooseTheme: "Wybierz motyw",
+      nextPage: "Następna strona",
+      previousPage: "Poprzednia strona",
+      chooseLanguage: "Wybierz język",
     },
   },
 });
 
 export const metadata: Metadata = {
-  title: 'Deenruv - Modern E-commerce Platform',
-  description: 'A flexible, headless e-commerce framework built on NestJS and GraphQL',
+  metadataBase: new URL("https://deenruv.com"),
+  title: {
+    default: "Deenruv - Open Source Headless E-commerce",
+    template: "%s | Deenruv",
+  },
+  description:
+    "Open-source headless e-commerce platform built for developers. TypeScript-first, GraphQL-native, infinitely extensible.",
 };
 
 export default async function RootLayout({
@@ -44,9 +49,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <RootProvider i18n={provider(lang)}>
-          {children}
-        </RootProvider>
+        <RootProvider i18n={provider(lang)}>{children}</RootProvider>
       </body>
     </html>
   );

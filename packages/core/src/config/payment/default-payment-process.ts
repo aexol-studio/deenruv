@@ -53,9 +53,10 @@ export const defaultPaymentProcess: PaymentProcess<PaymentState> = {
     const HistoryService = await import("../../service/index.js").then(
       (m) => m.HistoryService,
     );
-    const OrderService = await import(
-      "../../service/services/order.service.js"
-    ).then((m) => m.OrderService);
+    const OrderService =
+      await import("../../service/services/order.service.js").then(
+        (m) => m.OrderService,
+      );
     configService = injector.get(ConfigService);
     historyService = injector.get(HistoryService);
     orderService = injector.get(OrderService);

@@ -15,9 +15,7 @@ import { PasswordValidationStrategy } from "./password-validation-strategy";
  * @docsCategory auth
  * @since 1.5.0
  */
-export class DefaultPasswordValidationStrategy
-  implements PasswordValidationStrategy
-{
+export class DefaultPasswordValidationStrategy implements PasswordValidationStrategy {
   constructor(private options: { minLength?: number; regexp?: RegExp }) {}
 
   validate(ctx: RequestContext, password: string): boolean | string {

@@ -1,0 +1,141 @@
+---
+title: 'E-mail i powiadomienia'
+description: 'Dowiedz się, jak skonfigurować powiadomienia e-mail i inne metody powiadomień w Deenruv'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Typowa aplikacja e-commerce musi powiadamiać klientów o określonych zdarzeniach, takich jak złożenie zamówienia lub wysłanie przesyłki. Najczęściej odbywa się to za pośrednictwem e-maila, ale można to również robić za pomocą SMS-ów lub powiadomień push.
+
+## E-mail
+
+E-mail jest najczęstszym sposobem powiadamiania klientów o zdarzeniach, dlatego domyślna instalacja Deenruv zawiera nasz `EmailPlugin`.
+
+EmailPlugin domyślnie używa [Nodemailer](https://nodemailer.com/about/) do wysyłania e-maili za pośrednictwem różnych transportów, w tym SMTP, SendGrid, Mailgun i innych.
+Plugin jest konfigurowany za pomocą listy `EmailEventHandlers`, które są odpowiedzialne za wysyłanie e-maili w odpowiedzi na określone zdarzenia.
+
+<Callout type="info">
+Ten przewodnik omówi główne koncepcje EmailPlugin, ale bardziej szczegółowe informacje o jego konfiguracji i użyciu znajdziesz w `dokumentacji API EmailPlugin`.
+</Callout>
+
+Oto ilustracja procesu wysyłania e-maila:
+
+
+
+Wszystkie e-maile są wyzwalane przez określone [zdarzenie](/docs/guides/developer-guide/events/) — w tym przypadku, gdy zmienia się stan zamówienia (Order). EmailPlugin dostarcza zestaw [domyślnych handlerów e-mail](https://github.com/aexol-studio/deenruv/blob/main/packages/email-plugin/src/default-email-handlers.ts), z których jeden jest odpowiedzialny za wysyłanie e-maili z potwierdzeniem zamówienia.
+
+### EmailEventHandlers
+
+Przyjrzyjmy się bliżej uproszczonej wersji `orderConfirmationHandler`:
+
+```ts
+import { OrderStateTransitionEvent } from '@deenruv/core';
+import { EmailEventListener, transformOrderLineAssetUrls, hydrateShippingLines } from '@deenruv/email-plugin';
+
+// The 'order-confirmation' string is used by the EmailPlugin to identify
+// which template to use when rendering the email.
+export const orderConfirmationHandler = new EmailEventListener('order-confirmation')
+    .on(OrderStateTransitionEvent)
+    // Only send the email when the Order is transitioning to the
+    // "PaymentSettled" state and the Order has a customer associated with it.
+    .filter(event => event.toState === 'PaymentSettled' && !!event.order.customer)
+    // We commonly need to load some additional data to be able to render the email
+    // template. This is done via the `loadData()` method. In this method we are
+    // mutating the Order object to ensure that product images are correctly
+    // displayed in the email, as well as fetching shipping line data from the database.
+    .loadData(async ({ event, injector }) => {
+        transformOrderLineAssetUrls(event.ctx, event.order, injector);
+        const shippingLines = await hydrateShippingLines(event.ctx, event.order, injector);
+        return { shippingLines };
+    })
+    // Here we are setting the recipient of the email to be the
+    // customer's email address.
+    .setRecipient(event => event.order.customer!.emailAddress)
+    // We can interpolate variables from the EmailPlugin's configured
+    // `globalTemplateVars` object.
+    .setFrom('{{ fromAddress }}')
+    // We can also interpolate variables made available by the
+    // `setTemplateVars()` method below
+    .setSubject('Order confirmation for #{{ order.code }}')
+    // The object returned here defines the variables which are
+    // available to the email template.
+    .setTemplateVars(event => ({ order: event.order, shippingLines: event.data.shippingLines }));
+```
+
+Podsumowując:
+
+- Handler nasłuchuje określonego zdarzenia
+- Opcjonalnie filtruje te zdarzenia, aby określić, czy e-mail powinien zostać wysłany
+- Określa szczegóły e-maila do wysłania, w tym odbiorcę, temat, zmienne szablonu itp.
+
+Pełen zakres metod dostępnych przy konfiguracji EmailEventHandler znajdziesz w `dokumentacji API EmailEventHandler`.
+
+### Zmienne e-mail
+
+W powyższym przykładzie użyliśmy metody `setTemplateVars()` do zdefiniowania zmiennych dostępnych w szablonie e-maila.
+Dodatkowo istnieją zmienne globalne, które są udostępniane _wszystkim_ szablonom e-maili i handlerom EmailEventHandler. Są one definiowane we właściwości `globalTemplateVars` konfiguracji EmailPlugin:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { EmailPlugin } from '@deenruv/email-plugin';
+
+export const config: DeenruvConfig = {
+    // ...
+    plugins: [
+        EmailPlugin.init({
+            // ...
+            globalTemplateVars: {
+                fromAddress: '"MyShop" <noreply@myshop.com>',
+                verifyEmailAddressUrl: 'https://www.myshop.com/verify',
+                passwordResetUrl: 'https://www.myshop.com/password-reset',
+                changeEmailAddressUrl: 'https://www.myshop.com/verify-email-address-change',
+            },
+        }),
+    ],
+};
+```
+
+### Integracje e-mail
+
+EmailPlugin jest zaprojektowany na tyle elastycznie, aby współpracować z wieloma różnymi usługami e-mail. Domyślna konfiguracja używa Nodemailer do wysyłania e-maili przez SMTP, ale można go łatwo skonfigurować do użycia innego transportu. Na przykład:
+
+- [AWS SES](https://deenruv.com/marketplace/aws-ses)
+- [SendGrid](https://deenruv.com/marketplace/sendgrid)
+
+## Inne metody powiadomień
+
+Wzorzec nasłuchiwania zdarzeń i wyzwalania działań w odpowiedzi nie ogranicza się do e-maili. Możesz użyć tego samego wzorca do wyzwalania innych działań, takich jak wysyłanie wiadomości SMS lub powiadomień push. Na przykład, załóżmy, że chcesz stworzyć plugin, który wysyła wiadomość SMS do klienta, gdy jego zamówienie zostanie wysłane.
+
+<Callout type="info">
+To jest uproszczony przykład ilustrujący wzorzec.
+</Callout>
+
+```ts title="src/plugins/sms-plugin/sms-plugin.ts"
+import { OnModuleInit } from '@nestjs/common';
+import { PluginCommonModule, DeenruvPlugin, EventBus } from '@deenruv/core';
+import { OrderStateTransitionEvent } from '@deenruv/core';
+
+// A custom service which sends SMS messages
+// using a third-party SMS provider such as Twilio.
+import { SmsService } from './sms.service';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    providers: [SmsService],
+})
+export class SmsPlugin implements OnModuleInit {
+    constructor(
+        private eventBus: EventBus,
+        private smsService: SmsService,
+    ) {}
+
+    onModuleInit() {
+        this.eventBus
+            .ofType(OrderStateTransitionEvent)
+            .filter(event => event.toState === 'Shipped')
+            .subscribe(event => {
+                this.smsService.sendOrderShippedMessage(event.order);
+            });
+    }
+}
+```

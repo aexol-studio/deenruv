@@ -10,9 +10,7 @@ import {
   UpdateVariantsJobData,
 } from "../types";
 
-export class SearchIndexJobBuffer
-  implements JobBuffer<UpdateIndexQueueJobData>
-{
+export class SearchIndexJobBuffer implements JobBuffer<UpdateIndexQueueJobData> {
   readonly id = "search-plugin-update-search-index";
 
   collect(job: Job<UpdateIndexQueueJobData>): boolean | Promise<boolean> {

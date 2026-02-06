@@ -32,8 +32,9 @@ import {
  * @docsPage OrderProcess
  * @docsWeight 0
  */
-export interface OrderProcess<State extends keyof CustomOrderStates | string>
-  extends InjectableStrategy {
+export interface OrderProcess<
+  State extends keyof CustomOrderStates | string,
+> extends InjectableStrategy {
   transitions?: Transitions<State, State | OrderState> &
     Partial<Transitions<OrderState | State>>;
   onTransitionStart?: OnTransitionStartFn<

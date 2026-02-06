@@ -1,0 +1,275 @@
+---
+title: Strona szczegółów produktu
+description: Dowiedz się, jak zbudować stronę szczegółów produktu, pobierać dane produktu, wyświetlać zdjęcia, formatować ceny i dodawać produkty do zamówienia.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Strona szczegółów produktu (często nazywana skrótowo PDP — Product Detail Page) to strona, która pokazuje szczegóły produktu i umożliwia użytkownikowi dodanie go do koszyka.
+
+Zazwyczaj strona PDP powinna zawierać:
+
+- Nazwę produktu
+- Opis produktu
+- Dostępne warianty produktu
+- Zdjęcia produktu i jego wariantów
+- Informacje o cenie
+- Informacje o stanie magazynowym
+- Przycisk dodawania do koszyka
+
+## Pobieranie danych produktu
+
+Stwórzmy zapytanie do pobrania wymaganych danych. Powinieneś mieć dostępny `slug` lub `id` produktu z adresu URL. W tym przykładzie użyjemy `slug`.
+
+<Tabs items={['Query', 'Variables', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query GetProductDetail($slug: String!) {
+    product(slug: $slug) {
+        id
+        name
+        description
+        featuredAsset {
+            id
+            preview
+        }
+        assets {
+            id
+            preview
+        }
+        variants {
+            id
+            name
+            sku
+            stockLevel
+            currencyCode
+            price
+            priceWithTax
+            featuredAsset {
+                id
+                preview
+            }
+            assets {
+                id
+                preview
+            }
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "slug": "laptop"
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "product": {
+            "id": "1",
+            "name": "Laptop",
+            "description": "Now equipped with seventh-generation Intel Core processors, Laptop is snappier than ever. From daily tasks like launching apps and opening files to more advanced computing, you can power through your day thanks to faster SSDs and Turbo Boost processing up to 3.6GHz.",
+            "featuredAsset": {
+                "id": "1",
+                "preview": "https://demo.deenruv.io/assets/preview/71/derick-david-409858-unsplash__preview.jpg"
+            },
+            "assets": [
+                {
+                    "id": "1",
+                    "preview": "https://demo.deenruv.io/assets/preview/71/derick-david-409858-unsplash__preview.jpg"
+                }
+            ],
+            "variants": [
+                {
+                    "id": "1",
+                    "name": "Laptop 13 inch 8GB",
+                    "sku": "L2201308",
+                    "stockLevel": "IN_STOCK",
+                    "currencyCode": "USD",
+                    "price": 129900,
+                    "priceWithTax": 155880,
+                    "featuredAsset": null,
+                    "assets": []
+                },
+                {
+                    "id": "2",
+                    "name": "Laptop 15 inch 8GB",
+                    "sku": "L2201508",
+                    "stockLevel": "IN_STOCK",
+                    "currencyCode": "USD",
+                    "price": 139900,
+                    "priceWithTax": 167880,
+                    "featuredAsset": null,
+                    "assets": []
+                },
+                {
+                    "id": "3",
+                    "name": "Laptop 13 inch 16GB",
+                    "sku": "L2201316",
+                    "stockLevel": "IN_STOCK",
+                    "currencyCode": "USD",
+                    "price": 219900,
+                    "priceWithTax": 263880,
+                    "featuredAsset": null,
+                    "assets": []
+                },
+                {
+                    "id": "4",
+                    "name": "Laptop 15 inch 16GB",
+                    "sku": "L2201516",
+                    "stockLevel": "IN_STOCK",
+                    "currencyCode": "USD",
+                    "price": 229900,
+                    "priceWithTax": 275880,
+                    "featuredAsset": null,
+                    "assets": []
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+To pojedyncze zapytanie dostarcza wszystkie dane potrzebne do wyświetlenia naszej strony PDP.
+
+## Formatowanie cen
+
+Jak wyjaśniono w [przewodniku o walutach i pieniądzach](/docs/guides/core-concepts/money), ceny są zwracane jako liczby całkowite w najmniejszej jednostce waluty (np. grosze dla PLN, centy dla USD). Dlatego przy wyświetlaniu ceny musimy podzielić ją przez 100 i sformatować zgodnie z zasadami formatowania danej waluty.
+
+W demo na końcu tego przewodnika użyjemy [funkcji `formatCurrency`](/docs/guides/core-concepts/money#displaying-monetary-values), która korzysta z API `Intl` przeglądarki do formatowania ceny zgodnie z lokalizacją użytkownika.
+
+## Wyświetlanie zdjęć
+
+Jeśli używamy `AssetServerPlugin` do serwowania zdjęć produktów (co jest domyślne), możemy skorzystać z możliwości dynamicznej transformacji obrazów, aby wyświetlać zdjęcia produktów w odpowiednim rozmiarze i w zoptymalizowanym formacie, takim jak WebP.
+
+Odbywa się to przez dodanie parametrów do adresu URL obrazu. Na przykład, jeśli chcemy użyć presetu rozmiaru `'large'` (800 x 800) i przekonwertować format na WebP, użyjemy adresu URL takiego jak ten:
+
+```tsx
+<img src={product.featuredAsset.preview + '?preset=large&format=webp'} />
+```
+
+Jeszcze bardziej zaawansowanym podejściem byłoby wykorzystanie elementu HTML [`<picture>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) do dostarczenia wielu źródeł obrazów, aby przeglądarka mogła wybrać optymalny format. Można to opakować w komponent, aby ułatwić użycie. Na przykład:
+
+```tsx title="src/components/VendureAsset.tsx"
+interface VendureAssetProps {
+    preview: string;
+    preset: 'tiny' | 'thumb' | 'small' | 'medium' | 'large';
+    alt: string;
+}
+
+export function VendureAsset({ preview, preset, alt }: VendureAssetProps) {
+    return (
+        <picture>
+            <source type="image/avif" srcSet={preview + `?preset=${preset}&format=avif`} />
+            <source type="image/webp" srcSet={preview + `?preset=${preset}&format=webp`} />
+            <img src={preview + `?preset=${preset}&format=jpg`} alt={alt} />
+        </picture>
+    );
+}
+```
+
+## Dodawanie do zamówienia
+
+Aby dodać konkretny wariant produktu do zamówienia, musimy wywołać mutację `addItemToOrder`.
+Ta mutacja przyjmuje `productVariantId` i `quantity` jako argumenty.
+
+<Tabs items={['Mutation', 'Variables', 'Response']}>
+<Tab value="Mutation">
+
+```graphql
+mutation AddItemToOrder($variantId: ID!, $quantity: Int!) {
+    addItemToOrder(productVariantId: $variantId, quantity: $quantity) {
+        __typename
+        ...UpdatedOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+        ... on InsufficientStockError {
+            quantityAvailable
+            order {
+                ...UpdatedOrder
+            }
+        }
+    }
+}
+
+fragment UpdatedOrder on Order {
+    id
+    code
+    state
+    totalQuantity
+    totalWithTax
+    currencyCode
+    lines {
+        id
+        unitPriceWithTax
+        quantity
+        linePriceWithTax
+        productVariant {
+            id
+            name
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "variantId": "4",
+    "quantity": 1
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "addItemToOrder": {
+            "__typename": "Order",
+            "id": "5",
+            "code": "KE5FJPVV3Y3LX134",
+            "state": "AddingItems",
+            "totalQuantity": 1,
+            "totalWithTax": 275880,
+            "lines": [
+                {
+                    "id": "14",
+                    "unitPriceWithTax": 275880,
+                    "quantity": 1,
+                    "linePriceWithTax": 275880
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Jest kilka ważnych rzeczy do zapamiętania na temat tej mutacji:
+
+- Ponieważ mutacja `addItemToOrder` zwraca typ unii, musimy użyć [fragmentu](/docs/guides/getting-started/graphql-intro#fragments) do określenia pól, które chcemy otrzymać.
+  W tym przypadku zdefiniowaliśmy fragment o nazwie `UpdatedOrder`, który zawiera interesujące nas pola.
+- Jeśli wystąpią jakiekolwiek [oczekiwane błędy](/docs/guides/developer-guide/error-handling), mutacja zwróci obiekt `ErrorResult`. Będziemy mogli zobaczyć pola `errorCode` i `message` w odpowiedzi, dzięki czemu możemy wyświetlić użytkownikowi zrozumiały komunikat o błędzie.
+- W specjalnym przypadku `InsufficientStockError`, oprócz pól `errorCode` i `message`, otrzymujemy także pole `quantityAvailable`, które informuje nas, ile sztuk z żądanej ilości jest dostępnych (i zostało dodanych do zamówienia). To przydatna informacja do wyświetlenia użytkownikowi.
+  Obiekt `InsufficientStockError` zawiera również zaktualizowany obiekt `Order`, którego możemy użyć do aktualizacji interfejsu.
+- Pole `__typename` może być użyte przez klienta do określenia, jaki typ obiektu został zwrócony. Jego wartość będzie równa nazwie zwróconego typu. Oznacza to, że możemy sprawdzić, czy `__typename === 'Order'`, aby określić, czy mutacja zakończyła się sukcesem.

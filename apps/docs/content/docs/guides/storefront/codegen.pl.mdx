@@ -1,0 +1,146 @@
+---
+title: 'Generowanie kodu GraphQL dla sklepu'
+description: 'Konfiguracja generowania typów TypeScript dla bezpiecznych typowo zapytań GraphQL w sklepie Deenruv'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Generowanie kodu oznacza automatyczne generowanie typów TypeScript na podstawie schematu GraphQL i operacji GraphQL.
+Jest to bardzo potężna funkcja, która pozwala pisać kod w sposób bezpieczny typowo, bez konieczności ręcznego pisania jakichkolwiek typów dla wywołań API.
+
+W tym celu użyjemy [Graphql Code Generator](https://the-guild.dev/graphql/codegen).
+
+<Callout type="info">
+Ten poradnik dotyczy dodawania codegen do Twojego sklepu. Poradnik dotyczący dodawania codegen do backendowych pluginów Deenruv lub rozszerzeń UI znajdziesz w przewodniku [Codegen pluginów](/docs/guides/how-to/codegen/).
+</Callout>
+
+## Instalacja
+
+Postępuj zgodnie z instrukcjami instalacji w [GraphQL Code Generator Quick Start](https://the-guild.dev/graphql/codegen/docs/getting-started/installation).
+
+Mianowicie:
+
+```bash
+npm i graphql
+npm i -D typescript @graphql-codegen/cli
+
+npx graphql-code-generator init
+
+npm install
+```
+
+Podczas kroku `init` zostaniesz poproszony o wybranie różnych opcji konfiguracji generowania kodu.
+
+-   Where is your schema?: Użyj `http://localhost:3000/shop-api` (chyba że skonfigurowałeś inny URL GraphQL API)
+-   Where are your operations and fragments?: Użyj odpowiedniego wzorca glob dla swojego projektu. Na przykład `src/**/*.{ts,tsx}`.
+-   Wybierz `codegen.ts` jako nazwę pliku konfiguracyjnego.
+
+## Konfiguracja
+
+Powyższy krok `init` utworzy plik `codegen.ts` w katalogu głównym projektu. Dodaj zaznaczone linie:
+
+```ts title="codegen.ts"
+import type { CodegenConfig } from '@graphql-codegen/cli';
+
+const config: CodegenConfig = {
+    overwrite: true,
+    schema: 'http://localhost:3000/shop-api',
+    documents: 'src/**/*.graphql.ts',
+    generates: {
+        'src/gql/': {
+            preset: 'client',
+            plugins: [],
+            config: {
+                scalars: {
+                    // To mówi codegen, że skalar `Money` jest liczbą
+                    Money: 'number',
+                },
+                namingConvention: {
+                    // To zapewnia, że generowane enumy nie kolidują z wbudowanymi typami.
+                    enumValues: 'keep',
+                },
+            },
+        },
+    },
+};
+
+export default config;
+```
+
+## Uruchamianie Codegen
+
+Podczas kroku `init` zainstalowany został skrypt `codegen` w Twoim `package.json`. Możesz uruchomić ten skrypt, aby wygenerować typy TypeScript dla operacji GraphQL.
+
+<Callout type="info">
+Upewnij się, że serwer Deenruv jest uruchomiony przed uruchomieniem skryptu codegen.
+</Callout>
+
+```bash
+npm run codegen
+```
+
+Wygeneruje to katalog `src/gql` zawierający typy TypeScript dla Twoich operacji GraphQL.
+
+## Użycie funkcji `graphql()`
+
+Jeśli masz istniejące zapytania i mutacje GraphQL w swojej aplikacji, możesz teraz użyć funkcji `graphql()` eksportowanej z pliku `src/gql/index.ts` do ich wykonywania. Jeśli wcześniej używałeś funkcji tagged template `gql`, zastąp ją funkcją `graphql()`.
+
+```ts title="src/App.tsx"
+import { useQuery } from '@tanstack/react-query';
+import request from 'graphql-request'
+import { graphql } from './gql';
+
+// GET_PRODUCTS będzie typem `TypedDocumentNode`,
+// który koduje typy zmiennych zapytania i danych odpowiedzi.
+const GET_PRODUCTS = graphql(`
+    query GetProducts($options: ProductListOptions) {
+        products(options: $options) {
+            items {
+                id
+                name
+                slug
+                featuredAsset {
+                    preview
+                }
+            }
+        }
+    }
+`);
+
+export default function App() {
+  // `data` będzie teraz poprawnie typowane
+  const { isLoading, data } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () =>
+      request(
+        'http://localhost:3000/shop-api',
+        GET_PRODUCTS,
+        {
+        // Zmienne również będą poprawnie typowane
+        options: { take: 3 },
+        }
+      ),
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+
+  return data ? (
+    data.products.items.map(({ id, name, slug, featuredAsset }) => (
+      <div key={id}>
+        <h3>{name}</h3>
+        <img src={`${featuredAsset.preview}?preset=small`} alt={name} />
+      </div>
+    ))
+  ) : (
+    <>Loading...</>
+  );
+}
+```
+
+W powyższym przykładzie informacje o typach działają od razu, ponieważ biblioteka `graphql-request` od wersji v5.0.0
+ma wbudowane wsparcie dla typu [`TypedDocumentNode`](https://github.com/dotansimha/graphql-typed-document-node),
+podobnie jak najnowsze wersje większości popularnych bibliotek klientów GraphQL, takich jak Apollo Client i Urql.
+
+<Callout type="info">
+W przykładach w dokumentacji na innych stronach nie zakładamy użycia generowania kodu, aby zachować jak największą prostotę przykładów.
+</Callout>

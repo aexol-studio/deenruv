@@ -1,108 +1,70 @@
-'use client';
+import {
+  Code2,
+  Globe,
+  Layers,
+  Lock,
+  Puzzle,
+  Rocket,
+  Server,
+  Zap,
+} from "lucide-react";
+import { t, type Lang } from "./translations";
 
-import { motion } from 'framer-motion';
-import { Layers, Puzzle, Globe, Layout } from 'lucide-react';
-
-const features = [
-  {
-    icon: Layers,
-    title: 'GraphQL First',
-    description:
-      'Powerful GraphQL API with full type safety and excellent developer experience.',
-    badge: 'Core',
-  },
-  {
-    icon: Puzzle,
-    title: 'Plugin Architecture',
-    description:
-      'Extend functionality with plugins. Add payments, shipping, or custom features.',
-    badge: 'Extensible',
-  },
-  {
-    icon: Globe,
-    title: 'Multi-channel',
-    description:
-      'Manage multiple storefronts, currencies, and languages from one backend.',
-    badge: 'Global',
-  },
-  {
-    icon: Layout,
-    title: 'Admin Dashboard',
-    description:
-      'Beautiful, extensible admin UI built with React. Customize everything.',
-    badge: 'Modern UI',
-  },
+const FEATURE_ICONS = [Code2, Layers, Puzzle, Globe, Rocket, Lock, Server, Zap];
+const FEATURE_STYLES = [
+  { color: "text-indigo-400", bgColor: "bg-indigo-500/10" },
+  { color: "text-blue-400", bgColor: "bg-blue-500/10" },
+  { color: "text-cyan-400", bgColor: "bg-cyan-500/10" },
+  { color: "text-teal-400", bgColor: "bg-teal-500/10" },
+  { color: "text-indigo-400", bgColor: "bg-indigo-500/10" },
+  { color: "text-blue-400", bgColor: "bg-blue-500/10" },
+  { color: "text-cyan-400", bgColor: "bg-cyan-500/10" },
+  { color: "text-teal-400", bgColor: "bg-teal-500/10" },
 ];
 
-export function FeaturesSection() {
+export function FeaturesSection({ lang = "en" }: { lang?: Lang }) {
+  const text = t("features", lang);
+
   return (
-    <section className="relative py-24 md:py-32 lg:py-40" id="features">
-      {/* Subtle grid background */}
-      <div
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '32px 32px',
-        }}
-      />
+    <section className="relative py-24 lg:py-32" id="features">
+      {/* Background glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
+      </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16 md:mb-20"
-        >
-          <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-fd-primary bg-fd-primary/10 rounded-full mb-6">
-            Capabilities
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-            Built for Modern Commerce
+      <div className="container relative z-10 mx-auto px-4">
+        {/* Section header - GitHub style */}
+        <div className="mx-auto mb-20 max-w-3xl text-center">
+          <h2 className="mb-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            {text.title}
           </h2>
-          <p className="max-w-2xl mx-auto text-fd-muted-foreground text-lg">
-            Everything you need to build world-class e-commerce experiences
-          </p>
-        </motion.div>
+          <p className="text-xl text-zinc-400">{text.subtitle}</p>
+        </div>
 
-        {/* Features grid */}
-        <div className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-2xl border border-fd-border bg-fd-card p-6 md:p-8 transition-all duration-300 hover:shadow-lg hover:border-fd-primary/30"
-            >
-              {/* Number badge */}
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-fd-primary/10 text-fd-primary font-bold text-lg transition-all duration-300 group-hover:bg-fd-primary/20 group-hover:scale-110 group-hover:rotate-3">
-                  <feature.icon className="h-6 w-6" />
+        {/* Features grid - GitHub card style */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {text.items.map((feature, index) => {
+            const Icon = FEATURE_ICONS[index];
+            const style = FEATURE_STYLES[index];
+            return (
+              <div
+                key={feature.title}
+                className="group rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all hover:border-zinc-700 hover:bg-zinc-900"
+              >
+                <div
+                  className={`mb-4 inline-flex rounded-lg p-3 ${style.bgColor}`}
+                >
+                  <Icon className={`h-6 w-6 ${style.color}`} />
                 </div>
-                <span className="text-xs font-medium uppercase tracking-wider text-fd-muted-foreground bg-fd-muted px-2.5 py-1 rounded-full">
-                  {feature.badge}
-                </span>
+                <h3 className="mb-2 text-lg font-semibold text-white">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-zinc-400 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-
-              {/* Step number */}
-              <div className="absolute top-6 right-6 text-5xl font-bold text-fd-foreground/[0.03] pointer-events-none">
-                0{index + 1}
-              </div>
-
-              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-fd-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

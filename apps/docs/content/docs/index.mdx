@@ -1,12 +1,76 @@
 ---
 title: Introduction
-description: Getting started with Deenruv
+description: Getting started with Deenruv — a modern, flexible e-commerce platform
 ---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Callout } from 'fumadocs-ui/components/callout';
 
 # Welcome to Deenruv
 
-Deenruv is a modern, flexible e-commerce platform built on NestJS and GraphQL.
+Deenruv is a modern, headless e-commerce platform built on **NestJS** and **GraphQL**. It provides a robust, extensible foundation for building online stores of any scale — from small shops to multi-channel, multi-vendor marketplaces.
+
+<Callout type="info">
+New to Deenruv? Start with the [Installation guide](/docs/guides/getting-started/installation) to get up and running in minutes.
+</Callout>
 
 ## Quick Start
 
-Get started with Deenruv in minutes.
+```bash
+npx @deenruv/create my-shop
+```
+
+This scaffolds a new project, installs dependencies, and sets up a development server with a SQLite database. Once running, you can access:
+
+- **Admin UI** at `http://localhost:3000/admin`
+- **Shop API** at `http://localhost:3000/shop-api`
+- **Admin API** at `http://localhost:3000/admin-api`
+
+## Explore the Docs
+
+<Cards>
+  <Card title="Getting Started" href="/docs/guides/getting-started/installation">
+    Install Deenruv, configure your database, and start the dev server.
+  </Card>
+  <Card title="Core Concepts" href="/docs/guides/core-concepts/products">
+    Understand products, collections, orders, channels, and more.
+  </Card>
+  <Card title="Developer Guide" href="/docs/guides/developer-guide/the-api-layer">
+    Learn the API layer, services, plugins, events, and strategies.
+  </Card>
+  <Card title="Building a Storefront" href="/docs/guides/storefront/storefront-starters">
+    Connect to the Shop API and build your customer-facing storefront.
+  </Card>
+  <Card title="Deployment" href="/docs/guides/deployment">
+    Deploy to production with Docker, configure assets, and scale horizontally.
+  </Card>
+  <Card title="User Guide" href="/docs/user-guide/catalog">
+    Day-to-day admin tasks: managing products, orders, and settings.
+  </Card>
+</Cards>
+
+## Key Features
+
+- **Headless architecture** — use any frontend framework (Next.js, Remix, Nuxt, Expo, etc.)
+- **GraphQL API** — fully typed Shop and Admin APIs with code generation support
+- **Plugin system** — extend every aspect of the platform without forking
+- **Multi-channel** — sell across multiple storefronts, currencies, and languages from one backend
+- **TypeScript-first** — end-to-end type safety across the entire stack
+- **Worker-based jobs** — offload heavy tasks (emails, imports, search indexing) to background workers
+
+## Architecture Overview
+
+Deenruv follows a layered architecture:
+
+| Layer | Description |
+|-------|-------------|
+| **API Layer** | GraphQL resolvers handle incoming requests and delegate to services |
+| **Service Layer** | Business logic, database access, and event publishing |
+| **Plugin System** | Extend entities, APIs, services, and the Admin UI |
+| **Worker** | Background job processing via BullMQ |
+| **Admin UI** | React-based admin panel with a plugin-extensible UI |
+
+## Getting Help
+
+- [GitHub Issues](https://github.com/aexol-studio/deenruv/issues) — bug reports and feature requests
+- [Source Code](https://github.com/aexol-studio/deenruv) — explore the codebase

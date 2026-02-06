@@ -1,0 +1,49 @@
+---
+title: "Produkty"
+description: "Zrozumienie produktów i wariantów w Deenruv"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Twój katalog składa się z `Products` i `ProductVariants`.
+`Product` zawsze posiada _co najmniej jeden_ `ProductVariant`. Produkt można traktować jako "kontener", który zawiera nazwę, opis i zdjęcia dotyczące wszystkich jego wariantów.
+
+Oto wizualny przykład, w którym mamy produkt "Hoodie" dostępny w 3 rozmiarach. Mamy zatem 3 warianty tego produktu:
+
+
+
+Wiele wariantów jest możliwych dzięki dodaniu jednej lub więcej `ProductOptionGroups` do produktu. Te grupy opcji definiują dostępne `ProductOptions`.
+
+Gdybyśmy do powyższego przykładu dodali nową grupę opcji "Kolor" z 2 opcjami, "Czarny" i "Biały", to łącznie moglibyśmy zdefiniować do 6 wariantów:
+
+-   Hoodie Mały Czarny
+-   Hoodie Mały Biały
+-   Hoodie Średni Czarny
+-   Hoodie Średni Biały
+-   Hoodie Duży Czarny
+-   Hoodie Duży Biały
+
+<Callout type="info">
+Gdy klient dodaje produkt do koszyka, tak naprawdę dodaje konkretny `ProductVariant`, a nie sam `Product`.
+To `ProductVariant` zawiera SKU ("stock keeping unit", czyli kod produktu) oraz informacje o cenie.
+</Callout>
+
+## Cena i stan magazynowy produktu
+
+Entity `ProductVariant` zawiera informacje o cenie i stanie magazynowym produktu. Ponieważ dany wariant produktu może mieć więcej niż jedną cenę i więcej niż jeden poziom zapasów (w przypadku wielu magazynów), entity `ProductVariant` zawiera relacje do jednego lub więcej entity `ProductVariantPrice` oraz jednego lub więcej entity `StockLevel`.
+
+
+
+## Facety
+
+`Facets` służą do dodawania strukturalnych etykiet do produktów i wariantów. Facet posiada jedną lub więcej `FacetValues`. Wartości facetów mogą być przypisywane do produktów lub wariantów produktów.
+
+Na przykład facet "Marka" może być używany do oznaczania produktów nazwą marki, gdzie każda wartość facetu reprezentuje inną markę. Można również używać facetów do dodawania innych metadanych do produktów i wariantów, takich jak "Nowość", "Wyprzedaż", "Polecane" itp.
+
+
+
+Oto typowe zastosowania facetów w Deenruv:
+
+-   Jako **podstawa [kolekcji](/docs/guides/core-concepts/collections)**, umożliwiająca kategoryzację katalogu.
+-   Do **filtrowania produktów** w sklepie, znanego również jako "wyszukiwanie fasetowe". Na przykład klient znajduje się na stronie kolekcji "bluzy" i chce wyfiltrować tylko bluzy marki Nike.
+-   Do **wewnętrznej logiki**, np. promocja obejmująca wszystkie warianty z wartością facetu "Letnia wyprzedaż" lub kalkulacja wysyłki, która dodaje dopłatę do wszystkich produktów z wartością facetu "Kruche". Takie facety mogą być ustawione jako prywatne, dzięki czemu nie są widoczne w sklepie.

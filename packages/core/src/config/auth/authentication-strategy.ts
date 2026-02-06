@@ -20,8 +20,9 @@ import { User } from "../../entity/user/user.entity";
  *
  * @docsCategory auth
  */
-export interface AuthenticationStrategy<Data = unknown>
-  extends InjectableStrategy {
+export interface AuthenticationStrategy<
+  Data = unknown,
+> extends InjectableStrategy {
   /**
    * @description
    * The name of the strategy, for example `'facebook'`, `'google'`, `'keycloak'`.

@@ -18,8 +18,7 @@ import { ProductVariantPrice } from "../../entity/product-variant/product-varian
  * @docsWeight 0
  * @since 2.0.0
  */
-export interface ProductVariantPriceSelectionStrategy
-  extends InjectableStrategy {
+export interface ProductVariantPriceSelectionStrategy extends InjectableStrategy {
   selectPrice(
     ctx: RequestContext,
     prices: ProductVariantPrice[],

@@ -1,17 +1,4 @@
 {
   "title": "Deployment",
-  "pages": [
-    "production-configuration",
-    "using-docker",
-    "horizontal-scaling",
-    "getting-data-into-production",
-    "server-resource-requirements",
-    "deploying-admin-ui",
-    "---Deployment Guides---",
-    "deploy-to-northflank",
-    "deploy-to-digital-ocean-app-platform",
-    "deploy-to-railway",
-    "deploy-to-render",
-    "deploy-to-google-cloud-run"
-  ]
+  "pages": ["index", "docker"]
 }

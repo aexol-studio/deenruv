@@ -66,9 +66,10 @@ export const defaultFulfillmentProcess: FulfillmentProcess<FulfillmentState> = {
   async init(injector) {
     // Lazily import these services to avoid a circular dependency error
     // due to this being used as part of the DefaultConfig
-    const TransactionalConnection = await import(
-      "../../connection/transactional-connection.js"
-    ).then((m) => m.TransactionalConnection);
+    const TransactionalConnection =
+      await import("../../connection/transactional-connection.js").then(
+        (m) => m.TransactionalConnection,
+      );
     const ConfigService = await import("../config.service.js").then(
       (m) => m.ConfigService,
     );

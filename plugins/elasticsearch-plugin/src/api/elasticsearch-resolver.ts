@@ -27,9 +27,10 @@ import { ElasticsearchService } from "../elasticsearch.service";
 import { ElasticSearchInput, SearchPriceData } from "../types";
 
 @Resolver("SearchResponse")
-export class ShopElasticSearchResolver
-  implements Pick<SearchResolver, "search">
-{
+export class ShopElasticSearchResolver implements Pick<
+  SearchResolver,
+  "search"
+> {
   constructor(private elasticsearchService: ElasticsearchService) {}
 
   @Query()
@@ -58,9 +59,10 @@ export class ShopElasticSearchResolver
 }
 
 @Resolver("SearchResponse")
-export class AdminElasticSearchResolver
-  implements Pick<SearchResolver, "search" | "reindex">
-{
+export class AdminElasticSearchResolver implements Pick<
+  SearchResolver,
+  "search" | "reindex"
+> {
   constructor(
     private elasticsearchService: ElasticsearchService,
     private searchJobBufferService: SearchJobBufferService,
@@ -104,9 +106,10 @@ export class AdminElasticSearchResolver
 }
 
 @Resolver("SearchResponse")
-export class EntityElasticSearchResolver
-  implements Pick<SearchResolver, "facetValues" | "collections">
-{
+export class EntityElasticSearchResolver implements Pick<
+  SearchResolver,
+  "facetValues" | "collections"
+> {
   constructor(private elasticsearchService: ElasticsearchService) {}
 
   @ResolveField()

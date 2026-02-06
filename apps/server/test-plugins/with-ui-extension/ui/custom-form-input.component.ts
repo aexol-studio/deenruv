@@ -27,9 +27,7 @@ import {
   `,
   // styleUrls: ['./module-styles/checkboxes-form-inputs.component.scss'],
 })
-export class LoginOptionCheckboxes
-  implements FormInputComponent<StringCustomFieldConfig>
-{
+export class LoginOptionCheckboxes implements FormInputComponent<StringCustomFieldConfig> {
   isListInput = true;
   readonly = false;
   config: StringCustomFieldConfig;

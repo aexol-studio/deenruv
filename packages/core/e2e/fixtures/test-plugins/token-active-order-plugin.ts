@@ -29,9 +29,9 @@ declare module "@deenruv/core/dist/entity/custom-entity-fields" {
   }
 }
 
-class TokenActiveOrderStrategy
-  implements ActiveOrderStrategy<{ token: string }>
-{
+class TokenActiveOrderStrategy implements ActiveOrderStrategy<{
+  token: string;
+}> {
   readonly name = "orderToken";
 
   private connection: TransactionalConnection;

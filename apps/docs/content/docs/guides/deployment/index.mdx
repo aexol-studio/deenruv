@@ -1,0 +1,214 @@
+---
+title: 'Deployment Overview'
+description: 'Learn how to deploy Deenruv to production, including server requirements, configuration, and deployment strategies'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+This guide covers the key considerations and steps for deploying a Deenruv e-commerce application to a production environment.
+
+## Prerequisites
+
+Before deploying, ensure you have:
+
+- **Node.js v18+** installed on your server
+- A supported **database** — PostgreSQL is recommended for production (MySQL and MariaDB are also supported)
+- **Redis** — required if using the BullMQ job queue plugin (recommended for production)
+- An **object storage** service for assets (e.g., S3, MinIO, or a compatible provider) — or sufficient disk storage for the local asset strategy
+- A **reverse proxy** such as Nginx or Caddy for TLS termination and load balancing
+
+## Production configuration
+
+When moving from development to production, several configuration changes are essential:
+
+### Database
+
+Switch from SQLite (if used in development) to PostgreSQL for production:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+
+export const config: DeenruvConfig = {
+    dbConnectionOptions: {
+        type: 'postgres',
+        // Use environment variables for sensitive values
+        host: process.env.DB_HOST,
+        port: +(process.env.DB_PORT || 5432),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        // IMPORTANT: disable synchronize in production
+        synchronize: false,
+        migrations: [path.join(__dirname, 'migrations/*.js')],
+    },
+};
+```
+
+<Callout type="warn">
+**Never** set `synchronize: true` in production. This option auto-modifies your database schema and can cause data loss. Always use [migrations](/docs/guides/developer-guide/migrations) instead.
+</Callout>
+
+### Authentication
+
+Update the default superadmin credentials and authentication settings:
+
+```ts title="src/deenruv-config.ts"
+export const config: DeenruvConfig = {
+    authOptions: {
+        tokenMethod: ['bearer', 'cookie'],
+        requireVerification: true,
+        superadminCredentials: {
+            identifier: process.env.SUPERADMIN_IDENTIFIER || 'superadmin',
+            password: process.env.SUPERADMIN_PASSWORD,
+        },
+        cookieOptions: {
+            secret: process.env.COOKIE_SECRET,
+        },
+    },
+};
+```
+
+### API options
+
+Disable debug tools in production:
+
+```ts title="src/deenruv-config.ts"
+export const config: DeenruvConfig = {
+    apiOptions: {
+        port: +(process.env.PORT || 3000),
+        adminApiPlayground: false,
+        adminApiDebug: false,
+        shopApiPlayground: false,
+        shopApiDebug: false,
+    },
+};
+```
+
+### Asset storage
+
+Configure an external asset storage strategy (e.g., S3) instead of local file storage:
+
+```ts title="src/deenruv-config.ts"
+import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-server-plugin';
+
+export const config: DeenruvConfig = {
+    plugins: [
+        AssetServerPlugin.init({
+            route: 'assets',
+            assetUploadDir: '/tmp/deenruv-assets',
+            assetUrlPrefix: process.env.ASSET_URL_PREFIX,
+            storageStrategyFactory: configureS3AssetStorage({
+                bucket: process.env.S3_BUCKET,
+                credentials: {
+                    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+                    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+                },
+                nativeS3Configuration: {
+                    region: process.env.S3_REGION,
+                },
+            }),
+        }),
+    ],
+};
+```
+
+### Job queue
+
+Use the BullMQ job queue plugin with Redis for production workloads:
+
+```ts title="src/deenruv-config.ts"
+import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
+
+export const config: DeenruvConfig = {
+    plugins: [
+        BullMQJobQueuePlugin.init({
+            connection: {
+                host: process.env.REDIS_HOST,
+                port: +(process.env.REDIS_PORT || 6379),
+                password: process.env.REDIS_PASSWORD,
+            },
+        }),
+    ],
+};
+```
+
+## Server resource requirements
+
+The minimum recommended server resources for a production Deenruv deployment:
+
+| Component | Minimum | Recommended |
+|---|---|---|
+| **CPU** | 1 vCPU | 2+ vCPU |
+| **Memory** | 1 GB RAM | 2+ GB RAM |
+| **Storage** | 10 GB | Depends on catalog size and asset storage |
+| **Database** | PostgreSQL 14+ | PostgreSQL 16+ with dedicated resources |
+
+<Callout type="info">
+These requirements assume a single-server deployment with moderate traffic. For high-traffic stores, consider horizontal scaling with a load balancer and separate database server.
+</Callout>
+
+## Environment variables
+
+Use environment variables for all sensitive and environment-specific configuration:
+
+| Variable | Description |
+|---|---|
+| `DB_HOST` | Database server hostname |
+| `DB_PORT` | Database server port |
+| `DB_USERNAME` | Database username |
+| `DB_PASSWORD` | Database password |
+| `DB_NAME` | Database name |
+| `REDIS_HOST` | Redis server hostname |
+| `REDIS_PORT` | Redis server port |
+| `REDIS_PASSWORD` | Redis password |
+| `COOKIE_SECRET` | Secret for signing session cookies |
+| `SUPERADMIN_IDENTIFIER` | Superadmin login identifier |
+| `SUPERADMIN_PASSWORD` | Superadmin login password |
+| `S3_BUCKET` | S3 bucket name for asset storage |
+| `S3_ACCESS_KEY_ID` | S3 access key |
+| `S3_SECRET_ACCESS_KEY` | S3 secret key |
+| `S3_REGION` | S3 region |
+| `ASSET_URL_PREFIX` | Public URL prefix for assets |
+
+## Deploying the Admin UI
+
+The Deenruv Admin UI can be deployed in several ways:
+
+### Bundled with the server
+
+By default, the `AdminUiPlugin` serves the admin UI from the same server:
+
+```ts
+AdminUiPlugin.init({
+    route: 'admin',
+    port: 3002,
+}),
+```
+
+For production, you should **pre-compile** the Admin UI during your build step to avoid compiling it on the production server:
+
+```bash
+# During your build process
+pnpm build
+```
+
+### As a standalone static app
+
+Alternatively, you can build the admin UI as a standalone static app and host it separately (e.g., on a CDN):
+
+```ts
+AdminUiPlugin.init({
+    route: 'admin',
+    port: 3002,
+    app: compileUiExtensions({
+        outputPath: path.join(__dirname, '../admin-ui'),
+        devMode: false,
+    }),
+}),
+```
+
+Then deploy the contents of the `admin-ui` directory to your static hosting provider.
+
+## Next steps
+
+- [Docker deployment](/docs/guides/deployment/docker) — deploy using Docker and Docker Compose

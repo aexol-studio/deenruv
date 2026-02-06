@@ -1,0 +1,416 @@
+---
+title: Proces realizacji zamówienia
+description: Dowiedz się, jak zaimplementować kompletny proces realizacji zamówienia, obejmujący dane klienta, adres dostawy, metodę wysyłki i przetwarzanie płatności.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Gdy klient dodał już wybrane produkty do aktywnego zamówienia, nadszedł czas na realizację zamówienia.
+
+Ten przewodnik zakłada, że używasz [domyślnego procesu zamówienia](/docs/guides/core-concepts/orders#the-order-process), więc jeśli zdefiniowałeś niestandardowy proces, niektóre z tych kroków mogą się nieznacznie różnić.
+
+<Callout type="info">
+W tym przewodniku zakładamy, że fragment `ActiveOrder` został zdefiniowany, zgodnie z opisem w [przewodniku zarządzania aktywnym zamówieniem](/docs/guides/storefront/active-order#define-an-order-fragment), ale na potrzeby realizacji zamówienia fragment powinien również zawierać pola `customer`, `shippingAddress` i `billingAddress`.
+</Callout>
+
+## Dodawanie klienta
+
+Każde zamówienie musi być powiązane z klientem. Jeśli klient nie jest zalogowany, należy wywołać mutację `setCustomerForOrder`. Spowoduje to utworzenie nowego rekordu klienta, jeśli podany adres email nie istnieje jeszcze w bazie danych.
+
+<Callout type="info">
+Jeśli klient jest już zalogowany, ten krok jest pomijany.
+</Callout>
+
+<Tabs items={['Mutation', 'Variables']}>
+<Tab value="Mutation">
+
+```graphql
+mutation SetCustomerForOrder($input: CreateCustomerInput!) {
+    setCustomerForOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "input": {
+        "title": "Mr.",
+        "firstName": "Bob",
+        "lastName": "Dobalina",
+        "phoneNumber": "1234556",
+        "emailAddress": "b.dobalina@email.com"
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Ustawianie adresu dostawy
+
+Mutacja `setOrderShippingAddress` musi być wywołana, aby ustawić adres dostawy dla zamówienia.
+
+<Tabs items={['Mutation', 'Variables']}>
+<Tab value="Mutation">
+
+```graphql
+mutation SetOrderShippingAddress($input: CreateAddressInput!) {
+    setOrderShippingAddress(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "input": {
+        "fullName": "John Doe",
+        "company": "ABC Inc.",
+        "streetLine1": "123 Main St",
+        "streetLine2": "Apt 4B",
+        "city": "New York",
+        "province": "NY",
+        "postalCode": "10001",
+        "countryCode": "US",
+        "phoneNumber": "123-456-7890",
+        "defaultShippingAddress": true,
+        "defaultBillingAddress": false
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Jeśli klient jest zalogowany, możesz sprawdzić jego istniejące adresy i wstępnie wypełnić formularz adresowy, jeśli znajdziesz istniejący adres.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetCustomerAddresses {
+    activeCustomer {
+        id
+        addresses {
+            id
+            fullName
+            company
+            streetLine1
+            streetLine2
+            city
+            province
+            postalCode
+            country {
+                code
+                name
+            }
+            phoneNumber
+            defaultShippingAddress
+            defaultBillingAddress
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "activeCustomer": {
+            "id": "123456",
+            "addresses": [
+                {
+                    "id": "123",
+                    "fullName": "John Doe",
+                    "company": "",
+                    "streetLine1": "123 Main St",
+                    "streetLine2": "Apt 4B",
+                    "city": "New York",
+                    "province": "NY",
+                    "postalCode": "10001",
+                    "country": {
+                        "code": "US",
+                        "name": "United States"
+                    },
+                    "phoneNumber": "123-456-7890",
+                    "defaultShippingAddress": true,
+                    "defaultBillingAddress": false
+                },
+                {
+                    "id": "124",
+                    "fullName": "John Doe",
+                    "company": "",
+                    "streetLine1": "456 Elm St",
+                    "streetLine2": "",
+                    "city": "Los Angeles",
+                    "province": "CA",
+                    "postalCode": "90001",
+                    "country": {
+                        "code": "US",
+                        "name": "United States"
+                    },
+                    "phoneNumber": "987-654-3210",
+                    "defaultShippingAddress": false,
+                    "defaultBillingAddress": true
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Wybór metody wysyłki
+
+Teraz, gdy znamy adres dostawy, możemy sprawdzić dostępne metody wysyłki za pomocą zapytania `eligibleShippingMethods`.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetShippingMethods {
+    eligibleShippingMethods {
+        id
+        price
+        description
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "eligibleShippingMethods": [
+            {
+                "id": "1",
+                "price": 545,
+                "description": "Standard Shipping"
+            },
+            {
+                "id": "2",
+                "price": 1250,
+                "description": "Expedited Shipping"
+            },
+            {
+                "id": "3",
+                "price": 1695,
+                "description": "Overnight Shipping"
+            }
+        ]
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Wyniki mogą być następnie wyświetlone klientowi, aby mógł wybrać pożądaną metodę wysyłki. Jeśli jest tylko jeden wynik, może zostać automatycznie wybrany.
+
+Identyfikator wybranej metody wysyłki jest następnie przekazywany do mutacji `setOrderShippingMethod`.
+
+```graphql
+mutation SetShippingMethod($id: [ID!]!) {
+    setOrderShippingMethod(shippingMethodId: $id) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+## Dodawanie płatności
+
+Zapytanie `eligiblePaymentMethods` może być użyte do pobrania listy dostępnych metod płatności.
+Ta lista może być następnie wyświetlona klientowi, aby mógł wybrać pożądaną metodę płatności.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetPaymentMethods {
+    eligiblePaymentMethods {
+        id
+        name
+        code
+        isEligible
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+  "data": {
+    "eligiblePaymentMethods": [
+      {
+        "id": "1",
+        "name": "Stripe",
+        "code": "stripe",
+        "isEligible": true
+      },
+      {
+        "id": "2",
+        "name": "Apple Pay",
+        "code": "apple-pay",
+        "isEligible": true
+      },
+      {
+        "id": "3",
+        "name": "Pay on delivery",
+        "code": "pay-on-delivery",
+        "isEligible": false
+      }
+    ]
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+Następnie musimy przenieść zamówienie do stanu `ArrangingPayment`. Ten stan zapewnia, że żadne inne zmiany nie mogą być dokonywane w zamówieniu podczas organizowania płatności. Mutacja `transitionOrderToState` służy do przeniesienia zamówienia do stanu `ArrangingPayment`.
+
+<Tabs items={['Query', 'Variables']}>
+<Tab value="Query">
+
+```graphql
+mutation TransitionToState($state: String!) {
+    transitionOrderToState(state: $state) {
+        ...ActiveOrder
+        ... on OrderStateTransitionError {
+            errorCode
+            message
+            transitionError
+            fromState
+            toState
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "state": "ArrangingPayment"
+}
+```
+
+</Tab>
+</Tabs>
+
+W tym momencie Twój sklep użyje integracji z dostawcą płatności do zebrania danych płatniczych klienta, a dokładna sekwencja wywołań API będzie zależeć od integracji płatniczej.
+
+Mutacja `addPaymentToOrder` jest uniwersalną mutacją do dodawania płatności do zamówienia.
+Przyjmuje argument `method`, który musi odpowiadać `code` wybranej metody płatności, oraz argument `metadata`, który jest obiektem JSON zawierającym dodatkowe informacje wymagane przez daną integrację.
+
+Na przykład, dane demo wypełniane w nowej instalacji Deenruv zawierają metodę „Standard Payment", która używa `dummyPaymentHandler` do symulacji dostawcy płatności. Oto jak dodałbyś płatność za pomocą tej metody:
+
+<Tabs items={['Mutation', 'Variables']}>
+<Tab value="Mutation">
+
+```graphql
+mutation AddPaymentToOrder($input: PaymentInput!) {
+    addPaymentToOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "method": "standard-payment",
+    "metadata": {
+        "shouldDecline": false,
+        "shouldError": false,
+        "shouldErrorOnSettle": false
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Inne integracje płatnicze mają specyficzne instrukcje konfiguracji, które musisz wykonać:
+
+### Stripe
+
+Nasza dokumentacja `StripePlugin` opisuje, jak skonfigurować checkout do korzystania ze Stripe.
+
+### Braintree
+
+Nasza dokumentacja `BraintreePlugin` opisuje, jak skonfigurować checkout do korzystania z Braintree.
+
+### Mollie
+
+Nasza dokumentacja `MolliePlugin` opisuje, jak skonfigurować checkout do korzystania z Mollie.
+
+### Inni dostawcy płatności
+
+Więcej informacji o integracji z dostawcą płatności znajdziesz w przewodniku [Płatności](/docs/guides/core-concepts/payment).
+
+## Wyświetlanie potwierdzenia
+
+Po zakończeniu procesu realizacji zamówienia, zamówienie nie będzie już uważane za „aktywne" (zobacz `OrderPlacedStrategy`), więc zapytanie `activeOrder` zwróci `null`. Zamiast tego można użyć zapytania `orderByCode`, aby pobrać zamówienie po jego kodzie i wyświetlić stronę potwierdzenia.
+
+<Tabs items={['Query', 'Variables']}>
+<Tab value="Query">
+
+```graphql
+query GetOrderByCode($code: String!) {
+    orderByCode(code: $code) {
+        ...Order
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "code": "PJGY46GCB1EDU9YH"
+}
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="info">
+Domyślnie Deenruv zezwala na dostęp do zamówienia po kodzie tylko przez pierwsze 2 godziny od złożenia zamówienia, jeśli klient nie jest zalogowany. Ma to na celu zapobieżenie sytuacji, w której złośliwy użytkownik zgaduje kody zamówień i przegląda zamówienia innych klientów. Można to skonfigurować za pomocą `OrderByCodeAccessStrategy`.
+</Callout>

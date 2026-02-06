@@ -227,8 +227,9 @@ export type TypeToConfigArgDef<T extends ConfigArgDefToType<any>> =
  *
  * @docsCategory ConfigurableOperationDef
  */
-export interface ConfigurableOperationDefOptions<T extends ConfigArgs>
-  extends InjectableStrategy {
+export interface ConfigurableOperationDefOptions<
+  T extends ConfigArgs,
+> extends InjectableStrategy {
   /**
    * @description
    * A unique code used to identify this operation.

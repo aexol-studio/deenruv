@@ -267,8 +267,9 @@ export type CreateRefundFn<T extends ConfigArgs> = (
  *
  * @docsCategory payment
  */
-export interface PaymentMethodConfigOptions<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface PaymentMethodConfigOptions<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   /**
    * @description
    * This function provides the logic for creating a payment. For example,

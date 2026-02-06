@@ -10,7 +10,6 @@
     "product-detail",
     "active-order",
     "checkout-flow",
-    "customer-accounts",
-    "order-workflow"
+    "customer-accounts"
   ]
 }

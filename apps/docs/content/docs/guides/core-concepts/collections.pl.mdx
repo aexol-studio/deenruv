@@ -1,0 +1,113 @@
+---
+title: 'Kolekcje'
+description: 'Dowiedz się o kolekcjach — jak organizować i kategoryzować katalog produktów za pomocą filtrów i hierarchii'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+`Collections` służą do kategoryzacji i organizacji katalogu. Kolekcja zawiera wiele wariantów produktów, a wariant produktu może należeć do wielu kolekcji. Kolekcje mogą być zagnieżdżane, tworząc hierarchię kategorii, która jest typowo wykorzystywana do budowania struktury menu w sklepie.
+
+
+
+Kolekcje nie służą _wyłącznie_ jako podstawa nawigacji w sklepie. Są uniwersalnym narzędziem organizacyjnym, które może być używane do wielu celów, takich jak:
+
+- Tworzenie kolekcji "nowości", wykorzystywanej na stronie głównej.
+- Tworzenie kolekcji "bestsellery", służącej do wyświetlania listy popularnych produktów.
+- Tworzenie kolekcji "produkty w promocji", używanej do zastosowania rabatu na wszystkie produkty w kolekcji za pomocą promocji.
+
+## Filtry kolekcji
+
+Konkretne warianty produktów należące do kolekcji są określane przez `CollectionFilters` kolekcji.
+Filtr kolekcji to fragment logiki, który określa, czy wariant produktu powinien zostać włączony do kolekcji. Domyślnie Deenruv zawiera kilka filtrów kolekcji:
+
+- **Filtrowanie po wartościach facetów**: Uwzględnia wszystkie warianty produktów, które mają określony zestaw wartości facetów.
+- **Filtrowanie po nazwie wariantu produktu**: Uwzględnia wszystkie warianty produktów, których nazwa pasuje do określonego ciągu znaków.
+- **Ręczny wybór wariantów produktów**: Umożliwia ręczny wybór poszczególnych wariantów produktów.
+- **Ręczny wybór produktów**: Umożliwia ręczny wybór całych produktów, a następnie uwzględnia wszystkie warianty tych produktów.
+
+
+
+Możliwe jest również tworzenie własnych filtrów kolekcji, które mogą implementować bardziej złożoną logikę. Więcej szczegółów znajdziesz w sekcji [tworzenie filtra kolekcji](#creating-a-collection-filter).
+
+### Dziedziczenie filtrów
+
+Gdy kolekcja jest zagnieżdżona w innej kolekcji, kolekcja potomna może dziedziczyć filtry kolekcji nadrzędnej. Oznacza to, że kolekcja potomna _połączy_ swoje własne filtry z filtrami kolekcji nadrzędnej.
+
+
+
+W powyższym przykładzie mamy kolekcję nadrzędną "Odzież męska" z kolekcją potomną "Męska casual". Kolekcja nadrzędna posiada filtr, który uwzględnia wszystkie warianty produktów z wartościami facetów "odzież" i "męskie". Kolekcja potomna jest ustawiona na dziedziczenie filtrów nadrzędnych i ma dodatkowy filtr, który uwzględnia wszystkie warianty produktów z wartością facetu "casual".
+
+Tym samym kolekcja potomna będzie zawierać wszystkie warianty produktów, które mają wartości facetów "odzież", "męskie" i "casual".
+
+<Callout type="info">
+Gdy dziedziczenie filtrów jest włączone, kolekcja potomna będzie zawierać **podzbiór** wariantów produktów kolekcji nadrzędnej.
+
+Aby utworzyć kolekcję potomną zawierającą warianty produktów _nie_ zawarte w kolekcji nadrzędnej, należy wyłączyć dziedziczenie filtrów w kolekcji potomnej.
+</Callout>
+
+### Tworzenie filtra kolekcji
+
+Możesz tworzyć własne filtry kolekcji za pomocą klasy `CollectionFilter`. Ta klasa jest [konfigurowalną operacją](/docs/guides/developer-guide/strategies-configurable-operations/#configurable-operations), w której konkretna logika filtrowania jest implementowana w metodzie `apply()` przekazywanej do jej konstruktora.
+
+Metoda `apply()` otrzymuje instancję [TypeORM SelectQueryBuilder](https://typeorm.io/select-query-builder), do której należy dodać logikę filtrowania za pomocą metody `.andWhere()`.
+
+Oto przykład filtra kolekcji, który filtruje po SKU:
+
+```ts title="src/config/sku-collection-filter.ts"
+import { CollectionFilter, LanguageCode } from '@deenruv/core';
+
+export const skuCollectionFilter = new CollectionFilter({
+    args: {
+        // The `args` object defines the user-configurable arguments
+        // which will get passed to the filter's `apply()` function.
+        sku: {
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'SKU' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Matches any product variants with an SKU containing this value',
+                },
+            ],
+        },
+    },
+    code: 'variant-sku-filter',
+    description: [{ languageCode: LanguageCode.en, value: 'Filter by matching SKU' }],
+
+    // This is the function that defines the logic of the filter.
+    apply: (qb, args) => {
+        // Sometimes syntax differs between database types, so we use
+        // the `type` property of the connection options to determine
+        // which syntax to use.
+        const LIKE = qb.connection.options.type === 'postgres' ? 'ILIKE' : 'LIKE';
+
+        return qb.andWhere(`productVariant.sku ${LIKE} :sku`, {
+            sku: `%${args.sku}%`,
+        });
+    },
+});
+```
+
+W metodzie `apply()` entity wariantu produktu ma alias `'productVariant'`.
+
+Ten własny filtr jest następnie dodawany do domyślnych filtrów w konfiguracji:
+
+```ts title="src/deenruv-config.ts"
+import { defaultCollectionFilters, DeenruvConfig } from '@deenruv/core';
+import { skuCollectionFilter } from './config/sku-collection-filter';
+
+export const config: DeenruvConfig = {
+    // ...
+    catalogOptions: {
+        collectionFilters: [
+            ...defaultCollectionFilters,
+            skuCollectionFilter,
+        ],
+    },
+};
+```
+
+<Callout type="info">
+Aby zobaczyć bardziej zaawansowane przykłady filtrów kolekcji, możesz sprawdzić kod źródłowy
+[domyślnych filtrów kolekcji](https://github.com/aexol-studio/deenruv/blob/main/packages/core/src/config/catalog/default-collection-filters.ts).
+</Callout>

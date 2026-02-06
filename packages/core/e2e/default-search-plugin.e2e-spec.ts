@@ -111,8 +111,7 @@ registerInitializer(
   new SqljsInitializer(path.join(__dirname, "__data__"), 1000),
 );
 
-interface SearchProductsShopQueryVariablesExt
-  extends SearchProductsShopQueryVariables {
+interface SearchProductsShopQueryVariablesExt extends SearchProductsShopQueryVariables {
   input: SearchProductsShopQueryVariables["input"] & {
     // This input field is dynamically added only when the `indexStockStatus` init option
     // is set to `true`, and therefore not included in the generated type. Therefore

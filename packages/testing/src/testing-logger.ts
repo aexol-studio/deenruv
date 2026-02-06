@@ -52,9 +52,9 @@ import { DeenruvLogger } from "@deenruv/core";
  *
  * @docsCategory testing
  */
-export class TestingLogger<Spy extends (...args: any[]) => any>
-  implements DeenruvLogger
-{
+export class TestingLogger<
+  Spy extends (...args: any[]) => any,
+> implements DeenruvLogger {
   constructor(private createSpyFn: () => Spy) {
     this.debugSpy = createSpyFn();
     this.errorSpy = createSpyFn();

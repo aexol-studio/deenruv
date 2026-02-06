@@ -14,8 +14,9 @@ export type ApplyCollectionFilterFn<T extends ConfigArgs> = (
   args: ConfigArgValues<T>,
 ) => SelectQueryBuilder<ProductVariant>;
 
-export interface CollectionFilterConfig<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface CollectionFilterConfig<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   apply: ApplyCollectionFilterFn<T>;
 }
 

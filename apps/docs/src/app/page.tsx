@@ -1,23 +1,6 @@
-import {
-  Navigation,
-  HeroSection,
-  FeaturesSection,
-  StatsSection,
-  HowItWorksSection,
-  CtaSection,
-  FooterSection,
-} from '@/components/landing';
+import { redirect } from "next/navigation";
+import { i18n } from "@/lib/i18n";
 
 export default function HomePage() {
-  return (
-    <main className="min-h-screen bg-fd-background">
-      <Navigation />
-      <HeroSection />
-      <FeaturesSection />
-      <StatsSection />
-      <HowItWorksSection />
-      <CtaSection />
-      <FooterSection />
-    </main>
-  );
+  redirect(`/${i18n.defaultLanguage}`);
 }

@@ -1,25 +1,27 @@
-import { source } from '../../lib/source';
+import { source } from "../../lib/source";
 
 export const revalidate = false;
 
 export async function GET() {
-  const baseUrl = 'https://docs.deenruv.io';
+  const baseUrl = "https://docs.deenruv.io";
 
   const lines = [
-    '# Deenruv Documentation',
-    '',
-    '> A flexible, headless e-commerce framework built on NestJS and GraphQL',
-    '',
+    "# Deenruv Documentation",
+    "",
+    "> A flexible, headless e-commerce framework built on NestJS and GraphQL",
+    "",
     `## Full docs: ${baseUrl}/llms-full.txt`,
-    '',
-    '## Pages:',
-    '',
-    ...source.getPages().map((page) => `- ${page.data.title}: ${baseUrl}${page.url}.mdx`),
+    "",
+    "## Pages:",
+    "",
+    ...source
+      .getPages()
+      .map((page) => `- ${page.data.title}: ${baseUrl}${page.url}.mdx`),
   ];
 
-  return new Response(lines.join('\n'), {
+  return new Response(lines.join("\n"), {
     headers: {
-      'Content-Type': 'text/plain',
+      "Content-Type": "text/plain",
     },
   });
 }

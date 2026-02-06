@@ -1,4 +1,4 @@
 {
   "title": "Orders",
-  "pages": ["orders", "draft-orders"]
+  "pages": ["index"]
 }

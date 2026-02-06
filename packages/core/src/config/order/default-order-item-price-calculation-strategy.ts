@@ -11,9 +11,7 @@ import { OrderItemPriceCalculationStrategy } from "./order-item-price-calculatio
  *
  * @docsCategory orders
  */
-export class DefaultOrderItemPriceCalculationStrategy
-  implements OrderItemPriceCalculationStrategy
-{
+export class DefaultOrderItemPriceCalculationStrategy implements OrderItemPriceCalculationStrategy {
   calculateUnitPrice(
     ctx: RequestContext,
     productVariant: ProductVariant,

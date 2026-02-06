@@ -1,4 +1,4 @@
 {
   "title": "Catalog",
-  "pages": ["index", "products", "collections", "facets"]
+  "pages": ["index"]
 }

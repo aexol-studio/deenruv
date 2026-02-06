@@ -33,8 +33,9 @@ export type PrimaryKeyType<T> = T extends "uuid"
  * @docsCategory configuration
  * @docsPage EntityIdStrategy
  * */
-export interface EntityIdStrategy<T extends "increment" | "uuid">
-  extends InjectableStrategy {
+export interface EntityIdStrategy<
+  T extends "increment" | "uuid",
+> extends InjectableStrategy {
   /**
    * @description
    * Defines how the primary key will be stored in the database - either

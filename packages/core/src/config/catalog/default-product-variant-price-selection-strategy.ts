@@ -14,9 +14,7 @@ import { ProductVariantPriceSelectionStrategy } from "./product-variant-price-se
  * @docsPage ProductVariantPriceSelectionStrategy
  * @since 2.0.0
  */
-export class DefaultProductVariantPriceSelectionStrategy
-  implements ProductVariantPriceSelectionStrategy
-{
+export class DefaultProductVariantPriceSelectionStrategy implements ProductVariantPriceSelectionStrategy {
   selectPrice(ctx: RequestContext, prices: ProductVariantPrice[]) {
     const pricesInChannel = prices.filter((p) =>
       idsAreEqual(p.channelId, ctx.channelId),

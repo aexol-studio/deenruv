@@ -25,9 +25,7 @@ export const NATIVE_AUTH_STRATEGY_NAME = "native";
  *
  * @docsCategory auth
  */
-export class NativeAuthenticationStrategy
-  implements AuthenticationStrategy<NativeAuthenticationData>
-{
+export class NativeAuthenticationStrategy implements AuthenticationStrategy<NativeAuthenticationData> {
   readonly name = NATIVE_AUTH_STRATEGY_NAME;
 
   private connection: TransactionalConnection;
@@ -37,12 +35,10 @@ export class NativeAuthenticationStrategy
   async init(injector: Injector) {
     this.connection = injector.get(TransactionalConnection);
     // These are lazily-loaded to avoid a circular dependency
-    const { PasswordCipher } = await import(
-      "../../service/helpers/password-cipher/password-cipher.js"
-    );
-    const { UserService } = await import(
-      "../../service/services/user.service.js"
-    );
+    const { PasswordCipher } =
+      await import("../../service/helpers/password-cipher/password-cipher.js");
+    const { UserService } =
+      await import("../../service/services/user.service.js");
     this.passwordCipher = injector.get(PasswordCipher);
     this.userService = injector.get(UserService);
   }

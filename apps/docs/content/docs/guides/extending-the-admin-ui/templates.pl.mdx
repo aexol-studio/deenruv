@@ -1,0 +1,401 @@
+---
+title: 'Szablony'
+description: 'Szczegółowy przewodnik po DetailList i DetailView — kluczowych komponentach do budowania stron panelu admina'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Dwa komponenty szablonowe — `DetailList` i `DetailView` — stanowią fundament budowania stron panelu administracyjnego w Deenruv. Zapewniają kompletne layouty stron z wbudowaną obsługą systemu wstrzykiwania pluginów, dzięki czemu każdy plugin może rozszerzać Twoje strony o dodatkowe kolumny, zakładki, komponenty paska bocznego i akcje.
+
+## `DetailList` — Strony list
+
+`DetailList` tworzy w pełni funkcjonalną stronę listy z:
+
+- Tabelą danych z konfigurowalnymi kolumnami
+- Paginacją (opartą na parametrach URL)
+- Sortowaniem kolumn
+- Filtrowaniem
+- Akcjami zbiorczymi
+- Akcjami wierszy
+- Punktami wstrzykiwania pluginów (`ListViewMarker`)
+
+### Podstawowe użycie
+
+```tsx
+import { DetailList, apiClient, useTranslation } from '@deenruv/react-ui-devkit';
+
+export function ProductListPage() {
+  const { t } = useTranslation('catalog');
+
+  return (
+    <DetailList
+      title={t('products.title')}
+      listType="products"
+      route={(options) =>
+        apiClient('query')({
+          products: [
+            {
+              options: {
+                take: options.perPage,
+                skip: (options.page - 1) * options.perPage,
+                sort: options.sort
+                  ? { [options.sort.key]: options.sort.sortDir }
+                  : undefined,
+                filter: options.filter,
+              },
+            },
+            {
+              totalItems: true,
+              items: {
+                id: true,
+                name: true,
+                slug: true,
+                enabled: true,
+                featuredAsset: { preview: true },
+              },
+            },
+          ],
+        }).then((r) => r.products)
+      }
+      columns={[
+        {
+          header: t('products.name'),
+          accessorKey: 'name',
+        },
+        {
+          header: t('products.slug'),
+          accessorKey: 'slug',
+        },
+        {
+          header: t('products.enabled'),
+          accessorKey: 'enabled',
+          cell: ({ row }) => (
+            <Badge variant={row.original.enabled ? 'default' : 'secondary'}>
+              {row.original.enabled ? 'Active' : 'Draft'}
+            </Badge>
+          ),
+        },
+      ]}
+    />
+  );
+}
+```
+
+### Z sortowaniem i filtrowaniem
+
+```tsx
+<DetailList
+  title="Orders"
+  listType="orders"
+  route={(options) =>
+    apiClient('query')({
+      orders: [
+        {
+          options: {
+            take: options.perPage,
+            skip: (options.page - 1) * options.perPage,
+            sort: options.sort
+              ? { [options.sort.key]: options.sort.sortDir }
+              : undefined,
+            filter: options.filter,
+          },
+        },
+        {
+          totalItems: true,
+          items: {
+            id: true,
+            code: true,
+            state: true,
+            totalWithTax: true,
+            orderPlacedAt: true,
+            customer: { firstName: true, lastName: true },
+          },
+        },
+      ],
+    }).then((r) => r.orders)
+  }
+  columns={[
+    { header: 'Code', accessorKey: 'code' },
+    {
+      header: 'Customer',
+      accessorKey: 'customer',
+      cell: ({ row }) => {
+        const c = row.original.customer;
+        return c ? `${c.firstName} ${c.lastName}` : '—';
+      },
+    },
+    {
+      header: 'State',
+      accessorKey: 'state',
+      cell: ({ row }) => <OrderStateBadge state={row.original.state} />,
+    },
+    {
+      header: 'Total',
+      accessorKey: 'totalWithTax',
+      cell: ({ row }) => formatCurrency(row.original.totalWithTax),
+    },
+  ]}
+/>
+```
+
+### Z akcjami zbiorczymi i akcjami wierszy
+
+```tsx
+<DetailList
+  title="Reviews"
+  listType="reviews"
+  route={fetchReviews}
+  columns={reviewColumns}
+  bulkActions={[
+    {
+      label: 'Approve Selected',
+      onClick: async (selectedRows) => {
+        await apiClient('mutation')({
+          approveReviews: [
+            { ids: selectedRows.map((r) => r.id) },
+            { success: true },
+          ],
+        });
+      },
+    },
+    {
+      label: 'Reject Selected',
+      onClick: async (selectedRows) => {
+        await apiClient('mutation')({
+          rejectReviews: [
+            { ids: selectedRows.map((r) => r.id) },
+            { success: true },
+          ],
+        });
+      },
+    },
+  ]}
+  rowActions={[
+    {
+      label: 'View',
+      onClick: (row) => navigate(ROUTES.to(row.id)),
+    },
+    {
+      label: 'Delete',
+      onClick: async (row) => {
+        await apiClient('mutation')({
+          deleteReview: [{ id: row.id }, { success: true }],
+        });
+      },
+    },
+  ]}
+/>
+```
+
+### Rozszerzalność przez pluginy
+
+`DetailList` automatycznie renderuje `ListViewMarker` na podstawie propsa `listType`. Inne pluginy mogą rozszerzać Twoją listę, celując w odpowiedni identyfikator lokalizacji listy:
+
+```tsx
+// Na Twojej stronie listy
+<DetailList listType="products" ... />
+
+// W innym pluginie — rozszerzanie listy produktów
+tables: [
+  {
+    locationId: 'products-list-view',
+    columns: [
+      { header: 'Reviews', accessorKey: 'customFields.reviewCount' },
+    ],
+  },
+],
+```
+
+## `DetailView` — Strony szczegółów/edycji
+
+`DetailView` tworzy layout strony szczegółów z:
+
+- Nawigacją zakładkową
+- Obszarem paska bocznego
+- Przyciskami akcji (inline i dropdown)
+- Punktami wstrzykiwania pluginów (`DetailViewMarker`)
+- Integracją z formularzami
+
+### Podstawowe użycie
+
+```tsx
+import { DetailView, useGFFLP, apiClient, useTranslation } from '@deenruv/react-ui-devkit';
+
+export function ProductDetailPage() {
+  const { id } = useParams();
+  const { t } = useTranslation('catalog');
+
+  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+    'UpdateProductInput',
+    'name',
+    'slug',
+    'description',
+    'enabled',
+  )({
+    name: {
+      initialValue: '',
+      validate: (v) => (!v ? ['Required'] : undefined),
+    },
+    slug: { initialValue: '' },
+    description: { initialValue: '' },
+    enabled: { initialValue: true },
+  });
+
+  return (
+    <DetailView
+      title={state.name?.value || t('product.new')}
+      locationId="products-detail-view"
+      tabs={[
+        {
+          id: 'product',
+          label: t('tabs.product'),
+          content: (
+            <div className="space-y-4">
+              <PageBlock title={t('product.basicInfo')}>
+                <Input
+                  label={t('product.name')}
+                  value={state.name?.value ?? ''}
+                  onChange={(e) => setField('name', e.target.value)}
+                  error={state.name?.errors?.[0]}
+                />
+                <Input
+                  label={t('product.slug')}
+                  value={state.slug?.value ?? ''}
+                  onChange={(e) => setField('slug', e.target.value)}
+                />
+                <RichTextEditor
+                  value={state.description?.value ?? ''}
+                  onChange={(v) => setField('description', v)}
+                />
+              </PageBlock>
+            </div>
+          ),
+        },
+        {
+          id: 'variants',
+          label: t('tabs.variants'),
+          content: <VariantsTab productId={id} />,
+        },
+      ]}
+      sidebar={
+        <div className="space-y-4">
+          <CustomCard>
+            <CustomCardHeader title={t('product.status')} />
+            <Switch
+              checked={state.enabled?.value ?? true}
+              onCheckedChange={(v) => setField('enabled', v)}
+            />
+          </CustomCard>
+        </div>
+      }
+      actions={
+        <Button
+          onClick={async () => {
+            if (!checkIfAllFieldsAreValid()) return;
+            await saveProduct();
+          }}
+        >
+          {t('common.save')}
+        </Button>
+      }
+    />
+  );
+}
+```
+
+### Konfiguracja zakładek
+
+Zakładki w `DetailView` obsługują kilka opcji:
+
+```tsx
+tabs={[
+  {
+    id: 'main',
+    label: 'Main Info',
+    content: <MainInfoForm />,
+  },
+  {
+    id: 'media',
+    label: 'Media',
+    content: <MediaManager />,
+    // Ukryj pasek boczny dla tej zakładki
+    hideSidebar: true,
+  },
+  {
+    id: 'seo',
+    label: 'SEO',
+    content: <SeoForm />,
+    // Zastąp treść paska bocznego dla tej zakładki
+    sidebarReplacement: <SeoSidebar />,
+  },
+]}
+```
+
+### Rozszerzalność przez pluginy
+
+`DetailView` automatycznie renderuje komponenty `DetailViewMarker` na podstawie `locationId`. Inne pluginy mogą rozszerzać Twoją stronę szczegółów:
+
+```tsx
+// Na Twojej stronie szczegółów
+<DetailView locationId="products-detail-view" ... />
+
+// W innym pluginie — dodawanie zakładki
+tabs: [
+  {
+    locationId: 'products-detail-view',
+    tab: {
+      id: 'reviews',
+      label: 'Reviews',
+      component: ProductReviewsTab,
+    },
+  },
+],
+
+// W innym pluginie — dodawanie komponentu paska bocznego
+components: [
+  {
+    id: 'products-detail-view-sidebar',
+    tab: 'reviews',
+    component: ReviewsSidebar,
+  },
+],
+
+// W innym pluginie — dodawanie przycisków akcji
+actions: {
+  inline: [
+    {
+      locationId: 'products-detail-view',
+      component: ({ entity }) => (
+        <Button onClick={() => doSomething(entity.id)}>
+          Custom Action
+        </Button>
+      ),
+    },
+  ],
+},
+```
+
+## Łączenie szablonów
+
+Typowy plugin używa `DetailList` do strony listy i `DetailView` do strony szczegółów:
+
+```tsx title="src/plugin-ui/index.tsx"
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+import { ReviewsListPage } from './pages/ReviewsListPage';
+import { ReviewDetailPage } from './pages/ReviewDetailPage';
+
+export const ReviewsPlugin = createDeenruvUIPlugin({
+  name: 'reviews-plugin-ui',
+  version: '1.0.0',
+  pages: [
+    { path: '', element: <ReviewsListPage /> },       // Używa DetailList
+    { path: ':id', element: <ReviewDetailPage /> },    // Używa DetailView
+  ],
+  // ...
+});
+```
+
+<Callout type="info">
+Zarówno `DetailList`, jak i `DetailView` są w pełni kompatybilne z systemem wstrzykiwania pluginów. Każdy zarejestrowany plugin może rozszerzać Twoje strony, celując w odpowiednie identyfikatory lokalizacji.
+</Callout>

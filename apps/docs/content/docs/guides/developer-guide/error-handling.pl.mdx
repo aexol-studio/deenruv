@@ -1,0 +1,300 @@
+---
+title: 'Obsługa błędów'
+description: 'Dowiedz się, jak obsługiwać nieoczekiwane błędy i oczekiwane ErrorResults w API GraphQL Deenruv'
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Błędy w Deenruv można podzielić na dwie kategorie:
+
+-   Nieoczekiwane błędy
+-   Oczekiwane błędy
+
+Te dwa typy mają różne znaczenie i są obsługiwane w odmienny sposób.
+
+## Nieoczekiwane błędy
+
+Ten typ błędu występuje, gdy coś nieoczekiwanie pójdzie nie tak podczas przetwarzania żądania. Przykłady obejmują wewnętrzne błędy serwera, problemy z połączeniem z bazą danych, brak uprawnień do zasobu itp. Krótko mówiąc, są to błędy, które _nie powinny się zdarzać_.
+
+Wewnętrznie takie sytuacje są obsługiwane przez rzucanie wyjątku (Error):
+
+```ts
+const customer = await this.findOneByUserId(ctx, user.id);
+// in this case, the customer *should always* be found, and if
+// not then something unknown has gone wrong...
+if (!customer) {
+    throw new InternalServerError('error.cannot-locate-customer-for-user');
+}
+```
+
+W API GraphQL te błędy są zwracane w standardowej tablicy `errors`:
+
+```json
+{
+    "errors": [
+        {
+            "message": "You are not currently authorized to perform this action",
+            "locations": [
+                {
+                    "line": 2,
+                    "column": 2
+                }
+            ],
+            "path": ["me"],
+            "extensions": {
+                "code": "FORBIDDEN"
+            }
+        }
+    ],
+    "data": {
+        "me": null
+    }
+}
+```
+
+Twoje aplikacje klienckie potrzebują więc ogólnego sposobu wykrywania i obsługi tego rodzaju błędów. Na przykład wiele bibliotek klienckich HTTP obsługuje „interceptory odpowiedzi", które mogą przechwytywać wszystkie odpowiedzi API i sprawdzać tablicę `errors`.
+
+<Callout type="info">
+GraphQL zwróci status `200` nawet jeśli w tablicy `errors` znajdują się błędy. Wynika to z faktu, że w GraphQL nadal można zwrócić poprawne dane _obok_ ewentualnych błędów.
+</Callout>
+
+Oto jak mogłoby to wyglądać w prostym kliencie opartym na Fetch:
+
+```ts title="src/client.ts"
+export function query(document: string, variables: Record<string, any> = {}) {
+    return fetch(endpoint, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+            query: document,
+            variables,
+        }),
+    })
+        .then(async res => {
+            if (!res.ok) {
+                const body = await res.json();
+                throw new Error(body);
+            }
+            const newAuthToken = res.headers.get('deenruv-auth-token');
+            if (newAuthToken) {
+                localStorage.setItem(AUTH_TOKEN_KEY, newAuthToken);
+            }
+            return res.json();
+        })
+        .catch(err => {
+            // This catches non-200 responses, such as malformed queries or
+            // network errors. Handle this with your own error handling logic.
+            // For this demo we just show an alert.
+            window.alert(err.message);
+        })
+        .then(result => {
+            // We check for any GraphQL errors which would be in the
+            // `errors` array of the response body:
+            if (Array.isArray(result.errors)) {
+                // It looks like we have an unexpected error.
+                // At this point you could take actions like:
+                // - logging the error to a remote service
+                // - displaying an error popup to the user
+                // - inspecting the `error.extensions.code` to determine the
+                //   type of error and take appropriate action. E.g. a
+                //   in response to a FORBIDDEN_ERROR you can redirect the
+                //   user to a login page.
+
+                // In this example we just display an alert:
+                const errorMessage = result.errors.map(e => e.message).join('\n');
+                window.alert(`Unexpected error caught:\n\n${errorMessage}`);
+            }
+            return result;
+        });
+}
+```
+
+## Oczekiwane błędy (ErrorResults)
+
+Ten typ błędu reprezentuje dobrze zdefiniowany wynik (zazwyczaj) mutacji GraphQL, który nie jest uważany za „udany". Na przykład podczas używania mutacji `applyCouponCode` kod kuponu może być nieprawidłowy lub mógł wygasnąć. To są przykłady „oczekiwanych" błędów, zwanych w Deenruv „ErrorResults". Te ErrorResults są zakodowane bezpośrednio w schemacie GraphQL.
+
+Wszystkie ErrorResults implementują interfejs `ErrorResult`:
+
+```graphql
+interface ErrorResult {
+    errorCode: ErrorCode!
+    message: String!
+}
+```
+
+Niektóre ErrorResults dodają inne istotne pola do typu:
+
+```graphql
+"Returned if there is an error in transitioning the Order state"
+type OrderStateTransitionError implements ErrorResult {
+    errorCode: ErrorCode!
+    message: String!
+    transitionError: String!
+    fromState: String!
+    toState: String!
+}
+```
+
+Operacje, które mogą zwracać ErrorResults, używają `union` GraphQL jako typu zwracanego:
+
+```graphql
+type Mutation {
+    "Applies the given coupon code to the active Order"
+    applyCouponCode(couponCode: String!): ApplyCouponCodeResult!
+}
+
+union ApplyCouponCodeResult = Order | CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError
+```
+
+### Odpytywanie union z ErrorResult
+
+Wykonując operację zapytania lub mutacji, która zwraca union, musisz użyć [warunkowego fragmentu GraphQL](https://graphql.org/learn/schema/#union-types), aby wybrać odpowiednie pola:
+
+```graphql
+mutation ApplyCoupon($code: String!) {
+    applyCouponCode(couponCode: $code) {
+        __typename
+        ... on Order {
+            id
+            couponCodes
+            totalWithTax
+        }
+        # querying the ErrorResult fields
+        # "catches" all possible errors
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+        # you can also specify particular fields
+        # if your client app needs that specific data
+        # as part of handling the error.
+        ... on CouponCodeLimitError {
+            limit
+        }
+    }
+}
+```
+
+<Callout type="info">
+Pole `__typename` jest dodawane przez GraphQL do _wszystkich_ typów obiektowych, więc możemy je dołączyć niezależnie od tego, czy wynik będzie obiektem `Order` czy obiektem `ErrorResult`. Możemy następnie użyć wartości `__typename` do określenia, jaki rodzaj obiektu otrzymaliśmy.
+
+Niektóre klienty, takie jak Apollo Client, automatycznie dodają pole `__typename` do wszystkich zapytań i mutacji. Jeśli używasz klienta, który tego nie robi, musisz dodać je ręcznie.
+</Callout>
+
+Oto jak wyglądałaby odpowiedź w przypadku sukcesu i błędu:
+
+<Tabs items={['Przypadek sukcesu', 'Przypadek błędu']}>
+<Tab value="Przypadek sukcesu">
+
+```json
+{
+    "data": {
+        "applyCouponCode": {
+            "__typename": "Order",
+            "id": "123",
+            "couponCodes": ["VALID-CODE"],
+            "totalWithTax": 12599
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Przypadek błędu">
+
+```json
+{
+    "data": {
+        "applyCouponCode": {
+            "__typename": "CouponCodeLimitError",
+            "errorCode": "COUPON_CODE_LIMIT_ERROR",
+            "message": "Coupon code cannot be used more than once per customer",
+            "limit": 1
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+### Obsługa ErrorResults w kodzie pluginu
+
+Jeśli piszesz plugin, który korzysta z wewnętrznych metod serwisów Deenruv mogących zwracać ErrorResults, możesz użyć funkcji `isGraphQlErrorResult()` do sprawdzenia, czy wynik jest ErrorResult:
+
+```ts
+import { Injectable } from '@nestjs/common';
+import { isGraphQlErrorResult, Order, OrderService, OrderState, RequestContext } from '@deenruv/core';
+
+@Injectable()
+export class MyService {
+    constructor(private orderService: OrderService) {}
+
+    async myMethod(ctx: RequestContext, order: Order, newState: OrderState) {
+        const transitionResult = await this.orderService.transitionToState(ctx, order.id, newState);
+        if (isGraphQlErrorResult(transitionResult)) {
+            // The transition failed with an ErrorResult
+            throw transitionResult;
+        } else {
+            // TypeScript will correctly infer the type of `transitionResult` to be `Order`
+            return transitionResult;
+        }
+    }
+}
+```
+
+### Obsługa ErrorResults w kodzie klienta
+
+Ponieważ znamy wszystkie możliwe ErrorResults, które mogą wystąpić dla danej mutacji, możemy je obsłużyć w sposób wyczerpujący. Innymi słowy, możemy zapewnić, że nasz sklep internetowy ma sensowną odpowiedź na wszystkie możliwe błędy. Zazwyczaj robi się to za pomocą instrukcji `switch`:
+
+```ts
+const result = await query(APPLY_COUPON_CODE, { code: 'INVALID-CODE' });
+
+switch (result.applyCouponCode.__typename) {
+    case 'Order':
+        // handle success
+        break;
+    case 'CouponCodeExpiredError':
+        // handle expired code
+        break;
+    case 'CouponCodeInvalidError':
+        // handle invalid code
+        break;
+    case 'CouponCodeLimitError':
+        // handle limit error
+        break;
+    default:
+    // any other ErrorResult can be handled with a generic error message
+}
+```
+
+Jeśli połączymy to podejście z [generowaniem kodu GraphQL](/docs/guides/storefront/codegen/), TypeScript będzie nawet w stanie pomóc nam upewnić się, że obsłużyliśmy wszystkie możliwe ErrorResults:
+
+```ts
+// Here we are assuming that the APPLY_COUPON_CODE query has been generated
+// by the codegen tool, and therefore has the
+// type `TypedDocumentNode<ApplyCouponCode, ApplyCouponCodeVariables>`.
+const result = await query(APPLY_COUPON_CODE, { code: 'INVALID-CODE' });
+
+switch (result.applyCouponCode.__typename) {
+    case 'Order':
+        // handle success
+        break;
+    case 'CouponCodeExpiredError':
+        // handle expired code
+        break;
+    case 'CouponCodeInvalidError':
+        // handle invalid code
+        break;
+    case 'CouponCodeLimitError':
+        // handle limit error
+        break;
+    default:
+        // this line will cause a TypeScript error if there are any
+        // ErrorResults which we have not handled in the switch cases
+        // above.
+        const _exhaustiveCheck: never = result.applyCouponCode;
+}
+```

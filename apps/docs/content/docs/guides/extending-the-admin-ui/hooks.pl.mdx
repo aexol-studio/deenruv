@@ -1,0 +1,366 @@
+---
+title: 'Hooki'
+description: 'Wszystkie hooki udostępniane przez @deenruv/react-ui-devkit — zarządzanie formularzami, listami, tłumaczeniami, zasobami i więcej'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Pakiet `@deenruv/react-ui-devkit` udostępnia zestaw dedykowanych hooków React do budowania pluginów UI panelu administracyjnego. Hooki te obsługują typowe wzorce, takie jak stan formularza, paginowane listy, tłumaczenia i zarządzanie zasobami.
+
+## `useGFFLP` — Zarządzanie stanem formularza
+
+Główny hook formularza. `useGFFLP` (GraphQL Form Field Layout Props) tworzy typowo-bezpieczny stan formularza sterowany przez `ModelTypes` GraphQL. Wybiera konkretne pola z typu GraphQL i zapewnia walidację, śledzenie błędów oraz zarządzanie stanem.
+
+### Podstawowe użycie
+
+```ts
+import { useGFFLP } from '@deenruv/react-ui-devkit';
+
+// Wybierz pola z modelu GraphQL 'Product'
+const {
+  state,
+  setField,
+  setState,
+  checkIfAllFieldsAreValid,
+  haveValidFields,
+  clearErrors,
+  clearAllForm,
+} = useGFFLP('Product', 'name', 'slug', 'description')({
+  name: {
+    initialValue: '',
+    validate: (value) => (!value ? ['Name is required'] : undefined),
+  },
+  slug: { initialValue: '' },
+  description: { initialValue: '' },
+});
+```
+
+### Dostęp do stanu
+
+```ts
+// Każde pole w stanie ma: value, initialValue, errors, validatedValue
+const productName = state.name?.value;
+const nameErrors = state.name?.errors;        // string[] | undefined
+const isNameValid = state.name?.validatedValue; // ustawiane po walidacji
+```
+
+### Aktualizacja pól
+
+```ts
+// Aktualizacja pojedynczego pola
+setField('name', 'My New Product');
+
+// Obsługuje notację z kropką dla zagnieżdżonych pól
+setField('translations.name', 'Mon Produit');
+
+// Ustawienie wszystkich pól naraz
+setState({
+  name: { value: 'Product A', initialValue: '', errors: undefined },
+  slug: { value: 'product-a', initialValue: '', errors: undefined },
+});
+```
+
+### Walidacja
+
+```ts
+// Uruchom wszystkie walidatory i sprawdź, czy formularz jest poprawny
+const allValid = checkIfAllFieldsAreValid();
+
+// Sprawdź bieżącą poprawność bez uruchamiania walidatorów
+const isValid = haveValidFields;
+
+// Wyczyść wszystkie błędy walidacji
+clearErrors();
+
+// Zresetuj cały formularz do wartości początkowych
+clearAllForm();
+```
+
+### Użycie z DetailView
+
+```tsx
+function ProductForm({ productId }: { productId: string }) {
+  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+    'UpdateProductInput',
+    'name',
+    'slug',
+    'description',
+    'enabled',
+  )({
+    name: {
+      initialValue: '',
+      validate: (v) => (!v ? ['Required'] : undefined),
+    },
+    slug: { initialValue: '' },
+    description: { initialValue: '' },
+    enabled: { initialValue: true },
+  });
+
+  const handleSave = async () => {
+    if (!checkIfAllFieldsAreValid()) return;
+    await apiClient('mutation')({
+      updateProduct: [
+        {
+          input: {
+            id: productId,
+            enabled: state.enabled?.value,
+            translations: [
+              {
+                languageCode: LanguageCode.en,
+                name: state.name?.value ?? '',
+                slug: state.slug?.value ?? '',
+                description: state.description?.value ?? '',
+              },
+            ],
+          },
+        },
+        { id: true },
+      ],
+    });
+  };
+
+  return (
+    <form>
+      <Input
+        value={state.name?.value ?? ''}
+        onChange={(e) => setField('name', e.target.value)}
+      />
+      {state.name?.errors?.map((err) => (
+        <ErrorMessage key={err}>{err}</ErrorMessage>
+      ))}
+      {/* ...więcej pól */}
+      <Button onClick={handleSave}>Save</Button>
+    </form>
+  );
+}
+```
+
+### Opis zwracanych wartości
+
+| Właściwość | Typ | Opis |
+|---|---|---|
+| `state` | `Partial<Record<K, GFFLPFormField<T>>>` | Bieżący stan formularza z `value`, `initialValue`, `errors`, `validatedValue` na pole |
+| `setField` | `(field, value) => void` | Aktualizacja pojedynczego pola (obsługuje notację z kropką) |
+| `setState` | `(value) => void` | Ustawienie wszystkich pól naraz |
+| `checkIfAllFieldsAreValid` | `() => boolean` | Uruchom wszystkie walidatory, zwróć poprawność |
+| `haveValidFields` | `boolean` | Czy wszystkie zwalidowane pola mają poprawne wartości |
+| `clearErrors` | `() => void` | Wyczyść wszystkie błędy walidacji |
+| `clearAllForm` | `() => void` | Zresetuj formularz do wartości początkowych |
+
+## `useFFLP` — Niskopoziomowy hook formularza
+
+Używany wewnętrznie przez `useGFFLP`. Użyj bezpośrednio, gdy potrzebujesz stanu formularza **bez** powiązania z `ModelTypes` GraphQL:
+
+```ts
+import { useFFLP } from '@deenruv/react-ui-devkit';
+
+const { state, setField, checkIfAllFieldsAreValid } = useFFLP<{
+  email: string;
+  age: number;
+}>({
+  email: {
+    initialValue: '',
+    validate: (v) => (!v.includes('@') ? ['Invalid email'] : undefined),
+  },
+  age: { initialValue: 0 },
+});
+```
+
+## `useList` — Paginowane listy
+
+Zarządza stanem paginowanej listy z parametrami URL do sortowania, filtrowania i paginacji. Zwraca gotowy komponent JSX `Paginate`.
+
+### Podstawowe użycie
+
+```ts
+import { useList, apiClient } from '@deenruv/react-ui-devkit';
+
+const {
+  Paginate,           // Gotowy komponent paginacji JSX
+  objects,            // Elementy bieżącej strony
+  total,              // Łączna liczba elementów
+  setSort,            // Ustaw kolumnę sortowania
+  setFilter,          // Ustaw obiekt filtra
+  setFilterField,     // Ustaw pojedyncze pole filtra
+  removeFilterField,  // Usuń pojedyncze pole filtra
+  resetFilter,        // Wyczyść wszystkie filtry
+  optionInfo,         // Bieżące { page, perPage, sort, filter, filterOperator }
+  refetch,            // Ręczne ponowne pobranie
+  isFilterOn,         // Czy jakiekolwiek filtry są aktywne
+} = useList({
+  route: (options) =>
+    apiClient('query')({
+      products: [
+        {
+          options: {
+            take: options.perPage,
+            skip: (options.page - 1) * options.perPage,
+            sort: options.sort
+              ? { [options.sort.key]: options.sort.sortDir }
+              : undefined,
+            filter: options.filter,
+          },
+        },
+        { totalItems: true, items: { id: true, name: true, slug: true } },
+      ],
+    }).then((r) => r.products),
+  listType: 'products',
+});
+```
+
+### Użycie z szablonem DetailList
+
+Hook `useList` jest używany wewnętrznie przez komponent szablonu `DetailList`. Jeśli budujesz standardową stronę listy, preferuj `DetailList` dla interfejsu wyższego poziomu. Użyj `useList` bezpośrednio, gdy potrzebujesz pełnej kontroli nad układem listy.
+
+### Opis zwracanych wartości
+
+| Właściwość | Typ | Opis |
+|---|---|---|
+| `Paginate` | `JSX.Element` | Gotowy komponent paginacji |
+| `objects` | `T[]` | Elementy bieżącej strony |
+| `total` | `number` | Łączna liczba na wszystkich stronach |
+| `setSort` | `(sort) => void` | Ustaw kolumnę i kierunek sortowania |
+| `setFilter` | `(filter) => void` | Ustaw pełny obiekt filtra |
+| `setFilterField` | `(field, value) => void` | Ustaw pojedyncze pole filtra |
+| `removeFilterField` | `(field) => void` | Usuń pojedyncze pole filtra |
+| `resetFilter` | `() => void` | Wyczyść wszystkie filtry |
+| `optionInfo` | `object` | Bieżąca strona, perPage, sort, filter, filterOperator |
+| `refetch` | `() => void` | Uruchom ręczne ponowne pobranie |
+| `isFilterOn` | `boolean` | Czy jakikolwiek filtr jest aktywny |
+
+## `useTranslation` — Internacjonalizacja
+
+<Callout type="error">
+**Nigdy nie importuj `react-i18next` bezpośrednio.** Zawsze używaj `useTranslation` z `@deenruv/react-ui-devkit`. Ten hook wiąże się z globalną instancją i18n Deenruv poprzez `window.__DEENRUV_SETTINGS__.i18n`, zapewniając prawidłowe działanie tłumaczeń z systemem językowym panelu administracyjnego.
+</Callout>
+
+### Podstawowe użycie
+
+```ts
+import { useTranslation } from '@deenruv/react-ui-devkit';
+
+const { t, tEntity, i18n } = useTranslation('my-plugin-namespace');
+
+// Standardowe tłumaczenie
+t('my.key');                                    // "Mój przetłumaczony tekst"
+
+// Tłumaczenie uwzględniające encje z pluralizacją
+tEntity('entity.title', 'Product', 'one');      // "Product"
+tEntity('entity.title', 'Product', 'many');     // "Products"
+tEntity('entity.title', 'Product', 5);          // "5 Products"
+```
+
+### W komponentach
+
+```tsx
+function MyComponent() {
+  const { t } = useTranslation('reviews');
+
+  return (
+    <div>
+      <h1>{t('page.title')}</h1>
+      <p>{t('page.description')}</p>
+    </div>
+  );
+}
+```
+
+## `useAssets` — Zarządzanie zasobami
+
+Zarządza przeglądaniem zasobów z paginacją, wyszukiwaniem tekstowym i filtrowaniem tagów:
+
+```ts
+import { useAssets } from '@deenruv/react-ui-devkit';
+
+const {
+  assets,           // Bieżąca strona zasobów
+  isPending,        // Stan ładowania
+  error,            // Komunikat błędu
+  totalItems,       // Łączna liczba zasobów
+  refetchData,      // Ręczne ponowne pobranie
+  page, setPage,
+  perPage, setPerPage,
+  searchTerm, setSearchTerm,
+  searchTags, setSearchTags,
+  totalPages,
+} = useAssets();
+```
+
+### Opis zwracanych wartości
+
+| Właściwość | Typ | Opis |
+|---|---|---|
+| `assets` | `Asset[]` | Bieżąca strona zasobów |
+| `isPending` | `boolean` | Czy trwa pobieranie |
+| `error` | `string \| undefined` | Komunikat błędu jeśli pobieranie się nie powiodło |
+| `totalItems` | `number` | Łączna liczba zasobów |
+| `refetchData` | `() => void` | Uruchom ręczne ponowne pobranie |
+| `page` / `setPage` | `number` / `(n) => void` | Bieżąca strona |
+| `perPage` / `setPerPage` | `number` / `(n) => void` | Elementów na stronę |
+| `searchTerm` / `setSearchTerm` | `string` / `(s) => void` | Zapytanie wyszukiwania tekstowego |
+| `searchTags` / `setSearchTags` | `string[]` / `(tags) => void` | Filtr tagów |
+| `totalPages` | `number` | Obliczona łączna liczba stron |
+
+## `useDebounce`
+
+Reeksportowany z pakietu `use-debounce`. Opóźnia wartość z konfigurowalnym czasem:
+
+```ts
+import { useDebounce } from '@deenruv/react-ui-devkit';
+
+const [debouncedSearch] = useDebounce(searchTerm, 300);
+```
+
+## `useLocalStorage`
+
+Trwałe zarządzanie stanem z użyciem localStorage przeglądarki:
+
+```ts
+import { useLocalStorage } from '@deenruv/react-ui-devkit';
+
+const [viewMode, setViewMode] = useLocalStorage('plugin-view-mode', 'grid');
+```
+
+## `useValidators`
+
+Udostępnia typowe funkcje walidacji do użycia z hookami formularzy:
+
+```ts
+import { useValidators } from '@deenruv/react-ui-devkit';
+
+const { required, email, minLength, maxLength } = useValidators();
+
+const { state } = useGFFLP('Customer', 'emailAddress')({
+  emailAddress: {
+    initialValue: '',
+    validate: email,
+  },
+});
+```
+
+## `useErrorHandler`
+
+Scentralizowana obsługa błędów dla błędów GraphQL i API:
+
+```ts
+import { useErrorHandler } from '@deenruv/react-ui-devkit';
+
+const { handleError } = useErrorHandler();
+
+try {
+  await apiClient('mutation')({ /* ... */ });
+} catch (error) {
+  handleError(error);
+}
+```
+
+## `useCustomSearchParams`
+
+Helper do zarządzania parametrami URL w widokach list. Używany wewnętrznie przez `useList`:
+
+```ts
+import { useCustomSearchParams } from '@deenruv/react-ui-devkit';
+
+const { searchParams, setSearchParam } = useCustomSearchParams();
+```

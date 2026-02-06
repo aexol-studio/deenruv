@@ -13,9 +13,7 @@ import { ShippingLineAssignmentStrategy } from "./shipping-line-assignment-strat
  * @since 2.0.0
  * @docsCategory shipping
  */
-export class DefaultShippingLineAssignmentStrategy
-  implements ShippingLineAssignmentStrategy
-{
+export class DefaultShippingLineAssignmentStrategy implements ShippingLineAssignmentStrategy {
   assignShippingLineToOrderLines(
     ctx: RequestContext,
     shippingLine: ShippingLine,

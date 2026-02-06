@@ -1,0 +1,116 @@
+---
+title: "Uwierzytelnianie"
+description: "Uwierzytelnianie i autoryzacja w Deenruv"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+**Uwierzytelnianie** (ang. authentication) to proces ustalania tożsamości użytkownika. Najczęstsze sposoby uwierzytelniania to podanie tajnych danych logowania (nazwa użytkownika i hasło) lub skorzystanie z zewnętrznego dostawcy uwierzytelniania, takiego jak logowanie przez Facebook lub Google.
+
+**Autoryzacja** to powiązane pojęcie, które oznacza, że po zweryfikowaniu tożsamości użytkownika możemy określić, co dany użytkownik może robić. Na przykład użytkownik może mieć uprawnienia do przeglądania produktu, ale nie do jego edycji.
+
+Termin **auth** jest skrótem oznaczającym _zarówno_ uwierzytelnianie, jak i autoryzację.
+
+Auth w Deenruv dotyczy zarówno **administratorów**, jak i **klientów**. Uwierzytelnianie jest kontrolowane przez skonfigurowane `AuthenticationStrategies`, a autoryzacja przez skonfigurowane `Roles` i `Permissions`.
+
+## Uwierzytelnianie administratorów
+
+Administratorzy muszą się uwierzytelnić, zanim będą mogli wykonywać jakiekolwiek operacje w Admin API.
+
+Oto diagram przedstawiający elementy składające się na uwierzytelnianie administratora:
+
+
+
+Role mogą być tworzone w celu precyzyjnej kontroli nad tym, do czego ma dostęp dany administrator (zobacz sekcję poniżej).
+
+## Uwierzytelnianie klientów
+
+Klienci muszą się uwierzytelnić tylko wtedy, gdy chcą uzyskać dostęp do chronionych operacji związanych z ich kontem, takich jak przeglądanie wcześniejszych zamówień lub aktualizacja adresu.
+
+Oto elementy składające się na uwierzytelnianie klienta:
+
+
+
+### Klienci-goście
+
+Deenruv obsługuje również **klientów-gości**, co oznacza, że klient może złożyć zamówienie bez konieczności rejestracji konta, a tym samym nie otrzymuje powiązanego użytkownika ani roli. Klient-gość, nie posiadając ról, a co za tym idzie uprawnień, nie może przeglądać wcześniejszych zamówień ani korzystać z innych chronionych operacji API.
+
+Jednakże klient-gość może w późniejszym czasie zarejestrować konto, używając tego samego adresu e-mail — wówczas otrzyma użytkownika z rolą "Customer" i będzie mógł przeglądać swoje wcześniejsze zamówienia.
+
+## Role i uprawnienia
+
+Zarówno entity `Customer`, jak i `Administrator` są powiązane z jednym entity `User`, który z kolei posiada jedną lub więcej `Roles` kontrolujących uprawnienia.
+
+
+
+W powyższym przykładzie administrator Sam Bailey ma przypisane dwie role: "Order Manager" i "Catalog Manager". Administrator może mieć przypisaną dowolną liczbę ról, a uprawnienia wszystkich ról są łączone w celu określenia uprawnień administratora. W ten sposób można precyzyjnie kontrolować, którzy administratorzy mogą wykonywać jakie działania.
+
+Istnieją 2 specjalne role, które są tworzone domyślnie i nie mogą być zmieniane:
+
+-   **SuperAdmin**: Ta rola posiada wszystkie uprawnienia i nie może być edytowana ani usunięta. Jest przypisywana pierwszemu administratorowi utworzonemu przy starcie serwera.
+-   **Customer**: Ta rola jest przypisywana wszystkim zarejestrowanym klientom.
+
+Wszystkie pozostałe role mogą być definiowane przez użytkownika. Oto przykład definiowania roli "Inventory Manager" w panelu administracyjnym:
+
+
+
+## Natywne uwierzytelnianie
+
+Domyślnie Deenruv używa nazwy użytkownika/adresu e-mail i hasła do uwierzytelniania użytkowników, co jest zaimplementowane przez `NativeAuthenticationStrategy`.
+
+W Shop API i Admin API dostępna jest mutacja `login`, która pozwala klientowi lub administratorowi uwierzytelnić się za pomocą natywnego uwierzytelniania:
+
+```graphql title="Admin API"
+mutation {
+    login(username: "superadmin", password: "superadmin") {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+<Callout type="info">
+Zobacz [przewodnik Zarządzanie sesjami](/docs/guides/storefront/connect-api#managing-sessions), aby dowiedzieć się, jak zarządzać uwierzytelnionymi sesjami w aplikacjach sklepowych/klienckich.
+</Callout>
+
+## Zewnętrzne uwierzytelnianie
+
+Oprócz wbudowanej `NativeAuthenticationStrategy` możliwe jest zdefiniowanie własnej `AuthenticationStrategy`, która pozwala serwerowi Deenruv obsługiwać inne metody uwierzytelniania, takie jak:
+
+-   Logowanie społecznościowe (Facebook, Google, GitHub itp.)
+-   Dostawcy Single Sign-On (SSO), tacy jak Keycloak, Auth0 itp.
+-   Alternatywne czynniki, takie jak SMS, TOTP itp.
+
+Własne strategie uwierzytelniania konfiguruje się za pomocą obiektu `DeenruvConfig.authOptions`:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig, NativeAuthenticationStrategy } from '@deenruv/core';
+
+import { FacebookAuthenticationStrategy } from './plugins/authentication/facebook-authentication-strategy';
+import { GoogleAuthenticationStrategy } from './plugins/authentication/google-authentication-strategy';
+import { KeycloakAuthenticationStrategy } from './plugins/authentication/keycloak-authentication-strategy';
+
+export const config: DeenruvConfig = {
+    authOptions: {
+        shopAuthenticationStrategy: [
+            new NativeAuthenticationStrategy(),
+            new FacebookAuthenticationStrategy(),
+            new GoogleAuthenticationStrategy(),
+        ],
+        adminAuthenticationStrategy: [
+            new NativeAuthenticationStrategy(),
+            new KeycloakAuthenticationStrategy(),
+        ],
+    },
+};
+```
+
+W powyższym przykładzie definiujemy strategie dostępne do uwierzytelniania w Shop API i Admin API. `NativeAuthenticationStrategy` jest jedyną strategią dostarczaną przez Deenruv — jest to domyślna strategia oparta na nazwie użytkownika/e-mailu i haśle.
+
+Pozostałe strategie byłyby budowane samodzielnie (lub dostarczane przez przyszłe pakiety npm) poprzez tworzenie klas implementujących interfejs `AuthenticationStrategy`.

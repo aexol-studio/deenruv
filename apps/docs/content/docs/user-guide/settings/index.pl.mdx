@@ -1,0 +1,206 @@
+---
+title: 'Ustawienia systemu'
+description: 'Konfiguracja kanałów, metod płatności, wysyłki, podatków, administratorów i innych ustawień systemowych w panelu administracyjnym Deenruv'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Sekcja Ustawienia w panelu administracyjnym Deenruv pozwala konfigurować kluczowe aspekty systemu e-commerce — od kanałów i walut po dostawców płatności, metody wysyłki i reguły podatkowe.
+
+## Kanały
+
+Kanały to jedna z najpotężniejszych funkcji Deenruv. Kanał reprezentuje odrębny kanał sprzedaży z własną konfiguracją waluty, języka, podatków i domyślnych ustawień wysyłki.
+
+### Przypadki użycia kanałów
+
+- **Sklepy wieloregionowe** — odrębna strona dla każdego kraju/terytorium z własnymi cenami, walutą i regułami podatkowymi
+- **Kanały marketplace** — oddzielne kanały dla różnych sprzedawców w konfiguracji multi-vendor
+- **Separacja kanałów sprzedaży** — różne stany magazynowe i reguły dla Twojej strony vs. Amazon vs. sklepy stacjonarne
+- **Wyspecjalizowane sklepy** — podzbiór głównego katalogu dla niszowej grupy odbiorców
+
+### Ustawienia kanału
+
+Każdy kanał ma następujące konfigurowalne właściwości:
+
+| Ustawienie | Opis |
+|---|---|
+| **Kod** | Unikalny identyfikator kanału (np. `us-webstore`) |
+| **Token** | Automatycznie generowany token używany w nagłówku HTTP `deenruv-token` do identyfikacji żądań do tego kanału |
+| **Domyślny język** | Główny język tego kanału |
+| **Dostępne języki** | Dodatkowe języki obsługiwane przez ten kanał |
+| **Domyślna waluta** | Główny kod waluty (np. USD, EUR, PLN) |
+| **Dostępne waluty** | Dodatkowe waluty obsługiwane przez kanał |
+| **Domyślna strefa podatkowa** | Strefa używana do obliczeń podatkowych, gdy adres klienta nie jest dostępny |
+| **Domyślna strefa wysyłki** | Strefa używana do obliczeń wysyłki |
+| **Ceny zawierają podatek** | Czy ceny produktów są wprowadzane z podatkiem czy bez |
+
+### Zarządzanie przypisaniami do kanałów
+
+Produkty, kolekcje, fasety, metody wysyłki, metody płatności i promocje mogą być przypisane do konkretnych kanałów. Tylko elementy przypisane do kanału będą dostępne w tym kanale.
+
+Aby przypisać elementy do kanału, przejdź do widoku szczegółów danej encji i użyj sekcji **Kanały**, aby dodać lub usunąć przypisania kanałów.
+
+<Callout type="info">
+**Kanał domyślny** jest tworzony automatycznie i nie może zostać usunięty. Wszystkie encje są przypisywane do kanału domyślnego podczas tworzenia. Jeśli prowadzisz sklep jednokanałowy, potrzebujesz tylko kanału domyślnego.
+</Callout>
+
+## Administratorzy i role
+
+### Zarządzanie administratorami
+
+Przejdź do **Ustawienia → Administratorzy**, aby zarządzać użytkownikami administratorskimi. Każdy administrator ma:
+
+- **Imię** i **Nazwisko**
+- **Adres e-mail** — używany jako identyfikator logowania
+- **Role** — jedna lub więcej ról określających uprawnienia administratora
+
+Aby utworzyć nowego administratora:
+
+1. Kliknij **Utwórz administratora**.
+2. Wypełnij imię, nazwisko i adres e-mail.
+3. Ustaw początkowe hasło.
+4. Przypisz jedną lub więcej **Ról**.
+5. Kliknij **Utwórz**.
+
+### Role i uprawnienia
+
+Role definiują, jakie działania może wykonywać administrator. Przejdź do **Ustawienia → Role**, aby zarządzać rolami.
+
+Każda rola składa się z:
+
+- **Nazwy** i **Opisu**
+- **Kanałów** — do których kanałów ta rola się odnosi
+- **Uprawnień** — zestawu szczegółowych uprawnień kontrolujących dostęp do konkretnych operacji
+
+Deenruv zapewnia szczegółowe uprawnienia dla każdego obszaru systemu:
+
+| Obszar uprawnień | Przykłady |
+|---|---|
+| **Katalog** | CreateProduct, ReadProduct, UpdateProduct, DeleteProduct |
+| **Zamówienia** | CreateOrder, ReadOrder, UpdateOrder, DeleteOrder |
+| **Klienci** | CreateCustomer, ReadCustomer, UpdateCustomer, DeleteCustomer |
+| **Ustawienia** | ReadSettings, UpdateSettings |
+| **System** | ReadAdministrator, CreateAdministrator, ReadChannel, UpdateChannel |
+
+<Callout type="info">
+Istnieją dwie specjalne wbudowane role: **SuperAdmin** (posiada wszystkie uprawnienia, nie może być modyfikowana) i **Customer** (przypisywana do wszystkich zarejestrowanych klientów). Wszystkie pozostałe role są definiowane przez użytkowników.
+</Callout>
+
+## Kraje i strefy
+
+### Kraje
+
+Przejdź do **Ustawienia → Kraje**, aby zarządzać listą krajów dostępnych w Twoim sklepie. Kraje są używane do:
+
+- Adresów wysyłkowych i rozliczeniowych klientów
+- Przynależności do stref podatkowych i wysyłkowych
+
+Każdy kraj ma **nazwę**, **kod ISO** i może być **włączony** lub **wyłączony**.
+
+### Strefy
+
+Strefy to grupy krajów (lub innych regionów) używane do obliczania stawek podatkowych i kwalifikowalności wysyłki.
+
+Aby utworzyć strefę:
+
+1. Przejdź do **Ustawienia → Strefy**.
+2. Kliknij **Utwórz strefę**.
+3. Wprowadź **Nazwę** strefy (np. „UE", „Ameryka Północna", „Krajowa").
+4. Dodaj **Członków** — wybierz kraje należące do tej strefy.
+5. Kliknij **Utwórz**.
+
+Strefy są przywoływane przez:
+- **Stawki podatkowe** — do określenia, która stawka podatkowa obowiązuje na podstawie lokalizacji klienta
+- **Kanały** — jako domyślna strefa podatkowa i domyślna strefa wysyłkowa
+- **Metody wysyłki** — do określenia kwalifikowalności na podstawie adresu wysyłki
+
+## Metody płatności
+
+Metody płatności definiują, w jaki sposób klienci mogą płacić za zamówienia.
+
+### Konfiguracja metody płatności
+
+1. Przejdź do **Ustawienia → Metody płatności**.
+2. Kliknij **Utwórz metodę płatności**.
+3. Wprowadź **Nazwę** i **Kod**.
+4. Wybierz **Handler** — to integracja płatności, która przetwarza faktyczną płatność. Dostępne handlery zależą od zainstalowanych pluginów płatności (np. Stripe, Mollie, Braintree).
+5. Skonfiguruj ustawienia handlera (klucze API, adresy webhook itp.).
+6. Opcjonalnie dodaj **Checker kwalifikowalności**, aby ograniczyć, kiedy ta metoda płatności jest dostępna.
+7. Przypisz metodę płatności do odpowiednich **Kanałów**.
+8. **Włącz** metodę płatności.
+9. Kliknij **Utwórz**.
+
+<Callout type="info">
+Deenruv jest dostarczany z `dummyPaymentHandler` do celów deweloperskich i testowych. Do produkcji zainstaluj plugin płatności, taki jak `@deenruv/payments-plugin`, który zapewnia handlery Stripe, Mollie i Braintree.
+</Callout>
+
+## Metody wysyłki
+
+Metody wysyłki określają sposób wysyłki zamówień i jej koszt.
+
+### Konfiguracja metody wysyłki
+
+1. Przejdź do **Ustawienia → Metody wysyłki**.
+2. Kliknij **Utwórz metodę wysyłki**.
+3. Wprowadź **Nazwę** i **Kod**.
+4. Wybierz **Checker kwalifikowalności** — określa, czy metoda wysyłki jest dostępna dla danego zamówienia. Domyślny checker filtruje po wadze zamówienia lub łącznej kwocie.
+5. Wybierz **Kalkulator** — oblicza cenę wysyłki. Domyślny kalkulator stosuje stawkę ryczałtową.
+6. Skonfiguruj argumenty checkera i kalkulatora (np. minimalna kwota zamówienia, stawka ryczałtowa).
+7. Wybierz **Handler realizacji** — definiuje sposób przetwarzania realizacji przy użyciu tej metody wysyłki.
+8. Przypisz metodę do odpowiednich **Kanałów**.
+9. Kliknij **Utwórz**.
+
+### Kwalifikowalność metod wysyłki
+
+Checker kwalifikowalności jest uruchamiany dla każdego zamówienia, aby określić, czy metoda wysyłki powinna być oferowana. Typowe reguły kwalifikowalności obejmują:
+
+- Minimalna lub maksymalna kwota zamówienia
+- Adres wysyłki musi znajdować się w określonej strefie
+- Zamówienie musi zawierać (lub nie zawierać) określone wartości faset
+
+## Ustawienia podatkowe
+
+System podatkowy Deenruv opiera się na **Kategoriach podatkowych**, **Stawkach podatkowych** i **Strefach**.
+
+### Kategorie podatkowe
+
+Kategorie podatkowe klasyfikują produkty według ich opodatkowania. Przejdź do **Ustawienia → Kategorie podatkowe**, aby nimi zarządzać. Typowe przykłady:
+
+- **Standardowa** — domyślna stawka podatkowa
+- **Obniżona** — obniżona stawka dla artykułów pierwszej potrzeby (żywność, książki)
+- **Zerowa** — stawka zerowa
+- **Zwolniona** — pozycje zwolnione z podatku
+
+Każdy wariant produktu jest przypisany do kategorii podatkowej.
+
+### Stawki podatkowe
+
+Stawki podatkowe definiują faktyczny procent podatku do naliczenia. Przejdź do **Ustawienia → Stawki podatkowe**, aby nimi zarządzać.
+
+Każda stawka podatkowa ma:
+
+| Właściwość | Opis |
+|---|---|
+| **Nazwa** | Opisowa nazwa (np. „VAT standardowy", „VAT obniżony") |
+| **Stawka** | Procent (np. 23 dla 23%) |
+| **Kategoria podatkowa** | Których produktów dotyczy ta stawka |
+| **Strefa** | Której strefy geograficznej dotyczy ta stawka |
+| **Grupa klientów** | Opcjonalnie ogranicza do konkretnej grupy klientów |
+
+Obowiązująca stawka podatkowa dla danego wariantu produktu jest określana przez:
+
+1. **Kategorię podatkową** wariantu
+2. Odpowiednią **Strefę** klienta (określaną przez skonfigurowaną Strategię Strefy Podatkowej)
+3. Opcjonalnie **Grupę klientów** klienta
+
+<Callout type="info">
+Skonfiguruj ustawienie **Ceny zawierają podatek** w Twoim Kanale, aby kontrolować, czy ceny są wprowadzane z podatkiem czy bez. Jest to ważne dla regionów, gdzie ceny z podatkiem są normą (np. UE) w porównaniu z regionami, gdzie podatek jest doliczany przy kasie (np. USA).
+</Callout>
+
+## Ustawienia globalne
+
+Ustawienia globalne to wartości konfiguracyjne obowiązujące w całej aplikacji. Przejdź do **Ustawienia → Ustawienia globalne**, aby je przeglądać i aktualizować.
+
+<Callout type="warn">
+Wiele ustawień, które wcześniej były globalne (takie jak śledzenie stanów magazynowych i próg braku na stanie), zostało przeniesionych na poziom **Kanału**. Sprawdź ustawienia kanału, aby znaleźć te opcje.
+</Callout>

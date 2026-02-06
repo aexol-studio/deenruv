@@ -47,8 +47,9 @@ export type CreateFulfillmentFn<T extends ConfigArgs> = (
  * @docsPage FulfillmentHandler
  * @docsWeight 1
  */
-export interface FulfillmentHandlerConfig<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface FulfillmentHandlerConfig<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   /**
    * @description
    * Invoked when the `addFulfillmentToOrder` mutation is executed with this handler selected.

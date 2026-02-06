@@ -20,9 +20,7 @@ export type TestAuthPayload = {
   };
 };
 
-export class TestAuthenticationStrategy
-  implements AuthenticationStrategy<TestAuthPayload>
-{
+export class TestAuthenticationStrategy implements AuthenticationStrategy<TestAuthPayload> {
   readonly name = "test_strategy";
   private externalAuthenticationService: ExternalAuthenticationService;
 
@@ -77,9 +75,9 @@ export class TestAuthenticationStrategy
   }
 }
 
-export class TestSSOStrategyAdmin
-  implements AuthenticationStrategy<{ email: string }>
-{
+export class TestSSOStrategyAdmin implements AuthenticationStrategy<{
+  email: string;
+}> {
   readonly name = "test_sso_strategy_admin";
   private externalAuthenticationService: ExternalAuthenticationService;
   private roleService: RoleService;
@@ -125,9 +123,9 @@ export class TestSSOStrategyAdmin
   }
 }
 
-export class TestSSOStrategyShop
-  implements AuthenticationStrategy<{ email: string }>
-{
+export class TestSSOStrategyShop implements AuthenticationStrategy<{
+  email: string;
+}> {
   readonly name = "test_sso_strategy_shop";
   private externalAuthenticationService: ExternalAuthenticationService;
 
@@ -169,9 +167,10 @@ export class TestSSOStrategyShop
   }
 }
 
-export class TestAuthenticationStrategy2
-  implements AuthenticationStrategy<{ token: string; email: string }>
-{
+export class TestAuthenticationStrategy2 implements AuthenticationStrategy<{
+  token: string;
+  email: string;
+}> {
   readonly name = "test_strategy2";
   private externalAuthenticationService: ExternalAuthenticationService;
 

@@ -13,9 +13,7 @@ export type GoogleAuthData = {
   token: string;
 };
 
-export class GoogleAuthenticationStrategy
-  implements AuthenticationStrategy<GoogleAuthData>
-{
+export class GoogleAuthenticationStrategy implements AuthenticationStrategy<GoogleAuthData> {
   readonly name = "google";
   private client: OAuth2Client;
   private externalAuthenticationService: ExternalAuthenticationService;

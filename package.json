@@ -1,6 +1,29 @@
 {
   "name": "deenruv",
   "version": "0.0.5",
+  "description": "Open-source headless commerce framework built with TypeScript, NestJS, and GraphQL.",
+  "homepage": "https://deenruv.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aexol-studio/deenruv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aexol-studio/deenruv/issues"
+  },
+  "license": "MIT",
+  "author": "Aexol",
+  "keywords": [
+    "headless-commerce",
+    "ecommerce",
+    "typescript",
+    "nestjs",
+    "graphql",
+    "react",
+    "admin-panel",
+    "multi-vendor",
+    "payment-gateway",
+    "plugin-system"
+  ],
   "private": true,
   "type": "module",
   "engines": {

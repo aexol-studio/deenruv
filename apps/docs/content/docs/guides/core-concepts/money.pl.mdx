@@ -1,0 +1,209 @@
+---
+title: 'Pieniądze i waluta'
+description: 'Dowiedz się, jak Deenruv obsługuje wartości pieniężne, formatowanie walut i zaawansowane strategie monetarne'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+W Deenruv wartości pieniężne są przechowywane jako **liczby całkowite** z użyciem **jednostki podrzędnej** wybranej waluty.
+Na przykład, jeśli walutą jest USD, to wartość całkowita `100` reprezentuje $1.00.
+Jest to powszechna praktyka w aplikacjach finansowych, ponieważ pozwala uniknąć błędów zaokrąglania, które mogą występować przy użyciu liczb zmiennoprzecinkowych.
+
+Na przykład, oto odpowiedź z zapytania o ceny wariantu produktu:
+
+```json
+{
+    "data": {
+        "product": {
+            "id": "42",
+            "variants": [
+                {
+                    "id": "74",
+                    "name": "Bonsai Tree",
+                    "currencyCode": "USD",
+                    "price": 1999,
+                    "priceWithTax": 2399
+                }
+            ]
+        }
+    }
+}
+```
+
+W tym przykładzie cena wariantu z podatkiem wynosi `$23.99`.
+
+<Callout type="info">
+Aby zilustrować problem z przechowywaniem pieniędzy jako wartości dziesiętnych, wyobraź sobie, że chcemy dodać ceny dwóch produktów:
+
+- Produkt A: `$1.21`
+- Produkt B: `$1.22`
+
+Powinniśmy oczekiwać, że suma tych kwot wyniesie `$2.43`. Jednak jeśli wykonamy to dodawanie w JavaScript (i to samo dotyczy większości popularnych języków programowania), otrzymamy zamiast tego `$2.4299999999999997`!
+
+Bardziej szczegółowe wyjaśnienie tego problemu znajdziesz w [tej odpowiedzi na StackOverflow](https://stackoverflow.com/a/3730040/772859)
+</Callout>
+
+## Wyświetlanie wartości pieniężnych
+
+Kiedy budujesz swój sklep lub jakąkolwiek inną aplikację kliencką, która musi wyświetlać wartości pieniężne w formie czytelnej dla człowieka, musisz podzielić przez 100, aby przekonwertować na główną jednostkę waluty, a następnie sformatować z odpowiednimi separatorami dziesiętnym i grupowania.
+
+W środowiskach JavaScript, takich jak przeglądarki i Node.js, możemy skorzystać z doskonałego [API `Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).
+
+Oto funkcja, której możesz użyć w swoich projektach:
+
+```ts title="src/utils/format-currency.ts"
+export function formatCurrency(value: number, currencyCode: string, locale?: string) {
+    const majorUnits = value / 100;
+    try {
+        // Note: if no `locale` is provided, the browser's default
+        // locale will be used.
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: currencyCode,
+        }).format(majorUnits);
+    } catch (e: any) {
+        // A fallback in case the NumberFormat fails for any reason
+        return majorUnits.toFixed(2);
+    }
+}
+```
+
+Jeśli budujesz rozszerzenie panelu administracyjnego, możesz użyć wbudowanego `LocaleCurrencyPipe`:
+
+```html title="src/plugins/my-plugin/ui/components/my-component/my.component.html"
+<div>Variant price: {{ variant.price | localeCurrency : variant.currencyCode }}</div>
+```
+
+## Obsługa wielu walut
+
+Deenruv obsługuje wiele walut od razu po instalacji. Dostępne waluty muszą być najpierw ustawione na poziomie kanału (Channel) (zobacz sekcję [Kanały, waluty i ceny](/docs/guides/core-concepts/channels/#channels-currencies--prices)), a następnie można ustawić cenę `ProductVariant` w każdej z dostępnych walut.
+
+Przy korzystaniu z wielu walut, `ProductVariantPriceSelectionStrategy` jest używana do określenia, która z dostępnych cen ma zostać zwrócona przy pobieraniu szczegółów `ProductVariant`. Domyślna strategia zwraca cenę w walucie bieżącej sesji, która jest ustalana najpierw na podstawie parametru zapytania `?currencyCode=XXX`, a następnie na podstawie `defaultCurrencyCode` kanału.
+
+## Skalar GraphQL `Money`
+
+W API GraphQL używamy niestandardowego typu skalarnego `Money` do reprezentowania wszystkich wartości pieniężnych. Robimy to z dwóch powodów:
+
+1. Wbudowany typ `Int` ma ograniczenie narzucone przez specyfikację GraphQL — górny limit wynosi `2147483647`, co w niektórych przypadkach (szczególnie dla walut z bardzo dużymi kwotami) nie jest wystarczające.
+2. Bardzo zaawansowane przypadki użycia mogą wymagać większej precyzji, niż jest to możliwe z typem całkowitoliczbowym. Użycie własnego skalara daje nam możliwość obsługi większej precyzji.
+
+Oto jak skalar `Money` jest używany w typie `ShippingLine`:
+
+```graphql
+type ShippingLine {
+    id: ID!
+    shippingMethod: ShippingMethod!
+    price: Money!
+    priceWithTax: Money!
+    discountedPrice: Money!
+    discountedPriceWithTax: Money!
+    discounts: [Discount!]!
+}
+```
+
+Jeśli definiujesz własne typy GraphQL lub dodajesz pola do istniejących typów (zobacz [Rozszerzanie GraphQL API](/docs/guides/developer-guide/extend-graphql-api/)), powinieneś również używać skalara `Money` dla wszelkich wartości pieniężnych.
+
+## Dekorator `@Money()`
+
+Podczas [definiowania nowych entity bazy danych](/docs/guides/developer-guide/database-entity), jeśli musisz przechowywać wartość pieniężną, zamiast dekoratora TypeORM `@Column()` powinieneś użyć dekoratora Deenruv `@Money()`.
+
+Użycie tego dekoratora pozwala Deenruv prawidłowo przechowywać wartość w bazie danych zgodnie ze skonfigurowaną `MoneyStrategy` (patrz poniżej).
+
+```ts title="src/plugins/quote/entities/quote.entity.ts"
+import { DeepPartial } from '@deenruv/common/lib/shared-types';
+import { DeenruvEntity, Order, EntityId, Money, CurrencyCode, ID } from '@deenruv/core';
+import { Column, Entity, ManyToOne } from 'typeorm';
+
+@Entity()
+class Quote extends DeenruvEntity {
+    constructor(input?: DeepPartial<Quote>) {
+        super(input);
+    }
+
+    @ManyToOne(type => Order)
+    order: Order;
+
+    @EntityId()
+    orderId: ID;
+
+    @Column()
+    text: string;
+
+    @Money()
+    value: number;
+
+    // Whenever you store a monetary value, it's a good idea to also
+    // explicitly store the currency code too. This makes it possible
+    // to support multiple currencies and correctly format the amount
+    // when displaying the value.
+    @Column('varchar')
+    currencyCode: CurrencyCode;
+
+    @Column()
+    approved: boolean;
+}
+```
+
+## Zaawansowana konfiguracja: MoneyStrategy
+
+Dla zaawansowanych przypadków użycia możliwe jest skonfigurowanie sposobu, w jaki Deenruv wewnętrznie obsługuje wartości pieniężne, poprzez zdefiniowanie własnej `MoneyStrategy`.
+
+`MoneyStrategy` pozwala zdefiniować:
+
+- Jak wartość jest przechowywana i pobierana z bazy danych
+- Jak zaokrąglanie jest stosowane wewnętrznie
+- Precyzję reprezentowaną przez wartość pieniężną (od wersji v2.2.0)
+
+Na przykład, oprócz `DefaultMoneyStrategy`, Deenruv dostarcza również `BigIntMoneyStrategy`, która przechowuje wartości pieniężne za pomocą typu danych `bigint`, umożliwiając przechowywanie znacznie większych kwot.
+
+Oto jak skonfigurować serwer, aby używał tej strategii:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig, BigIntMoneyStrategy } from '@deenruv/core';
+
+export const config: DeenruvConfig = {
+    // ...
+    entityOptions: {
+        moneyStrategy: new BigIntMoneyStrategy(),
+    },
+};
+```
+
+### Przykład: obsługa trzech miejsc po przecinku
+
+Powiedzmy, że masz sklep B2B, który sprzedaje produkty hurtowo, i chcesz obsługiwać ceny z trzema miejscami po przecinku. Na przykład chcesz móc sprzedawać produkt za `$1.234` za sztukę. Aby to zrobić, musisz:
+
+1. Skonfigurować `MoneyStrategy` do obsługi trzech miejsc po przecinku
+
+```ts
+import { DefaultMoneyStrategy, DeenruvConfig } from '@deenruv/core';
+
+export class ThreeDecimalPlacesMoneyStrategy extends DefaultMoneyStrategy {
+    readonly precision = 3;
+}
+
+export const config: DeenruvConfig = {
+    // ...
+    entityOptions: {
+        moneyStrategy: new ThreeDecimalPlacesMoneyStrategy(),
+    },
+};
+```
+
+2. Skonfigurować swój sklep, aby prawidłowo konwertował wartość całkowitą na wartość dziesiętną z trzema miejscami po przecinku. Korzystając z powyższego przykładu `formatCurrency`, możemy go zmodyfikować, aby dzielić przez 1000 zamiast 100:
+
+```ts title="src/utils/format-currency.ts"
+export function formatCurrency(value: number, currencyCode: string, locale?: string) {
+    const majorUnits = value / 1000;
+    try {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: currencyCode,
+            minimumFractionDigits: 3,
+            maximumFractionDigits: 3,
+        }).format(majorUnits);
+    } catch (e: any) {
+        return majorUnits.toFixed(3);
+    }
+}
+```

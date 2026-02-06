@@ -20,8 +20,9 @@ export type FacebookProduct = Record<string, unknown> & {
   variantID: string | number;
 };
 
-export interface MerchantExportStrategy<T extends BaseProductData<any>>
-  extends InjectableStrategy {
+export interface MerchantExportStrategy<
+  T extends BaseProductData<any>,
+> extends InjectableStrategy {
   getBaseData: (
     ctx: RequestContext,
     product: Product,

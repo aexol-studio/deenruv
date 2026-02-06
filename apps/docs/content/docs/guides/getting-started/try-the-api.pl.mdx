@@ -1,0 +1,225 @@
+---
+title: "Wypróbuj API"
+description: "Poznaj API GraphQL Deenruv na praktycznych przykładach"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Po pomyślnym zainstalowaniu Deenruv lokalnie zgodnie z [przewodnikiem instalacji](/docs/guides/getting-started/installation),
+pora wypróbować API!
+
+<Callout type="info">
+Ten przewodnik zakłada, że podczas instalacji Deenruv wybrałeś opcję wypełnienia przykładowymi danymi.
+
+Możesz również śledzić te przykłady, korzystając z publicznego demo pod adresem [demo.deenruv.io/shop-api](https://demo.deenruv.io/shop-api)
+</Callout>
+
+## GraphQL Playground
+
+Serwer Deenruv zawiera GraphQL Playground, który pozwala eksplorować API oraz uruchamiać zapytania i mutacje. To
+świetny sposób na poznanie API i zrozumienie, jak ono działa.
+
+W tym przewodniku będziemy używać GraphQL Playground do uruchamiania zapytań i mutacji w Shop API i Admin API. Na każdym
+kroku wklej zapytanie lub mutację do lewego panelu Playground, a następnie kliknij przycisk "Play", aby je uruchomić.
+Odpowiedź zobaczysz w prawym panelu.
+
+
+
+<Callout type="info">
+Zanim zaczniemy korzystać z GraphQL Playground, musimy zmienić jedno ustawienie, aby sesyjne ciasteczka były obsługiwane
+prawidłowo.
+
+W panelu "settings" musimy zmienić ustawienie `request.credentials` z `omit` na `include`:
+
+
+</Callout>
+
+## Shop API
+
+Shop API to publiczne API używane przez aplikację sklepu.
+
+Otwórz GraphQL Playground pod adresem [http://localhost:3000/shop-api](http://localhost:3000/shop-api).
+
+### Pobierz listę produktów
+
+Zacznijmy od **zapytania** (query). Zapytania służą do pobierania danych. Wykonamy zapytanie, aby pobrać listę produktów.
+
+```graphql
+query {
+  products {
+    totalItems
+    items {
+      id
+      name
+    }
+  }
+}
+```
+
+Zwróć uwagę, że odpowiedź zawiera tylko te właściwości, o które poprosiliśmy w zapytaniu (id i name). To jedna z kluczowych zalet
+GraphQL — klient może określić dokładnie, jakich danych potrzebuje, a serwer zwróci tylko te dane!
+
+Dodajmy kilka kolejnych właściwości do zapytania:
+
+```graphql
+query {
+  products {
+    totalItems
+    items {
+      id
+      name
+      slug
+      description
+      featuredAsset {
+        id
+        preview
+      }
+    }
+  }
+}
+```
+
+Powinieneś zobaczyć, że odpowiedź zawiera teraz właściwości `slug`, `description` i `featuredAsset`. Zauważ, że
+właściwość `featuredAsset` jest sama w sobie obiektem i możemy określić, które właściwości tego obiektu chcemy uwzględnić
+w odpowiedzi. To kolejna zaleta GraphQL — możesz "zagłębiać się" w dane i określać dokładnie, które właściwości
+chcesz uwzględnić.
+
+Teraz dodajmy argumenty do zapytania. Niektóre zapytania (i większość mutacji) mogą przyjmować argumenty, które umieszcza się w nawiasach
+po nazwie zapytania. Na przykład pobierzmy pierwszych 5 produktów:
+
+```graphql
+query {
+  products(options: { take: 5 }) {
+    totalItems
+    items {
+      id
+      name
+    }
+  }
+}
+```
+
+Po uruchomieniu tego zapytania powinieneś zobaczyć tylko pierwszych 5 wyników.
+
+Dodajmy bardziej złożony argument: tym razem przefiltrujemy produkty, których nazwa zawiera ciąg "shoe":
+
+```graphql
+query {
+  products(options: {
+    filter: { name: { contains: "shoe" } }
+  }) {
+    totalItems
+    items {
+      id
+      name
+    }
+  }
+}
+```
+
+### Dodaj produkt do zamówienia
+
+Teraz przyjrzyjmy się **mutacji**. Mutacje służą do modyfikowania danych na serwerze.
+
+Oto mutacja, która dodaje produkt do zamówienia:
+
+```graphql
+mutation {
+  addItemToOrder(productVariantId: 42, quantity: 1) {
+    ...on Order {
+      id
+      code
+      totalQuantity
+      totalWithTax
+      lines {
+        productVariant {
+          name
+        }
+        quantity
+        linePriceWithTax
+      }
+    }
+    ...on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+```
+
+Ta mutacja dodaje wariant produktu o ID `42` do zamówienia. Odpowiedź będzie albo obiektem `Order`, albo `ErrorResult`.
+Używamy specjalnej składni zwanej **fragmentem**, aby określić, które właściwości chcemy uwzględnić w odpowiedzi. W tym przypadku
+mówimy, że jeśli odpowiedź to `Order`, chcemy uwzględnić `id`, `code`, `totalQuantity`, `totalWithTax` itd., a
+jeśli odpowiedź to `ErrorResult`, chcemy uwzględnić `errorCode` i `message`.
+
+Uruchomienie tej mutacji po raz drugi powinno pokazać, że ilość produktu w zamówieniu wzrosła o 1. Jeśli tak się nie stało,
+sesja nie jest prawidłowo utrzymywana (zobacz wcześniejszą uwagę w tym przewodniku o ustawieniu `request.credentials`).
+
+<Callout type="info">
+Więcej informacji o `ErrorResult` i obsłudze błędów w Deenruv znajdziesz w [przewodniku obsługi błędów](/docs/guides/developer-guide/error-handling).
+</Callout>
+
+## Admin API
+
+Admin API udostępnia wszystkie funkcjonalności potrzebne do zarządzania sklepem. Jest używane przez panel administracyjny, ale może być również używane
+przez integracje i niestandardowe skrypty.
+
+<Callout type="info">
+Przykłady w tej sekcji nie są interaktywne ze względu na ustawienia bezpieczeństwa na naszym serwerze demo,
+ale możesz je wkleić do swojego lokalnego GraphQL Playground.
+</Callout>
+
+Otwórz GraphQL Playground pod adresem [http://localhost:3000/admin-api](http://localhost:3000/admin-api).
+
+### Logowanie
+
+Większość operacji Admin API jest dostępna tylko dla uwierzytelnionych użytkowników. Dlatego najpierw musimy się zalogować.
+
+```graphql title="Admin API"
+mutation {
+    login(username: "superadmin", password: "superadmin") {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+### Pobierz produkt
+
+Admin API udostępnia znacznie więcej informacji o produktach niż Shop API:
+
+```graphql title="Admin API"
+query {
+  product(id: 42) {
+    enabled
+    name
+    variants {
+      id
+      name
+      enabled
+      prices {
+        currencyCode
+        price
+      }
+      stockLevels {
+        stockLocationId
+        stockOnHand
+        stockAllocated
+      }
+    }
+  }
+}
+```
+
+<Callout type="info">
+GraphQL jest statycznie typowany i używa **schematu** zawierającego informacje o wszystkich dostępnych zapytaniach, mutacjach i typach. W
+GraphQL Playground możesz przeglądać schemat, klikając zakładkę "docs" po prawej stronie.
+
+
+</Callout>

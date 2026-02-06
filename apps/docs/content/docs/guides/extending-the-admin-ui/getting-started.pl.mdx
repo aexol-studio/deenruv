@@ -1,0 +1,269 @@
+---
+title: 'Pierwsze kroki'
+description: 'Stwórz swój pierwszy plugin UI panelu administracyjnego Deenruv z @deenruv/react-ui-devkit'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Ten przewodnik przeprowadzi Cię przez tworzenie minimalnego pluginu UI panelu administracyjnego od podstaw, rejestrację go w panelu administracyjnym i uruchomienie w trybie deweloperskim.
+
+## Wymagania wstępne
+
+- Działający projekt Deenruv (zobacz [Instalacja](/docs/guides/getting-started/installation))
+- Node.js v18+
+- pnpm (monorepo oparte na workspace)
+
+## Krok 1: Stwórz strukturę folderów pluginu
+
+Plugin Deenruv z rozszerzeniem UI składa się z dwóch części: **pluginu serwerowego** i **pluginu UI**. Zastosuj tę konwencję:
+
+```
+plugins/my-plugin/
+  src/
+    my-plugin.plugin.ts        # Plugin po stronie serwera
+    plugin-ui/
+      index.tsx                 # Definicja pluginu UI
+      constants.ts              # Stałe pluginu
+      tsconfig.json             # Konfiguracja TypeScript dla kodu UI
+      components/               # Komponenty React
+        index.tsx
+      pages/                    # Komponenty stron
+        MyListPage.tsx
+        MyDetailPage.tsx
+      locales/                  # Pliki tłumaczeń i18n
+        en/
+          index.ts
+          my-plugin.json
+        pl/
+          index.ts
+          my-plugin.json
+      graphql/                  # Zapytania i mutacje GraphQL
+        index.ts
+        queries.ts
+        mutations.ts
+        selectors.ts
+```
+
+<Callout type="info">
+Możesz użyć `npx deenruv add` i wybrać „Create a new Deenruv plugin", aby automatycznie wygenerować tę strukturę.
+</Callout>
+
+## Krok 2: Zdefiniuj plugin UI
+
+Sercem Twojego pluginu UI jest wywołanie `createDeenruvUIPlugin`. Ta funkcja zapewnia pełne bezpieczeństwo typów TypeScript dla definicji pluginu.
+
+```tsx title="src/plugin-ui/index.tsx"
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+import { ListIcon } from 'lucide-react';
+import { MyListPage } from './pages/MyListPage';
+import { MyDetailPage } from './pages/MyDetailPage';
+import en from './locales/en';
+import pl from './locales/pl';
+
+const PLUGIN_NAME = 'my-plugin-ui';
+
+export const MyPlugin = createDeenruvUIPlugin({
+  name: PLUGIN_NAME,
+  version: '1.0.0',
+
+  // Tłumaczenia i18n
+  translations: {
+    ns: 'my-plugin',
+    data: { en, pl },
+  },
+
+  // Trasy pluginu (automatyczny prefiks: admin-ui/extensions/my-plugin-ui/)
+  pages: [
+    { path: '', element: <MyListPage /> },
+    { path: ':id', element: <MyDetailPage /> },
+  ],
+
+  // Linki nawigacji
+  navMenuLinks: [
+    {
+      id: 'my-plugin-link',
+      labelId: 'nav.myPlugin',      // Rozwiązywane jako: my-plugin.nav.myPlugin
+      href: '',
+      groupId: 'assortment-group',   // BASE_GROUP_ID.ASSORTMENT
+      icon: ListIcon,
+    },
+  ],
+});
+```
+
+<Callout type="info">
+Ścieżki stron pluginu są automatycznie prefiksowane `admin-ui/extensions/{plugin-name}/`. Więc ścieżka `':id'` staje się `admin-ui/extensions/my-plugin-ui/:id`.
+
+`labelId` linku nawigacji jest automatycznie prefiksowane `{translations.ns}.{labelId}`, więc `'nav.myPlugin'` staje się `'my-plugin.nav.myPlugin'`.
+</Callout>
+
+## Krok 3: Stwórz komponent strony
+
+Oto minimalna strona listy wykorzystująca komponent szablonu `DetailList`:
+
+```tsx title="src/plugin-ui/pages/MyListPage.tsx"
+import { DetailList, apiClient, useTranslation } from '@deenruv/react-ui-devkit';
+
+export function MyListPage() {
+  const { t } = useTranslation('my-plugin');
+
+  return (
+    <DetailList
+      title={t('list.title')}
+      listType="products"
+      route={(options) =>
+        apiClient('query')({
+          products: [
+            {
+              options: {
+                take: options.perPage,
+                skip: (options.page - 1) * options.perPage,
+                sort: options.sort
+                  ? { [options.sort.key]: options.sort.sortDir }
+                  : undefined,
+                filter: options.filter,
+              },
+            },
+            {
+              totalItems: true,
+              items: {
+                id: true,
+                name: true,
+                slug: true,
+                enabled: true,
+              },
+            },
+          ],
+        }).then((r) => r.products)
+      }
+      columns={[
+        { header: t('list.name'), accessorKey: 'name' },
+        { header: t('list.slug'), accessorKey: 'slug' },
+        { header: t('list.enabled'), accessorKey: 'enabled' },
+      ]}
+    />
+  );
+}
+```
+
+## Krok 4: Dodaj pliki tłumaczeń
+
+Stwórz pliki JSON z tłumaczeniami:
+
+<Tabs items={['English', 'Polish']}>
+<Tab value="English">
+```json title="src/plugin-ui/locales/en/my-plugin.json"
+{
+  "nav": {
+    "myPlugin": "My Plugin"
+  },
+  "list": {
+    "title": "My Plugin Items",
+    "name": "Name",
+    "slug": "Slug",
+    "enabled": "Enabled"
+  },
+  "detail": {
+    "title": "Item Detail"
+  }
+}
+```
+</Tab>
+<Tab value="Polish">
+```json title="src/plugin-ui/locales/pl/my-plugin.json"
+{
+  "nav": {
+    "myPlugin": "Moja wtyczka"
+  },
+  "list": {
+    "title": "Elementy mojej wtyczki",
+    "name": "Nazwa",
+    "slug": "Slug",
+    "enabled": "Włączony"
+  },
+  "detail": {
+    "title": "Szczegóły elementu"
+  }
+}
+```
+</Tab>
+</Tabs>
+
+Oraz pliki index eksportujące tłumaczenia:
+
+```ts title="src/plugin-ui/locales/en/index.ts"
+import myPlugin from './my-plugin.json';
+
+export default { 'my-plugin': myPlugin };
+```
+
+<Callout type="warn">
+**Nigdy nie importuj `react-i18next` bezpośrednio.** Zawsze używaj `useTranslation` z `@deenruv/react-ui-devkit`, aby zapewnić użycie prawidłowej instancji i18n. Hook wiąże się z globalną instancją i18n Deenruv poprzez `window.__DEENRUV_SETTINGS__.i18n`.
+</Callout>
+
+## Krok 5: Zarejestruj plugin na serwerze
+
+Dodaj swój plugin UI do konfiguracji panelu administracyjnego serwera:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { MyPlugin } from './plugins/my-plugin/src/plugin-ui';
+import { MyServerPlugin } from './plugins/my-plugin/src/my-plugin.plugin';
+
+export const config: DeenruvConfig = {
+  // ...
+  plugins: [
+    MyServerPlugin,
+    // ...inne pluginy
+  ],
+  adminUiConfig: {
+    plugins: [
+      MyPlugin,
+      // ...inne pluginy UI
+    ],
+  },
+};
+```
+
+## Krok 6: Zdefiniuj stałe pluginu
+
+Dobrą praktyką jest definiowanie stałych pluginu w osobnym pliku:
+
+```ts title="src/plugin-ui/constants.ts"
+const PLUGIN_NAME = 'my-plugin-ui';
+
+export const MY_PLUGIN_ROUTES = {
+  route: ['/admin-ui', 'extensions', PLUGIN_NAME, ':id'].join('/'),
+  new: ['/admin-ui', 'extensions', PLUGIN_NAME, 'new'].join('/'),
+  list: ['/admin-ui', 'extensions', PLUGIN_NAME].join('/'),
+  to: (id: string) => ['/admin-ui', 'extensions', PLUGIN_NAME, id].join('/'),
+};
+```
+
+## Krok 7: Uruchom w trybie deweloperskim
+
+Uruchom serwer deweloperski:
+
+```bash
+# Uruchom usługi Docker (Postgres, Redis, MinIO)
+pnpm server-docker-up
+
+# Uruchom serwer
+pnpm start:server
+
+# Uruchom panel administracyjny (w osobnym terminalu)
+pnpm start:admin-ui
+```
+
+Strona Twojego pluginu będzie dostępna pod adresem `http://localhost:5173/admin-ui/extensions/my-plugin-ui/`.
+
+## Debugowanie rozmieszczenia pluginów
+
+Naciśnij **Ctrl+Q** w panelu administracyjnym, aby przełączyć **markery widoku pluginów**. Podświetla to punkty wstrzykiwania, w których renderowane są komponenty pluginów, co jest niezwykle przydatne przy debugowaniu rozmieszczenia pluginów.
+
+## Następne kroki
+
+- [System pluginów](/docs/guides/extending-the-admin-ui/plugin-system) — Poznaj wszystkie 15 punktów rozszerzeń
+- [Hooki](/docs/guides/extending-the-admin-ui/hooks) — Hooki formularzy, list i tłumaczeń
+- [Szablony](/docs/guides/extending-the-admin-ui/templates) — Buduj strony list i szczegółów z DetailList i DetailView

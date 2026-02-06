@@ -15,9 +15,7 @@ import {
  *
  * @docsCategory products & stock
  */
-export class DefaultProductVariantPriceCalculationStrategy
-  implements ProductVariantPriceCalculationStrategy
-{
+export class DefaultProductVariantPriceCalculationStrategy implements ProductVariantPriceCalculationStrategy {
   private taxRateService: TaxRateService;
 
   init(injector: Injector) {

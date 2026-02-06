@@ -26,9 +26,7 @@ export type OpenIdUserInfo = {
   family_name?: string;
 };
 
-export class KeycloakAuthenticationStrategy
-  implements AuthenticationStrategy<KeycloakAuthData>
-{
+export class KeycloakAuthenticationStrategy implements AuthenticationStrategy<KeycloakAuthData> {
   readonly name = "keycloak";
   private externalAuthenticationService: ExternalAuthenticationService;
   private httpService: HttpService;

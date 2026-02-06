@@ -1,0 +1,475 @@
+---
+title: 'System pluginów'
+description: 'Szczegółowe omówienie systemu pluginów UI panelu administracyjnego Deenruv — wszystkie punkty rozszerzeń, identyfikatory lokalizacji i konwencje folderów'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+System pluginów UI panelu administracyjnego Deenruv pozwala rozszerzać praktycznie każdą część dashboardu administracyjnego. Pluginy definiuje się za pomocą funkcji `createDeenruvUIPlugin`, która zapewnia pełne bezpieczeństwo typów TypeScript dla wszystkich punktów rozszerzeń.
+
+## `createDeenruvUIPlugin`
+
+Jest to funkcja tożsamościowa, która waliduje i typuje definicję pluginu:
+
+```ts
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+
+export const MyPlugin = createDeenruvUIPlugin({
+  name: 'my-plugin-ui',
+  version: '1.0.0',
+  // ...punkty rozszerzeń
+});
+```
+
+## Punkty rozszerzeń
+
+Definicja pluginu obsługuje 15 punktów rozszerzeń:
+
+| Punkt rozszerzenia | Typ | Opis |
+|---|---|---|
+| `name` | `string` | Nazwa pluginu (wymagana) |
+| `version` | `string` | Wersja pluginu (wymagana) |
+| `config` | `T` | Niestandardowy obiekt konfiguracji pluginu |
+| `pages` | `PluginPage[]` | Niestandardowe trasy (automatyczny prefiks: `admin-ui/extensions/{name}/{path}`) |
+| `tables` | `DeenruvUITable[]` | Kolumny widoku listy, akcje wierszy, akcje masowe |
+| `tabs` | `DeenruvTabs[]` | Zakładki widoku szczegółów |
+| `actions` | `{ inline?, dropdown? }` | Przyciski akcji widoku szczegółów |
+| `components` | `DeenruvUIDetailComponent[]` | Wstrzykiwanie do widoków szczegółów i pasków bocznych |
+| `modals` | `DeenruvUIModalComponent[]` | Wstrzykiwanie do modali |
+| `widgets` | `Widget[]` | Widgety dashboardu |
+| `inputs` | `PluginComponent[]` | Nadpisywanie inputów pól niestandardowych |
+| `navMenuGroups` | `PluginNavigationGroup[]` | Grupy menu nawigacji |
+| `navMenuLinks` | `PluginNavigationLink[]` | Linki nawigacji |
+| `notifications` | `Notification[]` | Powiadomienia oparte na odpytywaniu |
+| `translations` | `{ ns, data }` | Paczki tłumaczeń i18n |
+
+### Pages
+
+Definiuj niestandardowe trasy dla swojego pluginu. Ścieżki są automatycznie prefiksowane `admin-ui/extensions/{plugin-name}/`:
+
+```tsx
+pages: [
+  { path: '', element: <MyListPage /> },         // /admin-ui/extensions/my-plugin-ui/
+  { path: 'new', element: <MyCreatePage /> },     // /admin-ui/extensions/my-plugin-ui/new
+  { path: ':id', element: <MyDetailPage /> },     // /admin-ui/extensions/my-plugin-ui/:id
+],
+```
+
+### Tables
+
+Rozszerzaj istniejące widoki list o dodatkowe kolumny, akcje wierszy i akcje masowe:
+
+```tsx
+tables: [
+  {
+    locationId: 'products-list-view',
+    columns: [
+      {
+        header: 'Review Score',
+        accessorKey: 'customFields.reviewScore',
+        cell: ({ row }) => <StarRating value={row.original.customFields?.reviewScore} />,
+      },
+    ],
+    rowActions: [
+      {
+        label: 'View Reviews',
+        onClick: (row) => navigate(`/reviews/${row.original.id}`),
+      },
+    ],
+    bulkActions: [
+      {
+        label: 'Export Reviews',
+        onClick: (selectedRows) => exportReviews(selectedRows),
+      },
+    ],
+  },
+],
+```
+
+### Tabs
+
+Dodawaj niestandardowe zakładki do widoków szczegółów:
+
+```tsx
+tabs: [
+  {
+    locationId: 'products-detail-view',
+    tab: {
+      id: 'reviews',
+      label: 'Reviews',
+      component: ProductReviewsTab,
+    },
+    hideSidebar: false,              // Ukryj pasek boczny gdy ta zakładka jest aktywna
+    sidebarReplacement: null,        // Zastąp zawartość paska bocznego
+    disabled: false,                 // Dezaktywuj zakładkę
+  },
+],
+```
+
+### Actions
+
+Dodawaj przyciski akcji do widoków szczegółów:
+
+```tsx
+actions: {
+  inline: [
+    {
+      locationId: 'products-detail-view',
+      component: ({ entity }) => (
+        <Button onClick={() => generateReport(entity.id)}>
+          Generate Report
+        </Button>
+      ),
+    },
+  ],
+  dropdown: [
+    {
+      locationId: 'orders-detail-view',
+      label: 'Send custom email',
+      onClick: (entity) => sendEmail(entity.id),
+    },
+  ],
+},
+```
+
+### Components
+
+Wstrzykuj niestandardowe komponenty do widoków szczegółów i pasków bocznych:
+
+```tsx
+components: [
+  // Wstrzyknięcie do głównego obszaru widoku szczegółów produktu
+  {
+    id: 'products-detail-view',
+    tab: 'product',                    // Pokaż tylko na konkretnej zakładce
+    component: MyProductComponent,
+  },
+  // Wstrzyknięcie do paska bocznego (dodaj -sidebar do identyfikatora lokalizacji)
+  {
+    id: 'products-detail-view-sidebar',
+    tab: 'product',
+    component: MyProductSidebar,
+  },
+],
+```
+
+<Callout type="info">
+Aby wstrzyknąć do paska bocznego widoku szczegółów, dodaj `-sidebar` do identyfikatora lokalizacji. Opcjonalnie możesz filtrować po `tab`, aby pokazywać komponent tylko na konkretnej zakładce.
+</Callout>
+
+### Modals
+
+Wstrzykuj komponenty do modali panelu administracyjnego:
+
+```tsx
+modals: [
+  {
+    id: 'manual-order-state',
+    component: MyOrderStateComponent,
+  },
+],
+```
+
+### Widgets
+
+Rejestruj widgety dashboardu:
+
+```tsx
+widgets: [
+  {
+    id: 'sales-chart',
+    title: 'Sales Overview',
+    component: SalesChartWidget,
+    size: { width: 2, height: 1 },
+    sizes: [
+      { width: 1, height: 1 },
+      { width: 2, height: 1 },
+      { width: 2, height: 2 },
+    ],
+  },
+],
+```
+
+### Inputs
+
+Nadpisuj inputy pól niestandardowych własnymi komponentami:
+
+```tsx
+inputs: [
+  {
+    id: 'my-custom-color-picker',
+    component: ColorPickerInput,
+  },
+],
+```
+
+### Nawigacja
+
+Dodawaj grupy i linki nawigacji:
+
+```tsx
+navMenuGroups: [
+  {
+    id: 'my-plugin-group',
+    label: 'My Plugin',
+    placement: 'after:assortment-group',
+  },
+],
+navMenuLinks: [
+  {
+    id: 'my-plugin-link',
+    labelId: 'nav.myPlugin',
+    href: '',
+    groupId: 'assortment-group',  // Użyj wartości BASE_GROUP_ID
+    icon: ListIcon,
+  },
+],
+```
+
+### Nawigacja górna
+
+Dodawaj komponenty do górnego paska nawigacji:
+
+```tsx
+topNavigationComponents: [
+  { id: 'my-status-indicator', component: StatusIndicator },
+],
+topNavigationActionsMenu: [
+  { label: 'Quick Action', onClick: () => doSomething(), icon: ZapIcon },
+],
+```
+
+### Notifications
+
+Rejestruj powiadomienia oparte na odpytywaniu:
+
+```tsx
+notifications: [
+  {
+    id: 'pending-reviews',
+    fetch: async () => {
+      const result = await apiClient('query')({
+        pendingReviews: [
+          {},
+          { totalItems: true },
+        ],
+      });
+      return { count: result.pendingReviews.totalItems };
+    },
+    interval: 30000,   // Odpytywanie co 30 sekund
+    placements: {
+      main: (data) => ({
+        name: 'pending-reviews',
+        title: 'Pending Reviews',
+        description: `${data.count} reviews need approval`,
+        icon: <StarIcon />,
+        when: (data) => data.count > 0,
+      }),
+      navigation: [
+        {
+          id: 'my-plugin-link',
+          component: (data) => <Badge>{data.count}</Badge>,
+        },
+      ],
+    },
+  },
+],
+```
+
+### Translations
+
+Rejestruj paczki tłumaczeń i18n dla swojego pluginu:
+
+```tsx
+translations: {
+  ns: 'my-plugin',
+  data: {
+    en: { 'my-plugin': { nav: { myPlugin: 'My Plugin' } } },
+    pl: { 'my-plugin': { nav: { myPlugin: 'Moja wtyczka' } } },
+  },
+},
+```
+
+## Identyfikatory lokalizacji
+
+Identyfikatory lokalizacji to ciągi znaków wskazujące na konkretne widoki w panelu administracyjnym.
+
+### Lokalizacje list (21)
+
+Używane z `tables` do rozszerzania widoków list:
+
+| Identyfikator lokalizacji | Typ encji |
+|---|---|
+| `assets-list-view` | Asset |
+| `admins-list-view` | Administrator |
+| `channels-list-view` | Channel |
+| `collections-list-view` | Collection |
+| `countries-list-view` | Country |
+| `customerGroups-list-view` | CustomerGroup |
+| `customers-list-view` | Customer |
+| `facets-list-view` | Facet |
+| `facet-values-list` | FacetValue |
+| `orders-list-view` | Order |
+| `paymentMethods-list-view` | PaymentMethod |
+| `products-list-view` | Product |
+| `productVariants-list-view` | ProductVariant |
+| `promotions-list-view` | Promotion |
+| `roles-list-view` | Role |
+| `sellers-list-view` | Seller |
+| `shippingMethods-list-view` | ShippingMethod |
+| `stockLocations-list` | StockLocation |
+| `stockLocations-list-view` | StockLocation |
+| `taxCategories-list-view` | TaxCategory |
+| `taxRates-list-view` | TaxRate |
+| `zones-list-view` | Zone |
+
+### Lokalizacje szczegółów (20)
+
+Używane z `tabs`, `actions` i `components` do rozszerzania widoków szczegółów:
+
+| Identyfikator lokalizacji | Typ encji |
+|---|---|
+| `admins-detail-view` | Administrator |
+| `channels-detail-view` | Channel |
+| `collections-detail-view` | Collection |
+| `countries-detail-view` | Country |
+| `customerGroups-detail-view` | CustomerGroup |
+| `customers-detail-view` | Customer |
+| `facets-detail-view` | Facet |
+| `globalSettings-detail-view` | GlobalSettings |
+| `orders-detail-view` | Order |
+| `orders-summary` | Order |
+| `paymentMethods-detail-view` | PaymentMethod |
+| `products-detail-view` | Product |
+| `promotions-detail-view` | Promotion |
+| `roles-detail-view` | Role |
+| `sellers-detail-view` | Seller |
+| `shippingMethods-detail-view` | ShippingMethod |
+| `stockLocations-detail-view` | StockLocation |
+| `taxCategories-detail-view` | TaxCategory |
+| `taxRates-detail-view` | TaxRate |
+| `zones-detail-view` | Zone |
+
+<Callout type="info">
+Aby wstrzyknąć do **paska bocznego** widoku szczegółów, dodaj `-sidebar` do identyfikatora lokalizacji. Na przykład `products-detail-view-sidebar`.
+</Callout>
+
+### Lokalizacje modali
+
+| Identyfikator lokalizacji | Typ |
+|---|---|
+| `manual-order-state` | Modal zmiany stanu zamówienia |
+
+### Identyfikatory grup nawigacji
+
+Użyj wartości enuma `BASE_GROUP_ID`, aby celować w istniejące grupy nawigacji:
+
+```ts
+import { BASE_GROUP_ID } from '@deenruv/react-ui-devkit';
+
+// Dostępne identyfikatory grup:
+BASE_GROUP_ID.SHOP          // 'shop-group'
+BASE_GROUP_ID.ASSORTMENT    // 'assortment-group'
+BASE_GROUP_ID.USERS         // 'users-group'
+BASE_GROUP_ID.PROMOTIONS    // 'promotions-group'
+BASE_GROUP_ID.SHIPPING      // 'shipping-group'
+BASE_GROUP_ID.SETTINGS      // 'settings-group'
+```
+
+## Pełny przykład pluginu
+
+Oto kompletny przykład pluginu, który wykorzystuje wszystkie główne punkty rozszerzeń:
+
+```tsx title="src/plugin-ui/index.tsx"
+import { createDeenruvUIPlugin, BASE_GROUP_ID, apiClient } from '@deenruv/react-ui-devkit';
+import { StarIcon, ListIcon } from 'lucide-react';
+import { ReviewsListPage } from './pages/ReviewsListPage';
+import { ReviewDetailPage } from './pages/ReviewDetailPage';
+import { ProductReviewsTab } from './components/ProductReviewsTab';
+import { ReviewsSidebar } from './components/ReviewsSidebar';
+import { ReviewsWidget } from './components/ReviewsWidget';
+import en from './locales/en';
+import pl from './locales/pl';
+
+const PLUGIN_NAME = 'reviews-plugin-ui';
+
+export const ReviewsPlugin = createDeenruvUIPlugin({
+  name: PLUGIN_NAME,
+  version: '1.0.0',
+
+  translations: {
+    ns: 'reviews',
+    data: { en, pl },
+  },
+
+  pages: [
+    { path: '', element: <ReviewsListPage /> },
+    { path: ':id', element: <ReviewDetailPage /> },
+  ],
+
+  navMenuLinks: [
+    {
+      id: 'reviews-link',
+      labelId: 'nav.reviews',
+      href: '',
+      groupId: BASE_GROUP_ID.ASSORTMENT,
+      icon: StarIcon,
+    },
+  ],
+
+  tabs: [
+    {
+      locationId: 'products-detail-view',
+      tab: {
+        id: 'reviews',
+        label: 'Reviews',
+        component: ProductReviewsTab,
+      },
+    },
+  ],
+
+  components: [
+    {
+      id: 'products-detail-view-sidebar',
+      tab: 'reviews',
+      component: ReviewsSidebar,
+    },
+  ],
+
+  widgets: [
+    {
+      id: 'recent-reviews',
+      title: 'Recent Reviews',
+      component: ReviewsWidget,
+      size: { width: 2, height: 1 },
+    },
+  ],
+
+  notifications: [
+    {
+      id: 'pending-reviews',
+      fetch: async () => {
+        const result = await apiClient('query')({
+          pendingReviews: [{}, { totalItems: true }],
+        });
+        return { count: result.pendingReviews.totalItems };
+      },
+      interval: 30000,
+      placements: {
+        main: (data) => ({
+          name: 'pending-reviews',
+          title: 'Pending Reviews',
+          description: `${data.count} reviews awaiting approval`,
+          icon: <StarIcon />,
+          when: (data) => data.count > 0,
+        }),
+      },
+    },
+  ],
+});
+```
+
+## Markery widoku pluginów
+
+Naciśnij **Ctrl+Q** w panelu administracyjnym, aby przełączyć markery widoku pluginów. Podświetla to wszystkie punkty wstrzykiwania w bieżącym widoku, ułatwiając zobaczenie, gdzie będą renderowane komponenty Twojego pluginu.

@@ -1,0 +1,74 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rightFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="topFace" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#67e8f9"/>
+    </linearGradient>
+    <linearGradient id="leftFace" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4338ca"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="innerRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#155e75"/>
+    </linearGradient>
+    <linearGradient id="innerTop" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#134e4a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 3D Cube with corner cutout (top + right face) -->
+  
+  <!-- Left face (full, dark) -->
+  <path 
+    d="M4 12L4 30L20 38L20 20L4 12Z" 
+    fill="url(#leftFace)"
+  />
+  
+  <!-- Right face -->
+  <path 
+    d="M36 12L36 30L20 38L20 20L36 12Z" 
+    fill="url(#rightFace)"
+  />
+  <!-- Cut out the hole from right face -->
+  <path 
+    d="M24 16L32 12L32 24L24 28L24 16Z" 
+    fill="url(#innerRight)"
+  />
+  
+  <!-- Top face -->
+  <path 
+    d="M4 12L20 4L36 12L20 20L4 12Z" 
+    fill="url(#topFace)"
+  />
+  <!-- Cut out the hole from top face -->
+  <path 
+    d="M24 16L32 12L24 8L16 12L24 16Z" 
+    fill="url(#innerTop)"
+  />
+  
+  <!-- Edge highlights -->
+  <path 
+    d="M20 20L20 38" 
+    stroke="#67e8f9" 
+    stroke-width="1"
+    opacity="0.6"
+  />
+  <path 
+    d="M4 12L20 20" 
+    stroke="#c7d2fe" 
+    stroke-width="0.75"
+    opacity="0.5"
+  />
+  <path 
+    d="M4 12L20 4" 
+    stroke="#e0e7ff" 
+    stroke-width="0.5"
+    opacity="0.3"
+  />
+</svg>

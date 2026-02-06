@@ -15,9 +15,7 @@ export type SSOAuthData = {
   email: string;
 };
 
-export class SSOShopAuthenticationStrategy
-  implements AuthenticationStrategy<SSOAuthData>
-{
+export class SSOShopAuthenticationStrategy implements AuthenticationStrategy<SSOAuthData> {
   readonly name = "ssoShop";
   private externalAuthenticationService: ExternalAuthenticationService;
   private httpService: HttpService;

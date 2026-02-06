@@ -47,9 +47,7 @@ declare module "@deenruv/core/dist/entity/custom-entity-fields" {
   }
 }
 
-class CustomShippingLineAssignmentStrategy
-  implements ShippingLineAssignmentStrategy
-{
+class CustomShippingLineAssignmentStrategy implements ShippingLineAssignmentStrategy {
   assignShippingLineToOrderLines(
     ctx: RequestContext,
     shippingLine: ShippingLine,

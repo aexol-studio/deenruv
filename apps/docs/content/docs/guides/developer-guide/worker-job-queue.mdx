@@ -172,7 +172,7 @@ which uses an efficient push-based strategy built on Redis.
 If your plugin involves long-running tasks, you can also make use of the job queue.
 
 <Callout type="info">
-A real example of this can be seen in the [EmailPlugin source](https://github.com/aexol-studio/deenruv/blob/master/packages/email-plugin/src/plugin.ts)
+A real example of this can be seen in the [EmailPlugin source](https://github.com/aexol-studio/deenruv/blob/main/packages/email-plugin/src/plugin.ts)
 </Callout>
 
 Let's say you are building a plugin which allows a video URL to be specified, and then that video gets transcoded into a format suitable for streaming on the storefront. This is a long-running task which should not block the main thread, so we will use the job queue to run the task on the worker.

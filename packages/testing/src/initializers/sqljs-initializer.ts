@@ -6,9 +6,7 @@ import { Mutable } from "../types";
 
 import { TestDbInitializer } from "./test-db-initializer";
 
-export class SqljsInitializer
-  implements TestDbInitializer<SqljsConnectionOptions>
-{
+export class SqljsInitializer implements TestDbInitializer<SqljsConnectionOptions> {
   private dbFilePath: string;
   private connectionOptions: SqljsConnectionOptions;
 

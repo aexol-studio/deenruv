@@ -1,0 +1,131 @@
+---
+title: 'Managing Your Catalog'
+description: 'Learn how to manage products, collections, and facets in the Deenruv admin panel'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The Catalog section of the Deenruv admin panel is where you manage everything related to the products you sell. This includes creating and editing products, organizing them into collections, and defining facets for filtering and categorization.
+
+## Products
+
+Products are the core of your catalog. In Deenruv, a **Product** is a container that holds one or more **Product Variants**. The product provides the name, description, and images, while variants hold the price, SKU, and stock information.
+
+### Viewing the product list
+
+Navigate to **Catalog → Products** in the admin panel sidebar. You will see a paginated list of all products with columns for the product image, name, and status (enabled/disabled).
+
+You can:
+
+- **Search** for products by name using the search bar
+- **Filter** products by facet values to narrow down results
+- **Sort** products by name, creation date, or other fields
+
+### Creating a product
+
+1. Click the **Create product** button in the product list view.
+2. Fill in the basic product details:
+   - **Name** — the display name of the product
+   - **Slug** — the URL-friendly identifier (auto-generated from the name)
+   - **Description** — a rich text description of the product
+3. Upload a **featured image** and any additional product images in the Assets section.
+4. Assign **facet values** to the product for categorization and filtering (e.g., Brand: "Nike").
+5. Click **Create** to save the product.
+
+### Adding variants
+
+After creating a product, you need to add at least one variant:
+
+1. In the product detail view, navigate to the **Variants** tab.
+2. To create variants from options, first add **Option Groups** (e.g., "Size" with options Small, Medium, Large).
+3. Click **Generate variants** to automatically create variants for all option combinations.
+4. For each variant, set:
+   - **SKU** — a unique stock keeping unit code
+   - **Price** — the sale price (entered in the smallest currency unit, e.g., cents)
+   - **Stock** — the stock on hand at each stock location
+   - **Tax Category** — which tax category applies to this variant
+5. Save the product to persist the variant changes.
+
+<Callout type="info">
+When a customer adds an item to their cart, they are adding a specific **ProductVariant**, not the Product itself. Each variant has its own price, SKU, and inventory tracking.
+</Callout>
+
+### Enabling and disabling products
+
+Products and individual variants can be enabled or disabled. A disabled product or variant will not appear in the Shop API results, effectively hiding it from your storefront without deleting it.
+
+Toggle the **Enabled** switch at the top of the product detail view to control product visibility.
+
+## Collections
+
+Collections are how you organize and categorize your product catalog. They form the navigation structure of your storefront (e.g., "Men's Clothing", "Electronics", "Sale Items").
+
+### Creating a collection
+
+1. Navigate to **Catalog → Collections** in the admin panel.
+2. Click **Create collection**.
+3. Enter a **Name**, **Slug**, and optionally a **Description** and featured image.
+4. Define **Collection Filters** to automatically populate the collection:
+   - **Filter by facet values** — include products matching specific facet values
+   - **Filter by product variant name** — include variants whose names match a pattern
+   - **Manually select products** — hand-pick specific products
+   - **Manually select variants** — hand-pick specific variants
+5. Click **Create** to save.
+
+### Nesting collections
+
+Collections support a tree hierarchy. To nest a collection:
+
+1. When creating or editing a collection, select a **Parent collection** from the dropdown.
+2. Enable **Inherit filters** if you want the child collection to combine its filters with the parent's filters. This means the child will contain a **subset** of the parent's products.
+
+<Callout type="info">
+A common pattern is to have top-level collections like "Clothing" filtered by a broad facet value, with child collections like "T-Shirts" and "Hoodies" adding more specific filters. With filter inheritance enabled, each child automatically narrows down the parent's product set.
+</Callout>
+
+### Reordering collections
+
+Collections have a configurable display order. In the collections list view, you can drag and drop collections to reorder them. This order is exposed via the Shop API and can be used by your storefront to determine menu ordering.
+
+## Facets
+
+Facets are structured labels that you apply to products and variants. They power both storefront filtering (faceted search) and internal business logic such as promotions and collection rules.
+
+### Understanding facets and facet values
+
+A **Facet** is a category of attributes (e.g., "Brand", "Color", "Material"). Each facet contains one or more **Facet Values** (e.g., Brand: "Nike", "Adidas", "Puma").
+
+Facet values can be assigned to:
+- **Products** — for product-level attributes like brand
+- **Product Variants** — for variant-level attributes like color or size
+
+### Creating a facet
+
+1. Navigate to **Catalog → Facets** in the admin panel.
+2. Click **Create facet**.
+3. Enter the facet **Name** and **Code** (a unique identifier).
+4. Optionally mark the facet as **Private** if it should not be exposed to the storefront (useful for internal categorization, such as flagging items for promotions).
+5. Add **Facet Values** by entering their names and codes.
+6. Click **Create** to save.
+
+### Assigning facet values to products
+
+1. Open a product in the product detail view.
+2. In the **Facet Values** section, search for and select the desired facet values.
+3. Save the product.
+
+You can also assign facet values to individual variants within the Variants tab.
+
+### Common use cases for facets
+
+| Use Case | Example Facet | Example Values |
+|---|---|---|
+| Storefront navigation | Category | Clothing, Electronics, Home |
+| Storefront filtering | Brand | Nike, Adidas, Puma |
+| Collection rules | Type | T-Shirt, Hoodie, Jacket |
+| Promotion targeting | Sale | Summer Sale, Clearance |
+| Shipping rules | Fragile | Yes |
+
+<Callout type="info">
+Facets marked as **Private** are only visible to administrators and will not appear in Shop API responses. Use private facets for internal logic like promotion conditions or shipping surcharges.
+</Callout>

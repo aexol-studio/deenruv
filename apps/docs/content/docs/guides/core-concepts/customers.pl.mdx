@@ -1,0 +1,18 @@
+---
+title: 'Klienci'
+description: 'Dowiedz się o entity Customer — konta użytkowników, zakupy gościnne, adresy i grupy klientów'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+`Customer` to osoba, która może kupować w Twoim sklepie. Klient może mieć jeden lub więcej `Addresses`, które są używane do wysyłki i rozliczeń.
+
+Jeśli klient zarejestrował konto, będzie miał powiązany entity `User`. Entity użytkownika służy do uwierzytelniania i autoryzacji. Możliwe są również **zakupy gościnne** — w takim przypadku klient nie będzie miał powiązanego użytkownika.
+
+<Callout type="info">
+Zobacz [przewodnik Auth](/docs/guides/core-concepts/auth/#customer-auth), aby uzyskać szczegółowe wyjaśnienie relacji między klientami a użytkownikami.
+</Callout>
+
+
+
+Klienci mogą być organizowani w `CustomerGroups`. Grupy te mogą być wykorzystywane w logice dotyczącej promocji, reguł wysyłki, reguł płatności itp. Na przykład możesz utworzyć grupę klientów "VIP", a następnie stworzyć promocję, która przyznaje członkom tej grupy darmową wysyłkę. Lub grupę "B2B", która jest używana w niestandardowym kalkulatorze podatków do zastosowania innej stawki podatkowej dla klientów B2B.

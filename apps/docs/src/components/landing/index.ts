@@ -1,7 +1,11 @@
-export { Navigation } from './navigation';
-export { HeroSection } from './hero-section';
-export { FeaturesSection } from './features-section';
-export { StatsSection } from './stats-section';
-export { HowItWorksSection } from './how-it-works-section';
-export { CtaSection } from './cta-section';
-export { FooterSection } from './footer-section';
+export { Navigation } from "./navigation";
+export { HeroSection } from "./hero-section";
+export { TechLogos } from "./tech-logos";
+export { FeaturesSection } from "./features-section";
+export { WorkflowSection } from "./workflow-section";
+export { SecuritySection } from "./security-section";
+export { TestimonialsSection } from "./testimonials-section";
+export { CtaSection } from "./cta-section";
+export { FooterSection } from "./footer-section";
+export { JsonLd } from "./json-ld";
+export { type Lang } from "./translations";

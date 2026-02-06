@@ -41,9 +41,7 @@ import {
 } from "./graphql/generated-e2e-shop-types";
 import { assertThrowsWithMessage } from "./utils/assert-throws-with-message";
 
-class TestProductVariantPriceUpdateStrategy
-  implements ProductVariantPriceUpdateStrategy
-{
+class TestProductVariantPriceUpdateStrategy implements ProductVariantPriceUpdateStrategy {
   static syncAcrossChannels = false;
   static onCreatedSpy = vi.fn();
   static onUpdatedSpy = vi.fn();

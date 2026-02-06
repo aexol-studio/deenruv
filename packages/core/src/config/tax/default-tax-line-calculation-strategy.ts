@@ -12,9 +12,7 @@ import {
  *
  * @docsCategory tax
  */
-export class DefaultTaxLineCalculationStrategy
-  implements TaxLineCalculationStrategy
-{
+export class DefaultTaxLineCalculationStrategy implements TaxLineCalculationStrategy {
   calculate(args: CalculateTaxLinesArgs): TaxLine[] {
     const { orderLine, applicableTaxRate } = args;
     return [applicableTaxRate.apply(orderLine.proratedUnitPrice)];

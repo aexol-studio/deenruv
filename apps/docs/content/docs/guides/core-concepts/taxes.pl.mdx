@@ -1,0 +1,76 @@
+---
+title: 'Podatki'
+description: 'Dowiedz się, jak skonfigurować obsługę podatków w Deenruv — kategorie podatkowe, stawki, strefy i strategie kalkulacji'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Aplikacje e-commerce muszą prawidłowo obsługiwać podatki, takie jak podatek od sprzedaży lub podatek od wartości dodanej (VAT). W Deenruv obsługa podatków składa się z:
+
+- **Kategorie podatkowe** Każdy ProductVariant jest przypisany do konkretnej TaxCategory. W niektórych systemach podatkowych stawka podatku różni się w zależności od rodzaju towaru. Na przykład VAT w Wielkiej Brytanii ma 3 stawki: "standardowa" (większość towarów), "obniżona" (np. foteliki samochodowe dla dzieci) i "zerowa" (np. książki).
+- **Stawki podatkowe** To stawka podatku stosowana do konkretnej kategorii podatkowej w danej strefie (Zone). Np. stawka podatku dla towarów "standardowych" w strefie Wielka Brytania wynosi 20%.
+- **Ustawienia podatkowe kanału** Każdy Channel może określić, czy ceny wariantów produktów zawierają podatek, a także wskazać domyślną strefę (Zone) używaną do kalkulacji podatków.
+- **TaxZoneStrategy** Określa aktywną strefę podatkową używaną przy obliczaniu, jaką stawkę TaxRate zastosować. Domyślnie używa domyślnej strefy podatkowej z ustawień kanału.
+- **TaxLineCalculationStrategy** Określa podatki stosowane przy dodawaniu pozycji do zamówienia (Order). Jeśli chcesz zintegrować zewnętrzne API podatkowe lub inną asynchroniczną operację wyszukiwania, tutaj należy ją zaimplementować.
+
+## Konwencje API
+
+W GraphQL API każdy typ posiadający cenę podlegającą opodatkowaniu dzieli tę cenę na dwa pola: `price` i `priceWithTax`. Ten wzorzec dotyczy również innych pól cenowych, np.
+
+```graphql
+query {
+    activeOrder {
+        ... on Order {
+            lines {
+                linePrice
+                linePriceWithTax
+            }
+            subTotal
+            subTotalWithTax
+            shipping
+            shippingWithTax
+            total
+            totalWithTax
+        }
+    }
+}
+```
+
+W swoim sklepie możesz zatem wybrać, czy wyświetlać ceny z podatkiem czy bez podatku, zgodnie z przepisami i konwencjami obowiązującymi w regionie, w którym działa Twoja firma.
+
+## Obliczanie podatku od pozycji zamówienia
+
+Gdy klient dodaje pozycję do zamówienia (Order), następuje poniższa logika:
+
+1. Cena pozycji oraz to, czy cena zawiera podatek, są ustalane zgodnie ze skonfigurowaną `OrderItemPriceCalculationStrategy`.
+2. Aktywna strefa podatkowa jest określana na podstawie skonfigurowanej `TaxZoneStrategy`.
+3. Odpowiednia stawka TaxRate jest pobierana na podstawie TaxCategory wariantu produktu (ProductVariant) i aktywnej strefy podatkowej określonej w kroku 1.
+4. Wywoływana jest metoda `TaxLineCalculationStrategy.calculate()` skonfigurowanej `TaxLineCalculationStrategy`, która zwraca jedną lub więcej pozycji podatkowych (`TaxLines`).
+5. Finalna wartość `priceWithTax` pozycji zamówienia jest obliczana na podstawie wszystkich powyższych elementów.
+
+## Obliczanie podatku od wysyłki
+
+Podatek od wysyłki jest obliczany przez `ShippingCalculator` wybranej metody wysyłki (`ShippingMethod`) zamówienia.
+
+## Konfiguracja
+
+Ten przykład pokazuje domyślną konfigurację podatków (nie musisz jej podawać w swojej konfiguracji, ponieważ są to wartości domyślne):
+
+```ts title="src/deenruv-config.ts"
+import {
+    DefaultTaxLineCalculationStrategy,
+    DefaultTaxZoneStrategy,
+    DefaultOrderItemPriceCalculationStrategy,
+    DeenruvConfig,
+} from '@deenruv/core';
+
+export const config: DeenruvConfig = {
+    taxOptions: {
+        taxZoneStrategy: new DefaultTaxZoneStrategy(),
+        taxLineCalculationStrategy: new DefaultTaxLineCalculationStrategy(),
+    },
+    orderOptions: {
+        orderItemPriceCalculationStrategy: new DefaultOrderItemPriceCalculationStrategy(),
+    },
+};
+```

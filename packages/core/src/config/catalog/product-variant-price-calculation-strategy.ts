@@ -19,8 +19,7 @@ import { Zone } from "../../entity/zone/zone.entity";
  * @docsCategory  products & stock
  * @docsPage ProductVariantPriceCalculationStrategy
  */
-export interface ProductVariantPriceCalculationStrategy
-  extends InjectableStrategy {
+export interface ProductVariantPriceCalculationStrategy extends InjectableStrategy {
   calculate(
     args: ProductVariantPriceCalculationArgs,
   ): Promise<PriceCalculationResult>;

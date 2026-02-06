@@ -160,8 +160,10 @@ export type InitializedEmailPluginOptions = EmailPluginOptions & {
  * @docsCategory core plugins/EmailPlugin
  * @docsPage EmailPluginOptions
  */
-export interface EmailPluginDevModeOptions
-  extends Omit<EmailPluginOptions, "transport"> {
+export interface EmailPluginDevModeOptions extends Omit<
+  EmailPluginOptions,
+  "transport"
+> {
   devMode: true;
   /**
    * @description

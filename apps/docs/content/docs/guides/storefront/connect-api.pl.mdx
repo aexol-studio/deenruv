@@ -1,0 +1,623 @@
+---
+title: 'Połączenie z API'
+description: 'Dowiedz się, jak połączyć swój sklep z Deenruv Shop API za pomocą różnych klientów GraphQL'
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Pierwszą rzeczą, którą musisz zrobić, jest połączenie swojej aplikacji sklepowej z **Shop API**. Shop API to GraphQL API, które zapewnia dostęp do produktów, kolekcji, danych klientów oraz udostępnia mutacje pozwalające na dodawanie przedmiotów do koszyka, składanie zamówień, zarządzanie kontami klientów i wiele więcej.
+
+<Callout type="info">
+Możesz eksplorować Shop API, otwierając GraphQL Playground w przeglądarce pod adresem
+[`http://localhost:3000/shop-api`](http://localhost:3000/shop-api), gdy Twój serwer Deenruv
+działa lokalnie.
+</Callout>
+
+## Wybór klienta GraphQL
+
+Żądania GraphQL są wykonywane przez HTTP, więc możesz użyć dowolnego klienta HTTP, takiego jak [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), do wykonywania żądań do Shop API. Istnieje jednak również wiele wyspecjalizowanych klientów GraphQL, które mogą ułatwić pracę z API GraphQL. Oto kilka popularnych opcji:
+
+-   [Apollo Client](https://www.apollographql.com/docs/react): Pełnofunkcyjny klient z warstwą cache'owania i integracją z React.
+-   [urql](https://formidable.com/open-source/urql/): Wysoce konfigurowalny i wszechstronny klient GraphQL dla React, Svelte, Vue lub czystego JavaScript
+-   [graphql-request](https://github.com/jasonkuhrt/graphql-request): Minimalny klient GraphQL obsługujący Node i przeglądarki do skryptów lub prostych aplikacji
+-   [TanStack Query](https://tanstack.com/query/latest): Potężne asynchroniczne zarządzanie stanem dla TS/JS, React, Solid, Vue i Svelte, które można połączyć z `graphql-request`.
+
+## Zarządzanie sesjami
+
+Deenruv obsługuje dwa sposoby zarządzania sesjami użytkowników: **ciasteczka (cookies)** i **token bearer**. Metoda, którą wybierzesz, zależy od Twoich wymagań i jest określona przez właściwość `authOptions.tokenMethod` w DeenruvConfig. Domyślnie obie są włączone na serwerze:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+
+export const config: DeenruvConfig = {
+    // ...
+    authOptions: {
+        tokenMethod: ['bearer', 'cookie'],
+    },
+};
+```
+
+### Sesje oparte na ciasteczkach
+
+Użycie ciasteczek jest prostszym podejściem dla aplikacji przeglądarkowych, ponieważ przeglądarka automatycznie zarządza ciasteczkami za Ciebie.
+
+1. Włącz opcję `credentials` w swoim kliencie HTTP. Pozwala to przeglądarce wysyłać ciasteczko sesji z każdym żądaniem.
+
+    Na przykład, jeśli używasz klienta opartego na fetch (takiego jak [Apollo client](https://www.apollographql.com/docs/react/recipes/authentication/#cookie)), ustaw `credentials: 'include'`, a jeśli używasz [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials), ustaw `withCredentials: true`
+
+2. Przy korzystaniu z sesji opartych na ciasteczkach, powinieneś ustawić właściwość `authOptions.cookieOptions.secret` na jakiś tajny ciąg znaków, który będzie używany do podpisywania ciasteczek wysyłanych do klientów w celu zapobiegania manipulacjom. Ten ciąg może być zakodowany na stałe w pliku konfiguracyjnym lub (lepiej) znajdować się w zmiennej środowiskowej:
+
+    ```ts title="src/deenruv-config.ts"
+    import { DeenruvConfig } from '@deenruv/core';
+
+    export const config: DeenruvConfig = {
+        // ...
+        authOptions: {
+            tokenMethod: ['bearer', 'cookie'],
+            cookieOptions: {
+                secret: process.env.COOKIE_SESSION_SECRET,
+            },
+        },
+    };
+    ```
+
+<Callout type="warn">
+**Ciasteczka SameSite**
+
+Przy korzystaniu z ciasteczek do zarządzania sesjami musisz mieć na uwadze politykę ciasteczek SameSite. Polityka ta jest zaprojektowana do zapobiegania atakom cross-site request forgery (CSRF), ale może powodować problemy przy korzystaniu z headless sklepu hostowanego na innej domenie niż serwer Deenruv. Więcej informacji znajdziesz w [tym artykule](https://web.dev/samesite-cookies-explained/).
+</Callout>
+
+### Sesje oparte na tokenach bearer
+
+Używanie tokenów bearer wymaga nieco więcej pracy z Twojej strony: musisz ręcznie odczytywać nagłówki odpowiedzi, aby uzyskać token, a gdy go już masz, musisz ręcznie dodawać go do nagłówków każdego żądania.
+
+Przebieg pracy wyglądałby następująco:
+
+1. Pewne mutacje i zapytania inicjują sesję (np. logowanie, dodawanie przedmiotu do zamówienia itp.). Gdy to się dzieje, odpowiedź będzie zawierać nagłówek HTTP, który domyślnie nazywa się `'deenruv-auth-token'`.
+2. Więc Twój klient HTTP powinien sprawdzać obecność tego nagłówka za każdym razem, gdy otrzymuje odpowiedź z serwera.
+3. Jeśli nagłówek `'deenruv-auth-token'` jest obecny, odczytaj wartość i zapisz ją, ponieważ jest to Twój token bearer.
+4. Dołączaj ten token bearer do każdego kolejnego żądania jako `Authorization: Bearer <token>`.
+
+Oto uproszczony przykład, jak to wyglądałoby:
+
+```ts
+let token: string | undefined = localStorage.getItem('token');
+
+export async function request(query: string, variables: any) {
+    // Jeśli znamy już token, ustawiamy nagłówek Authorization.
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    const response = await someGraphQlClient(query, variables, headers);
+
+    // Sprawdzamy nagłówki odpowiedzi, czy Deenruv ustawił
+    // token auth. Klucz nagłówka "deenruv-auth-token" może być ustawiony na
+    // niestandardową wartość za pomocą opcji konfiguracyjnej authOptions.authTokenHeaderKey.
+    const authToken = response.headers.get('deenruv-auth-token');
+    if (authToken != null) {
+        token = authToken;
+    }
+    return response.data;
+}
+```
+
+### Czas trwania sesji
+
+Czas trwania sesji jest określony przez właściwość konfiguracyjną `AuthOptions.sessionDuration`. Sesje automatycznie się przedłużają (lub „odświeżają"), gdy użytkownik wchodzi w interakcję z API, więc w praktyce `sessionDuration` oznacza czas, przez który sesja pozostanie ważna od ostatniego wywołania API.
+
+## Określanie kanału
+
+Jeśli Twój projekt ma wiele [kanałów](/docs/guides/core-concepts/channels/), możesz określić aktywny kanał, ustawiając nagłówek `deenruv-token` w każdym żądaniu, aby odpowiadał `channelToken` żądanego kanału.
+
+Powiedzmy, że masz kanał z tokenem `uk-channel` i chcesz wykonać żądanie do Shop API, aby pobrać produkty w tym kanale. Ustawiłbyś nagłówek `deenruv-token` na `uk-channel`:
+
+```ts title="src/client.ts"
+export function query(document: string, variables: Record<string, any> = {}) {
+    return fetch('https://localhost:3000/shop-api', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'deenruv-token': 'uk-channel',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            query: document,
+            variables,
+        }),
+    })
+        .then(res => res.json())
+        .catch(err => console.log(err));
+}
+```
+
+<Callout type="info">
+Jeśli nie zostanie podany token kanału, zostanie użyty **kanał domyślny**.
+</Callout>
+
+<Callout type="info">
+Nazwa nagłówka `deenruv-token` jest domyślna, ale można ją zmienić za pomocą opcji konfiguracyjnej `apiOptions.channelTokenKey`.
+</Callout>
+
+## Ustawianie języka
+
+Jeśli masz tłumaczenia swoich produktów, kolekcji, faset itp., możesz określić język żądania, ustawiając parametr `languageCode` w query stringu żądania. Wartość powinna być jednym z kodów ISO 639-1 zdefiniowanych przez enum `LanguageCode`.
+
+```
+POST http://localhost:3000/shop-api?languageCode=de
+```
+
+## Generowanie kodu
+
+Jeśli budujesz swój sklep w TypeScript, gorąco zalecamy skonfigurowanie generowania kodu, aby upewnić się, że odpowiedzi z zapytań i mutacji są zawsze poprawnie typowane zgodnie z żądanymi polami.
+
+Więcej informacji znajdziesz w [poradniku generowania kodu GraphQL](/docs/guides/storefront/codegen/).
+
+## Przykłady
+
+Oto kilka przykładów konfiguracji klientów do połączenia z Shop API. Wszystkie te przykłady zawierają funkcje do ustawiania języka i tokenu kanału.
+
+### Fetch
+
+Najpierw przyjrzymy się implementacji opartej na [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), aby pokazać, że żądanie GraphQL nie kryje żadnej magii — to po prostu żądanie POST z ciałem JSON.
+
+<Tabs items={['client.ts', 'App.tsx', 'index.ts']}>
+<Tab value="client.ts">
+
+```ts title="src/client.ts"
+import { useState, useEffect } from 'react';
+
+// Jeśli używamy zarządzania sesjami opartego na tokenach bearer,
+// przechowujemy token w localStorage pod tym kluczem.
+const AUTH_TOKEN_KEY = 'auth_token';
+
+const API_URL = 'https://readonlydemo.deenruv.io/shop-api';
+
+let languageCode: string | undefined;
+let channelToken: string | undefined;
+
+export function setLanguageCode(value: string | undefined) {
+    languageCode = value;
+}
+
+export function setChannelToken(value: string | undefined) {
+    channelToken = value;
+}
+
+export function query(document: string, variables: Record<string, any> = {}) {
+    const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const headers = new Headers({
+        'content-type': 'application/json',
+    });
+    if (authToken) {
+        headers.append('authorization', `Bearer ${authToken}`);
+    }
+    if (channelToken) {
+        headers.append('deenruv-token', channelToken);
+    }
+    let endpoint = API_URL;
+    if (languageCode) {
+        endpoint += `?languageCode=${languageCode}`;
+    }
+    return fetch(endpoint, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+            query: document,
+            variables,
+        }),
+    }).then(res => {
+        if (!res.ok) {
+            throw new Error(`An error ocurred, HTTP status: ${res.status}`);
+        }
+        const newAuthToken = res.headers.get('deenruv-auth-token');
+        if (newAuthToken) {
+            localStorage.setItem(AUTH_TOKEN_KEY, newAuthToken);
+        }
+        return res.json();
+    });
+}
+
+/**
+ * Tutaj opakowaliśmy funkcję `query` w hook React dla wygodnego
+ * użycia w komponentach React.
+ */
+export function useQuery(document: string, variables: Record<string, any> = {}) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        query(document, variables)
+            .then(result => {
+                setData(result.data);
+                setError(null);
+            })
+            .catch(err => {
+                setError(err.message);
+                setData(null);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
+
+    return { data, loading, error };
+}
+```
+
+</Tab>
+<Tab value="App.tsx">
+
+```ts title="src/App.tsx"
+import { useQuery } from './client';
+import './style.css';
+
+const GET_PRODUCTS = /*GraphQL*/ `
+    query GetProducts($options: ProductListOptions) {
+        products(options: $options) {
+            items {
+                id
+                name
+                slug
+                featuredAsset {
+                    preview
+                }
+            }
+        }
+    }
+`;
+
+export default function App() {
+    const { data, loading, error } = useQuery(GET_PRODUCTS, {
+        options: { take: 3 },
+    });
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error : {error.message}</p>;
+
+    return data.products.items.map(({ id, name, slug, featuredAsset }) => (
+        <div key={id}>
+            <h3>{name}</h3>
+            <img src={`${featuredAsset.preview}?preset=small`} alt={name} />
+        </div>
+    ));
+}
+```
+
+</Tab>
+<Tab value="index.ts">
+
+```ts title="src/index.ts"
+ import * as React from 'react';
+ import { StrictMode } from 'react';
+ import { createRoot } from 'react-dom/client';
+
+ import App from './App';
+
+ const rootElement = document.getElementById('root');
+ const root = createRoot(rootElement);
+
+ root.render(
+     <StrictMode>
+         <App />
+     </StrictMode>
+ );
+```
+
+</Tab>
+</Tabs>
+
+Jak widać, podstawowa implementacja z `fetch` jest dość prosta. Brakuje jej jednak niektórych funkcji, które zapewniają dedykowane biblioteki klientów.
+
+### Apollo Client
+
+Oto przykład konfiguracji [Apollo Client](https://www.apollographql.com/docs/react/) z aplikacją React.
+
+Postępuj zgodnie z [instrukcjami rozpoczęcia pracy](https://www.apollographql.com/docs/react/get-started), aby zainstalować wymagane pakiety.
+
+<Tabs items={['client.ts', 'index.tsx', 'App.tsx']}>
+<Tab value="client.ts">
+
+```ts title="src/client.ts"
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+const API_URL = `https://demo.deenruv.io/shop-api`;
+
+// Jeśli używamy zarządzania sesjami opartego na tokenach bearer,
+// przechowujemy token w localStorage pod tym kluczem.
+const AUTH_TOKEN_KEY = 'auth_token';
+
+let channelToken: string | undefined;
+let languageCode: string | undefined;
+
+const httpLink = new HttpLink({
+    uri: () => {
+        if (languageCode) {
+            return `${API_URL}?languageCode=${languageCode}`;
+        } else {
+            return API_URL;
+        }
+    },
+    // Jest to wymagane przy korzystaniu z zarządzania sesjami opartego na ciasteczkach,
+    // aby ciasteczka były wysyłane z każdym żądaniem.
+    credentials: 'include',
+});
+
+// Ta część jest używana do sprawdzania i przechowywania tokenu sesji,
+// jeśli jest zwracany przez serwer.
+const afterwareLink = new ApolloLink((operation, forward) => {
+    return forward(operation).map(response => {
+        const context = operation.getContext();
+        const authHeader = context.response.headers.get('deenruv-auth-token');
+        if (authHeader) {
+            // Jeśli token auth został zwrócony przez serwer Deenruv,
+            // przechowujemy go w localStorage
+            localStorage.setItem(AUTH_TOKEN_KEY, authHeader);
+        }
+        return response;
+    });
+});
+
+/**
+ * Używane do określenia tokenu kanału dla projektów, które korzystają
+ * z wielu kanałów.
+ */
+export function setChannelToken(value: string | undefined) {
+    channelToken = value;
+}
+
+/**
+ * Używane do określenia języka dla zlokalizowanych wyników.
+ */
+export function setLanguageCode(value: string | undefined) {
+    languageCode = value;
+}
+
+export const client = new ApolloClient({
+    link: ApolloLink.from([
+        // Jeśli przechowaliśmy authToken z poprzedniej
+        // odpowiedzi, dołączamy go do wszystkich kolejnych żądań.
+        setContext((request, operation) => {
+            const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+            let headers: Record<string, any> = {};
+            if (authToken) {
+                headers.authorization = `Bearer ${authToken}`;
+            }
+            if (channelToken) {
+                headers['deenruv-token'] = channelToken;
+            }
+            return { headers };
+        }),
+        afterwareLink,
+        httpLink,
+    ]),
+    cache: new InMemoryCache(),
+});
+```
+
+</Tab>
+<Tab value="index.tsx">
+
+```tsx title="src/index.tsx"
+import React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import { ApolloProvider } from '@apollo/client';
+import App from './App';
+import { client } from './client';
+
+// Obsługiwane w React 18+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+    <ApolloProvider client={client}>
+        <App />
+    </ApolloProvider>,
+);
+```
+
+</Tab>
+<Tab value="App.tsx">
+
+```tsx title="src/App.tsx"
+import { useQuery, gql } from '@apollo/client';
+
+const GET_PRODUCTS = gql`
+    query GetProducts($options: ProductListOptions) {
+        products(options: $options) {
+            items {
+                id
+                name
+                slug
+                featuredAsset {
+                    preview
+                }
+            }
+        }
+    }
+`;
+
+export default function App() {
+    const { loading, error, data } = useQuery(GET_PRODUCTS, {
+        variables: { options: { take: 3 } },
+    });
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error : {error.message}</p>;
+
+    return data.products.items.map(({ id, name, slug, featuredAsset }) => (
+        <div key={id}>
+            <h3>{name}</h3>
+            <img src={`${featuredAsset.preview}?preset=small`} alt={name} />
+        </div>
+    ));
+}
+```
+
+</Tab>
+</Tabs>
+
+### TanStack Query
+
+Oto przykład użycia [@tanstack/query](https://tanstack.com/query/latest) w połączeniu z [graphql-request](https://github.com/jasonkuhrt/graphql-request) na podstawie [tego poradnika](https://tanstack.com/query/v4/docs/react/graphql).
+
+<Tabs items={['client.ts', 'App.tsx', 'index.tsx']}>
+<Tab value="client.ts">
+
+```tsx title="src/client.ts"
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import {
+    GraphQLClient,
+    RequestDocument,
+    RequestMiddleware,
+    ResponseMiddleware,
+    Variables,
+} from 'graphql-request';
+
+// Jeśli używamy zarządzania sesjami opartego na tokenach bearer,
+// przechowujemy token w localStorage pod tym kluczem.
+const AUTH_TOKEN_KEY = 'auth_token';
+
+const API_URL = 'http://localhost:3000/shop-api';
+
+// Jeśli mamy token sesji, dodajemy go do wychodzącego żądania
+const requestMiddleware: RequestMiddleware = async request => {
+    const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    return {
+        ...request,
+        headers: {
+            ...request.headers,
+            ...(authToken ? { authorization: `Bearer ${authToken}` } : {}),
+        },
+    };
+};
+
+// Sprawdzamy wszystkie odpowiedzi pod kątem nowego tokenu sesji
+const responseMiddleware: ResponseMiddleware = response => {
+    if (!(response instanceof Error) && !response.errors) {
+        const authHeader = response.headers.get('deenruv-auth-token');
+        if (authHeader) {
+            // Jeśli token sesji został zwrócony przez serwer Deenruv,
+            // przechowujemy go w localStorage
+            localStorage.setItem(AUTH_TOKEN_KEY, authHeader);
+        }
+    }
+};
+
+const client = new GraphQLClient(API_URL, {
+    // Wymagane dla sesji opartych na ciasteczkach
+    credentials: 'include',
+    requestMiddleware,
+    responseMiddleware,
+});
+
+/**
+ * Ustawia languageCode, który będzie używany we wszystkich kolejnych żądaniach.
+ */
+export function setLanguageCode(languageCode: string | undefined) {
+    if (!languageCode) {
+        client.setEndpoint(API_URL);
+    } else {
+        client.setEndpoint(`${API_URL}?languageCode=${languageCode}`);
+    }
+}
+
+/**
+ * Ustawia token kanału, który będzie używany we wszystkich kolejnych żądaniach.
+ */
+export function setChannelToken(channelToken: string | undefined) {
+    if (!channelToken) {
+        client.setHeader('deenruv-token', undefined);
+    } else {
+        client.setHeader('deenruv-token', channelToken);
+    }
+}
+
+/**
+ * Wykonuje żądanie GraphQL za pomocą klienta `graphql-request`.
+ */
+export function request<T, V extends Variables = Variables>(
+    document: RequestDocument | TypedDocumentNode<T, V>,
+    variables: Record<string, any> = {},
+) {
+    return client.request(document, variables);
+}
+```
+
+</Tab>
+<Tab value="App.tsx">
+
+```tsx title="src/App.tsx"
+import * as React from 'react';
+import { gql } from 'graphql-request';
+import { useQuery } from '@tanstack/react-query';
+import { request } from './client';
+
+const GET_PRODUCTS = gql`
+    query GetProducts($options: ProductListOptions) {
+        products(options: $options) {
+            items {
+                id
+                name
+                slug
+                featuredAsset {
+                    preview
+                }
+            }
+        }
+    }
+`;
+
+export default function App() {
+    const { isLoading, data } = useQuery({
+        queryKey: ['products'],
+        queryFn: async () =>
+            request(GET_PRODUCTS, {
+                options: { take: 3 },
+            }),
+    });
+
+    if (isLoading) return <p>Loading...</p>;
+
+    return data ? (
+        data.products.items.map(({ id, name, slug, featuredAsset }) => (
+            <div key={id}>
+                <h3>{name}</h3>
+                <img src={`${featuredAsset.preview}?preset=small`} alt={name} />
+            </div>
+        ))
+    ) : (
+        <>Loading...</>
+    );
+}
+```
+
+</Tab>
+<Tab value="index.tsx">
+
+```ts title="src/index.tsx"
+import * as React from 'react';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import App from './App';
+
+// Utwórz klienta
+const queryClient = new QueryClient();
+
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(
+    <StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <App />
+        </QueryClientProvider>
+    </StrictMode>
+);
+```
+
+</Tab>
+</Tabs>

@@ -1,0 +1,243 @@
+---
+title: 'Zarządzanie stanem'
+description: 'Globalne store oparte na Zustand w @deenruv/react-ui-devkit — ustawienia, serwer, zamówienia i więcej'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+`@deenruv/react-ui-devkit` wykorzystuje Zustand do globalnego zarządzania stanem. Kilka store jest dostarczanych od razu do użytku, umożliwiając dostęp do stanu panelu administracyjnego — uwierzytelniania, wyboru kanału, konfiguracji serwera i innych.
+
+## `useSettings`
+
+Główny utrwalany store ustawień panelu administracyjnego. Przechowuje stan uwierzytelniania, preferencje interfejsu i aktywny kanał/język.
+
+```ts
+import { useSettings } from '@deenruv/react-ui-devkit';
+
+function MyComponent() {
+  // Wybieraj poszczególne wartości dla optymalnych re-renderów
+  const token = useSettings((s) => s.token);
+  const selectedChannel = useSettings((s) => s.selectedChannel);
+  const translationsLanguage = useSettings((s) => s.translationsLanguage);
+  const logIn = useSettings((s) => s.logIn);
+  const logOut = useSettings((s) => s.logOut);
+
+  // Sprawdzenie uwierzytelniania
+  if (!token) {
+    return <div>Not authenticated</div>;
+  }
+
+  return (
+    <div>
+      <p>Channel: {selectedChannel?.code}</p>
+      <p>Language: {translationsLanguage}</p>
+      <Button onClick={logOut}>Log Out</Button>
+    </div>
+  );
+}
+```
+
+### Kluczowe właściwości
+
+| Właściwość | Typ | Opis |
+|---|---|---|
+| `token` | `string \| null` | Aktualny token Bearer uwierzytelniania |
+| `selectedChannel` | `Channel \| null` | Aktualnie aktywny kanał |
+| `translationsLanguage` | `LanguageCode` | Język tłumaczeń encji |
+| `theme` | `'light' \| 'dark'` | Aktualny motyw interfejsu |
+| `logIn` | `(credentials) => Promise<void>` | Akcja logowania |
+| `logOut` | `() => void` | Akcja wylogowania |
+
+<Callout type="info">
+`useSettings` jest utrwalany — jego stan przetrwa przeładowanie strony. Używaj wzorca selektorów Zustand (jak pokazano wyżej), aby subskrybować tylko te konkretne wartości, których Twój komponent potrzebuje. Zapobiega to zbędnym re-renderom.
+</Callout>
+
+## `useServer`
+
+Przechowuje stan połączenia z serwerem, dostępne kanały, uprawnienia i globalną konfigurację:
+
+```ts
+import { useServer } from '@deenruv/react-ui-devkit';
+
+function ChannelPicker() {
+  const channels = useServer((s) => s.channels);
+  const permissions = useServer((s) => s.permissions);
+  const serverConfig = useServer((s) => s.serverConfig);
+
+  return (
+    <div>
+      <p>Available channels: {channels.length}</p>
+      <p>Custom fields config: {JSON.stringify(serverConfig?.customFieldConfig)}</p>
+      {permissions.includes('CreateProduct') && (
+        <Button>Create Product</Button>
+      )}
+    </div>
+  );
+}
+```
+
+### Kluczowe właściwości
+
+| Właściwość | Typ | Opis |
+|---|---|---|
+| `channels` | `Channel[]` | Wszystkie dostępne kanały |
+| `permissions` | `string[]` | Uprawnienia aktualnego użytkownika |
+| `serverConfig` | `ServerConfig` | Konfiguracja serwera, w tym definicje pól niestandardowych |
+
+## `useOrder`
+
+Zarządzanie stanem specyficznym dla zamówień w widoku szczegółów zamówienia:
+
+```ts
+import { useOrder } from '@deenruv/react-ui-devkit';
+
+function OrderActions() {
+  const order = useOrder((s) => s.order);
+  const refetch = useOrder((s) => s.refetch);
+
+  return (
+    <div>
+      <p>Order #{order?.code} — {order?.state}</p>
+      <Button onClick={refetch}>Refresh</Button>
+    </div>
+  );
+}
+```
+
+## `useGlobalSearch`
+
+Globalny stan wyszukiwania dla paska wyszukiwania panelu administracyjnego:
+
+```ts
+import { useGlobalSearch } from '@deenruv/react-ui-devkit';
+
+function SearchComponent() {
+  const searchTerm = useGlobalSearch((s) => s.searchTerm);
+  const setSearchTerm = useGlobalSearch((s) => s.setSearchTerm);
+  const results = useGlobalSearch((s) => s.results);
+
+  return (
+    <div>
+      <Input
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search..."
+      />
+      {results.map((result) => (
+        <div key={result.id}>{result.name}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+## `GlobalStoreProvider` / `useGlobalStore`
+
+Provider globalnego store oparty na kontekście dla stanu całej aplikacji. Używany wewnętrznie przez panel administracyjny:
+
+```ts
+import { useGlobalStore } from '@deenruv/react-ui-devkit';
+
+function MyComponent() {
+  const globalState = useGlobalStore();
+  // Dostęp do stanu całej aplikacji
+}
+```
+
+## Kiedy używać store vs konfiguracji pluginu
+
+| Przypadek użycia | Podejście |
+|---|---|
+| Dostęp do tokenu auth, języka, kanału | `useSettings` |
+| Sprawdzanie uprawnień użytkownika | `useServer` |
+| Dostęp do konfiguracji serwera | `useServer` |
+| Przechowywanie ustawień specyficznych dla pluginu | Właściwość `config` pluginu |
+| Tymczasowy stan UI | React `useState` lub `useReducer` |
+| Stan formularza | `useGFFLP` lub `useFFLP` |
+| Stan listy/paginacji | `useList` |
+
+### Konfiguracja pluginu dla niestandardowych ustawień
+
+Jeśli Twój plugin potrzebuje własnej konfiguracji, użyj punktu rozszerzenia `config`:
+
+```tsx
+import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+
+interface MyPluginConfig {
+  apiEndpoint: string;
+  maxItems: number;
+  features: {
+    enableNotifications: boolean;
+    enableWidgets: boolean;
+  };
+}
+
+export const MyPlugin = createDeenruvUIPlugin<MyPluginConfig>({
+  name: 'my-plugin-ui',
+  version: '1.0.0',
+  config: {
+    apiEndpoint: '/api/my-plugin',
+    maxItems: 50,
+    features: {
+      enableNotifications: true,
+      enableWidgets: false,
+    },
+  },
+  // ...inne punkty rozszerzenia
+});
+```
+
+## Najlepsze praktyki
+
+### Używaj selektorów dla wydajności
+
+Zawsze używaj funkcji selektorów ze store Zustand, aby zapobiec zbędnym re-renderom:
+
+```ts
+// ✅ Dobrze — re-renderuje się tylko gdy zmieni się token
+const token = useSettings((s) => s.token);
+
+// ❌ Źle — re-renderuje się przy każdej aktualizacji store
+const settings = useSettings();
+const token = settings.token;
+```
+
+### Derywuj stan gdy to możliwe
+
+Zamiast przechowywać wartości pochodne, obliczaj je z istniejącego stanu store:
+
+```ts
+function MyComponent() {
+  const token = useSettings((s) => s.token);
+  const isAuthenticated = !!token;   // Derywowane, nie przechowywane
+
+  const permissions = useServer((s) => s.permissions);
+  const canCreateProducts = permissions.includes('CreateProduct');  // Derywowane
+}
+```
+
+### Łącz ze wzorcami React Query
+
+Store Zustand dobrze współpracują z hookami `useQuery` / `useMutation` do pobierania danych:
+
+```ts
+function ProductPage() {
+  // Globalny stan ze store
+  const channel = useSettings((s) => s.selectedChannel);
+  const language = useSettings((s) => s.translationsLanguage);
+
+  // Pobieranie danych z hookami
+  const { data, loading } = useQuery(
+    (vars) => apiClient('query')({
+      product: [{ id: vars.id }, productSelector],
+    }),
+    { initialVariables: { id: productId } },
+  );
+
+  // Stan formularza z useGFFLP
+  const { state, setField } = useGFFLP('Product', 'name', 'slug')({
+    name: { initialValue: data?.product.name ?? '' },
+    slug: { initialValue: data?.product.slug ?? '' },
+  });
+}
+```

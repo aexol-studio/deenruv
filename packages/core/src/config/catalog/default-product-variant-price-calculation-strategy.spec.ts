@@ -26,9 +26,8 @@ describe("DefaultProductVariantPriceCalculationStrategy", () => {
 
   beforeEach(async () => {
     // Dynamic import to avoid vitest circular dependency issue
-    const { DefaultProductVariantPriceCalculationStrategy } = await import(
-      "./default-product-variant-price-calculation-strategy.js"
-    );
+    const { DefaultProductVariantPriceCalculationStrategy } =
+      await import("./default-product-variant-price-calculation-strategy.js");
     strategy = new DefaultProductVariantPriceCalculationStrategy();
     const mockInjector = {
       get: () => {

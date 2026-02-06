@@ -1,0 +1,278 @@
+---
+title: 'Warstwa serwisów'
+description: 'Poznaj warstwę serwisów Deenruv — logika biznesowa, dostęp do bazy danych i korzystanie z wbudowanych serwisów'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Warstwa serwisów jest rdzeniem aplikacji. To tutaj implementowana jest logika biznesowa i tutaj aplikacja komunikuje się z bazą danych. Gdy żądanie trafia do API, jest kierowane do resolvera, który następnie wywołuje metodę serwisu w celu wykonania wymaganej operacji.
+
+
+
+<Callout type="info">
+Serwisy to klasy, które w terminologii NestJS są [providerami](https://docs.nestjs.com/providers#services). Podlegają one wszystkim zasadom providerów NestJS, w tym wstrzykiwaniu zależności, zakresowi (scope) itp.
+</Callout>
+
+Serwisy są zazwyczaj przypisane do określonej domeny lub entity. Na przykład w rdzeniu Deenruv istnieje entity `Product` i odpowiadający mu `ProductService`, który zawiera wszystkie metody do interakcji z produktami.
+
+Oto uproszczony przykład `ProductService`, zawierający implementację metody `findOne()`, która była użyta w przykładzie w [poprzedniej sekcji](/docs/guides/developer-guide/the-api-layer/#resolvers):
+
+```ts title="src/services/product.service.ts"
+import { Injectable } from '@nestjs/common';
+import { IsNull } from 'typeorm';
+import { ID, Product, RequestContext, TransactionalConnection, TranslatorService } from '@deenruv/core';
+
+@Injectable()
+export class ProductService {
+    constructor(
+        private connection: TransactionalConnection,
+        private translator: TranslatorService,
+    ) {}
+
+    /**
+     * @description
+     * Returns a Product with the given id, or undefined if not found.
+     */
+    async findOne(ctx: RequestContext, productId: ID): Promise<Product | undefined> {
+        const product = await this.connection.findOneInChannel(ctx, Product, productId, ctx.channelId, {
+            where: {
+                deletedAt: IsNull(),
+            },
+        });
+        if (!product) {
+            return;
+        }
+        return this.translator.translate(product, ctx);
+    }
+
+    // ... other methods
+    findMany() {}
+    create() {}
+    update() {}
+}
+```
+
+- Dekorator `@Injectable()` to dekorator [NestJS](https://docs.nestjs.com/providers#services), który pozwala na wstrzykiwanie serwisu do innych serwisów lub resolverów.
+- Metoda `constructor()` to miejsce, gdzie wstrzykiwane są zależności serwisu. W tym przypadku `TransactionalConnection` służy do dostępu do bazy danych, a `TranslatorService` do tłumaczenia entity Product na aktualny język.
+
+## Korzystanie z wbudowanych serwisów
+
+Wszystkie wewnętrzne serwisy Deenruv mogą być używane w Twoich własnych pluginach i skryptach. Są wymienione w `dokumentacji API serwisów` i można je importować z pakietu `@deenruv/core`.
+
+Aby użyć wbudowanego serwisu w swoim pluginie, musisz upewnić się, że plugin importuje `PluginCommonModule`, a następnie wstrzyknąć żądany serwis do konstruktora swojego serwisu:
+
+```ts title="src/my-plugin/my.plugin.ts"
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { MyService } from './services/my.service';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    providers: [MyService],
+})
+export class MyPlugin {}
+```
+
+```ts title="src/my-plugin/services/my.service.ts"
+import { Injectable } from '@nestjs/common';
+import { ProductService } from '@deenruv/core';
+
+@Injectable()
+export class MyService {
+    constructor(private productService: ProductService) {}
+
+    // you can now use the productService methods
+}
+```
+
+## Dostęp do bazy danych
+
+Jednym z głównych zadań warstwy serwisów jest interakcja z bazą danych. W tym celu używasz klasy `TransactionalConnection`, która jest wrapperem wokół [obiektu `DataSource` TypeORM](https://typeorm.io/data-source-api). Głównym celem `TransactionalConnection` jest zapewnienie, że operacje bazodanowe mogą być wykonywane w ramach transakcji (co jest niezbędne dla zapewnienia integralności danych), nawet między wieloma serwisami. Ponadto udostępnia metody pomocnicze ułatwiające wykonywanie typowych operacji.
+
+<Callout type="info">
+Zawsze przekazuj `RequestContext` (`ctx`) do metod `TransactionalConnection`. Zapewnia to, że operacja odbywa się w ramach aktywnej transakcji.
+</Callout>
+
+TypeORM udostępnia dwa główne API do dostępu do danych: **Find API** i **QueryBuilder API**.
+
+### Find API
+
+To API jest najwygodniejszym i najbezpieczniejszym typowo sposobem odpytywania bazy danych. Zapewnia potężny, typobezpieczny sposób wykonywania zapytań, w tym wsparcie dla eager relations, paginacji, sortowania, filtrowania i więcej.
+
+Oto kilka przykładów użycia Find API:
+
+```ts title="src/services/item.service.ts"
+import { Injectable } from '@nestjs/common';
+import { ID, RequestContext, TransactionalConnection } from '@deenruv/core';
+import { IsNull } from 'typeorm';
+import { Item } from '../entities/item.entity';
+
+@Injectable()
+export class ItemService {
+    constructor(private connection: TransactionalConnection) {}
+
+    findById(ctx: RequestContext, itemId: ID): Promise<Item | null> {
+        return this.connection.getRepository(ctx, Item).findOne({
+            where: { id: itemId },
+        });
+    }
+
+    findByName(ctx: RequestContext, name: string): Promise<Item | null> {
+        return this.connection.getRepository(ctx, Item).findOne({
+            where: {
+                // Multiple where clauses can be specified,
+                // which are joined with AND
+                name,
+                deletedAt: IsNull(),
+            },
+        });
+    }
+
+    findWithRelations() {
+        return this.connection.getRepository(ctx, Item).findOne({
+            where: { name },
+            relations: {
+                // Join the `item.customer` relation
+                customer: true,
+                product: {
+                    // Here we are joining a nested relation `item.product.featuredAsset`
+                    featuredAsset: true,
+                },
+            },
+        });
+    }
+
+    findMany(ctx: RequestContext): Promise<Item[]> {
+        return this.connection.getRepository(ctx, Item).find({
+            // Pagination
+            skip: 0,
+            take: 10,
+            // Sorting
+            order: {
+                name: 'ASC',
+            },
+        });
+    }
+}
+```
+
+<Callout type="info">
+Więcej przykładów można znaleźć w [dokumentacji TypeORM Find Options](https://typeorm.io/find-options).
+</Callout>
+
+### QueryBuilder API
+
+Gdy Find API nie wystarcza, QueryBuilder API może być użyte do konstruowania bardziej złożonych zapytań. Na przykład, jeśli chcesz mieć bardziej złożoną klauzulę `WHERE` niż to, co można osiągnąć za pomocą Find API, lub jeśli chcesz wykonywać podzapytania, to QueryBuilder API jest właściwym wyborem.
+
+Oto kilka przykładów użycia QueryBuilder API:
+
+```ts title="src/services/item.service.ts"
+import { Injectable } from '@nestjs/common';
+import { ID, RequestContext, TransactionalConnection } from '@deenruv/core';
+import { Brackets, IsNull } from 'typeorm';
+import { Item } from '../entities/item.entity';
+
+@Injectable()
+export class ItemService {
+    constructor(private connection: TransactionalConnection) {}
+
+    findById(ctx: RequestContext, itemId: ID): Promise<Item | null> {
+        // This is simple enough that you should prefer the Find API,
+        // but here is how it would be done with the QueryBuilder API:
+        return this.connection
+            .getRepository(ctx, Item)
+            .createQueryBuilder('item')
+            .where('item.id = :id', { id: itemId })
+            .getOne();
+    }
+
+    findManyWithSubquery(ctx: RequestContext, name: string) {
+        // Here's a more complex query that would not be possible using the Find API:
+        return this.connection
+            .getRepository(ctx, Item)
+            .createQueryBuilder('item')
+            .where('item.name = :name', { name })
+            .andWhere(
+                new Brackets(qb1 => {
+                    qb1.where('item.state = :state1', { state1: 'PENDING' }).orWhere('item.state = :state2', {
+                        state2: 'RETRYING',
+                    });
+                }),
+            )
+            .orderBy('item.createdAt', 'ASC')
+            .getMany();
+    }
+}
+```
+
+<Callout type="info">
+Więcej przykładów można znaleźć w [dokumentacji TypeORM QueryBuilder](https://typeorm.io/select-query-builder).
+</Callout>
+
+### Praca z relacjami
+
+Jednym z ograniczeń typowania TypeORM jest to, że na etapie kompilacji nie mamy sposobu, aby wiedzieć, czy dana relacja zostanie dołączona (join) w czasie wykonywania. Na przykład, poniższy kod skompiluje się bez problemów, ale spowoduje błąd w czasie wykonywania:
+
+```ts
+const product = await this.connection.getRepository(ctx, Product).findOne({
+    where: { id: productId },
+});
+if (product) {
+    console.log(product.featuredAsset.preview);
+    // ^ Error: Cannot read property 'preview' of undefined
+}
+```
+
+Dzieje się tak, ponieważ relacja `featuredAsset` nie jest dołączana domyślnie. Prostym rozwiązaniem dla powyższego przykładu jest użycie opcji `relations`:
+
+```ts
+const product = await this.connection.getRepository(ctx, Product).findOne({
+    where: { id: productId },
+    relations: { featuredAsset: true },
+});
+```
+
+lub w przypadku QueryBuilder API, możemy użyć metody `leftJoinAndSelect()`:
+
+```ts
+const product = await this.connection
+    .getRepository(ctx, Product)
+    .createQueryBuilder('product')
+    .leftJoinAndSelect('product.featuredAsset', 'featuredAsset')
+    .where('product.id = :id', { id: productId })
+    .getOne();
+```
+
+### Użycie EntityHydrator
+
+Ale co w sytuacji, gdy nie kontrolujemy kodu pobierającego entity z bazy danych? Na przykład, możemy implementować funkcję, która otrzymuje entity przekazane przez Deenruv. W takim przypadku możemy użyć `EntityHydrator`, aby upewnić się, że dana relacja jest „nawodniona" (hydrated, tj. dołączona) zanim jej użyjemy:
+
+```ts
+import { EntityHydrator, ShippingCalculator } from '@deenruv/core';
+
+let entityHydrator: EntityHydrator;
+
+const myShippingCalculator = new ShippingCalculator({
+    // ... rest of config omitted for brevity
+    init(injector) {
+        entityHydrator = injector.get(EntityHydrator);
+    },
+    calculate: (ctx, order, args) => {
+        // ensure that the customer and customer.groups relations are joined
+        await entityHydrator.hydrate(ctx, order, { relations: ['customer.groups'] });
+
+        if (order.customer?.groups?.some(g => g.name === 'VIP')) {
+            // ... do something special for VIP customers
+        } else {
+            // ... do something else
+        }
+    },
+});
+```
+
+### Dołączanie relacji w wbudowanych metodach serwisów
+
+Wiele wbudowanych serwisów pozwala na opcjonalny argument `relations` w swoich metodach `findOne()`, `findMany()` i pokrewnych. Pozwala to określić, które relacje powinny być dołączone podczas wykonywania zapytania. Na przykład w `ProductService` istnieje metoda `findOne()`, która pozwala określić, które relacje powinny być dołączone:
+
+```ts
+const productWithAssets = await this.productService.findOne(ctx, productId, ['featuredAsset', 'assets']);
+```

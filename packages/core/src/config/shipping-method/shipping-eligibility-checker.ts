@@ -19,8 +19,9 @@ import { ShippingMethod, Order } from "../../entity";
  *
  * @docsCategory shipping
  */
-export interface ShippingEligibilityCheckerConfig<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface ShippingEligibilityCheckerConfig<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   check: CheckShippingEligibilityCheckerFn<T>;
   shouldRunCheck?: ShouldRunCheckFn<T>;
 }

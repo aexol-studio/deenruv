@@ -1,0 +1,546 @@
+---
+title: "Wprowadzenie do GraphQL"
+description: "Poznaj podstawy GraphQL do pracy z API Deenruv"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+<Callout type="info">
+Deenruv używa [GraphQL](https://graphql.org/) jako warstwy API.
+
+To jest wprowadzenie do GraphQL dla osób, które dopiero go poznają. Jeśli znasz już GraphQL, możesz
+pominąć tę sekcję.
+</Callout>
+
+## Czym jest GraphQL?
+
+Ze strony [graphql.org](https://graphql.org/):
+
+> GraphQL to język zapytań dla API oraz środowisko uruchomieniowe do realizacji tych zapytań z wykorzystaniem istniejących danych. GraphQL zapewnia pełny i zrozumiały opis danych w Twoim API, daje klientom możliwość żądania dokładnie tego, czego potrzebują — i nic więcej, ułatwia ewolucję API w czasie oraz umożliwia korzystanie z zaawansowanych narzędzi deweloperskich.
+
+Ujmując to prościej: GraphQL pozwala pobierać dane z API za pomocą _zapytań_ (queries) oraz aktualizować dane za pomocą _mutacji_ (mutations).
+
+Oto zapytanie GraphQL, które pobiera produkt o slugu "football":
+
+```graphql
+query {
+  product(slug: "football") {
+    id
+    name
+    slug
+  }
+}
+```
+
+## GraphQL vs REST
+
+Jeśli znasz API w stylu REST, możesz się zastanawiać, czym różni się GraphQL. Oto kluczowe różnice między GraphQL a REST:
+
+-   GraphQL używa **jednego endpointu**, podczas gdy REST używa innego endpointu dla każdego zasobu.
+-   GraphQL pozwala **określić dokładnie, które pola** chcesz pobrać, podczas gdy API REST zazwyczaj zwracają wszystkie pola domyślnie.
+-   GraphQL pozwala pobierać dane z **wielu zasobów** w jednym zapytaniu (np. "pobierz klienta wraz z jego ostatnimi 5 zamówieniami"), podczas gdy API REST zazwyczaj wymagają wielu osobnych zapytań.
+-   API GraphQL jest zawsze definiowane przez **statycznie typowany schemat**, podczas gdy API REST nie daje takiej gwarancji.
+
+## Dlaczego GraphQL?
+
+Zarówno GraphQL, jak i REST są poprawnymi podejściami do budowania API. Oto kilka powodów, dla których wybraliśmy GraphQL przy budowie Deenruv:
+
+-   **Brak nadmiarowego pobierania danych**: W REST często pobiera się więcej danych niż potrzeba. Na przykład, chcąc pobrać listę produktów, możesz otrzymać nazwę produktu, opis, cenę i inne pola. W GraphQL możesz określić dokładnie, które pola chcesz pobrać, więc pobierasz tylko potrzebne dane. Może to znacząco zmniejszyć ilość danych przesyłanych przez sieć.
+-   **Wiele zasobów w jednym zapytaniu**: Bardzo często jedna strona w aplikacji webowej musi pobrać dane z wielu zasobów. Na przykład strona szczegółów produktu może wymagać pobrania produktu, wariantów produktu, kolekcji produktu, recenzji produktu i zdjęć produktu. W REST wymagałoby to wielu zapytań. W GraphQL możesz pobrać wszystkie te dane w jednym zapytaniu.
+-   **Statyczne typowanie**: API GraphQL jest zawsze definiowane przez statycznie typowany schemat. Oznacza to, że masz pewność, iż dane otrzymane z API będą zawsze w oczekiwanym formacie.
+-   **Narzędzia deweloperskie**: Definicja schematu umożliwia tworzenie zaawansowanych narzędzi deweloperskich. Na przykład GraphQL Playground z autouzupełnianiem i pełną dokumentacją jest generowany automatycznie z definicji schematu. Autouzupełnianie i sprawdzanie typów możesz również uzyskać bezpośrednio w swoim IDE.
+-   **Generowanie kodu**: Typy TypeScript mogą być generowane automatycznie z definicji schematu. Oznacza to, że masz pewność, iż Twój kod frontendowy jest zawsze zsynchronizowany z API. To pełne bezpieczeństwo typów od końca do końca jest niezwykle wartościowe, szczególnie przy pracy nad dużymi projektami lub w zespołach. Zobacz [przewodnik po generowaniu kodu GraphQL](/docs/guides/storefront/codegen).
+-   **Rozszerzalność**: Deenruv jest zaprojektowany z myślą o rozszerzalności, a GraphQL idealnie do tego pasuje. Możesz rozszerzać API GraphQL o własne zapytania, mutacje i typy. Możesz również rozszerzać wbudowane typy o własne pola niestandardowe lub dostarczać własną logikę do rozwiązywania istniejących pól. Zobacz [przewodnik rozszerzania API GraphQL](/docs/guides/developer-guide/extend-graphql-api).
+
+## Terminologia GraphQL
+
+Wyjaśnijmy terminologię używaną w GraphQL.
+
+### Typy i pola
+
+GraphQL posiada system typów, który działa podobnie jak w innych statycznie typowanych językach, takich jak TypeScript.
+
+Oto przykład typu GraphQL:
+
+```graphql
+type Customer {
+    id: ID!
+    name: String!
+    email: String!
+}
+```
+
+`Customer` to **typ obiektowy**, który ma trzy **pola**: `id`, `name` i `email`. Każde pole ma **typ** (np. `ID!` lub `String!`), który
+może odnosić się do **typu skalarnego** (typ "prymitywny", który nie ma żadnych pól, ale reprezentuje pojedynczą wartość) lub innego typu obiektowego.
+
+GraphQL posiada kilka wbudowanych typów skalarnych, w tym `ID`, `String`, `Int`, `Float`, `Boolean`. Deenruv dodatkowo definiuje kilka niestandardowych typów skalarnych: `DateTime`, `JSON`, `Upload` i `Money`.
+Możliwe jest również definiowanie własnych typów skalarnych w razie potrzeby.
+
+Symbol `!` po nazwie typu oznacza, że pole jest **wymagane** (nie może być `null`). Jeśli pole nie ma symbolu `!`, jest **opcjonalne** (może być `null`).
+
+Oto kolejny przykład pary typów:
+
+```graphql
+type Order {
+    id: ID!
+    orderPlacedAt: DateTime
+    isActive: Boolean!
+    customer: Customer!
+    lines: [OrderLine!]!
+}
+
+type OrderLine {
+    id: ID!
+    productId: ID!
+    quantity: Int!
+}
+```
+
+Typ `Order` ma pole `customer` o typie `Customer`. Typ `Order` ma również pole `lines`, które jest listą (tablicą) obiektów `OrderLine`.
+
+W GraphQL listy oznaczane są nawiasami kwadratowymi (`[]`). Symbol `!` wewnątrz nawiasów kwadratowych oznacza, że lista nie może zawierać wartości `null`.
+
+<Callout type="info">
+Podane tu typy nie są rzeczywistymi typami używanymi w schemacie GraphQL Deenruv, ale są użyte w celach ilustracyjnych.
+</Callout>
+
+### Typy Query i Mutation
+
+W GraphQL istnieją dwa specjalne typy: `Query` i `Mutation`. Są to punkty wejścia do API.
+
+Typ `Query` służy do pobierania danych, a typ `Mutation` do aktualizowania danych.
+
+Oto przykład typu Query:
+
+```graphql
+type Query {
+    customers: [Customer!]!
+}
+```
+
+Definiuje on pole `customers` w typie `Query`. To pole zwraca listę obiektów `Customer`.
+
+Oto typ Mutation:
+
+```graphql
+type Mutation {
+    updateCustomerEmail(customerId: ID!, email: String!): Customer!
+}
+```
+
+Definiuje on pole `updateCustomerEmail` w typie `Mutation`. To pole przyjmuje dwa argumenty, `customerId` i `email`, i zwraca obiekt `Customer`.
+Służy do aktualizacji adresu e-mail wskazanego klienta.
+
+### Typy wejściowe (Input)
+
+Typy wejściowe służą do przekazywania złożonych (nieskalarnych) danych do zapytań lub mutacji. Na przykład mutacja `updateCustomerEmail` powyżej mogłaby zostać przepisana
+z użyciem typu wejściowego:
+
+```graphql
+type Mutation {
+    updateCustomerEmail(input: UpdateCustomerEmailInput!): Customer!
+}
+
+input UpdateCustomerEmailInput {
+    customerId: ID!
+    email: String!
+}
+```
+
+Typy wejściowe wyglądają jak typy obiektowe, ale ze słowem kluczowym `input` zamiast `type`.
+
+### Schemat
+
+Schemat to pełna definicja API GraphQL. Definiuje typy, pola, zapytania i mutacje, które są dostępne.
+
+W API GraphQL takim jak Deenruv możesz odpytywać dane tylko zgodnie z polami zdefiniowanymi w schemacie.
+
+Oto kompletny, minimalny schemat:
+
+```graphql
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    customers: [Customer!]!
+}
+
+type Mutation {
+    updateCustomerEmail(input: UpdateCustomerEmailInput!): Customer!
+}
+
+input UpdateCustomerEmailInput {
+    customerId: ID!
+    email: String!
+}
+
+type Customer {
+    id: ID!
+    name: String!
+    email: String!
+}
+```
+
+Powyższy schemat mówi _wszystko_ o tym, co możesz zrobić z API. Możesz pobrać listę klientów i zaktualizować adres e-mail klienta.
+
+<Callout type="info">
+Schemat jest jedną z kluczowych zalet GraphQL. Pozwala na tworzenie zaawansowanych narzędzi wokół API, takich jak autouzupełnianie w IDE
+i automatyczne generowanie kodu.
+
+Zapewnia również, że do API mogą być wysyłane wyłącznie prawidłowe zapytania.
+</Callout>
+
+### Operacje
+
+**Operacja** to ogólna nazwa dla zapytania (query) lub mutacji (mutation) GraphQL. Podczas budowania aplikacji klienckiej będziesz
+definiować operacje, które następnie możesz wysyłać do serwera.
+
+Oto przykład operacji zapytania opartej na powyższym schemacie:
+
+<Tabs items={['Zapytanie', 'Odpowiedź']}>
+<Tab value="Zapytanie">
+
+```graphql
+query {
+    customers {
+        id
+        name
+        email
+    }
+}
+```
+
+</Tab>
+<Tab value="Odpowiedź">
+
+```json
+{
+    "data": {
+        "customers": [
+            {
+                "id": "1",
+                "name": "John Smith",
+                "email": "j.smith@email.com"
+            },
+            {
+                "id": "2",
+                "name": "Jane Doe",
+                "email": "j.doe@email.com"
+            }
+        ]
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Oto przykład operacji mutacji do aktualizacji adresu e-mail pierwszego klienta:
+
+<Tabs items={['Mutacja', 'Odpowiedź']}>
+<Tab value="Mutacja">
+
+```graphql
+mutation {
+    updateCustomerEmail(input: { customerId: "1", email: "john.smith@email.com" }) {
+        id
+        name
+        email
+    }
+}
+```
+
+</Tab>
+<Tab value="Odpowiedź">
+
+```json
+{
+    "data": {
+        "updateCustomerEmail": {
+            "id": "1",
+            "name": "John Smith",
+            "email": "john.smith@email.com"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Operacje mogą mieć również **nazwę**, która, choć nie jest wymagana, jest zalecana w prawdziwych aplikacjach, ponieważ ułatwia debugowanie
+(podobnie jak nazwane vs anonimowe funkcje w JavaScript) i pozwala korzystać z narzędzi do generowania kodu.
+
+Oto powyższe zapytanie z nazwą:
+
+```graphql
+query GetCustomers {
+  customers {
+    id
+    name
+    email
+  }
+}
+```
+
+### Zmienne
+
+Operacje mogą również mieć **zmienne**. Zmienne służą do przekazywania wartości wejściowych do operacji. W przykładzie mutacji `updateCustomerEmail`
+powyżej przekazujemy obiekt wejściowy określający `customerId` i `email`. Jednak w tamtym przykładzie wartości są zakodowane na stałe
+w operacji. W prawdziwej aplikacji chciałbyś przekazywać te wartości dynamicznie.
+
+Oto jak możemy przepisać powyższą mutację z użyciem zmiennych:
+
+<Tabs items={['Mutacja', 'Zmienne', 'Odpowiedź']}>
+<Tab value="Mutacja">
+
+```graphql
+mutation UpdateCustomerEmail($input: UpdateCustomerEmailInput!) {
+  updateCustomerEmail(input: $input) {
+    id
+    name
+    email
+  }
+}
+```
+
+</Tab>
+<Tab value="Zmienne">
+
+```json
+{
+    "input": {
+        "customerId": "1",
+        "email": "john.smith@email.com"
+    }
+}
+```
+
+</Tab>
+<Tab value="Odpowiedź">
+
+```json
+{
+    "data": {
+        "updateCustomerEmail": {
+            "id": "1",
+            "name": "John Smith",
+            "email": "john.smith@email.com"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+### Fragmenty
+
+**Fragment** to wielokrotnie używany zestaw pól na typie obiektowym. Zdefiniujmy fragment dla typu `Customer`,
+który możemy ponownie wykorzystać zarówno w zapytaniu, jak i w mutacji:
+
+```graphql
+fragment CustomerFields on Customer {
+    id
+    name
+    email
+}
+```
+
+Teraz możemy przepisać operacje zapytania i mutacji z użyciem fragmentu:
+
+```graphql
+query GetCustomers {
+    customers {
+        ...CustomerFields
+    }
+}
+```
+
+```graphql
+mutation UpdateCustomerEmail($input: UpdateCustomerEmailInput!) {
+    updateCustomerEmail(input: $input) {
+        ...CustomerFields
+    }
+}
+```
+
+Składnię tę można porównać do operatora spread w JavaScript (`...`).
+
+### Typy unii
+
+**Typ unii** to specjalny typ, który może być jednym z kilku innych typów. Załóżmy na przykład, że przy próbie aktualizacji
+adresu e-mail klienta chcemy zwrócić typ błędu, jeśli adres e-mail jest już w użyciu. Możemy zaktualizować nasz schemat, modelując to jako typ unii:
+
+```graphql
+type Mutation {
+  updateCustomerEmail(input: UpdateCustomerEmailInput!): UpdateCustomerEmailResult!
+}
+
+union UpdateCustomerEmailResult = Customer | EmailAddressInUseError
+
+type EmailAddressInUseError {
+  errorCode: String!
+  message: String!
+}
+```
+
+<Callout type="info">
+W Deenruv używamy tego wzorca dla niemal wszystkich mutacji. Więcej na ten temat przeczytasz w [przewodniku obsługi błędów](/docs/guides/developer-guide/error-handling).
+</Callout>
+
+Teraz, wykonując tę mutację, musimy zmienić sposób wybierania pól w odpowiedzi, ponieważ odpowiedź może być jednym z dwóch typów:
+
+<Tabs items={['Mutacja', 'Przypadek sukcesu', 'Przypadek błędu']}>
+<Tab value="Mutacja">
+
+```graphql
+mutation UpdateCustomerEmail($input: UpdateCustomerEmailInput!) {
+    updateCustomerEmail(input: $input) {
+        __typename
+        ... on Customer {
+            id
+            name
+            email
+        }
+        ... on EmailAddressInUseError {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Przypadek sukcesu">
+
+```json
+{
+    "data": {
+        "updateCustomerEmail": {
+            "__typename": "Customer",
+            "id": "1",
+            "name": "John Smith",
+            "email": "john.smith@email.com"
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Przypadek błędu">
+
+```json
+{
+    "data": {
+        "updateCustomerEmail": {
+            "__typename": "EmailAddressInUseError",
+            "errorCode": "EMAIL_ADDRESS_IN_USE",
+            "message": "The email address is already in use"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Pole `__typename` to specjalne pole dostępne na wszystkich typach, które zwraca nazwę typu. Jest przydatne do
+określania, który typ został zwrócony w odpowiedzi w aplikacji klienckiej.
+
+<Callout type="info">
+Powyższą operację można również zapisać z użyciem fragmentu `CustomerFields`, który zdefiniowaliśmy wcześniej:
+
+```graphql
+mutation UpdateCustomerEmail($input: UpdateCustomerEmailInput!) {
+  updateCustomerEmail(input: $input) {
+    ...CustomerFields
+    ... on EmailAddressInUseError {
+      errorCode
+      message
+    }
+  }
+}
+```
+</Callout>
+
+### Resolvery
+
+Schemat definiuje _kształt_ danych, ale nie definiuje, _jak_ dane są pobierane. To jest zadanie resolverów.
+
+Resolver to funkcja odpowiedzialna za pobieranie danych dla konkretnego pola. Na przykład pole `customers` w typie `Query`
+byłoby obsłużone przez funkcję, która pobiera listę klientów z bazy danych.
+
+Aby zacząć pracę z API Deenruv, nie musisz wiedzieć wiele o resolverach poza tym podstawowym zrozumieniem. Jednak
+później możesz chcieć napisać własne resolvery, aby rozszerzyć API. Jest to omówione w [przewodniku rozszerzania API GraphQL](/docs/guides/developer-guide/extend-graphql-api).
+
+## Odpytywanie danych
+
+Teraz, gdy mamy podstawowe zrozumienie systemu typów GraphQL, zobaczmy, jak możemy go użyć do odpytywania danych z API Deenruv.
+
+W terminologii REST, zapytanie GraphQL jest odpowiednikiem żądania GET. Służy do pobierania danych z API. Zapytania nie powinny zmieniać
+żadnych danych na serwerze.
+
+Oto przykład zapytania pobierającego produkt:
+
+```graphql
+query {
+  product(slug: "football") {
+    id
+    name
+    slug
+  }
+}
+```
+
+Zapoznajmy się ze schematem:
+
+1. W GraphQL Playground najedź myszką na dowolne pole, aby zobaczyć jego typ, a w przypadku samego pola `product` zobaczysz dokumentację opisującą jego działanie.
+2. Dodaj nową linię po `slug` i naciśnij `Ctrl / ⌘` + `spacja`, aby zobaczyć dostępne pola. Na dole listy pól zobaczysz typ danego pola.
+3. Spróbuj dodać pole `description` i naciśnij przycisk Play. Powinieneś zobaczyć opis produktu w odpowiedzi.
+4. Spróbuj dodać `variants` do listy pól. Zobaczysz czerwone ostrzeżenie na lewym marginesie, a najechanie na `variants` poinformuje Cię,
+   że wymagany jest wybór podpól. Dzieje się tak, ponieważ pole `variants` odnosi się do **typu obiektowego**, więc musisz wybrać,
+   które pola tego typu chcesz pobrać. Na przykład:
+
+```graphql
+query {
+  product(slug: "football") {
+    id
+    name
+    slug
+    variants {
+      # Podpola są wymagane dla typów obiektowych
+      sku
+      priceWithTax
+    }
+  }
+}
+```
+
+## Wtyczki IDE
+
+Dla większości popularnych IDE i edytorów dostępne są wtyczki, które zapewniają autouzupełnianie i sprawdzanie typów dla operacji GraphQL
+podczas ich pisania. To ogromny wzrost produktywności i jest **wysoce zalecane**.
+
+-   [Rozszerzenie GraphQL dla VS Code](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql)
+-   [Wtyczka GraphQL dla IntelliJ](https://plugins.jetbrains.com/plugin/8097-graphql) (w tym WebStorm)
+
+## Generowanie kodu
+
+Generowanie kodu oznacza automatyczne tworzenie typów TypeScript na podstawie schematu GraphQL i operacji GraphQL. Jest to bardzo potężna funkcja, która pozwala pisać kod w sposób bezpieczny typowo, bez konieczności ręcznego definiowania typów dla wywołań API.
+
+Więcej informacji znajdziesz w [przewodniku po generowaniu kodu GraphQL](/docs/guides/storefront/codegen).
+
+## Dalsze materiały
+
+To był jedynie bardzo krótki przegląd, mający na celu zapoznanie Cię z głównymi koncepcjami potrzebnymi do budowania z Deenruv.
+Jest wiele innych funkcji języka i najlepszych praktyk, których tu nie omówiliśmy.
+
+Oto kilka zasobów, które pomogą Ci głębiej zrozumieć GraphQL:
+
+-   Oficjalne [Wprowadzenie do GraphQL na graphql.org](https://graphql.org/learn/) jest wyczerpujące i łatwe do przyswojenia.
+-   Dla naprawdę fundamentalnego zrozumienia, zobacz [specyfikację języka GraphQL](https://spec.graphql.org/).
+-   Jeśli wolisz uczyć się z filmów, seria [graphql.wtf](https://graphql.wtf/) jest świetnym źródłem.

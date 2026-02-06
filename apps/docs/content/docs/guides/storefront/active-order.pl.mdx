@@ -1,0 +1,197 @@
+---
+title: Zarządzanie aktywnym zamówieniem
+description: Dowiedz się, jak zarządzać koszykiem, w tym dodawać produkty, usuwać produkty, zmieniać ilości i stosować kody rabatowe.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+„Aktywne zamówienie" to inaczej „koszyk" — jest to zamówienie, nad którym aktualnie pracuje klient.
+
+Zamówienie pozostaje aktywne aż do jego zakończenia, a w tym czasie klient może je modyfikować na różne sposoby:
+
+- Dodawanie produktu
+- Usuwanie produktu
+- Zmiana ilości produktów
+- Zastosowanie kodu rabatowego
+- Usunięcie kodu rabatowego
+
+Ten przewodnik opisuje, jak zarządzać aktywnym zamówieniem.
+
+## Definiowanie fragmentu Order
+
+Ponieważ wszystkie mutacje, których będziemy używać w tym przewodniku, wymagają obiektu `Order`, zdefiniujemy fragment, który możemy wielokrotnie wykorzystywać we wszystkich naszych mutacjach.
+
+```ts title="src/fragments.ts"
+const ACTIVE_ORDER_FRAGMENT = /*GraphQL*/ `
+fragment ActiveOrder on Order {
+  __typename
+  id
+  code
+  couponCodes
+  state
+  currencyCode
+  totalQuantity
+  subTotalWithTax
+  shippingWithTax
+  totalWithTax
+  discounts {
+    description
+    amountWithTax
+  }
+  lines {
+    id
+    unitPriceWithTax
+    quantity
+    linePriceWithTax
+    productVariant {
+      id
+      name
+      sku
+    }
+    featuredAsset {
+      id
+      preview
+    }
+  }
+  shippingLines {
+    shippingMethod {
+      description
+    }
+    priceWithTax
+  }
+}`;
+```
+
+<Callout type="info">
+Pole `__typename` służy do określania typu obiektu zwracanego przez serwer GraphQL. W tym przypadku zawsze będzie to `'Order'`.
+
+Niektóre klienty GraphQL, takie jak Apollo Client, automatycznie dodają pole `__typename` do wszystkich zapytań i mutacji, ale jeśli używasz innego klienta, możesz musieć dodać je ręcznie.
+</Callout>
+
+Ten fragment może być następnie używany w kolejnych zapytaniach i mutacjach za pomocą operatora rozwinięcia `...` w miejscu, gdzie oczekiwany jest obiekt `Order`.
+Możesz osadzić fragment w zapytaniu lub mutacji za pomocą składni `${ACTIVE_ORDER_FRAGMENT}`:
+
+```ts title="src/queries.ts"
+import { ACTIVE_ORDER_FRAGMENT } from './fragments';
+
+export const GET_ACTIVE_ORDER = /*GraphQL*/ `
+  query GetActiveOrder {
+    activeOrder {
+      ...ActiveOrder
+    }
+  }
+  ${ACTIVE_ORDER_FRAGMENT}
+`;
+```
+
+W dalszej części tego przewodnika będziemy podawać tylko treść zapytania lub mutacji, zakładając, że fragment jest zdefiniowany i zaimportowany jak powyżej.
+
+## Pobieranie aktywnego zamówienia
+
+Ten fragment może być następnie używany w kolejnych zapytaniach i mutacjach. Zacznijmy od zapytania pobierającego aktywne zamówienie za pomocą zapytania `activeOrder`:
+
+```graphql
+query GetActiveOrder {
+    activeOrder {
+        ...ActiveOrder
+    }
+}
+```
+
+## Dodawanie produktu
+
+Aby dodać produkt do aktywnego zamówienia, używamy mutacji `addItemToOrder`, jak widzieliśmy w [przewodniku po stronie szczegółów produktu](/docs/guides/storefront/product-detail).
+
+```graphql
+mutation AddItemToOrder($productVariantId: ID!, $quantity: Int!) {
+    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+        ... on InsufficientStockError {
+            quantityAvailable
+            order {
+                ...ActiveOrder
+            }
+        }
+    }
+}
+```
+
+<Callout type="info">
+Jeśli zdefiniowałeś pola niestandardowe (custom fields) w encji `OrderLine`, będziesz mógł przekazać je jako argument `customFields` do mutacji `addItemToOrder`.
+Więcej informacji znajdziesz w [przewodniku po produktach konfigurowalnych](/docs/guides/how-to/configurable-products).
+</Callout>
+
+## Usuwanie produktu
+
+Aby usunąć produkt z aktywnego zamówienia, używamy mutacji `removeOrderLine`
+i przekazujemy `id` linii zamówienia (`OrderLine`) do usunięcia.
+
+```graphql
+mutation RemoveItemFromOrder($orderLineId: ID!) {
+    removeOrderLine(orderLineId: $orderLineId) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+## Zmiana ilości produktu
+
+Aby zmienić ilość produktu w aktywnym zamówieniu, używamy mutacji `adjustOrderLine`.
+
+```graphql
+mutation AdjustOrderLine($orderLineId: ID!, $quantity: Int!) {
+    adjustOrderLine(orderLineId: $orderLineId, quantity: $quantity) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+<Callout type="info">
+Jeśli zdefiniowałeś pola niestandardowe (custom fields) w encji `OrderLine`, będziesz mógł aktualizować ich wartości, przekazując argument `customFields` do mutacji `adjustOrderLine`.
+Więcej informacji znajdziesz w [przewodniku po produktach konfigurowalnych](/docs/guides/how-to/configurable-products).
+</Callout>
+
+## Stosowanie kodu rabatowego
+
+Jeśli zdefiniowałeś jakiekolwiek [promocje](/docs/guides/core-concepts/promotions) wykorzystujące kody rabatowe, możesz zastosować kod rabatowy do aktywnego zamówienia
+za pomocą mutacji `applyCouponCode`.
+
+```graphql
+mutation ApplyCouponCode($couponCode: String!) {
+    applyCouponCode(couponCode: $couponCode) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+## Usuwanie kodu rabatowego
+
+Aby usunąć kod rabatowy z aktywnego zamówienia, używamy mutacji `removeCouponCode`.
+
+```graphql
+mutation RemoveCouponCode($couponCode: String!) {
+    removeCouponCode(couponCode: $couponCode) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```

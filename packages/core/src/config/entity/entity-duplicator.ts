@@ -33,8 +33,9 @@ export type DuplicateEntityFn<T extends ConfigArgs> = (input: {
  * @docsCategory configuration
  * @since 2.2.0
  */
-export interface EntityDuplicatorConfig<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface EntityDuplicatorConfig<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   /**
    * @description
    * The permissions required in order to execute this duplicator. If an array is passed,

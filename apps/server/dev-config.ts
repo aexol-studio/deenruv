@@ -45,9 +45,9 @@ interface ProductData extends ProductVariant {
   currencyCode: CurrencyCode;
 }
 
-export class MerchantExportStrategy
-  implements DefaultStrategy<Array<ProductData>>
-{
+export class MerchantExportStrategy implements DefaultStrategy<
+  Array<ProductData>
+> {
   private HOST_URL: string;
   private toAbsoluteUrl: (url?: string) => string;
   private translator: TranslatorService;

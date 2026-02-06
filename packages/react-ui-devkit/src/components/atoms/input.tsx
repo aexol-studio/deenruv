@@ -6,8 +6,10 @@ import { ErrorMessage } from "@/components/molecules/ErrorMessage.js";
 
 const DECIMAL_PLACES = 2;
 
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface InputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   type?: React.HTMLInputTypeAttribute | "currency";
   label?: string;
   startAdornment?: React.ReactNode;

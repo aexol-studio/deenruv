@@ -79,9 +79,7 @@ import {
   sortById,
 } from "./utils/test-order-utils";
 
-export class TestOrderItemPriceCalculationStrategy
-  implements OrderItemPriceCalculationStrategy
-{
+export class TestOrderItemPriceCalculationStrategy implements OrderItemPriceCalculationStrategy {
   calculateUnitPrice(
     ctx: RequestContext,
     productVariant: ProductVariant,

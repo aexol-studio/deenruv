@@ -10,9 +10,7 @@ import {
   ShippingLineAssignmentStrategy,
 } from "@deenruv/core";
 
-export class MultivendorShippingLineAssignmentStrategy
-  implements ShippingLineAssignmentStrategy
-{
+export class MultivendorShippingLineAssignmentStrategy implements ShippingLineAssignmentStrategy {
   private entityHydrator: EntityHydrator;
   private channelService: ChannelService;
 

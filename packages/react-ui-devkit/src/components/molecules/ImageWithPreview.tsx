@@ -8,14 +8,13 @@ import { cn } from "@/lib/utils.js";
 import { ImageOff } from "lucide-react";
 import { Portal } from "@radix-ui/react-portal";
 import React from "react";
-interface Props
-  extends Omit<
-    React.DetailedHTMLProps<
-      React.ImgHTMLAttributes<HTMLImageElement>,
-      HTMLImageElement
-    >,
-    "className"
-  > {
+interface Props extends Omit<
+  React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >,
+  "className"
+> {
   imageClassName?: string;
   previewClassName?: string;
 }

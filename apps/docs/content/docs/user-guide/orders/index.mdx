@@ -1,0 +1,154 @@
+---
+title: 'Managing Orders'
+description: 'Learn how to view, fulfill, and manage orders, refunds, and the order lifecycle in the Deenruv admin panel'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The Orders section of the Deenruv admin panel lets you manage the complete order lifecycle — from viewing new orders through fulfillment and handling any refunds or modifications.
+
+## The order lifecycle
+
+Every order in Deenruv follows a well-defined state machine. Understanding these states is key to managing orders effectively:
+
+| State | Description |
+|---|---|
+| **Created** | An active order in the customer's cart. The customer can still modify it. |
+| **ArrangingPayment** | The customer has proceeded to checkout and is arranging payment. |
+| **PaymentAuthorized** | Payment has been authorized but not yet settled. |
+| **PaymentSettled** | Payment has been successfully settled (captured). |
+| **PartiallyShipped** | Some order lines have been fulfilled and shipped. |
+| **Shipped** | All order lines have been fulfilled and shipped. |
+| **PartiallyDelivered** | Some fulfillments have been marked as delivered. |
+| **Delivered** | All fulfillments have been delivered to the customer. |
+| **Modifying** | An administrator is modifying the order (adding/removing items, adjusting prices). |
+| **ArrangingAdditionalPayment** | Additional payment is required after an order modification. |
+| **Cancelled** | The order has been cancelled. |
+
+<Callout type="info">
+The order state machine is fully customizable. Your Deenruv instance may have additional custom states or transitions depending on your business requirements. See the [developer guide on strategies](/docs/guides/developer-guide/strategies-configurable-operations) for details.
+</Callout>
+
+## Viewing orders
+
+Navigate to **Sales → Orders** in the admin panel sidebar. The order list shows:
+
+- **Order code** — a unique, human-readable identifier (e.g., `T7HKGQR3`)
+- **Customer name** and email
+- **State** — the current order state with a color-coded badge
+- **Total** — the order total including tax and shipping
+- **Date placed** — when the customer completed checkout
+
+You can filter orders by state, search by order code or customer name, and sort by date or total.
+
+### Order detail view
+
+Click on an order to see its full details:
+
+- **Order lines** — each item with quantity, unit price, and line total
+- **Shipping** — the selected shipping method and cost
+- **Payments** — payment method, status, and transaction details
+- **Customer** — linked customer account and shipping/billing addresses
+- **History** — a full timeline of order events (state changes, notes, modifications)
+- **Promotions** — any applied coupon codes or automatic promotions
+- **Tax summary** — breakdown of taxes applied to the order
+
+## Fulfilling orders
+
+Fulfillment is the process of shipping order items to the customer.
+
+### Creating a fulfillment
+
+1. Open the order detail view for an order in the **PaymentSettled** state.
+2. Click the **Fulfill** button.
+3. Select which order lines (and quantities) to include in this fulfillment.
+4. Choose a **Fulfillment handler** — this determines how the fulfillment is processed (e.g., manual fulfillment, integration with a shipping provider).
+5. Optionally enter a **Tracking code** for the shipment.
+6. Click **Fulfill** to create the fulfillment.
+
+The order will transition to **PartiallyShipped** if only some lines are fulfilled, or **Shipped** if all lines are fulfilled.
+
+### Partial fulfillments
+
+Deenruv supports splitting an order into multiple fulfillments. This is useful when:
+
+- Items ship from different warehouses
+- Some items are backordered
+- Items have different shipping requirements
+
+Each fulfillment tracks its own state independently:
+
+| Fulfillment State | Description |
+|---|---|
+| **Pending** | Fulfillment created, not yet handed to carrier |
+| **Shipped** | Handed to carrier, in transit |
+| **Delivered** | Successfully delivered to customer |
+| **Cancelled** | Fulfillment was cancelled |
+
+## Refunds
+
+When a customer requests a return or there is an issue with an order, you can issue a refund.
+
+### Issuing a refund
+
+1. Open the order detail view.
+2. Click the **Refund** button.
+3. Select the order lines and quantities to refund.
+4. Enter the **refund amount** — this is the total amount to be returned to the customer.
+5. Optionally add a **reason** for the refund.
+6. Click **Refund** to process.
+
+The refund will be processed through the same payment method used for the original payment. The refund entity tracks its own state:
+
+| Refund State | Description |
+|---|---|
+| **Pending** | Refund created, awaiting processing by payment provider |
+| **Settled** | Refund successfully processed and funds returned |
+| **Failed** | Refund processing failed |
+
+<Callout type="warn">
+The actual refund processing depends on your payment handler implementation. Some payment providers process refunds instantly, while others may take several business days.
+</Callout>
+
+## Modifying orders
+
+Administrators can modify orders after they have been placed. This is useful for correcting mistakes, applying manual discounts, or accommodating customer requests.
+
+### Making modifications
+
+1. Open the order detail view.
+2. Click **Modify order** to enter modification mode.
+3. You can:
+   - **Add items** — search for and add new product variants
+   - **Remove items** — reduce quantities or remove lines entirely
+   - **Adjust prices** — apply manual price overrides
+   - **Add surcharges** — add one-off fees or discounts
+   - **Update shipping** — change the shipping method
+4. Review the modification summary showing the price difference.
+5. If the modification results in an additional charge, the order enters the **ArrangingAdditionalPayment** state. If it results in a credit, a refund is automatically processed.
+
+<Callout type="info">
+Every modification is recorded in the order history with a note describing what changed. This provides a full audit trail for order changes.
+</Callout>
+
+## Cancelling orders
+
+To cancel an order:
+
+1. Open the order detail view.
+2. Click **Cancel order**.
+3. Select which order lines to cancel (you can partially cancel).
+4. Choose a cancellation reason.
+5. Confirm the cancellation.
+
+If payment has already been settled, a refund will need to be issued separately.
+
+## Order notes
+
+You can add internal notes to any order for team communication:
+
+1. In the order detail view, scroll to the **History** section.
+2. Click **Add note**.
+3. Enter your note text.
+4. Choose whether the note should be **visible to the customer** (included in order history queries from the Shop API) or **private** (admin-only).
+5. Click **Add note**.

@@ -54,9 +54,7 @@ export interface OrderByCodeAccessStrategy extends InjectableStrategy {
  * @docsCategory orders
  * @docsPage OrderByCodeAccessStrategy
  */
-export class DefaultOrderByCodeAccessStrategy
-  implements OrderByCodeAccessStrategy
-{
+export class DefaultOrderByCodeAccessStrategy implements OrderByCodeAccessStrategy {
   private anonymousAccessDuration;
 
   constructor(anonymousAccessDuration: string) {

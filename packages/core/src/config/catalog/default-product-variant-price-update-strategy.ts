@@ -53,9 +53,7 @@ export interface DefaultProductVariantPriceUpdateStrategyOptions {
  * @docsPage ProductVariantPriceUpdateStrategy
  * @since 2.2.0
  */
-export class DefaultProductVariantPriceUpdateStrategy
-  implements ProductVariantPriceUpdateStrategy
-{
+export class DefaultProductVariantPriceUpdateStrategy implements ProductVariantPriceUpdateStrategy {
   constructor(
     private options: DefaultProductVariantPriceUpdateStrategyOptions,
   ) {}

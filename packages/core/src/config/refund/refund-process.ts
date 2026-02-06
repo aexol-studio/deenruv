@@ -22,8 +22,9 @@ import {
  *
  * @docsCategory payment
  */
-export interface RefundProcess<State extends keyof CustomRefundStates | string>
-  extends InjectableStrategy {
+export interface RefundProcess<
+  State extends keyof CustomRefundStates | string,
+> extends InjectableStrategy {
   transitions?: Transitions<State, State | RefundState> &
     Partial<Transitions<RefundState | State>>;
   onTransitionStart?: OnTransitionStartFn<

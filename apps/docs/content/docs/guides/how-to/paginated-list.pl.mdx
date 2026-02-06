@@ -1,0 +1,338 @@
+---
+title: 'Listy paginowane'
+description: 'Dowiedz się, jak implementować paginowane zapytania listowe z filtrowaniem i sortowaniem w Deenruv'
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Zapytania listowe w Deenruv podążają za ustalonym wzorcem, który umożliwia paginację, filtrowanie i sortowanie. Ten poradnik pokaże, jak zaimplementować własne paginowane zapytania listowe.
+
+## Definicja API
+
+Zacznijmy od zdefiniowania schematu GraphQL dla naszego zapytania. W tym przykładzie wyobraźmy sobie, że zdefiniowaliśmy [niestandardową encję](/docs/guides/developer-guide/database-entity/), reprezentującą `ProductReview`. Chcemy mieć możliwość zapytania listy recenzji w Admin API. Oto jak wyglądałaby definicja schematu:
+
+```ts title="src/plugins/reviews/api/api-extensions.ts"
+import gql from 'graphql-tag';
+
+export const adminApiExtensions = gql`
+    type ProductReview implements Node {
+        id: ID!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        product: Product!
+        productId: ID!
+        text: String!
+        rating: Float!
+    }
+
+    type ProductReviewList implements PaginatedList {
+        items: [ProductReview!]!
+        totalItems: Int!
+    }
+
+    # Generowane w runtime przez Deenruv
+    input ProductReviewListOptions
+
+    extend type Query {
+        productReviews(options: ProductReviewListOptions): ProductReviewList!
+    }
+`;
+```
+
+Zwróć uwagę, że musimy przestrzegać następujących konwencji:
+
+-   Typ musi implementować interfejs `Node`, tj. musi posiadać pole `id: ID!`.
+-   Typ listy musi nazywać się `<NazwaEncji>List` i musi implementować interfejs `PaginatedList`.
+-   Typ input opcji listy musi nazywać się `<NazwaEncji>ListOptions`.
+
+Na podstawie tego schematu, w runtime Deenruv automatycznie wygeneruje typ input `ProductReviewListOptions`, włącznie ze wszystkimi polami filtrowania i sortowania. Oznacza to, że nie musimy sami definiować tego typu input.
+
+## Resolver
+
+Następnie musimy zdefiniować resolver dla zapytania.
+
+```ts title="src/plugins/reviews/api/admin.resolver.ts"
+import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Ctx, PaginatedList, RequestContext } from '@deenruv/core';
+
+import { ProductReview } from '../entities/product-review.entity';
+import { ProductReviewService } from '../services/product-review.service';
+
+@Resolver()
+export class ProductReviewAdminResolver {
+    constructor(private productReviewService: ProductReviewService) {}
+
+    @Query()
+    async productReviews(
+        @Ctx() ctx: RequestContext,
+        @Args() args: any,
+    ): Promise<PaginatedList<ProductReview>> {
+        return this.productReviewService.findAll(ctx, args.options || undefined);
+    }
+}
+```
+
+## Serwis
+
+Na koniec musimy zaimplementować metodę `findAll()` w `ProductReviewService`. Tutaj użyjemy `ListQueryBuilder` do zbudowania zapytania listowego. `ListQueryBuilder` zajmie się
+
+```ts title="src/plugins/reviews/services/product-review.service.ts"
+import { Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/typeorm';
+import { ListQueryBuilder, ListQueryOptions, PaginatedList, RequestContext } from '@deenruv/core';
+
+import { ProductReview } from '../entities/product-review.entity';
+
+@Injectable()
+export class ProductReviewService {
+    constructor(private listQueryBuilder: ListQueryBuilder) {}
+
+    findAll(
+        ctx: RequestContext,
+        options?: ListQueryOptions<ProductReview>,
+    ): Promise<PaginatedList<ProductReview>> {
+        return this.listQueryBuilder
+            .build(ProductReview, options, { relations: ['product'], ctx })
+            .getManyAndCount()
+            .then(([items, totalItems]) => ({ items, totalItems }));
+    }
+}
+```
+
+## Użycie
+
+Mając powyższe części pluginu, możemy teraz zapytać listę recenzji w Admin API:
+
+<Tabs items={['Query', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query {
+  productReviews(
+    options: {
+      skip: 0
+      take: 10
+      sort: {
+        createdAt: DESC
+      }
+      filter: {
+        rating: {
+          between: { start: 3, end: 5 }
+        }
+      }
+    }) {
+    totalItems
+    items {
+      id
+      createdAt
+      product {
+        name
+      }
+      text
+      rating
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "productReviews": {
+            "totalItems": 3,
+            "items": [
+                {
+                    "id": "12",
+                    "createdAt": "2023-08-23T12:00:00Z",
+                    "product": {
+                        "name": "Smartphone X"
+                    },
+                    "text": "The best phone I've ever had!",
+                    "rating": 5
+                },
+                {
+                    "id": "42",
+                    "createdAt": "2023-08-22T15:30:00Z",
+                    "product": {
+                        "name": "Laptop Y"
+                    },
+                    "text": "Impressive performance and build quality.",
+                    "rating": 4
+                },
+                {
+                    "id": "33",
+                    "createdAt": "2023-08-21T09:45:00Z",
+                    "product": {
+                        "name": "Headphones Z"
+                    },
+                    "text": "Decent sound quality but uncomfortable.",
+                    "rating": 3
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+W powyższym przykładzie pobieramy pierwsze 10 recenzji, posortowane po `createdAt` w kolejności malejącej i przefiltrowane, aby zawierały tylko recenzje z oceną od 3 do 5.
+
+## Zaawansowane filtrowanie
+
+Deenruv v2.2.0 wprowadził możliwość tworzenia złożonych zagnieżdżonych filtrów w każdym zapytaniu PaginatedList. Na przykład moglibyśmy przefiltrować powyższe zapytanie, aby zawierało tylko recenzje produktów z nazwą zaczynającą się od „Smartphone":
+
+<Tabs items={['Query', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query {
+  productReviews(
+    options: {
+    skip: 0
+    take: 10
+    filter: {
+      _and: [
+        { text: { startsWith: "phone" } },
+        {
+          _or: [
+            { rating: { gte: 4 } },
+            { rating: { eq: 0 } }
+          ]
+        }
+      ]
+    }
+    }) {
+    totalItems
+    items {
+      id
+      createdAt
+      product {
+        name
+      }
+      text
+      rating
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "productReviews": {
+            "totalItems": 3,
+            "items": [
+                {
+                    "id": "12",
+                    "createdAt": "2023-08-23T12:00:00Z",
+                    "product": {
+                        "name": "Smartphone X"
+                    },
+                    "text": "The best phone I've ever had!",
+                    "rating": 5
+                },
+                {
+                    "id": "42",
+                    "createdAt": "2023-08-22T15:30:00Z",
+                    "product": {
+                        "name": "Smartphone Y"
+                    },
+                    "text": "Not a very good phone at all.",
+                    "rating": 0
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+W powyższym przykładzie filtrujemy recenzje produktów ze słowem „phone" i oceną 4 lub wyższą, lub oceną 0. Operatory `_and` i `_or` mogą być zagnieżdżane do dowolnej głębokości, co pozwala na dowolnie złożone filtry.
+
+## Filtrowanie po niestandardowych właściwościach
+
+Domyślnie `ListQueryBuilder` pozwala na filtrowanie tylko po właściwościach zdefiniowanych bezpośrednio na encji.
+Więc w przypadku `ProductReview` możemy filtrować po `rating` i `text` itp., ale nie po `product.name`.
+
+Jednak możliwe jest rozszerzenie typu GraphQL, aby umożliwić filtrowanie po niestandardowych właściwościach. Zaimplementujmy filtrowanie po właściwości `product.name`. Najpierw musimy ręcznie dodać pole `productName` do typu `ProductReviewFilterParameter`:
+
+```ts title="src/plugins/reviews/api/api-extensions.ts"
+import gql from 'graphql-tag';
+
+export const adminApiExtensions = gql`
+# ... istniejące definicje z wcześniejszego przykładu pominięte
+
+input ProductReviewFilterParameter {
+  productName: StringOperators
+}
+`;
+```
+
+Następnie musimy zaktualizować nasz `ProductReviewService`, aby mógł obsłużyć filtrowanie po tym nowym polu za pomocą opcji `customPropertyMap`:
+
+```ts title="src/plugins/reviews/services/product-review.service.ts"
+import { Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/typeorm';
+import { ListQueryBuilder, ListQueryOptions, PaginatedList, RequestContext } from '@deenruv/core';
+
+import { ProductReview } from '../entities/product-review.entity';
+
+@Injectable()
+export class ProductReviewService {
+    constructor(private listQueryBuilder: ListQueryBuilder) {}
+
+    findAll(
+        ctx: RequestContext,
+        options?: ListQueryOptions<ProductReview>,
+    ): Promise<PaginatedList<ProductReview>> {
+        return this.listQueryBuilder
+            .build(ProductReview, options, {
+                relations: ['product'],
+                ctx,
+                customPropertyMap: {
+                    productName: 'product.name',
+                },
+            })
+            .getManyAndCount()
+            .then(([items, totalItems]) => ({ items, totalItems }));
+    }
+}
+```
+
+Po restarcie serwera powinno być teraz możliwe filtrowanie po `productName`:
+
+```graphql
+query {
+  productReviews(
+    options: {
+      skip: 0
+      take: 10
+      filter: {
+        productName: {
+          contains: "phone"
+        }
+      }
+  }) {
+    totalItems
+    items {
+      id
+      createdAt
+      product {
+        name
+      }
+      text
+      rating
+    }
+  }
+}
+```

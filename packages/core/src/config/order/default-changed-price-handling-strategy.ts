@@ -8,9 +8,7 @@ import { ChangedPriceHandlingStrategy } from "./changed-price-handling-strategy"
  * The default {@link ChangedPriceHandlingStrategy} will always use the latest price when
  * updating existing OrderLines.
  */
-export class DefaultChangedPriceHandlingStrategy
-  implements ChangedPriceHandlingStrategy
-{
+export class DefaultChangedPriceHandlingStrategy implements ChangedPriceHandlingStrategy {
   handlePriceChange(
     ctx: RequestContext,
     current: PriceCalculationResult,

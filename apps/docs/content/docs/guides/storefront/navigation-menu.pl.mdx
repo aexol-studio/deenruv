@@ -1,0 +1,147 @@
+---
+title: 'Menu nawigacji'
+description: 'Budowanie menu nawigacji z wykorzystaniem hierarchii kolekcji w sklepie Deenruv'
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Menu nawigacji pozwala klientom poruszać się po sklepie i znajdować produkty, których szukają.
+
+Zazwyczaj nawigacja opiera się na hierarchii [kolekcji](/docs/guides/core-concepts/collections/). Możemy pobrać kolekcje najwyższego poziomu za pomocą zapytania `collections` z filtrem `topLevelOnly`:
+
+<Tabs items={['Query', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query GetTopLevelCollections {
+    collections(options: { topLevelOnly: true }) {
+        items {
+            id
+            slug
+            name
+            featuredAsset {
+                id
+                preview
+            }
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "collections": {
+            "items": [
+                {
+                    "id": "2",
+                    "slug": "electronics",
+                    "name": "Electronics",
+                    "featuredAsset": {
+                        "id": "16",
+                        "preview": "https://demo.deenruv.io/assets/preview/5b/jakob-owens-274337-unsplash__preview.jpg"
+                    }
+                },
+                {
+                    "id": "5",
+                    "slug": "home-garden",
+                    "name": "Home & Garden",
+                    "featuredAsset": {
+                        "id": "47",
+                        "preview": "https://demo.deenruv.io/assets/preview/3e/paul-weaver-1120584-unsplash__preview.jpg"
+                    }
+                },
+                {
+                    "id": "8",
+                    "slug": "sports-outdoor",
+                    "name": "Sports & Outdoor",
+                    "featuredAsset": {
+                        "id": "24",
+                        "preview": "https://demo.deenruv.io/assets/preview/96/michael-guite-571169-unsplash__preview.jpg"
+                    }
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Budowanie drzewa nawigacji
+
+Zapytanie `collections` zwraca płaską listę kolekcji, ale często chcemy wyświetlić je w strukturze drzewiastej.
+W ten sposób możemy zbudować menu nawigacji, które odzwierciedla hierarchię kolekcji.
+
+Przede wszystkim musimy upewnić się, że mamy właściwość `parentId` w każdej kolekcji.
+
+```graphql title="Shop API"
+query GetAllCollections {
+  collections(options: { topLevelOnly: true }) {
+    items {
+      id
+      slug
+      name
+      parentId
+      featuredAsset {
+        id
+        preview
+      }
+    }
+  }
+}
+```
+
+Następnie możemy wykorzystać te dane do zbudowania struktury drzewiastej. Poniższy fragment kodu pokazuje, jak można to zrobić w TypeScript:
+
+```ts title="src/utils/array-to-tree.ts"
+export type HasParent = { id: string; parentId: string | null };
+export type TreeNode<T extends HasParent> = T & {
+    children: Array<TreeNode<T>>;
+};
+export type RootNode<T extends HasParent> = {
+    id?: string;
+    children: Array<TreeNode<T>>;
+};
+
+/**
+ * Buduje drzewo z tablicy węzłów, które mają rodzica.
+ * Na podstawie https://stackoverflow.com/a/31247960/772859, zmodyfikowane aby zachować kolejność.
+ */
+export function arrayToTree<T extends HasParent>(nodes: T[]): RootNode<T> {
+    const topLevelNodes: Array<TreeNode<T>> = [];
+    const mappedArr: { [id: string]: TreeNode<T> } = {};
+
+    // Najpierw mapujemy węzły tablicy na obiekt -> tworzymy tablicę haszową.
+    for (const node of nodes) {
+        mappedArr[node.id] = { ...(node as any), children: [] };
+    }
+
+    for (const id of nodes.map(n => n.id)) {
+        if (mappedArr.hasOwnProperty(id)) {
+            const mappedElem = mappedArr[id];
+            const parentId = mappedElem.parentId;
+            if (!parent) {
+                continue;
+            }
+            // Jeśli element nie jest na poziomie głównym, dodaj go do tablicy dzieci rodzica.
+            const parentIsRoot = !mappedArr[parentId];
+            if (!parentIsRoot) {
+                if (mappedArr[parentId]) {
+                    mappedArr[parentId].children.push(mappedElem);
+                } else {
+                    mappedArr[parentId] = { children: [mappedElem] } as any;
+                }
+            } else {
+                topLevelNodes.push(mappedElem);
+            }
+        }
+    }
+    const rootId = topLevelNodes.length ? topLevelNodes[0].parentId : undefined;
+    return { id: rootId, children: topLevelNodes };
+}
+```

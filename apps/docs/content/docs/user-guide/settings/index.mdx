@@ -1,0 +1,206 @@
+---
+title: 'System Settings'
+description: 'Configure channels, payment methods, shipping, taxes, administrators, and other system settings in the Deenruv admin panel'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The Settings area of the Deenruv admin panel lets you configure the core aspects of your e-commerce system — from channels and currencies to payment providers, shipping methods, and tax rules.
+
+## Channels
+
+Channels are one of the most powerful features of Deenruv. A Channel represents a distinct sales channel with its own configuration for currency, language, tax, and shipping defaults.
+
+### Use cases for channels
+
+- **Multi-region stores** — a distinct website for each country/territory with its own pricing, currency, and tax rules
+- **Marketplace channels** — separate channels for different sellers in a multi-vendor setup
+- **Sales channel separation** — different inventory and rules for your website vs. Amazon vs. physical stores
+- **Specialized stores** — a subset of your main catalog for a niche audience
+
+### Channel settings
+
+Each channel has the following configurable properties:
+
+| Setting | Description |
+|---|---|
+| **Code** | A unique identifier for the channel (e.g., `us-webstore`) |
+| **Token** | An auto-generated token used in the `deenruv-token` HTTP header to identify requests to this channel |
+| **Default Language** | The primary language for this channel |
+| **Available Languages** | Additional languages supported by this channel |
+| **Default Currency** | The primary currency code (e.g., USD, EUR, GBP) |
+| **Available Currencies** | Additional currencies the channel supports |
+| **Default Tax Zone** | The zone used for tax calculations when no customer address is available |
+| **Default Shipping Zone** | The zone used for shipping calculations |
+| **Prices Include Tax** | Whether product prices are entered inclusive or exclusive of tax |
+
+### Managing channel assignments
+
+Products, collections, facets, shipping methods, payment methods, and promotions can all be assigned to specific channels. Only items assigned to a channel will be available in that channel.
+
+To assign items to a channel, navigate to the entity's detail view and use the **Channels** section to add or remove channel assignments.
+
+<Callout type="info">
+The **Default Channel** is created automatically and cannot be deleted. All entities are assigned to the default channel when created. If you are running a single-store setup, you only need the default channel.
+</Callout>
+
+## Administrators and Roles
+
+### Managing administrators
+
+Navigate to **Settings → Administrators** to manage admin users. Each administrator has:
+
+- **First name** and **Last name**
+- **Email address** — used as the login identifier
+- **Roles** — one or more roles that determine what the administrator can do
+
+To create a new administrator:
+
+1. Click **Create administrator**.
+2. Fill in the name and email address.
+3. Set an initial password.
+4. Assign one or more **Roles**.
+5. Click **Create**.
+
+### Roles and permissions
+
+Roles define what actions an administrator can perform. Navigate to **Settings → Roles** to manage roles.
+
+Each role consists of:
+
+- **Name** and **Description**
+- **Channels** — which channels this role applies to
+- **Permissions** — a set of granular permissions controlling access to specific operations
+
+Deenruv provides fine-grained permissions for every area of the system:
+
+| Permission Area | Examples |
+|---|---|
+| **Catalog** | CreateProduct, ReadProduct, UpdateProduct, DeleteProduct |
+| **Orders** | CreateOrder, ReadOrder, UpdateOrder, DeleteOrder |
+| **Customers** | CreateCustomer, ReadCustomer, UpdateCustomer, DeleteCustomer |
+| **Settings** | ReadSettings, UpdateSettings |
+| **System** | ReadAdministrator, CreateAdministrator, ReadChannel, UpdateChannel |
+
+<Callout type="info">
+There are two special built-in roles: **SuperAdmin** (has all permissions, cannot be modified) and **Customer** (assigned to all registered customers). All other roles are user-defined.
+</Callout>
+
+## Countries and Zones
+
+### Countries
+
+Navigate to **Settings → Countries** to manage the list of countries available in your store. Countries are used for:
+
+- Customer shipping and billing addresses
+- Tax and shipping zone membership
+
+Each country has a **name**, **ISO code**, and can be **enabled** or **disabled**.
+
+### Zones
+
+Zones are groupings of countries (or other regions) used for calculating tax rates and shipping eligibility.
+
+To create a zone:
+
+1. Navigate to **Settings → Zones**.
+2. Click **Create zone**.
+3. Enter a **Name** for the zone (e.g., "EU", "North America", "Domestic").
+4. Add **Members** — select the countries that belong to this zone.
+5. Click **Create**.
+
+Zones are referenced by:
+- **Tax rates** — to determine which tax rate applies based on the customer's location
+- **Channels** — as the default tax zone and default shipping zone
+- **Shipping methods** — to determine eligibility based on the shipping address
+
+## Payment Methods
+
+Payment methods define how customers can pay for their orders.
+
+### Configuring a payment method
+
+1. Navigate to **Settings → Payment methods**.
+2. Click **Create payment method**.
+3. Enter a **Name** and **Code**.
+4. Select a **Handler** — this is the payment integration that processes the actual payment. Available handlers depend on which payment plugins are installed (e.g., Stripe, Mollie, Braintree).
+5. Configure the handler's settings (API keys, webhook URLs, etc.).
+6. Optionally add an **Eligibility Checker** to restrict when this payment method is available.
+7. Assign the payment method to the relevant **Channels**.
+8. **Enable** the payment method.
+9. Click **Create**.
+
+<Callout type="info">
+Deenruv ships with a `dummyPaymentHandler` for development and testing. For production, install a payment plugin such as `@deenruv/payments-plugin` which provides Stripe, Mollie, and Braintree handlers.
+</Callout>
+
+## Shipping Methods
+
+Shipping methods determine how orders are shipped and at what cost.
+
+### Configuring a shipping method
+
+1. Navigate to **Settings → Shipping methods**.
+2. Click **Create shipping method**.
+3. Enter a **Name** and **Code**.
+4. Select an **Eligibility Checker** — this determines whether the shipping method is available for a given order. The default checker filters by order weight or order total.
+5. Select a **Calculator** — this calculates the shipping price. The default calculator uses a flat rate.
+6. Configure the checker and calculator arguments (e.g., minimum order total, flat rate amount).
+7. Select a **Fulfillment Handler** — this defines how fulfillments are processed when this shipping method is used.
+8. Assign the method to relevant **Channels**.
+9. Click **Create**.
+
+### Shipping method eligibility
+
+The eligibility checker runs for every order to determine if a shipping method should be offered. Common eligibility rules include:
+
+- Minimum or maximum order total
+- Shipping address must be in a specific zone
+- Order must contain (or not contain) specific facet values
+
+## Tax Settings
+
+Deenruv's tax system is based on **Tax Categories**, **Tax Rates**, and **Zones**.
+
+### Tax categories
+
+Tax categories classify products by their tax treatment. Navigate to **Settings → Tax categories** to manage them. Common examples:
+
+- **Standard** — default tax rate
+- **Reduced** — reduced rate for essentials (food, books)
+- **Zero** — zero-rated items
+- **Exempt** — tax-exempt items
+
+Each product variant is assigned to a tax category.
+
+### Tax rates
+
+Tax rates define the actual percentage of tax to apply. Navigate to **Settings → Tax rates** to manage them.
+
+Each tax rate has:
+
+| Property | Description |
+|---|---|
+| **Name** | Descriptive name (e.g., "US Sales Tax", "EU VAT Standard") |
+| **Rate** | The percentage (e.g., 20 for 20%) |
+| **Tax Category** | Which products this rate applies to |
+| **Zone** | Which geographic zone this rate applies to |
+| **Customer Group** | Optionally restrict to a specific customer group |
+
+The applicable tax rate for a given product variant is determined by:
+
+1. The variant's **Tax Category**
+2. The customer's applicable **Zone** (determined by the configured Tax Zone Strategy)
+3. Optionally, the customer's **Customer Group**
+
+<Callout type="info">
+Configure the **Prices Include Tax** setting on your Channel to control whether prices are entered tax-inclusive or tax-exclusive. This is important for regions where tax-inclusive pricing is the norm (e.g., EU) vs. regions where tax is added at checkout (e.g., US).
+</Callout>
+
+## Global Settings
+
+Global settings are application-wide configuration values. Navigate to **Settings → Global Settings** to view and update them.
+
+<Callout type="warn">
+Many settings that were previously global (such as inventory tracking and out-of-stock threshold) have been moved to the **Channel** level. Check your channel settings for these options.
+</Callout>

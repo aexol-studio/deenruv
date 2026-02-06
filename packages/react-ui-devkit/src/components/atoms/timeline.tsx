@@ -18,7 +18,8 @@ const timelineVariants = cva("flex flex-col items-stretch", {
 });
 
 interface TimelineProps
-  extends React.HTMLAttributes<HTMLUListElement>,
+  extends
+    React.HTMLAttributes<HTMLUListElement>,
     VariantProps<typeof timelineVariants> {}
 
 const Timeline = React.forwardRef<HTMLUListElement, TimelineProps>(
@@ -49,7 +50,8 @@ const timelineItemVariants = cva("grid items-center gap-x-2", {
 });
 
 interface TimelineItemProps
-  extends React.HTMLAttributes<HTMLLIElement>,
+  extends
+    React.HTMLAttributes<HTMLLIElement>,
     VariantProps<typeof timelineItemVariants> {}
 
 const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
@@ -83,7 +85,8 @@ const timelineDotVariants = cva(
 );
 
 interface TimelineDotProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof timelineDotVariants> {
   customIcon?: React.ReactNode;
 }
@@ -121,7 +124,8 @@ const timelineContentVariants = cva(
 );
 
 interface TimelineConent
-  extends React.HTMLAttributes<HTMLParagraphElement>,
+  extends
+    React.HTMLAttributes<HTMLParagraphElement>,
     VariantProps<typeof timelineContentVariants> {}
 
 const TimelineContent = React.forwardRef<HTMLParagraphElement, TimelineConent>(
@@ -156,7 +160,8 @@ const timelineHeadingVariants = cva(
 );
 
 interface TimelineConent
-  extends React.HTMLAttributes<HTMLParagraphElement>,
+  extends
+    React.HTMLAttributes<HTMLParagraphElement>,
     VariantProps<typeof timelineHeadingVariants> {}
 
 const TimelineHeading = React.forwardRef<HTMLParagraphElement, TimelineConent>(

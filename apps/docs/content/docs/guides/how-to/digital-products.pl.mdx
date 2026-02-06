@@ -1,0 +1,437 @@
+---
+title: 'Produkty cyfrowe'
+description: 'Dowiedz się, jak dodać obsługę produktów cyfrowych, takich jak e-booki, oprogramowanie i pliki do pobrania w Deenruv'
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Produkty cyfrowe obejmują takie rzeczy jak e-booki, kursy online i oprogramowanie. Są to produkty dostarczane klientowi elektronicznie, które nie wymagają fizycznej wysyłki.
+
+Ten poradnik pokaże Ci, jak dodać obsługę produktów cyfrowych do Deenruv.
+
+## Tworzenie pluginu
+
+<Callout type="info">
+Kompletny kod źródłowy poniższego przykładowego pluginu można znaleźć tutaj: [example-plugins/digital-products](https://github.com/aexol-studio/deenruv/tree/main/packages/dev-server/example-plugins/digital-products)
+</Callout>
+
+### Definiowanie pól niestandardowych
+
+Jeśli niektóre produkty są cyfrowe, a inne fizyczne, możemy je rozróżnić, dodając customField do encji ProductVariant.
+
+```ts title="src/plugins/digital-products/digital-products-plugin.ts"
+import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    configuration: config => {
+        config.customFields.ProductVariant.push({
+            type: 'boolean',
+            name: 'isDigital',
+            defaultValue: false,
+            label: [{ languageCode: LanguageCode.en, value: 'This product is digital' }],
+            public: true,
+        });
+        return config;
+    },
+})
+export class DigitalProductsPlugin {}
+```
+
+Zdefiniujemy również pole niestandardowe w encji `ShippingMethod`, aby wskazać, że ta metoda wysyłki jest dostępna tylko dla produktów cyfrowych:
+
+```ts title="src/plugins/digital-products/digital-products-plugin.ts"
+import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    configuration: config => {
+        // config.customFields.ProductVariant.push({ ... pominięto
+        config.customFields.ShippingMethod.push({
+            type: 'boolean',
+            name: 'digitalFulfilmentOnly',
+            defaultValue: false,
+            label: [{ languageCode: LanguageCode.en, value: 'Digital fulfilment only' }],
+            public: true,
+        });
+        return config;
+    },
+})
+```
+
+Na koniec zdefiniujemy pole niestandardowe w encji `Fulfillment`, w którym możemy przechowywać linki do pobrania produktów cyfrowych. W swojej własnej implementacji możesz chcieć obsłużyć tę część inaczej, np. przechowując linki do pobrania w encji `Order` lub w niestandardowej encji.
+
+```ts title="src/plugins/digital-products/digital-products-plugin.ts"
+import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    configuration: config => {
+        // config.customFields.ProductVariant.push({ ... pominięto
+        // config.customFields.ShippingMethod.push({ ... pominięto
+        config.customFields.Fulfillment.push({
+            type: 'string',
+            name: 'downloadUrls',
+            nullable: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'Urls of any digital purchases' }],
+            public: true,
+        });
+        return config;
+    },
+})
+```
+
+### Tworzenie niestandardowego FulfillmentHandler
+
+`FulfillmentHandler` jest odpowiedzialny za tworzenie encji `Fulfillment` podczas realizacji zamówienia. Utworzymy niestandardowy handler, który jest odpowiedzialny za wykonanie logiki związanej z generowaniem linków do pobrania cyfrowego.
+
+W Twojej własnej implementacji może to wyglądać znacząco inaczej w zależności od wymagań.
+
+```ts title="src/plugins/digital-products/config/digital-fulfillment-handler.ts"
+import { FulfillmentHandler, LanguageCode, OrderLine, TransactionalConnection } from '@deenruv/core';
+import { In } from 'typeorm';
+
+let connection: TransactionalConnection;
+
+/**
+ * @description
+ * To jest handler realizacji dla produktów cyfrowych, który generuje URL do pobrania
+ * dla każdego produktu cyfrowego w zamówieniu.
+ */
+export const digitalFulfillmentHandler = new FulfillmentHandler({
+    code: 'digital-fulfillment',
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'Generates product keys for the digital download',
+        },
+    ],
+    args: {},
+    init: injector => {
+        connection = injector.get(TransactionalConnection);
+    },
+    createFulfillment: async (ctx, orders, lines) => {
+        const digitalDownloadUrls: string[] = [];
+
+        const orderLines = await connection.getRepository(ctx, OrderLine).find({
+            where: {
+                id: In(lines.map(l => l.orderLineId)),
+            },
+            relations: {
+                productVariant: true,
+            },
+        });
+        for (const orderLine of orderLines) {
+            if (orderLine.productVariant.customFields.isDigital) {
+                // To jest produkt cyfrowy, więc generujemy URL do pobrania
+                const downloadUrl = await generateDownloadUrl(orderLine);
+                digitalDownloadUrls.push(downloadUrl);
+            }
+        }
+        return {
+            method: 'Digital Fulfillment',
+            trackingCode: 'DIGITAL',
+            customFields: {
+                downloadUrls: digitalDownloadUrls,
+            },
+        };
+    },
+});
+
+function generateDownloadUrl(orderLine: OrderLine) {
+    // To jest funkcja zastępcza, która generowałaby URL do pobrania dla danego OrderLine
+    // poprzez interfejs z jakimś zewnętrznym systemem zarządzającym dostępem do produktu cyfrowego.
+    // W tym przykładzie po prostu generujemy losowy ciąg znaków.
+    const downloadUrl = `https://example.com/download?key=${Math.random().toString(36).substring(7)}`;
+    return Promise.resolve(downloadUrl);
+}
+```
+
+### Tworzenie niestandardowego ShippingEligibilityChecker
+
+Chcemy upewnić się, że cyfrowa metoda wysyłki jest dostępna tylko dla zamówień zawierających co najmniej jeden produkt cyfrowy.
+Robimy to za pomocą niestandardowego ShippingEligibilityChecker:
+
+```ts title="src/plugins/digital-products/config/digital-shipping-eligibility-checker.ts"
+import { LanguageCode, ShippingEligibilityChecker } from '@deenruv/core';
+
+export const digitalShippingEligibilityChecker = new ShippingEligibilityChecker({
+    code: 'digital-shipping-eligibility-checker',
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'Allows only orders that contain at least 1 digital product',
+        },
+    ],
+    args: {},
+    check: (ctx, order, args) => {
+        const digitalOrderLines = order.lines.filter(l => l.productVariant.customFields.isDigital);
+        return digitalOrderLines.length > 0;
+    },
+});
+```
+
+### Tworzenie niestandardowej ShippingLineAssignmentStrategy
+
+Podczas dodawania metod wysyłki do zamówienia chcemy upewnić się, że produkty cyfrowe są poprawnie przypisane do cyfrowej metody wysyłki, a produkty fizyczne nie.
+
+```ts title="src/plugins/digital-products/config/digital-shipping-line-assignment-strategy.ts"
+import {
+    Order,
+    OrderLine,
+    RequestContext,
+    ShippingLine,
+    ShippingLineAssignmentStrategy,
+} from '@deenruv/core';
+
+/**
+ * @description
+ * Ta ShippingLineAssignmentStrategy zapewnia, że produkty cyfrowe są przypisywane do
+ * ShippingLine z flagą `isDigital` ustawioną na true.
+ */
+export class DigitalShippingLineAssignmentStrategy implements ShippingLineAssignmentStrategy {
+    assignShippingLineToOrderLines(
+        ctx: RequestContext,
+        shippingLine: ShippingLine,
+        order: Order,
+    ): OrderLine[] | Promise<OrderLine[]> {
+        if (shippingLine.shippingMethod.customFields.isDigital) {
+            return order.lines.filter(l => l.productVariant.customFields.isDigital);
+        } else {
+            return order.lines.filter(l => !l.productVariant.customFields.isDigital);
+        }
+    }
+}
+```
+
+### Definiowanie niestandardowego OrderProcess
+
+Aby automatycznie realizować produkty cyfrowe natychmiast po zakończeniu zamówienia, możemy zdefiniować niestandardowy OrderProcess:
+
+```ts title="src/plugins/digital-products/config/digital-order-process.ts"
+import { OrderProcess, OrderService } from '@deenruv/core';
+
+import { digitalFulfillmentHandler } from './digital-fulfillment-handler';
+
+let orderService: OrderService;
+
+/**
+ * @description
+ * Ten OrderProcess zapewnia, że gdy zamówienie przechodzi z ArrangingPayment do
+ * PaymentAuthorized lub PaymentSettled, wszystkie produkty cyfrowe są automatycznie
+ * realizowane.
+ */
+export const digitalOrderProcess: OrderProcess<string> = {
+    init(injector) {
+        orderService = injector.get(OrderService);
+    },
+    async onTransitionEnd(fromState, toState, data) {
+        if (
+            fromState === 'ArrangingPayment' &&
+            (toState === 'PaymentAuthorized' || toState === 'PaymentSettled')
+        ) {
+            const digitalOrderLines = data.order.lines.filter(l => l.productVariant.customFields.isDigital);
+            if (digitalOrderLines.length) {
+                await orderService.createFulfillment(data.ctx, {
+                    lines: digitalOrderLines.map(l => ({ orderLineId: l.id, quantity: l.quantity })),
+                    handler: { code: digitalFulfillmentHandler.code, arguments: [] },
+                });
+            }
+        }
+    },
+};
+```
+
+### Kompletny plugin i dodanie do konfiguracji
+
+Kompletny plugin można znaleźć tutaj: [example-plugins/digital-products](https://github.com/aexol-studio/deenruv/tree/main/packages/dev-server/example-plugins/digital-products)
+
+Teraz możemy dodać plugin do DeenruvConfig:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { DigitalProductsPlugin } from './plugins/digital-products/digital-products-plugin';
+
+const config: DeenruvConfig = {
+    // ... pozostała konfiguracja pominięta
+    plugins: [
+        // ... inne pluginy pominięte
+        DigitalProductsPlugin,
+    ],
+};
+```
+
+## Tworzenie metody wysyłki
+
+Po zdefiniowaniu i zebraniu tych części w plugin Deenruv, możemy utworzyć nową metodę wysyłki (ShippingMethod) przez panel administracyjny i upewnić się, że zaznaczono pole niestandardowe „isDigital" oraz wybrano niestandardowy handler realizacji i checker kwalifikowalności:
+
+
+
+## Oznaczanie produktów cyfrowych
+
+Teraz możemy również oznaczyć warianty produktów cyfrowych, zaznaczając pole niestandardowe:
+
+
+
+## Integracja ze sklepem
+
+W sklepie, gdy klient składa zamówienie, możemy użyć zapytania `eligibleShippingMethods`, aby określić, które metody wysyłki są dostępne dla klienta. Jeśli klient ma jakiekolwiek produkty cyfrowe w zamówieniu, metoda wysyłki „digital-download" będzie dostępna:
+
+<Tabs items={['Query', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query {
+    eligibleShippingMethods {
+        id
+        name
+        price
+        priceWithTax
+        customFields {
+            isDigital
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "eligibleShippingMethods": [
+            {
+                "id": "3",
+                "name": "Digital Download",
+                "price": 0,
+                "priceWithTax": 0,
+                "customFields": {
+                    "isDigital": true
+                }
+            },
+            {
+                "id": "1",
+                "name": "Standard Shipping",
+                "price": 500,
+                "priceWithTax": 500,
+                "customFields": {
+                    "isDigital": false
+                }
+            },
+            {
+                "id": "2",
+                "name": "Express Shipping",
+                "price": 1000,
+                "priceWithTax": 1000,
+                "customFields": {
+                    "isDigital": false
+                }
+            }
+        ]
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Jeśli cyfrowa metoda wysyłki „digital download" jest kwalifikowana, powinna być ustawiona jako metoda wysyłki wraz z innymi metodami wymaganymi przez fizyczne produkty w zamówieniu.
+
+<Tabs items={['Query', 'Response']}>
+<Tab value="Query">
+
+```graphql
+mutation SetShippingMethod {
+  setOrderShippingMethod(
+      shippingMethodId: ["3", "1"]
+    ) {
+    ... on Order {
+      id
+      code
+      total
+      lines {
+        id
+        quantity
+        linePriceWithTax
+        productVariant {
+          name
+          sku
+          customFields {
+            isDigital
+          }
+        }
+      }
+      shippingLines {
+        id
+        shippingMethod {
+          name
+        }
+        priceWithTax
+      }
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "setOrderShippingMethod": {
+            "id": "11",
+            "code": "C6H3UZ6WQ62LAPS8",
+            "total": 5262,
+            "lines": [
+                {
+                    "id": "16",
+                    "quantity": 1,
+                    "linePriceWithTax": 1458,
+                    "productVariant": {
+                        "name": "Jeff Buckley Grace mp3 download",
+                        "sku": "1231241241231",
+                        "customFields": {
+                            "isDigital": true
+                        }
+                    }
+                },
+                {
+                    "id": "17",
+                    "quantity": 1,
+                    "linePriceWithTax": 4328,
+                    "productVariant": {
+                        "name": "Basketball",
+                        "sku": "WTB1418XB06",
+                        "customFields": {
+                            "isDigital": false
+                        }
+                    }
+                }
+            ],
+            "shippingLines": [
+                {
+                    "id": "13",
+                    "shippingMethod": {
+                        "name": "Digital Download"
+                    },
+                    "priceWithTax": 0
+                },
+                {
+                    "id": "14",
+                    "shippingMethod": {
+                        "name": "Standard Shipping"
+                    },
+                    "priceWithTax": 500
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>

@@ -1,0 +1,339 @@
+---
+title: 'Strategie i konfigurowalne operacje'
+description: 'Poznaj strategie i konfigurowalne operacje w Deenruv do tworzenia rozszerzalnych i konfigurowalnych funkcji'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Deenruv jest zaprojektowany tak, aby był wysoce konfigurowalny i rozszerzalny. Dwie metody zapewniania tej rozszerzalności to **strategie** i **konfigurowalne operacje**.
+
+## Strategie
+
+Nazwa pochodzi od [wzorca Strategy](https://en.wikipedia.org/wiki/Strategy_pattern) i jest sposobem na dostarczanie podłączalnej implementacji określonej funkcji. Deenruv intensywnie wykorzystuje ten wzorzec, delegując implementację kluczowych punktów rozszerzalności do programisty.
+
+Przykłady strategii obejmują:
+
+-   `OrderCodeStrategy` — określa sposób generowania kodów zamówień
+-   `StockLocationStrategy` — określa, które lokalizacje magazynowe są używane do realizacji zamówienia
+-   `ActiveOrderStrategy` — określa sposób wybierania aktywnego zamówienia w Shop API
+-   `AssetStorageStrategy` — określa, gdzie przechowywane są przesyłane zasoby
+-   `GuestCheckoutStrategy` — definiuje zasady dotyczące zamówień bez konta
+-   `OrderItemPriceCalculationStrategy` — określa sposób wyceny produktów podczas dodawania do zamówienia
+-   `TaxLineCalculationStrategy` — określa sposób obliczania podatku dla linii zamówienia
+
+Jako przykład weźmy `OrderCodeStrategy`. Ta strategia określa, w jaki sposób generowane są kody przy tworzeniu nowych zamówień. Domyślnie Deenruv używa wbudowanej `DefaultOrderCodeStrategy`, która generuje losowy 16-znakowy ciąg.
+
+Co jeśli musisz zmienić to zachowanie? Na przykład, możesz mieć istniejący system back-office, który jest odpowiedzialny za generowanie kodów zamówień, z którym musisz się zintegrować. Oto jak to zrobić:
+
+```ts title="src/config/my-order-code-strategy.ts"
+import { OrderCodeStrategy, RequestContext } from '@deenruv/core';
+import { OrderCodeService } from '../services/order-code.service';
+
+export class MyOrderCodeStrategy implements OrderCodeStrategy {
+    private orderCodeService: OrderCodeService;
+
+    init(injector) {
+        this.orderCodeService = injector.get(OrderCodeService);
+    }
+
+    async generate(ctx: RequestContext): string {
+        return this.orderCodeService.getNewOrderCode();
+    }
+}
+```
+
+<Callout type="info">
+Wszystkie strategie mogą korzystać z istniejących serwisów za pomocą metody `init()`. Wynika to z faktu, że wszystkie strategie rozszerzają bazowy interfejs `InjectableStrategy`. W tym przykładzie zakładamy, że wcześniej utworzyliśmy `OrderCodeService`, który zawiera całą specyficzną logikę łączenia się z naszym systemem backendowym generującym kody zamówień.
+</Callout>
+
+Następnie musimy przekazać tę niestandardową strategię do naszej konfiguracji:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { MyOrderCodeStrategy } from '../config/my-order-code-strategy';
+
+export const config: DeenruvConfig = {
+    // ...
+    orderOptions: {
+        orderCodeStrategy: new MyOrderCodeStrategy(),
+    },
+};
+```
+
+### Cykl życia strategii
+
+Strategie mogą korzystać z dwóch opcjonalnych metod cyklu życia:
+
+-   `init(injector: Injector)` — wywoływana podczas fazy bootstrap, gdy serwer lub worker się uruchamia. To tutaj możesz wstrzyknąć serwisy, których potrzebujesz w strategii. Możesz również wykonać inną logikę konfiguracyjną, np. nawiązanie połączenia z usługą zewnętrzną.
+-   `destroy()` — wywoływana podczas zamykania serwera lub workera. To tutaj możesz wykonać logikę czyszczenia, np. zamknięcie połączeń z usługami zewnętrznymi.
+
+### Przekazywanie opcji do strategii
+
+Czasami możesz chcieć przekazać opcje konfiguracyjne do strategii. Na przykład wyobraź sobie, że chcesz utworzyć niestandardową `StockLocationStrategy`, która wybiera lokalizację w określonej odległości od adresu klienta. Możesz chcieć przekazać maksymalną odległość do strategii w konfiguracji:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { MyStockLocationStrategy } from '../config/my-stock-location-strategy';
+
+export const config: DeenruvConfig = {
+    // ...
+    catalogOptions: {
+        stockLocationStrategy: new MyStockLocationStrategy({ maxDistance: 100 }),
+    },
+};
+```
+
+Ta konfiguracja zostanie przekazana do konstruktora strategii:
+
+```ts title="src/config/my-stock-location-strategy.ts"
+import { ID, ProductVariant, RequestContext, StockLevel, StockLocationStrategy } from '@deenruv/core';
+
+export class MyStockLocationStrategy implements StockLocationStrategy {
+    constructor(private options: { maxDistance: number }) {}
+
+    getAvailableStock(
+        ctx: RequestContext,
+        productVariantId: ID,
+        stockLevels: StockLevel[],
+    ): ProductVariant[] {
+        const maxDistance = this.options.maxDistance;
+        // ... implementation omitted
+    }
+}
+```
+
+## Konfigurowalne operacje
+
+Konfigurowalne operacje są podobne do strategii w tym sensie, że pozwalają na dostosowywanie określonych aspektów systemu. Jednak główna różnica polega na tym, że mogą być również _konfigurowane_ za pośrednictwem interfejsu Admin UI. Pozwala to właścicielowi sklepu na wprowadzanie zmian w zachowaniu systemu bez konieczności restartowania serwera.
+
+Są więc zazwyczaj używane do dostarczania niestandardowej logiki, która musi przyjmować konfigurowalne argumenty, które mogą się zmieniać w czasie działania.
+
+Deenruv używa następujących konfigurowalnych operacji:
+
+-   `CollectionFilter` — określa, które produkty są włączane do kolekcji
+-   `PaymentMethodHandler` — określa sposób przetwarzania płatności
+-   `PromotionCondition` — określa, czy promocja ma zastosowanie
+-   `PromotionAction` — określa, co się dzieje, gdy promocja jest stosowana
+-   `ShippingEligibilityChecker` — określa, czy metoda wysyłki jest dostępna
+-   `ShippingCalculator` — określa sposób obliczania kosztów wysyłki
+
+Podczas gdy strategie są zazwyczaj używane do dostarczania pojedynczej implementacji określonej funkcji, konfigurowalne operacje służą do dostarczania zestawu implementacji, z których można wybierać w czasie działania.
+
+Na przykład Deenruv jest dostarczany z zestawem domyślnych CollectionFilters:
+
+```ts title="default-collection-filters.ts"
+export const defaultCollectionFilters = [
+    facetValueCollectionFilter,
+    variantNameCollectionFilter,
+    variantIdCollectionFilter,
+    productIdCollectionFilter,
+];
+```
+
+Podczas konfigurowania kolekcji możesz wybrać spośród dostępnych domyślnych filtrów:
+
+
+
+Po wybraniu jednego z nich, interfejs pozwoli skonfigurować argumenty tego filtra:
+
+
+
+Przyjrzyjmy się uproszczonej implementacji `variantNameCollectionFilter`:
+
+```ts title="variant-name-collection-filter.ts"
+import { CollectionFilter, LanguageCode } from '@deenruv/core';
+
+export const variantNameCollectionFilter = new CollectionFilter({
+    args: {
+        operator: {
+            type: 'string',
+            ui: {
+                component: 'select-form-input',
+                options: [
+                    { value: 'startsWith' },
+                    { value: 'endsWith' },
+                    { value: 'contains' },
+                    { value: 'doesNotContain' },
+                ],
+            },
+        },
+        term: { type: 'string' },
+    },
+    code: 'variant-name-filter',
+    description: [{ languageCode: LanguageCode.en, value: 'Filter by product variant name' }],
+    apply: (qb, args) => {
+        // ... implementation omitted
+    },
+});
+```
+
+Oto najważniejsze elementy:
+
+-   Konfigurowalne operacje są **instancjami** predefiniowanej klasy i są tworzone przed przekazaniem do konfiguracji.
+-   Muszą mieć właściwość `code`, będącą unikalnym identyfikatorem tekstowym.
+-   Muszą mieć właściwość `description`, będącą lokalizowalnym, czytelnym opisem operacji.
+-   Muszą mieć właściwość `args`, która definiuje argumenty konfigurowalne za pośrednictwem Admin UI. Jeśli operacja nie ma argumentów, będzie to pusty obiekt.
+-   Będą miały jedną lub więcej metod do zaimplementowania, w zależności od typu operacji. W tym przypadku metoda `apply()` służy do zastosowania filtra do query buildera.
+
+### Argumenty konfigurowalnych operacji
+
+Właściwość `args` jest obiektem definiującym argumenty konfigurowalne za pośrednictwem Admin UI. Każda właściwość obiektu `args` jest parą klucz-wartość, gdzie klucz jest nazwą argumentu, a wartość jest obiektem definiującym typ argumentu i dodatkową konfigurację.
+
+Jako przykład przyjrzyjmy się `dummyPaymentMethodHandler`, testowej metodzie płatności dostarczanej z Deenruv core:
+
+```ts title="dummy-payment-method.ts"
+import { PaymentMethodHandler, LanguageCode } from '@deenruv/core';
+
+export const dummyPaymentHandler = new PaymentMethodHandler({
+    code: 'dummy-payment-handler',
+    description: [
+        /* omitted for brevity */
+    ],
+    args: {
+        automaticSettle: {
+            type: 'boolean',
+            label: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Authorize and settle in 1 step',
+                },
+            ],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'If enabled, Payments will be created in the "Settled" state.',
+                },
+            ],
+            required: true,
+            defaultValue: false,
+        },
+    },
+    createPayment: async (ctx, order, amount, args, metadata, method) => {
+        // Inside this method, the `args` argument is type-safe and will be
+        // an object with the following shape:
+        // {
+        //   automaticSettle: boolean
+        // }
+        // ... implementation omitted
+    },
+});
+```
+
+Następujące właściwości służą do konfigurowania argumentu:
+
+#### type
+
+**Wymagane**
+
+`ConfigArgType`
+
+Dostępne typy: `string`, `int`, `float`, `boolean`, `datetime`, `ID`.
+
+#### label
+
+*Opcjonalne*
+
+`LocalizedStringArray`
+
+Czytelna etykieta argumentu. Używana w Admin UI.
+
+#### description
+
+*Opcjonalne*
+
+`LocalizedStringArray`
+
+Czytelny opis argumentu. Używany w Admin UI jako tooltip.
+
+#### required
+
+*Opcjonalne*
+
+`boolean`
+
+Czy argument jest wymagany. Jeśli `true`, Admin UI nie pozwoli użytkownikowi zapisać konfiguracji bez podania wartości dla tego argumentu.
+
+#### defaultValue
+
+*Opcjonalne*
+
+`any` (zależy od `type`)
+
+Domyślna wartość argumentu. Jeśli nie podano, argument domyślnie będzie miał wartość `undefined`.
+
+#### list
+
+*Opcjonalne*
+
+`boolean`
+
+Czy argument jest listą wartości. Jeśli `true`, Admin UI pozwoli użytkownikowi dodać wiele wartości dla tego argumentu. Domyślnie `false`.
+
+#### ui
+
+*Opcjonalne*
+
+Pozwala określić komponent UI, który będzie używany do renderowania argumentu w Admin UI, poprzez podanie właściwości `component` i opcjonalnych właściwości konfiguracyjnych tego komponentu.
+
+```ts
+{
+    args: {
+        operator: {
+            type: 'string',
+            ui: {
+                component: 'select-form-input',
+                options: [
+                    { value: 'startsWith' },
+                    { value: 'endsWith' },
+                    { value: 'contains' },
+                    { value: 'doesNotContain' },
+                ],
+            },
+        },
+    }
+}
+```
+
+Pełny opis dostępnych komponentów UI znajdziesz w [przewodniku Custom Fields](/docs/guides/developer-guide/custom-fields/#custom-field-ui).
+
+### Wstrzykiwanie zależności
+
+Konfigurowalne operacje są tworzone przed przekazaniem do konfiguracji, więc mechanizm wstrzykiwania zależności jest podobny do tego w strategiach: mianowicie używasz opcjonalnej metody `init()` do wstrzykiwania zależności do instancji operacji.
+
+Główna różnica polega na tym, że wstrzyknięta zależność nie może być przechowywana jako właściwość klasy, ponieważ nie definiujesz klasy podczas definiowania konfigurowalnej operacji. Zamiast tego możesz przechowywać zależność jako zmienną domknięcia (closure).
+
+Oto przykład ShippingCalculator, który wstrzykuje serwis zdefiniowany w pluginie:
+
+```ts title="src/config/custom-shipping-calculator.ts"
+import { Injector, ShippingCalculator } from '@deenruv/core';
+import { ShippingRatesService } from './shipping-rates.service';
+
+// We keep reference to our injected service by keeping it
+// in the top-level scope of the file.
+let shippingRatesService: ShippingRatesService;
+
+export const customShippingCalculator = new ShippingCalculator({
+    code: 'custom-shipping-calculator',
+    description: [],
+    args: {},
+
+    init(injector: Injector) {
+        // The init function is called during bootstrap, and allows
+        // us to inject any providers we need.
+        shippingRatesService = injector.get(ShippingRatesService);
+    },
+
+    calculate: async (order, args) => {
+        // We can now use the injected provider in the business logic.
+        const { price, priceWithTax } = await shippingRatesService.getRate({
+            destination: order.shippingAddress,
+            contents: order.lines,
+        });
+
+        return {
+            price,
+            priceWithTax,
+        };
+    },
+});
+```

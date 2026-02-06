@@ -9,8 +9,9 @@ import {
 } from "../../common/configurable-operation";
 import { ShippingMethod, Order } from "../../entity";
 
-export interface ShippingCalculatorConfig<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface ShippingCalculatorConfig<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   calculate: CalculateShippingFn<T>;
 }
 

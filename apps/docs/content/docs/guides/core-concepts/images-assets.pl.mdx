@@ -1,0 +1,36 @@
+---
+title: 'Obrazy i zasoby'
+description: 'Dowiedz się, jak zarządzać obrazami i innymi zasobami w Deenruv — przechowywanie, nazewnictwo, podglądy i AssetServerPlugin'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+`Assets` służą do przechowywania plików, takich jak obrazy, filmy, pliki PDF itp. Zasoby mogą być domyślnie przypisywane do **produktów**, **wariantów** i **kolekcji**. Korzystając z [pól niestandardowych](/docs/guides/developer-guide/custom-fields/), można przypisywać zasoby do innych entity. Na przykład do implementacji zdjęć profilowych klientów.
+
+Obsługa zasobów w Deenruv jest zaimplementowana w sposób modularny, dając Ci pełną kontrolę nad sposobem przechowywania, nazewnictwa, importowania i podglądu zasobów.
+
+
+
+1. Zasób jest tworzony poprzez przesłanie obrazu. Wewnętrznie wykonywana jest mutacja `createAssets`.
+2. `AssetNamingStrategy` jest używana do generowania nazw plików dla obrazu źródłowego i podglądu. Jest to przydatne do normalizacji nazw plików oraz obsługi konfliktów nazw.
+3. `AssetPreviewStrategy` generuje obraz podglądu zasobu. Dla obrazów zazwyczaj obejmuje to stworzenie wersji z ograniczeniami maksymalnych wymiarów. Może być również używana np. do generowania podglądu obrazów dla przesłanych plików PDF, filmów lub innych zasobów niebędących obrazami (taka funkcjonalność wymagałaby zdefiniowania własnej `AssetPreviewStrategy`).
+4. Plik źródłowy oraz obraz podglądu są następnie przekazywane do `AssetStorageStrategy`, która przechowuje pliki w określonym miejscu. Może to być dysk lokalny lub obiektowe magazyny danych, takie jak AWS S3 lub MinIO.
+5. Gdy zasób jest później odczytywany, np. gdy klient przegląda stronę szczegółów produktu zawierającą zdjęcie produktu, `AssetStorageStrategy` może być użyta do odczytania pliku z lokalizacji przechowywania.
+
+## AssetServerPlugin
+
+Deenruv dostarczany jest z preinstalowanym pakietem `@deenruv/asset-server-plugin`. Zawiera on `AssetServerPlugin`, który zapewnia wiele zaawansowanych funkcji ułatwiających pracę z zasobami.
+
+Plugin dostarcza gotowy zestaw strategii do obsługi zasobów, ale pozwala również zastąpić te domyślne strategie własnymi implementacjami. Na przykład, oto instrukcje jak zastąpić domyślną strategię przechowywania taką, która przechowuje zasoby w AWS S3 lub MinIO: `configureS3AssetStorage`
+
+Plugin oferuje również potężne API transformacji obrazów, które pozwala określać wymiary, kadrowanie i format obrazu za pomocą parametrów zapytania.
+
+<Callout type="info">
+Szczegółowy opis wszystkich funkcji znajdziesz w `dokumentacji AssetServerPlugin`.
+</Callout>
+
+## Tagi zasobów
+
+Zasoby mogą być tagowane. `Tag` to prosta etykieta tekstowa, którą można przypisać do zasobu. Zasób może mieć wiele tagów lub nie mieć żadnego. Tagi są przydatne do organizowania zasobów, ponieważ zasoby są w innym przypadku organizowane jako płaska lista bez koncepcji struktury katalogów.
+
+

@@ -1,0 +1,13 @@
+{
+  "title": "Rozszerzanie panelu administracyjnego",
+  "pages": [
+    "overview",
+    "getting-started",
+    "plugin-system",
+    "hooks",
+    "components",
+    "templates",
+    "graphql-client",
+    "state-management"
+  ]
+}

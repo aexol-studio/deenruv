@@ -11,9 +11,7 @@ import {
  * This ShippingLineAssignmentStrategy ensures that digital products are assigned to a
  * ShippingLine which has the `isDigital` flag set to true.
  */
-export class DigitalShippingLineAssignmentStrategy
-  implements ShippingLineAssignmentStrategy
-{
+export class DigitalShippingLineAssignmentStrategy implements ShippingLineAssignmentStrategy {
   assignShippingLineToOrderLines(
     ctx: RequestContext,
     shippingLine: ShippingLine,

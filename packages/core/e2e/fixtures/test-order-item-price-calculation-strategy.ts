@@ -10,9 +10,7 @@ import {
 /**
  * Adds $5 for items with gift wrapping, halves the price when buying 3 or more
  */
-export class TestOrderItemPriceCalculationStrategy
-  implements OrderItemPriceCalculationStrategy
-{
+export class TestOrderItemPriceCalculationStrategy implements OrderItemPriceCalculationStrategy {
   calculateUnitPrice(
     ctx: RequestContext,
     productVariant: ProductVariant,

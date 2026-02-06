@@ -1,0 +1,154 @@
+---
+title: 'Zarządzanie zamówieniami'
+description: 'Dowiedz się, jak przeglądać, realizować i zarządzać zamówieniami, zwrotami oraz cyklem życia zamówień w panelu administracyjnym Deenruv'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Sekcja Zamówienia w panelu administracyjnym Deenruv pozwala zarządzać pełnym cyklem życia zamówienia — od przeglądania nowych zamówień przez realizację po obsługę zwrotów i modyfikacji.
+
+## Cykl życia zamówienia
+
+Każde zamówienie w Deenruv podlega dobrze zdefiniowanej maszynie stanów. Zrozumienie tych stanów jest kluczowe dla efektywnego zarządzania zamówieniami:
+
+| Stan | Opis |
+|---|---|
+| **Created** | Aktywne zamówienie w koszyku klienta. Klient może je jeszcze modyfikować. |
+| **ArrangingPayment** | Klient przeszedł do realizacji zamówienia i organizuje płatność. |
+| **PaymentAuthorized** | Płatność została autoryzowana, ale jeszcze nie rozliczona. |
+| **PaymentSettled** | Płatność została pomyślnie rozliczona (pobrana). |
+| **PartiallyShipped** | Niektóre pozycje zamówienia zostały zrealizowane i wysłane. |
+| **Shipped** | Wszystkie pozycje zamówienia zostały zrealizowane i wysłane. |
+| **PartiallyDelivered** | Niektóre przesyłki zostały oznaczone jako dostarczone. |
+| **Delivered** | Wszystkie przesyłki zostały dostarczone do klienta. |
+| **Modifying** | Administrator modyfikuje zamówienie (dodaje/usuwa pozycje, koryguje ceny). |
+| **ArrangingAdditionalPayment** | Wymagana jest dodatkowa płatność po modyfikacji zamówienia. |
+| **Cancelled** | Zamówienie zostało anulowane. |
+
+<Callout type="info">
+Maszyna stanów zamówienia jest w pełni konfigurowalna. Twoja instancja Deenruv może mieć dodatkowe niestandardowe stany lub przejścia w zależności od wymagań biznesowych. Szczegóły znajdziesz w [przewodniku po strategiach](/docs/guides/developer-guide/strategies-configurable-operations).
+</Callout>
+
+## Przeglądanie zamówień
+
+Przejdź do **Sprzedaż → Zamówienia** w pasku bocznym panelu administracyjnego. Lista zamówień pokazuje:
+
+- **Kod zamówienia** — unikalny, czytelny identyfikator (np. `T7HKGQR3`)
+- **Imię i nazwisko klienta** oraz adres e-mail
+- **Stan** — aktualny stan zamówienia z kolorową plakietką
+- **Suma** — łączna kwota zamówienia wraz z podatkiem i wysyłką
+- **Data złożenia** — kiedy klient zakończył proces składania zamówienia
+
+Możesz filtrować zamówienia po stanie, wyszukiwać po kodzie zamówienia lub nazwie klienta oraz sortować po dacie lub kwocie.
+
+### Widok szczegółów zamówienia
+
+Kliknij na zamówienie, aby zobaczyć pełne szczegóły:
+
+- **Pozycje zamówienia** — każdy przedmiot z ilością, ceną jednostkową i sumą pozycji
+- **Wysyłka** — wybrany sposób wysyłki i koszt
+- **Płatności** — metoda płatności, status i szczegóły transakcji
+- **Klient** — powiązane konto klienta oraz adresy wysyłki/rozliczeniowe
+- **Historia** — pełna oś czasu zdarzeń zamówienia (zmiany stanów, notatki, modyfikacje)
+- **Promocje** — zastosowane kody kuponów lub automatyczne promocje
+- **Podsumowanie podatków** — zestawienie podatków naliczonych do zamówienia
+
+## Realizacja zamówień
+
+Realizacja to proces wysyłki pozycji zamówienia do klienta.
+
+### Tworzenie realizacji
+
+1. Otwórz widok szczegółów zamówienia w stanie **PaymentSettled**.
+2. Kliknij przycisk **Realizuj**.
+3. Wybierz, które pozycje zamówienia (i ilości) mają być uwzględnione w tej realizacji.
+4. Wybierz **Handler realizacji** — określa on sposób przetwarzania realizacji (np. realizacja ręczna, integracja z dostawcą wysyłki).
+5. Opcjonalnie wprowadź **Numer śledzenia** przesyłki.
+6. Kliknij **Realizuj**, aby utworzyć realizację.
+
+Zamówienie przejdzie do stanu **PartiallyShipped**, jeśli zrealizowano tylko część pozycji, lub **Shipped**, jeśli wszystkie pozycje zostały zrealizowane.
+
+### Częściowe realizacje
+
+Deenruv obsługuje podział zamówienia na wiele realizacji. Jest to przydatne, gdy:
+
+- Przedmioty są wysyłane z różnych magazynów
+- Niektóre przedmioty są chwilowo niedostępne
+- Przedmioty mają różne wymagania dotyczące wysyłki
+
+Każda realizacja śledzi swój stan niezależnie:
+
+| Stan realizacji | Opis |
+|---|---|
+| **Pending** | Realizacja utworzona, jeszcze nie przekazana do przewoźnika |
+| **Shipped** | Przekazana do przewoźnika, w transporcie |
+| **Delivered** | Pomyślnie dostarczona do klienta |
+| **Cancelled** | Realizacja została anulowana |
+
+## Zwroty
+
+Gdy klient żąda zwrotu lub występuje problem z zamówieniem, możesz wystawić zwrot środków.
+
+### Wystawianie zwrotu
+
+1. Otwórz widok szczegółów zamówienia.
+2. Kliknij przycisk **Zwrot**.
+3. Wybierz pozycje zamówienia i ilości do zwrotu.
+4. Wprowadź **kwotę zwrotu** — jest to łączna kwota, która zostanie zwrócona klientowi.
+5. Opcjonalnie dodaj **powód** zwrotu.
+6. Kliknij **Zwrot**, aby przetworzyć.
+
+Zwrot zostanie przetworzony przez tę samą metodę płatności, która została użyta do oryginalnej płatności. Encja zwrotu śledzi swój własny stan:
+
+| Stan zwrotu | Opis |
+|---|---|
+| **Pending** | Zwrot utworzony, oczekuje na przetworzenie przez dostawcę płatności |
+| **Settled** | Zwrot pomyślnie przetworzony, środki zwrócone |
+| **Failed** | Przetwarzanie zwrotu nie powiodło się |
+
+<Callout type="warn">
+Faktyczne przetwarzanie zwrotu zależy od implementacji handlera płatności. Niektórzy dostawcy płatności przetwarzają zwroty natychmiast, podczas gdy inni mogą potrzebować kilku dni roboczych.
+</Callout>
+
+## Modyfikowanie zamówień
+
+Administratorzy mogą modyfikować zamówienia po ich złożeniu. Jest to przydatne do poprawiania błędów, stosowania ręcznych rabatów lub uwzględniania próśb klientów.
+
+### Wprowadzanie modyfikacji
+
+1. Otwórz widok szczegółów zamówienia.
+2. Kliknij **Modyfikuj zamówienie**, aby wejść w tryb modyfikacji.
+3. Możesz:
+   - **Dodać pozycje** — wyszukaj i dodaj nowe warianty produktów
+   - **Usunąć pozycje** — zmniejsz ilości lub usuń pozycje całkowicie
+   - **Skorygować ceny** — zastosuj ręczne nadpisania cen
+   - **Dodać dopłaty** — dodaj jednorazowe opłaty lub rabaty
+   - **Zaktualizować wysyłkę** — zmień metodę wysyłki
+4. Przejrzyj podsumowanie modyfikacji pokazujące różnicę w cenie.
+5. Jeśli modyfikacja skutkuje dodatkową opłatą, zamówienie przejdzie do stanu **ArrangingAdditionalPayment**. Jeśli skutkuje nadpłatą, zwrot zostanie automatycznie przetworzony.
+
+<Callout type="info">
+Każda modyfikacja jest rejestrowana w historii zamówienia z notatką opisującą, co się zmieniło. Zapewnia to pełną ścieżkę audytu zmian zamówienia.
+</Callout>
+
+## Anulowanie zamówień
+
+Aby anulować zamówienie:
+
+1. Otwórz widok szczegółów zamówienia.
+2. Kliknij **Anuluj zamówienie**.
+3. Wybierz, które pozycje zamówienia mają być anulowane (możesz anulować częściowo).
+4. Wybierz powód anulowania.
+5. Potwierdź anulowanie.
+
+Jeśli płatność została już rozliczona, zwrot środków należy wystawić osobno.
+
+## Notatki do zamówienia
+
+Możesz dodawać wewnętrzne notatki do każdego zamówienia w celu komunikacji zespołowej:
+
+1. W widoku szczegółów zamówienia przewiń do sekcji **Historia**.
+2. Kliknij **Dodaj notatkę**.
+3. Wprowadź tekst notatki.
+4. Wybierz, czy notatka ma być **widoczna dla klienta** (uwzględniana w zapytaniach o historię zamówień z Shop API) czy **prywatna** (tylko dla administratorów).
+5. Kliknij **Dodaj notatkę**.

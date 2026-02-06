@@ -1,0 +1,378 @@
+---
+title: 'Zdarzenia'
+description: 'Dowiedz się, jak subskrybować i publikować zdarzenia w Deenruv — system EventBus do reaktywnego tworzenia pluginów'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Deenruv emituje zdarzenia, które mogą być subskrybowane przez pluginy. Zdarzenia te są publikowane przez `EventBus`, a za pomocą `EventBus` można również subskrybować zdarzenia.
+
+Zdarzenie istnieje dla praktycznie każdej istotnej akcji w systemie, takiej jak:
+
+- Gdy entity (np. `Product`, `Order`, `Customer`) są tworzone, aktualizowane lub usuwane
+- Gdy użytkownik rejestruje konto
+- Gdy użytkownik loguje się lub wylogowuje
+- Gdy zmienia się stan `Order`, `Payment`, `Fulfillment` lub `Refund`
+
+Poniżej znajduje się pełna lista dostępnych zdarzeń.
+
+## Typy zdarzeń
+
+<div className="grid grid-cols-2 gap-4">
+<div>
+
+- `AccountRegistrationEvent`
+- `AccountVerifiedEvent`
+- `AdministratorEvent`
+- `AssetChannelEvent`
+- `AssetEvent`
+- `AttemptedLoginEvent`
+- `ChangeChannelEvent`
+- `ChannelEvent`
+- `CollectionEvent`
+- `CollectionModificationEvent`
+- `CountryEvent`
+- `CouponCodeEvent`
+- `CustomerAddressEvent`
+- `CustomerEvent`
+- `CustomerGroupChangeEvent`
+- `CustomerGroupEvent`
+- `FacetEvent`
+- `FacetValueEvent`
+- `FulfillmentEvent`
+- `FulfillmentStateTransitionEvent`
+- `GlobalSettingsEvent`
+- `HistoryEntryEvent`
+- `IdentifierChangeEvent`
+- `IdentifierChangeRequestEvent`
+- `InitializerEvent`
+- `LoginEvent`
+- `LogoutEvent`
+- `OrderEvent`
+
+</div>
+<div>
+
+- `OrderLineEvent`
+- `OrderPlacedEvent`
+- `OrderStateTransitionEvent`
+- `PasswordResetEvent`
+- `PasswordResetVerifiedEvent`
+- `PaymentMethodEvent`
+- `PaymentStateTransitionEvent`
+- `ProductChannelEvent`
+- `ProductEvent`
+- `ProductOptionEvent`
+- `ProductOptionGroupChangeEvent`
+- `ProductOptionGroupEvent`
+- `ProductVariantChannelEvent`
+- `ProductVariantEvent`
+- `PromotionEvent`
+- `ProvinceEvent`
+- `RefundStateTransitionEvent`
+- `RoleChangeEvent`
+- `RoleEvent`
+- `SearchEvent`
+- `SellerEvent`
+- `ShippingMethodEvent`
+- `StockMovementEvent`
+- `TaxCategoryEvent`
+- `TaxRateEvent`
+- `TaxRateModificationEvent`
+- `ZoneEvent`
+- `ZoneMembersEvent`
+
+</div>
+</div>
+
+## Subskrybowanie zdarzeń
+
+Aby zasubskrybować zdarzenie, użyj metody `.ofType()` obiektu `EventBus`. Typowo subskrypcje konfiguruje się w hookach cyklu życia `onModuleInit()` lub `onApplicationBootstrap()` pluginu lub serwisu (patrz [zdarzenia cyklu życia NestJS](https://docs.nestjs.com/fundamentals/lifecycle-events)).
+
+Oto przykład, w którym subskrybujemy `ProductEvent` i używamy go do wyzwolenia przebudowy statycznego sklepu:
+
+```ts title="src/plugins/storefront-build/storefront-build.plugin.ts"
+import { OnModuleInit } from '@nestjs/common';
+import { EventBus, ProductEvent, PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
+
+import { StorefrontBuildService } from './services/storefront-build.service';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+})
+export class StorefrontBuildPlugin implements OnModuleInit {
+    constructor(
+        private eventBus: EventBus,
+        private storefrontBuildService: StorefrontBuildService,
+    ) {}
+
+    onModuleInit() {
+        this.eventBus.ofType(ProductEvent).subscribe(event => {
+            this.storefrontBuildService.triggerBuild();
+        });
+    }
+}
+```
+
+<Callout type="info">
+Metody `EventBus.ofType()` i powiązana `EventBus.filter()` zwracają `Observable` z RxJS.
+Oznacza to, że możesz użyć dowolnych [operatorów RxJS](https://rxjs-dev.firebaseapp.com/guide/operators) do transformacji strumienia zdarzeń.
+
+Na przykład, aby opóźnić (debounce) strumień zdarzeń, możesz zrobić tak:
+
+```ts
+import { debounceTime } from 'rxjs/operators';
+
+// ...
+
+this.eventBus
+    .ofType(ProductEvent)
+    .pipe(debounceTime(1000))
+    .subscribe(event => {
+        this.storefrontBuildService.triggerBuild();
+    });
+```
+</Callout>
+
+### Subskrybowanie wielu typów zdarzeń
+
+Metoda `.ofType()` pozwala subskrybować pojedynczy typ zdarzenia. Jeśli chcemy subskrybować wiele typów zdarzeń, możemy zamiast tego użyć metody `.filter()`:
+
+```ts title="src/plugins/my-plugin/my-plugin.plugin.ts"
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import {
+    EventBus,
+    PluginCommonModule,
+    DeenruvPlugin,
+    ProductEvent,
+    ProductVariantEvent,
+} from '@deenruv/core';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+})
+export class MyPluginPlugin implements OnModuleInit {
+    constructor(private eventBus: EventBus) {}
+
+    onModuleInit() {
+        this.eventBus
+            .filter(event => event instanceof ProductEvent || event instanceof ProductVariantEvent)
+            .subscribe(event => {
+                // the event will be a ProductEvent or ProductVariantEvent
+            });
+    }
+}
+```
+
+## Publikowanie zdarzeń
+
+Zdarzenia można publikować za pomocą metody `EventBus.publish()`. Jest to przydatne, gdy chcesz wyzwolić zdarzenie z poziomu pluginu lub serwisu.
+
+Na przykład, aby opublikować `ProductEvent`:
+
+```ts title="src/plugins/my-plugin/services/my-plugin.service.ts"
+import { Injectable } from '@nestjs/common';
+import { EventBus, ProductEvent, RequestContext, Product } from '@deenruv/core';
+
+@Injectable()
+export class MyPluginService {
+    constructor(private eventBus: EventBus) {}
+
+    async doSomethingWithProduct(ctx: RequestContext, product: Product) {
+        // ... do something
+        await this.eventBus.publish(new ProductEvent(ctx, product, 'updated'));
+    }
+}
+```
+
+## Tworzenie własnych zdarzeń
+
+Możesz tworzyć własne zdarzenia, rozszerzając klasę `DeenruvEvent`. Na przykład, aby stworzyć niestandardowe zdarzenie wyzwalane, gdy klient przesyła recenzję:
+
+```ts title="src/plugins/reviews/events/review-submitted.event.ts"
+import { ID, RequestContext, DeenruvEvent } from '@deenruv/core';
+import { ProductReviewInput } from '../types';
+
+/**
+ * @description
+ * This event is fired whenever a ProductReview is submitted.
+ */
+export class ReviewSubmittedEvent extends DeenruvEvent {
+    constructor(
+        public ctx: RequestContext,
+        public input: ProductReviewInput,
+    ) {
+        super();
+    }
+}
+```
+
+Zdarzenie byłoby następnie publikowane z poziomu `ProductReviewService` Twojego pluginu:
+
+```ts title="src/plugins/reviews/services/product-review.service.ts"
+import { Injectable } from '@nestjs/common';
+import { EventBus, ProductReviewService, RequestContext } from '@deenruv/core';
+
+import { ReviewSubmittedEvent } from '../events/review-submitted.event';
+import { ProductReviewInput } from '../types';
+
+@Injectable()
+export class ProductReviewService {
+    constructor(
+        private eventBus: EventBus,
+        private productReviewService: ProductReviewService,
+    ) {}
+
+    async submitReview(ctx: RequestContext, input: ProductReviewInput) {
+        this.eventBus.publish(new ReviewSubmittedEvent(ctx, input));
+        // handle creation of the new review
+        // ...
+    }
+}
+```
+
+### Zdarzenia entity
+
+Istnieje specjalna klasa zdarzeń `VendureEntityEvent` przeznaczona dla zdarzeń związanych z tworzeniem, aktualizacją lub usuwaniem entity. Załóżmy, że masz niestandardowe entity (patrz [definiowanie entity bazy danych](/docs/guides/developer-guide/database-entity)) `BlogPost` i chcesz wyzwolić zdarzenie za każdym razem, gdy `BlogPost` jest tworzony, aktualizowany lub usuwany:
+
+```ts title="src/plugins/blog/events/blog-post-event.ts"
+import { ID, RequestContext, VendureEntityEvent } from '@deenruv/core';
+import { BlogPost } from '../entities/blog-post.entity';
+import { CreateBlogPostInput, UpdateBlogPostInput } from '../types';
+
+type BlogPostInputTypes = CreateBlogPostInput | UpdateBlogPostInput | ID | ID[];
+
+/**
+ * This event is fired whenever a BlogPost is added, updated
+ * or deleted.
+ */
+export class BlogPostEvent extends VendureEntityEvent<BlogPost[], BlogPostInputTypes> {
+    constructor(
+        ctx: RequestContext,
+        entity: BlogPost,
+        type: 'created' | 'updated' | 'deleted',
+        input?: BlogPostInputTypes,
+    ) {
+        super(entity, type, ctx, input);
+    }
+}
+```
+
+Korzystając z tego zdarzenia, możesz subskrybować wszystkie zdarzenia `BlogPost` i na przykład filtrować tylko zdarzenia `created`:
+
+```ts title="src/plugins/blog/blog-plugin.ts"
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { EventBus, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { filter } from 'rxjs/operators';
+
+import { BlogPostEvent } from './events/blog-post-event';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+    // ...
+})
+export class BlogPlugin implements OnModuleInit {
+    constructor(private eventBus: EventBus) {}
+
+    onModuleInit() {
+        this.eventBus
+            .ofType(BlogPostEvent)
+            .pipe(filter(event => event.type === 'created'))
+            .subscribe(event => {
+                const blogPost = event.entity;
+                // do something with the newly created BlogPost
+            });
+    }
+}
+```
+
+## Blokujące handlery zdarzeń
+
+<Callout type="info">
+Poniższa sekcja jest tematem zaawansowanym.
+
+API opisane w tej sekcji zostało dodane w Deenruv v2.2.0.
+</Callout>
+
+Gdy korzystamy ze wzorca `.ofType().subscribe()`, handler zdarzenia jest nieblokujący. Oznacza to, że kod publikujący zdarzenie („kod publikujący") nie ma wiedzy o żadnych subskrybentach, a de facto subskrybenci zostaną wykonani po zakończeniu działania kodu publikującego (technicznie, wszelkie trwające transakcje bazodanowe są kończone zanim zdarzenie zostanie wyemitowane do subskrybentów). Jest to zgodne z typowym [wzorcem Obserwatora](https://en.wikipedia.org/wiki/Observer_pattern) i sprawdza się w większości przypadków użycia.
+
+Mogą jednak zaistnieć sytuacje, w których chcesz, aby handler zdarzenia powodował blokowanie kodu publikującego do czasu zakończenia obsługi zdarzenia. Realizuje się to za pomocą „blokującego handlera zdarzeń", który _nie_ podąża za wzorcem Obserwatora, lecz zachowuje się bardziej jak synchroniczne wywołanie funkcji w ramach kodu publikującego.
+
+Blokujący handler zdarzeń może być przydatny w następujących sytuacjach:
+
+- Handler zdarzenia jest tak krytyczny, że musisz mieć pewność, że został ukończony zanim kod publikujący będzie kontynuowany. Na przykład, jeśli handler musi manipulować danymi finansowymi.
+- Błędy w kodzie handlera powinny powodować niepowodzenie kodu publikującego (i wycofanie transakcji bazodanowej).
+- Chcesz się zabezpieczyć przed skrajnym przypadkiem, gdy instancja serwera zostanie wyłączona (np. z powodu błędu krytycznego lub zdarzenia autoskalowania) zanim subskrybenci zdarzeń zostaną wywołani.
+
+W takich przypadkach możesz użyć metody `EventBus.registerBlockingEventHandler()`:
+
+```ts title="src/plugins/my-plugin/my-plugin.plugin.ts"
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { EventBus, PluginCommonModule, VendurePlugin, CustomerEvent } from '@deenruv/core';
+import { CustomerSyncService } from './services/customer-sync.service';
+
+@DeenruvPlugin({
+    imports: [PluginCommonModule],
+})
+export class MyPluginPlugin implements OnModuleInit {
+    constructor(
+        private eventBus: EventBus,
+        private customerSyncService: CustomerSyncService,
+    ) {}
+
+    onModuleInit() {
+        this.eventBus.registerBlockingEventHandler({
+            event: CustomerEvent,
+            id: 'sync-customer-details-handler',
+            handler: async event => {
+                // This hypothetical service method would do nothing
+                // more than adding a new job to the job queue. This gives us
+                // the guarantee that the job is added before the publishing
+                // code is able to continue, while minimizing the time spent
+                // in the event handler.
+                await this.customerSyncService.triggerCustomerSyncJob(event);
+            },
+        });
+    }
+}
+```
+
+Kluczowe różnice między subskrybentami zdarzeń a blokującymi handlerami zdarzeń:
+
+| Aspekt             | Subskrybenci zdarzeń                                                           | Blokujące handlery zdarzeń                                                                |
+| ------------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **Wykonanie**      | Wykonywane _po_ zakończeniu kodu publikującego                                 | Wykonywane _w trakcie_ kodu publikującego                                                 |
+| **Obsługa błędów** | Błędy nie wpływają na kod publikujący                                          | Błędy propagowane do kodu publikującego                                                   |
+| **Transakcje**     | Gwarancja wykonania dopiero po zakończeniu transakcji kodu publikującego       | Wykonywane w ramach transakcji kodu publikującego                                         |
+| **Wydajność**      | Nieblokujące: wydajność funkcji subskrybenta nie wpływa na kod publikujący     | Blokujące: funkcja handlera blokuje wykonanie kodu publikującego. Handler musi być szybki.|
+
+### Aspekty wydajnościowe
+
+Ponieważ blokujące handlery zdarzeń wykonują się w ramach tej samej transakcji co kod publikujący, ważne jest, aby były szybkie. Jeśli pojedynczy handler potrzebuje więcej niż 100ms na wykonanie, zostanie zalogowane ostrzeżenie. Idealnie powinny być znacznie szybsze — możesz ustawić `logLevel` swojego Loggera na `LogLevel.DEBUG`, aby zobaczyć czas wykonania każdego handlera.
+
+Jeśli dla pojedynczego zdarzenia zarejestrowano wiele handlerów, będą one wykonywane sekwencyjnie, więc kod publikujący będzie blokowany do czasu zakończenia wszystkich handlerów.
+
+### Kolejność wykonania
+
+Jeśli zarejestrujesz wiele handlerów dla tego samego zdarzenia, zostaną one wykonane w kolejności, w jakiej zostały zarejestrowane. Jeśli potrzebujesz większej kontroli nad tą kolejnością, tzn. chcesz _zagwarantować_, że określony handler zostanie wykonany przed innym, możesz użyć opcji `before` lub `after`:
+
+```ts
+// In one part of your code base
+this.eventBus.registerBlockingEventHandler({
+    type: CustomerEvent,
+    id: 'sync-customer-details-handler',
+    handler: async event => {
+        // ...
+    },
+});
+
+// In another part of your code base
+this.eventBus.registerBlockingEventHandler({
+    type: CustomerEvent,
+    id: 'check-customer-details-handler',
+    handler: async event => {
+        // ...
+    },
+    before: 'sync-customer-details-handler',
+});
+```

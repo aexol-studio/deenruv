@@ -14,9 +14,7 @@ import { JobBufferStorageStrategy } from "./job-buffer-storage-strategy";
  * @since 1.3.0
  * @docsCategory JobQueue
  */
-export class InMemoryJobBufferStorageStrategy
-  implements JobBufferStorageStrategy
-{
+export class InMemoryJobBufferStorageStrategy implements JobBufferStorageStrategy {
   protected bufferStorage = new Map<string, Set<Job>>();
 
   async add(bufferId: string, job: Job): Promise<Job> {

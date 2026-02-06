@@ -25,9 +25,10 @@ import { FulltextSearchService } from "../fulltext-search.service";
 import { SearchJobBufferService } from "../search-job-buffer/search-job-buffer.service";
 
 @Resolver("SearchResponse")
-export class ShopFulltextSearchResolver
-  implements Pick<BaseSearchResolver, "search" | "facetValues" | "collections">
-{
+export class ShopFulltextSearchResolver implements Pick<
+  BaseSearchResolver,
+  "search" | "facetValues" | "collections"
+> {
   constructor(private fulltextSearchService: FulltextSearchService) {}
 
   @Query()

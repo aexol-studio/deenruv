@@ -86,9 +86,8 @@ export class ApiModule implements NestModule {
     const { adminApiPath, shopApiPath } = this.configService.apiOptions;
     const { uploadMaxFileSize } = this.configService.assetOptions;
     // @ts-ignore
-    const { default: graphqlUploadExpress } = await import(
-      "graphql-upload/graphqlUploadExpress.mjs"
-    );
+    const { default: graphqlUploadExpress } =
+      await import("graphql-upload/graphqlUploadExpress.mjs");
     consumer
       .apply(graphqlUploadExpress({ maxFileSize: uploadMaxFileSize }))
       .forRoutes(adminApiPath, shopApiPath);

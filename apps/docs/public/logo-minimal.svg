@@ -1,0 +1,25 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradientMin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Abstract D shape with flow arrow -->
+  <path 
+    d="M10 8V32H18C26.837 32 34 24.837 34 16C34 7.163 26.837 8 18 8H10Z" 
+    stroke="url(#logoGradientMin)" 
+    stroke-width="3" 
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+  <!-- Flow arrow inside -->
+  <path 
+    d="M16 20H26M22 16L26 20L22 24" 
+    stroke="url(#logoGradientMin)" 
+    stroke-width="2.5" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+</svg>

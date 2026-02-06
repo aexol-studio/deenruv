@@ -5,9 +5,7 @@ import { promisify } from "util";
 
 import { TestDbInitializer } from "./test-db-initializer";
 
-export class MysqlInitializer
-  implements TestDbInitializer<MysqlConnectionOptions>
-{
+export class MysqlInitializer implements TestDbInitializer<MysqlConnectionOptions> {
   private conn: import("mysql").Connection;
 
   async init(

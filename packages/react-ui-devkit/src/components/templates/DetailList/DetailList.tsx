@@ -72,8 +72,8 @@ import { PageBlock } from "@/universal_components/PageBlock.js";
 export const isAssetObject = (value: object): boolean => {
   return Boolean(
     "preview" in value ||
-      "source" in value ||
-      ("__typename" in value && value.__typename === "Asset"),
+    "source" in value ||
+    ("__typename" in value && value.__typename === "Asset"),
   );
 };
 

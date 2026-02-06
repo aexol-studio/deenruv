@@ -1,0 +1,76 @@
+---
+title: Wprowadzenie
+description: Rozpocznij pracę z Deenruv — nowoczesną, elastyczną platformą e-commerce
+---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+# Witaj w Deenruv
+
+Deenruv to nowoczesna, headless platforma e-commerce zbudowana na **NestJS** i **GraphQL**. Zapewnia solidny i rozszerzalny fundament do budowania sklepów internetowych dowolnej skali — od małych sklepów po wielokanałowe marketplace z wieloma sprzedawcami.
+
+<Callout type="info">
+Pierwszy raz z Deenruv? Zacznij od [przewodnika instalacji](/docs/guides/getting-started/installation), aby uruchomić platformę w kilka minut.
+</Callout>
+
+## Szybki start
+
+```bash
+npx @deenruv/create my-shop
+```
+
+To polecenie tworzy nowy projekt, instaluje zależności i konfiguruje serwer deweloperski z bazą danych SQLite. Po uruchomieniu uzyskasz dostęp do:
+
+- **Panel administracyjny** pod adresem `http://localhost:3000/admin`
+- **Shop API** pod adresem `http://localhost:3000/shop-api`
+- **Admin API** pod adresem `http://localhost:3000/admin-api`
+
+## Przeglądaj dokumentację
+
+<Cards>
+  <Card title="Pierwsze kroki" href="/docs/guides/getting-started/installation">
+    Zainstaluj Deenruv, skonfiguruj bazę danych i uruchom serwer deweloperski.
+  </Card>
+  <Card title="Kluczowe koncepcje" href="/docs/guides/core-concepts/products">
+    Poznaj produkty, kolekcje, zamówienia, kanały i inne elementy.
+  </Card>
+  <Card title="Przewodnik dewelopera" href="/docs/guides/developer-guide/the-api-layer">
+    Poznaj warstwę API, serwisy, pluginy, eventy i strategie.
+  </Card>
+  <Card title="Budowanie sklepu" href="/docs/guides/storefront/storefront-starters">
+    Połącz się z Shop API i zbuduj sklep od strony klienta.
+  </Card>
+  <Card title="Wdrożenie" href="/docs/guides/deployment">
+    Wdróż na produkcję z Docker, skonfiguruj zasoby i skaluj horyzontalnie.
+  </Card>
+  <Card title="Podręcznik użytkownika" href="/docs/user-guide/catalog">
+    Codzienne zadania admina: zarządzanie produktami, zamówieniami i ustawieniami.
+  </Card>
+</Cards>
+
+## Kluczowe funkcje
+
+- **Architektura headless** — używaj dowolnego frameworka frontendowego (Next.js, Remix, Nuxt, Expo itp.)
+- **API GraphQL** — w pełni typowane Shop API i Admin API ze wsparciem dla generowania kodu
+- **System pluginów** — rozszerzaj każdy aspekt platformy bez forkowania
+- **Wielokanałowość** — sprzedawaj na wielu sklepach, w różnych walutach i językach z jednego backendu
+- **TypeScript-first** — pełne bezpieczeństwo typów w całym stosie technologicznym
+- **Zadania w tle** — odciąż ciężkie operacje (emaile, importy, indeksowanie wyszukiwania) na workery działające w tle
+
+## Przegląd architektury
+
+Deenruv stosuje architekturę warstwową:
+
+| Warstwa | Opis |
+|---------|------|
+| **Warstwa API** | Resolvery GraphQL obsługują przychodzące zapytania i delegują je do serwisów |
+| **Warstwa serwisów** | Logika biznesowa, dostęp do bazy danych i publikowanie eventów |
+| **System pluginów** | Rozszerzaj encje, API, serwisy i panel administracyjny |
+| **Worker** | Przetwarzanie zadań w tle za pomocą BullMQ |
+| **Panel administracyjny** | Panel admina oparty na React z rozszerzalnym interfejsem za pomocą pluginów |
+
+## Uzyskaj pomoc
+
+- [GitHub Issues](https://github.com/aexol-studio/deenruv/issues) — zgłaszanie błędów i propozycje funkcji
+- [Kod źródłowy](https://github.com/aexol-studio/deenruv) — przeglądaj repozytorium

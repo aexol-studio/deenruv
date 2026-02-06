@@ -1,0 +1,52 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="grad3" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Back layer - creates depth -->
+  <path 
+    d="M8 28L20 35L32 28V14L20 7L8 14V28Z" 
+    fill="url(#grad2)"
+    opacity="0.6"
+  />
+  
+  <!-- Middle layer - 3D effect -->
+  <path 
+    d="M20 7L32 14V28L20 21V7Z" 
+    fill="url(#grad3)"
+    opacity="0.8"
+  />
+  
+  <!-- Front layer - main surface -->
+  <path 
+    d="M8 14L20 7V21L8 28V14Z" 
+    fill="url(#grad1)"
+  />
+  
+  <!-- Top highlight -->
+  <path 
+    d="M8 14L20 7L32 14L20 21L8 14Z" 
+    fill="url(#grad1)"
+    opacity="0.9"
+  />
+  
+  <!-- Inner glow line -->
+  <path 
+    d="M20 21V35" 
+    stroke="url(#grad1)" 
+    stroke-width="2"
+    stroke-linecap="round"
+    opacity="0.7"
+  />
+</svg>

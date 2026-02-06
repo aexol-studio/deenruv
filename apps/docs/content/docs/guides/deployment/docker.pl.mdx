@@ -1,0 +1,270 @@
+---
+title: 'Wdrożenie Docker'
+description: 'Wdrażanie Deenruv za pomocą Docker i Docker Compose z PostgreSQL, Redis i MinIO'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Docker zapewnia spójny i powtarzalny sposób wdrażania Deenruv. Ten poradnik przeprowadzi Cię przez konfigurację gotowego do produkcji wdrożenia Docker z PostgreSQL, Redis i opcjonalnym przechowywaniem obiektów kompatybilnym z S3.
+
+## Lokalny development z Docker Compose
+
+Deenruv jest dostarczany z plikiem `docker-compose.yml` w katalogu głównym repozytorium, który uruchamia wymagane usługi infrastrukturalne do lokalnego developmentu:
+
+```yaml title="docker-compose.yml"
+name: deenruv-local
+services:
+    deenruv-postgres:
+        image: ghcr.io/cloudnative-pg/postgresql:16.3
+        environment:
+            POSTGRES_USER: deenruv
+            POSTGRES_PASSWORD: deenruv
+            POSTGRES_DB: deenruv
+        ports:
+            - 5432:5432
+    deenruv-redis:
+        image: bitnami/redis:7.2
+        environment:
+            ALLOW_EMPTY_PASSWORD: yes
+        ports:
+            - 6379:6379
+    deenruv-minio:
+        image: minio/minio:latest
+        ports:
+            - 9000:9000
+            - 9090:9090
+        environment:
+            MINIO_ROOT_USER: root
+            MINIO_ROOT_PASSWORD: password
+        command: minio server /data/minio --console-address ":9090"
+```
+
+Uruchom usługi:
+
+```bash
+pnpm server-docker-up
+```
+
+Następnie wypełnij bazę danych i uruchom serwer:
+
+```bash
+pnpm server-populate
+pnpm start
+```
+
+## Tworzenie produkcyjnego Dockerfile
+
+Utwórz `Dockerfile` w katalogu głównym projektu:
+
+```dockerfile title="Dockerfile"
+FROM node:18-slim AS build
+
+WORKDIR /usr/src/app
+
+# Zainstaluj pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Skopiuj manifesty zależności
+COPY package.json pnpm-lock.yaml ./
+
+# Zainstaluj zależności
+RUN pnpm install --frozen-lockfile
+
+# Skopiuj kod źródłowy
+COPY . .
+
+# Zbuduj aplikację
+RUN pnpm build
+
+# Etap produkcyjny
+FROM node:18-slim AS production
+
+WORKDIR /usr/src/app
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY package.json pnpm-lock.yaml ./
+
+# Zainstaluj tylko zależności produkcyjne
+RUN pnpm install --frozen-lockfile --prod
+
+# Skopiuj zbudowane artefakty
+COPY --from=build /usr/src/app/dist ./dist
+
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]
+```
+
+<Callout type="info">
+Wieloetapowy build zapewnia, że obraz produkcyjny nie zawiera zależności developerskich ani kodu źródłowego, co skutkuje mniejszym i bezpieczniejszym obrazem.
+</Callout>
+
+## Produkcyjny Docker Compose
+
+Oto przykładowy `docker-compose.prod.yml` dla kompletnego wdrożenia produkcyjnego:
+
+```yaml title="docker-compose.prod.yml"
+version: "3.8"
+services:
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        environment:
+            DB_HOST: database
+            DB_PORT: 5432
+            DB_NAME: deenruv
+            DB_USERNAME: postgres
+            DB_PASSWORD: ${DB_PASSWORD}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            REDIS_PASSWORD: ${REDIS_PASSWORD}
+            COOKIE_SECRET: ${COOKIE_SECRET}
+            SUPERADMIN_IDENTIFIER: ${SUPERADMIN_IDENTIFIER:-superadmin}
+            SUPERADMIN_PASSWORD: ${SUPERADMIN_PASSWORD}
+            S3_BUCKET: ${S3_BUCKET:-deenruv-assets}
+            S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+            S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY}
+            S3_REGION: ${S3_REGION:-us-east-1}
+            ASSET_URL_PREFIX: ${ASSET_URL_PREFIX}
+        depends_on:
+            database:
+                condition: service_healthy
+            redis:
+                condition: service_started
+        restart: unless-stopped
+
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: ["node", "dist/index-worker.js"]
+        environment:
+            DB_HOST: database
+            DB_PORT: 5432
+            DB_NAME: deenruv
+            DB_USERNAME: postgres
+            DB_PASSWORD: ${DB_PASSWORD}
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            REDIS_PASSWORD: ${REDIS_PASSWORD}
+        depends_on:
+            database:
+                condition: service_healthy
+            redis:
+                condition: service_started
+        restart: unless-stopped
+
+    database:
+        image: postgres:16
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: deenruv
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        restart: unless-stopped
+
+    redis:
+        image: redis:7-alpine
+        command: redis-server --requirepass ${REDIS_PASSWORD}
+        volumes:
+            - redis-data:/data
+        restart: unless-stopped
+
+volumes:
+    db-data:
+    redis-data:
+```
+
+### Plik środowiskowy
+
+Utwórz plik `.env` obok pliku compose (nigdy nie commituj go do repozytorium):
+
+```bash title=".env"
+DB_PASSWORD=twoje-bezpieczne-haslo-do-bazy
+REDIS_PASSWORD=twoje-bezpieczne-haslo-redis
+COOKIE_SECRET=twoj-bezpieczny-sekret-ciasteczek
+SUPERADMIN_IDENTIFIER=superadmin
+SUPERADMIN_PASSWORD=twoje-bezpieczne-haslo-admina
+S3_BUCKET=deenruv-assets
+S3_ACCESS_KEY_ID=twoj-klucz-s3
+S3_SECRET_ACCESS_KEY=twoj-sekret-s3
+S3_REGION=us-east-1
+ASSET_URL_PREFIX=https://twoj-cdn.przyklad.pl/assets/
+```
+
+### Wdrażanie
+
+```bash
+# Zbuduj i uruchom wszystkie usługi
+docker compose -f docker-compose.prod.yml up -d --build
+
+# Uruchom migracje bazy danych
+docker compose -f docker-compose.prod.yml exec server node dist/migrate.js
+
+# Wyświetl logi
+docker compose -f docker-compose.prod.yml logs -f server
+```
+
+## Separacja serwera i workera
+
+W produkcji zaleca się uruchamianie serwera i workera Deenruv jako oddzielnych procesów. Serwer obsługuje żądania HTTP (GraphQL API, panel administracyjny), podczas gdy worker przetwarza zadania w tle (indeksowanie wyszukiwarki, wysyłanie e-maili itp.).
+
+Ta separacja pozwala na:
+
+- Niezależne skalowanie serwera i workera
+- Restart workera bez wpływu na dostępność API
+- Oddzielne monitorowanie zużycia zasobów
+
+W konfiguracji Deenruv serwer i worker są uruchamiani oddzielnie:
+
+```ts title="src/index.ts"
+import { bootstrap } from '@deenruv/core';
+import { config } from './deenruv-config';
+
+bootstrap(config);
+```
+
+```ts title="src/index-worker.ts"
+import { bootstrapWorker } from '@deenruv/core';
+import { config } from './deenruv-config';
+
+bootstrapWorker(config);
+```
+
+## Health checki
+
+Deenruv obsługuje endpointy health check do orkiestracji kontenerów. Skonfiguruj strategię health check w swojej konfiguracji:
+
+```ts title="src/deenruv-config.ts"
+import { TypeORMHealthCheckStrategy } from '@deenruv/core';
+
+export const config: DeenruvConfig = {
+    systemOptions: {
+        healthChecks: [new TypeORMHealthCheckStrategy()],
+    },
+};
+```
+
+Udostępnia to endpoint `/health`, który Docker lub Twój orkiestrator może używać do weryfikacji, czy usługa działa poprawnie.
+
+## Wskazówki dla produkcyjnych wdrożeń Docker
+
+- **Używaj nazwanych wolumenów** dla danych bazy i Redis, aby zachować dane między restartami kontenerów.
+- **Ustaw limity zasobów** na kontenerach, aby zapobiec zużyciu wszystkich zasobów hosta przez pojedynczą usługę.
+- **Użyj reverse proxy** (Nginx, Caddy lub Traefik) przed serwerem Deenruv do terminacji TLS, ograniczania częstotliwości żądań i cache'owania.
+- **Regularnie twórz kopie zapasowe bazy danych** za pomocą `pg_dump` lub zarządzanej usługi bazodanowej.
+- **Przypinaj wersje obrazów** w produkcji, aby uniknąć nieoczekiwanych zmian powodujących awarię.
+- **Monitoruj logi** za pomocą sterowników logowania Docker lub scentralizowanego rozwiązania do logowania.
+
+<Callout type="info">
+W przypadku skalowania horyzontalnego i uruchamiania wielu instancji serwera za load balancerem upewnij się, że używasz sesji wspieranych przez Redis i zewnętrznej strategii przechowywania zasobów, aby wszystkie instancje współdzieliły ten sam stan.
+</Callout>

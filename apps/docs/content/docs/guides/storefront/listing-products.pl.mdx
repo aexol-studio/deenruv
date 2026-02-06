@@ -1,0 +1,620 @@
+---
+title: Wyświetlanie produktów
+description: Dowiedz się, jak wyświetlać produkty w kolekcjach, implementować wyszukiwanie produktów i używać wyszukiwania fasetowego do filtrowania w sklepie.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Produkty są wyświetlane, gdy:
+
+- Prezentujemy zawartość kolekcji
+- Wyświetlamy wyniki wyszukiwania
+
+W Deenruv zwykle używamy zapytania `search` do obu tych celów. Powodem jest to, że zapytanie `search` jest zoptymalizowane pod kątem wysokiej wydajności, ponieważ jest wspierane przez dedykowany indeks wyszukiwania. Inne zapytania, takie jak `products` czy `Collection.productVariants`, _mogą_ również być używane do pobierania listy produktów, ale wymagają wykonania znacznie bardziej złożonych zapytań bazodanowych, a zatem są wolniejsze.
+
+## Wyświetlanie produktów w kolekcji
+
+Kontynuując [przykład nawigacji](/docs/guides/storefront/navigation-menu), załóżmy, że klient kliknął element kolekcji w menu i chcemy wyświetlić produkty w tej kolekcji.
+
+Zazwyczaj będziemy znać `slug` wybranej kolekcji, więc możemy użyć zapytania `collection`, aby pobrać szczegóły tej kolekcji:
+
+<Tabs items={['Query', 'Variables', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query GetCollection($slug: String!) {
+    collection(slug: $slug) {
+        id
+        name
+        slug
+        description
+        featuredAsset {
+            id
+            preview
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "slug": "electronics"
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "collection": {
+            "id": "2",
+            "name": "Electronics",
+            "slug": "electronics",
+            "description": "",
+            "featuredAsset": {
+                "id": "16",
+                "preview": "https://demo.deenruv.io/assets/preview/5b/jakob-owens-274337-unsplash__preview.jpg"
+            }
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Dane kolekcji mogą być użyte do wyrenderowania nagłówka strony.
+
+Następnie możemy użyć zapytania `search`, aby pobrać produkty z kolekcji:
+
+<Tabs items={['Query', 'Variables', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query GetCollectionProducts($slug: String!, $skip: Int, $take: Int) {
+  search(
+    input: {
+      collectionSlug: $slug,
+      groupByProduct: true,
+      skip: $skip,
+      take: $take }
+  ) {
+    totalItems
+    items {
+      productName
+      slug
+      productAsset {
+        id
+        preview
+      }
+      priceWithTax {
+        ... on SinglePrice {
+          value
+        }
+        ... on PriceRange {
+          min
+          max
+        }
+      }
+      currencyCode
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "slug": "electronics",
+    "skip": 0,
+    "take": 10
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+(poniższe dane zostały skrócone dla zwięzłości)
+
+```json
+{
+    "data": {
+        "search": {
+            "totalItems": 20,
+            "items": [
+                {
+                    "productName": "Laptop",
+                    "slug": "laptop",
+                    "productAsset": {
+                        "id": "1",
+                        "preview": "https://demo.deenruv.io/assets/preview/71/derick-david-409858-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 155880,
+                        "max": 275880
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Tablet",
+                    "slug": "tablet",
+                    "productAsset": {
+                        "id": "2",
+                        "preview": "https://demo.deenruv.io/assets/preview/b8/kelly-sikkema-685291-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 39480,
+                        "max": 53400
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="info">
+Kluczową rzeczą do zapamiętania jest to, że używamy parametru `collectionSlug` w zapytaniu `search`. Gwarantuje to, że wszystkie wyniki należą do wybranej kolekcji.
+</Callout>
+
+## Wyszukiwanie produktów
+
+Zapytanie `search` może być również używane do wyszukiwania pełnotekstowego produktów w katalogu poprzez przekazanie parametru `term`:
+
+<Tabs items={['Query', 'Variables', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query SearchProducts($term: String!, $skip: Int, $take: Int) {
+  search(
+    input: {
+      term: $term,
+      groupByProduct: true,
+      skip: $skip,
+      take: $take }
+  ) {
+    totalItems
+    items {
+      productName
+      slug
+      productAsset {
+        id
+        preview
+      }
+      priceWithTax {
+        ... on SinglePrice {
+          value
+        }
+        ... on PriceRange {
+          min
+          max
+        }
+      }
+      currencyCode
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "term": "camera",
+    "skip": 0,
+    "take": 10
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+(poniższe dane zostały skrócone dla zwięzłości)
+
+```json
+{
+    "data": {
+        "search": {
+            "totalItems": 8,
+            "items": [
+                {
+                    "productName": "Instant Camera",
+                    "slug": "instant-camera",
+                    "productAsset": {
+                        "id": "12",
+                        "preview": "https://demo.deenruv.io/assets/preview/b5/eniko-kis-663725-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 20999,
+                        "max": 20999
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Camera Lens",
+                    "slug": "camera-lens",
+                    "productAsset": {
+                        "id": "13",
+                        "preview": "https://demo.deenruv.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 12480,
+                        "max": 12480
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="info">
+Możesz również ograniczyć wyszukiwanie pełnotekstowe do konkretnej kolekcji, przekazując parametr `collectionSlug` lub `collectionId`.
+</Callout>
+
+## Wyszukiwanie fasetowe
+
+Zapytanie `search` może być również używane do wyszukiwania fasetowego. To potężna funkcja, która pozwala klientom filtrować wyniki według wartości faset przypisanych do produktów i wariantów.
+
+Korzystając z pola `facetValues`, zapytanie search zwróci listę wszystkich wartości faset obecnych w zbiorze wyników. Może to być użyte do wyrenderowania listy checkboxów lub innych elementów interfejsu, które pozwalają klientowi filtrować wyniki.
+
+<Tabs items={['Query', 'Variables', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query SearchProducts($term: String!, $skip: Int, $take: Int) {
+  search(
+    input: {
+      term: $term,
+      groupByProduct: true,
+      skip: $skip,
+      take: $take }
+  ) {
+    totalItems
+    facetValues {
+      count
+      facetValue {
+        id
+        name
+        facet {
+          id
+          name
+        }
+      }
+    }
+    items {
+      productName
+      slug
+      productAsset {
+        id
+        preview
+      }
+      priceWithTax {
+        ... on SinglePrice {
+          value
+        }
+        ... on PriceRange {
+          min
+          max
+        }
+      }
+      currencyCode
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "term": "camera",
+    "skip": 0,
+    "take": 10
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+(poniższe dane zostały skrócone dla zwięzłości)
+
+```json
+{
+    "data": {
+        "search": {
+            "totalItems": 8,
+            "facetValues": [
+                {
+                    "facetValue": {
+                        "id": "1",
+                        "name": "Electronics",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 8
+                },
+                {
+                    "facetValue": {
+                        "id": "9",
+                        "name": "Photo",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 8
+                },
+                {
+                    "facetValue": {
+                        "id": "10",
+                        "name": "Polaroid",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 1
+                },
+                {
+                    "facetValue": {
+                        "id": "11",
+                        "name": "Nikkon",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 2
+                }
+            ],
+            "items": [
+                {
+                    "productName": "Instant Camera",
+                    "slug": "instant-camera",
+                    "productAsset": {
+                        "id": "12",
+                        "preview": "https://demo.deenruv.io/assets/preview/b5/eniko-kis-663725-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 20999,
+                        "max": 20999
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Camera Lens",
+                    "slug": "camera-lens",
+                    "productAsset": {
+                        "id": "13",
+                        "preview": "https://demo.deenruv.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 12480,
+                        "max": 12480
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Vintage Folding Camera",
+                    "slug": "vintage-folding-camera",
+                    "productAsset": {
+                        "id": "14",
+                        "preview": "https://demo.deenruv.io/assets/preview/3c/jonathan-talbert-697262-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 642000,
+                        "max": 642000
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Te wartości faset mogą być następnie użyte do filtrowania wyników przez przekazanie ich do parametru `facetValueFilters`.
+
+Na przykład, przefiltrujmy wyniki, aby zawierały tylko produkty marki „Nikkon". Na podstawie naszego ostatniego zapytania wiemy, że powinny być 2 takie produkty, a `facetValue.id` dla marki „Nikkon" to `11`.
+
+```json
+{
+    "facetValue": {
+        "id": "11",
+        "name": "Nikkon",
+        "facet": {
+            "id": "2",
+            "name": "brand"
+        }
+    },
+    "count": 2
+}
+```
+
+Oto jak możemy wykorzystać tę informację do filtrowania wyników:
+
+<Callout type="info">
+W następnym przykładzie, zamiast przekazywać każdą zmienną osobno (skip, take, term) jako oddzielny argument, przekazujemy cały obiekt `SearchInput` jako zmienną. Daje nam to większą elastyczność w używaniu zapytania, ponieważ możemy łatwo dodawać lub usuwać właściwości z obiektu wejściowego bez konieczności zmiany samego zapytania.
+</Callout>
+
+<Tabs items={['Query', 'Variables', 'Response']}>
+<Tab value="Query">
+
+```graphql
+query SearchProducts($input: SearchInput!) {
+  search(input: $input) {
+    totalItems
+    facetValues {
+      count
+      facetValue {
+        id
+        name
+        facet {
+          id
+          name
+        }
+      }
+    }
+    items {
+      productName
+      slug
+      productAsset {
+        id
+        preview
+      }
+      priceWithTax {
+        ... on SinglePrice {
+          value
+        }
+        ... on PriceRange {
+          min
+          max
+        }
+      }
+      currencyCode
+    }
+  }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "input": {
+        "term": "camera",
+        "skip": 0,
+        "take": 10,
+        "groupByProduct": true,
+        "facetValueFilters": [{ "and": "11" }]
+    }
+}
+```
+
+</Tab>
+<Tab value="Response">
+
+```json
+{
+    "data": {
+        "search": {
+            "totalItems": 2,
+            "facetValues": [
+                {
+                    "facetValue": {
+                        "id": "1",
+                        "name": "Electronics",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 2
+                },
+                {
+                    "facetValue": {
+                        "id": "9",
+                        "name": "Photo",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 2
+                },
+                {
+                    "facetValue": {
+                        "id": "11",
+                        "name": "Nikkon",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 2
+                }
+            ],
+            "items": [
+                {
+                    "productName": "Camera Lens",
+                    "slug": "camera-lens",
+                    "productAsset": {
+                        "id": "13",
+                        "preview": "https://demo.deenruv.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "value": 12480
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Nikkormat SLR Camera",
+                    "slug": "nikkormat-slr-camera",
+                    "productAsset": {
+                        "id": "18",
+                        "preview": "https://demo.deenruv.io/assets/preview/95/chuttersnap-324234-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "value": 73800
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="info">
+Parametr `facetValueFilters` może być używany do określania wielu filtrów, łącząc każdy za pomocą `and` lub `or`.
+
+Na przykład, aby filtrować zarówno po wartości fasety „Camera" **i** „Nikkon", użyjemy:
+
+```json
+{
+    "facetValueFilters": [{ "and": "9" }, { "and": "11" }]
+}
+```
+
+Aby filtrować po „Nikkon" **lub** „Sony", użyjemy:
+
+```json
+{
+    "facetValueFilters": [{ "or": ["11", "15"] }]
+}
+```
+</Callout>
+
+## Wyświetlanie niestandardowych danych produktu
+
+Jeśli zdefiniowałeś pola niestandardowe (custom fields) w encji `Product` lub `ProductVariant`, możesz chcieć uwzględnić je w wynikach wyszukiwania. Za pomocą `DefaultSearchPlugin` nie jest to możliwe, ponieważ ten plugin jest zaprojektowany jako minimalna i prosta implementacja wyszukiwania.
+
+Zamiast tego możesz użyć `ElasticsearchPlugin`, który zapewnia zaawansowane funkcje umożliwiające indeksowanie niestandardowych danych. Plugin Elasticsearch jest zaprojektowany jako zamiennik typu drop-in dla `DefaultSearchPlugin`, więc możesz po prostu podmienić pluginy w pliku `deenruv-config.ts`.

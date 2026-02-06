@@ -17,8 +17,9 @@ import { Order, PaymentMethod } from "../../entity";
  * @docsCategory payment
  * @docsPage PaymentMethodEligibilityChecker
  */
-export interface PaymentMethodEligibilityCheckerConfig<T extends ConfigArgs>
-  extends ConfigurableOperationDefOptions<T> {
+export interface PaymentMethodEligibilityCheckerConfig<
+  T extends ConfigArgs,
+> extends ConfigurableOperationDefOptions<T> {
   check: CheckPaymentMethodEligibilityCheckerFn<T>;
 }
 /**

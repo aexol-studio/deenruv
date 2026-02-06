@@ -107,9 +107,8 @@ export async function generateResolvers(
   };
 
   // @ts-ignore
-  const { default: GraphQLUpload } = await import(
-    "graphql-upload/GraphQLUpload.mjs"
-  );
+  const { default: GraphQLUpload } =
+    await import("graphql-upload/GraphQLUpload.mjs");
 
   const commonResolvers = {
     JSON: GraphQLJSON,

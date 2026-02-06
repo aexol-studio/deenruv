@@ -1,0 +1,15 @@
+{
+  "title": "Budowanie sklepu",
+  "pages": [
+    "storefront-starters",
+    "connect-api",
+    "codegen",
+    "---Zadania sklepu---",
+    "navigation-menu",
+    "listing-products",
+    "product-detail",
+    "active-order",
+    "checkout-flow",
+    "customer-accounts"
+  ]
+}

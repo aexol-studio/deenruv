@@ -1,0 +1,131 @@
+---
+title: 'Zarządzanie katalogiem'
+description: 'Dowiedz się, jak zarządzać produktami, kolekcjami i fasetami w panelu administracyjnym Deenruv'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Sekcja Katalog w panelu administracyjnym Deenruv to miejsce, w którym zarządzasz wszystkim, co związane ze sprzedawanymi produktami. Obejmuje to tworzenie i edycję produktów, organizowanie ich w kolekcje oraz definiowanie faset do filtrowania i kategoryzacji.
+
+## Produkty
+
+Produkty stanowią rdzeń Twojego katalogu. W Deenruv **Produkt** jest kontenerem, który zawiera jeden lub więcej **Wariantów Produktu**. Produkt dostarcza nazwę, opis i zdjęcia, podczas gdy warianty przechowują cenę, SKU i informacje o stanie magazynowym.
+
+### Przeglądanie listy produktów
+
+Przejdź do **Katalog → Produkty** w pasku bocznym panelu administracyjnego. Zobaczysz paginowaną listę wszystkich produktów z kolumnami dla zdjęcia produktu, nazwy i statusu (włączony/wyłączony).
+
+Możesz:
+
+- **Wyszukiwać** produkty po nazwie za pomocą paska wyszukiwania
+- **Filtrować** produkty po wartościach faset, aby zawęzić wyniki
+- **Sortować** produkty po nazwie, dacie utworzenia lub innych polach
+
+### Tworzenie produktu
+
+1. Kliknij przycisk **Utwórz produkt** w widoku listy produktów.
+2. Wypełnij podstawowe dane produktu:
+   - **Nazwa** — wyświetlana nazwa produktu
+   - **Slug** — przyjazny dla URL identyfikator (generowany automatycznie z nazwy)
+   - **Opis** — opis produktu w formacie rich text
+3. Prześlij **zdjęcie główne** oraz dodatkowe zdjęcia produktu w sekcji Zasoby.
+4. Przypisz **wartości faset** do produktu w celu kategoryzacji i filtrowania (np. Marka: „Nike").
+5. Kliknij **Utwórz**, aby zapisać produkt.
+
+### Dodawanie wariantów
+
+Po utworzeniu produktu musisz dodać co najmniej jeden wariant:
+
+1. W widoku szczegółów produktu przejdź do zakładki **Warianty**.
+2. Aby utworzyć warianty z opcji, najpierw dodaj **Grupy Opcji** (np. „Rozmiar" z opcjami Mały, Średni, Duży).
+3. Kliknij **Generuj warianty**, aby automatycznie utworzyć warianty dla wszystkich kombinacji opcji.
+4. Dla każdego wariantu ustaw:
+   - **SKU** — unikalny kod jednostki magazynowej
+   - **Cena** — cena sprzedaży (wprowadzona w najmniejszej jednostce walutowej, np. groszach)
+   - **Stan magazynowy** — ilość na stanie w każdej lokalizacji magazynowej
+   - **Kategoria podatkowa** — która kategoria podatkowa dotyczy tego wariantu
+5. Zapisz produkt, aby zachować zmiany wariantów.
+
+<Callout type="info">
+Gdy klient dodaje przedmiot do koszyka, dodaje konkretny **Wariant Produktu**, a nie sam Produkt. Każdy wariant ma własną cenę, SKU i śledzenie stanów magazynowych.
+</Callout>
+
+### Włączanie i wyłączanie produktów
+
+Produkty i poszczególne warianty mogą być włączane lub wyłączane. Wyłączony produkt lub wariant nie pojawi się w wynikach Shop API, co skutecznie ukrywa go przed sklepem bez usuwania.
+
+Przełącz przycisk **Włączony** na górze widoku szczegółów produktu, aby kontrolować widoczność produktu.
+
+## Kolekcje
+
+Kolekcje to sposób organizowania i kategoryzowania katalogu produktów. Tworzą one strukturę nawigacji Twojego sklepu (np. „Odzież męska", „Elektronika", „Wyprzedaż").
+
+### Tworzenie kolekcji
+
+1. Przejdź do **Katalog → Kolekcje** w panelu administracyjnym.
+2. Kliknij **Utwórz kolekcję**.
+3. Wprowadź **Nazwę**, **Slug** i opcjonalnie **Opis** oraz zdjęcie główne.
+4. Zdefiniuj **Filtry kolekcji**, aby automatycznie wypełniać kolekcję:
+   - **Filtruj po wartościach faset** — dodaj produkty pasujące do określonych wartości faset
+   - **Filtruj po nazwie wariantu produktu** — dodaj warianty, których nazwy pasują do wzorca
+   - **Ręcznie wybierz produkty** — wybierz konkretne produkty
+   - **Ręcznie wybierz warianty** — wybierz konkretne warianty
+5. Kliknij **Utwórz**, aby zapisać.
+
+### Zagnieżdżanie kolekcji
+
+Kolekcje obsługują hierarchię drzewiastą. Aby zagnieździć kolekcję:
+
+1. Podczas tworzenia lub edycji kolekcji wybierz **Kolekcję nadrzędną** z listy rozwijanej.
+2. Włącz **Dziedziczenie filtrów**, jeśli chcesz, aby kolekcja podrzędna łączyła swoje filtry z filtrami kolekcji nadrzędnej. Oznacza to, że kolekcja podrzędna będzie zawierać **podzbiór** produktów kolekcji nadrzędnej.
+
+<Callout type="info">
+Powszechnym wzorcem jest tworzenie kolekcji najwyższego poziomu, takich jak „Odzież", filtrowanych po szerokich wartościach faset, z kolekcjami podrzędnymi, takimi jak „Koszulki" i „Bluzy", dodającymi bardziej szczegółowe filtry. Przy włączonym dziedziczeniu filtrów każda kolekcja podrzędna automatycznie zawęża zestaw produktów kolekcji nadrzędnej.
+</Callout>
+
+### Zmiana kolejności kolekcji
+
+Kolekcje mają konfigurowalną kolejność wyświetlania. W widoku listy kolekcji możesz przeciągać i upuszczać kolekcje, aby zmienić ich kolejność. Ta kolejność jest udostępniana przez Shop API i może być wykorzystana przez Twój sklep do ustalania kolejności menu.
+
+## Fasety
+
+Fasety to strukturalne etykiety, które przypisujesz do produktów i wariantów. Zasilają one zarówno filtrowanie w sklepie (wyszukiwanie fasetowe), jak i wewnętrzną logikę biznesową, taką jak promocje i reguły kolekcji.
+
+### Zrozumienie faset i wartości faset
+
+**Faseta** to kategoria atrybutów (np. „Marka", „Kolor", „Materiał"). Każda faseta zawiera jedną lub więcej **Wartości Faset** (np. Marka: „Nike", „Adidas", „Puma").
+
+Wartości faset mogą być przypisane do:
+- **Produktów** — dla atrybutów na poziomie produktu, takich jak marka
+- **Wariantów Produktu** — dla atrybutów na poziomie wariantu, takich jak kolor lub rozmiar
+
+### Tworzenie fasety
+
+1. Przejdź do **Katalog → Fasety** w panelu administracyjnym.
+2. Kliknij **Utwórz fasetę**.
+3. Wprowadź **Nazwę** i **Kod** (unikalny identyfikator) fasety.
+4. Opcjonalnie oznacz fasetę jako **Prywatną**, jeśli nie powinna być widoczna w sklepie (przydatne do wewnętrznej kategoryzacji, np. oznaczania produktów do promocji).
+5. Dodaj **Wartości Faset**, wprowadzając ich nazwy i kody.
+6. Kliknij **Utwórz**, aby zapisać.
+
+### Przypisywanie wartości faset do produktów
+
+1. Otwórz produkt w widoku szczegółów produktu.
+2. W sekcji **Wartości Faset** wyszukaj i wybierz żądane wartości faset.
+3. Zapisz produkt.
+
+Możesz również przypisywać wartości faset do poszczególnych wariantów w zakładce Warianty.
+
+### Typowe zastosowania faset
+
+| Zastosowanie | Przykładowa faseta | Przykładowe wartości |
+|---|---|---|
+| Nawigacja w sklepie | Kategoria | Odzież, Elektronika, Dom |
+| Filtrowanie w sklepie | Marka | Nike, Adidas, Puma |
+| Reguły kolekcji | Typ | Koszulka, Bluza, Kurtka |
+| Targetowanie promocji | Wyprzedaż | Letnia wyprzedaż, Przecena |
+| Reguły wysyłki | Kruche | Tak |
+
+<Callout type="info">
+Fasety oznaczone jako **Prywatne** są widoczne tylko dla administratorów i nie pojawiają się w odpowiedziach Shop API. Używaj prywatnych faset do wewnętrznej logiki, takiej jak warunki promocji czy dopłaty za wysyłkę.
+</Callout>

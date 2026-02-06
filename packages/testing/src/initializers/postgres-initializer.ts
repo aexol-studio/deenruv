@@ -3,9 +3,7 @@ import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConne
 
 import { TestDbInitializer } from "./test-db-initializer";
 
-export class PostgresInitializer
-  implements TestDbInitializer<PostgresConnectionOptions>
-{
+export class PostgresInitializer implements TestDbInitializer<PostgresConnectionOptions> {
   private client: import("pg").Client;
 
   async init(

@@ -6,6 +6,11 @@
 @source "../../content/**/*.mdx";
 @source "../../../node_modules/fumadocs-ui/dist/**/*.js";
 
+/* Force dark mode by default */
+:root {
+  color-scheme: dark;
+}
+
 /* Custom landing page styles */
 html {
   scroll-behavior: smooth;

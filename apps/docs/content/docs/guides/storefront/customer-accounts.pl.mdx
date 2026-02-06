@@ -1,0 +1,372 @@
+---
+title: Konta klientów
+description: Dowiedz się, jak zaimplementować rejestrację klientów, logowanie, wylogowywanie, weryfikację email i resetowanie hasła w sklepie.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Klienci mogą rejestrować konta, co daje im możliwość:
+
+- Przeglądania wcześniejszych zamówień
+- Przechowywania wielu adresów
+- Utrzymywania aktywnego zamówienia na wielu urządzeniach
+- Korzystania z pluginów, które udostępniają funkcjonalność tylko zarejestrowanym klientom, takie jak listy życzeń i punkty lojalnościowe.
+
+## Pobieranie danych aktywnego klienta
+
+Zapytanie `activeCustomer` zwróci obiekt `Customer`, jeśli klient jest zarejestrowany i zalogowany, w przeciwnym razie zwróci `null`. Może to być używane na przykład w nagłówku sklepu, aby określić, czy wyświetlić link „zaloguj się" czy „moje konto".
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+query GetCustomerAddresses {
+    activeCustomer {
+        id
+        title
+        firstName
+        lastName
+        emailAddress
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "activeCustomer": {
+            "id": "12345",
+            "title": "Mr.",
+            "firstName": "John",
+            "lastName": "Doe",
+            "emailAddress": "john.doe@email.com"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Logowanie i wylogowywanie
+
+Mutacja `login` służy do próby zalogowania za pomocą adresu email i hasła.
+Po podaniu prawidłowych danych uwierzytelniających rozpocznie się nowa uwierzytelniona sesja dla tego klienta.
+
+<Tabs items={['Query', 'Variables', 'Result']}>
+<Tab value="Query">
+
+```graphql
+mutation LogIn($emailAddress: String!, $password: String!, $rememberMe: Boolean!) {
+    login(username: $emailAddress, password: $password, rememberMe: $rememberMe) {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "emailAddress": "john.doe@email.com",
+    "password": "**********",
+    "rememberMe": true
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "login": {
+            "id": "12345",
+            "identifier": "john.doe@email.com"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Mutacja `logout` kończy uwierzytelnioną sesję klienta.
+
+<Tabs items={['Query', 'Result']}>
+<Tab value="Query">
+
+```graphql
+mutation LogOut {
+    logout {
+        success
+    }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "logout": {
+            "success": true
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="info">
+Mutacja `login`, jak również następujące mutacje związane z rejestracją i odzyskiwaniem hasła, mają zastosowanie tylko w przypadku korzystania z wbudowanej strategii `NativeAuthenticationStrategy`.
+
+Jeśli używasz alternatywnych strategii uwierzytelniania w swoim sklepie, użyłbyś mutacji `authenticate`, jak opisano w [przewodniku o uwierzytelnianiu zewnętrznym](/docs/guides/core-concepts/auth#external-authentication).
+</Callout>
+
+## Rejestracja konta klienta
+
+Mutacja `registerCustomerAccount` służy do rejestracji nowego konta klienta.
+
+Istnieją trzy możliwe przepływy rejestracji:
+Jeśli `authOptions.requireVerification` jest ustawione na `true` (domyślnie):
+
+1. **Klient jest rejestrowany _z_ hasłem**. Zostanie utworzony verificationToken (i zazwyczaj wysłany emailem do klienta). Ten verificationToken zostanie następnie przekazany do mutacji verifyCustomerAccount _bez_ hasła. Klient jest wtedy zweryfikowany i uwierzytelniony w jednym kroku.
+2. **Klient jest rejestrowany _bez_ hasła**. Zostanie utworzony verificationToken (i zazwyczaj wysłany emailem do klienta). Ten verificationToken zostanie następnie przekazany do mutacji verifyCustomerAccount _z_ wybranym hasłem klienta. Klient jest wtedy zweryfikowany i uwierzytelniony w jednym kroku.
+
+Jeśli `authOptions.requireVerification` jest ustawione na `false`:
+
+3. Klient _musi_ być zarejestrowany _z_ hasłem. Nie są potrzebne żadne dodatkowe działania — klient może natychmiast się uwierzytelnić.
+
+Oto diagram drugiego scenariusza, w którym hasło jest podawane podczas kroku _weryfikacji_.
+
+
+
+Oto jak wyglądałyby mutacje dla powyższego przepływu:
+
+<Tabs items={['Mutation', 'Variables', 'Result']}>
+<Tab value="Mutation">
+
+```graphql
+mutation Register($input: RegisterCustomerInput!) {
+    registerCustomerAccount(input: $input) {
+        ... on Success {
+            success
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+  "input": {
+    "title": "Mr.",
+    "firstName": "Nicky",
+    "lastName": "Wire",
+    "emailAddress": "nicky@example.com",
+    "phoneNumber": "1234567"
+  }
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "registerCustomerAccount": {
+            "success": true
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Zwróć uwagę, że w powyższych zmiennych **nie** podaliśmy hasła, ponieważ zostanie ono podane w kroku weryfikacji.
+Jeśli hasło _zostanie_ podane na tym etapie, nie będzie potrzebne w kroku weryfikacji. To jest decyzja, którą możesz podjąć w oparciu o pożądane doświadczenie użytkownika Twojego sklepu.
+
+Po rejestracji `EmailPlugin` wygeneruje email do klienta zawierający link do strony weryfikacji. W domyślnej instalacji Deenruv jest to ustawione w pliku konfiguracyjnym:
+
+```ts title="src/deenruv-config.ts"
+EmailPlugin.init({
+    route: 'mailbox',
+    handlers: defaultEmailHandlers,
+    templatePath: path.join(__dirname, '../static/email/templates'),
+    outputPath: path.join(__dirname, '../static/email/output'),
+    globalTemplateVars: {
+        fromAddress: '"Deenruv Demo Store" <noreply@deenruv.io>',
+        verifyEmailAddressUrl: 'https://demo.deenruv.io/storefront/account/verify',
+        passwordResetUrl: 'https://demo.deenruv.io/storefront/account/reset-password',
+        changeEmailAddressUrl: 'https://demo.deenruv.io/storefront/account/change-email-address'
+    },
+    devMode: true,
+}),
+```
+
+Strona weryfikacji musi pobrać token z ciągu zapytania i przekazać go do mutacji `verifyCustomerAccount`:
+
+<Tabs items={['Mutation', 'Variables', 'Result']}>
+<Tab value="Mutation">
+
+```graphql
+mutation Verify($password: String!, $token: String!) {
+    verifyCustomerAccount(password: $password, token: $token) {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "password": "*********",
+    "token": "MjAxOS0xMC0wMlQxNToxOTo1NC45NDVa_1DYEWYAB7S3S82JT"
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "verifyCustomerAccount": {
+            "id": "123",
+            "identifier": "nicky@example.com"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+## Resetowanie hasła
+
+Oto jak zaimplementować przepływ resetowania hasła. Koncepcyjnie jest bardzo podobny do opisanego powyżej przepływu weryfikacji.
+
+
+
+Resetowanie hasła jest inicjowane przez mutację `requestPasswordReset`:
+
+<Tabs items={['Mutation', 'Variables', 'Result']}>
+<Tab value="Mutation">
+
+```graphql
+mutation RequestPasswordReset($emailAddress: String!) {
+    requestPasswordReset(emailAddress: $emailAddress) {
+        ... on Success {
+            success
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "emailAddress": "nicky@example.com"
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "requestPasswordReset": {
+            "success": true
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>
+
+Ponownie, ta mutacja wywoła zdarzenie, które domyślne handlery email w EmailPlugin przechwycą i wyślą email do klienta. Strona resetowania hasła musi następnie pobrać token z adresu URL i przekazać go do mutacji `resetPassword`:
+
+<Tabs items={['Mutation', 'Variables', 'Result']}>
+<Tab value="Mutation">
+
+```graphql
+mutation ResetPassword($token: String!, $password: String!) {
+    resetPassword(token: $token, password: $password) {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+    }
+}
+```
+
+</Tab>
+<Tab value="Variables">
+
+```json
+{
+    "token": "MjAxOS0xMC0wMlQxNToxOTo1NC45NDVa_1DYEWYAB7S3S82JT",
+    "password": "************"
+}
+```
+
+</Tab>
+<Tab value="Result">
+
+```json
+{
+    "data": {
+        "resetPassword": {
+            "id": "123",
+            "identifier": "nicky@example.com"
+        }
+    }
+}
+```
+
+</Tab>
+</Tabs>

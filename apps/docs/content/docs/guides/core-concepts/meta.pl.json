@@ -1,0 +1,13 @@
+{
+  "title": "Podstawowe koncepcje",
+  "pages": [
+    "auth",
+    "products",
+    "collections",
+    "customers",
+    "taxes",
+    "money",
+    "email",
+    "images-assets"
+  ]
+}

@@ -1,0 +1,397 @@
+---
+title: 'Warstwa API'
+description: 'Poznaj warstwę API Deenruv — zapytania GraphQL, mutacje, resolvery, middleware i dekoratory'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Deenruv jest platformą headless, co oznacza, że cała funkcjonalność jest udostępniana poprzez API GraphQL. API można postrzegać jako zestaw warstw, przez które przechodzi żądanie — każda z nich odpowiada za inny aspekt cyklu żądanie/odpowiedź.
+
+## Podróż wywołania API
+
+Weźmy proste wywołanie API i prześledźmy jego drogę od klienta do serwera i z powrotem.
+
+<Tabs items={['Żądanie', 'Odpowiedź']}>
+<Tab value="Żądanie">
+```graphql title="GraphQL Playground Shop API"
+query {
+    product(id: "1") {
+        id
+        name
+        description
+    }
+}
+```
+
+To zapytanie prosi o pola `id`, `name` i `description` obiektu `Product` o identyfikatorze `1`.
+</Tab>
+<Tab value="Odpowiedź">
+```json
+{
+    "data": {
+        "product": {
+            "id": "1",
+            "name": "Laptop",
+            "description": "Now equipped with seventh-generation Intel Core processors, Laptop is snappier than ever. From daily tasks like launching apps and opening files to more advanced computing, you can power through your day thanks to faster SSDs and Turbo Boost processing up to 3.6GHz."
+        }
+    }
+}
+```
+
+GraphQL zwraca tylko te pola, o które poprosisz w zapytaniu.
+</Tab>
+</Tabs>
+
+<Callout type="info">
+Jeśli masz uruchomiony lokalny serwer deweloperski, możesz to wypróbować otwierając GraphQL Playground w przeglądarce:
+
+[http://localhost:3000/shop-api](http://localhost:3000/shop-api)
+</Callout>
+
+
+
+## Middleware
+
+„Middleware" to termin określający funkcję wykonywaną przed lub po głównej logice żądania. W Deenruv middleware służy do wykonywania zadań takich jak uwierzytelnianie, logowanie i obsługa błędów. Istnieje kilka typów middleware:
+
+### Express middleware
+
+Na najniższym poziomie Deenruv korzysta z popularnej biblioteki serwera Express. [Express middleware](https://expressjs.com/en/guide/using-middleware.html) można dodać do serwera za pomocą właściwości konfiguracyjnej `apiOptions.middleware`. Dostępne są setki sprawdzonych pakietów Express middleware, które można wykorzystać do dodania funkcjonalności takich jak CORS, kompresja, ograniczanie liczby żądań itp.
+
+Oto prosty przykład demonstrujący Express middleware, który loguje wiadomość za każdym razem, gdy żądanie jest odbierane przez Admin API:
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { RequestHandler } from 'express';
+
+/**
+ * This is a custom middleware function that logs a message whenever a request is received.
+ */
+const myMiddleware: RequestHandler = (req, res, next) => {
+    console.log('Request received!');
+    next();
+};
+
+export const config: DeenruvConfig = {
+    // ...
+    apiOptions: {
+        middleware: [
+            {
+                // We will execute our custom handler only for requests to the Admin API
+                route: 'admin-api',
+                handler: myMiddleware,
+            },
+        ],
+    },
+};
+```
+
+### NestJS middleware
+
+Możesz również zdefiniować [NestJS middleware](https://docs.nestjs.com/middleware), które działa jak Express middleware, ale dodatkowo ma dostęp do systemu wstrzykiwania zależności NestJS.
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig, ConfigService } from '@deenruv/core';
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
+
+@Injectable()
+class MyNestMiddleware implements NestMiddleware {
+    // Dependencies can be injected via the constructor
+    constructor(private configService: ConfigService) {}
+
+    use(req: Request, res: Response, next: NextFunction) {
+        console.log(`NestJS middleware: current port is ${this.configService.apiOptions.port}`);
+        next();
+    }
+}
+
+export const config: DeenruvConfig = {
+    // ...
+    apiOptions: {
+        middleware: [
+            {
+                route: 'admin-api',
+                handler: MyNestMiddleware,
+            },
+        ],
+    },
+};
+```
+
+NestJS pozwala definiować określone typy middleware, w tym [Guards](https://docs.nestjs.com/guards), [Interceptors](https://docs.nestjs.com/interceptors), [Pipes](https://docs.nestjs.com/pipes) i [Filters](https://docs.nestjs.com/exception-filters).
+
+Deenruv wykorzystuje wiele z tych mechanizmów wewnętrznie do obsługi uwierzytelniania, zarządzania transakcjami, obsługi błędów i transformacji danych.
+
+### Globalne NestJS middleware
+
+Guards, interceptors, pipes i filters można dodać do własnych niestandardowych resolverów i kontrolerów za pomocą dekoratorów NestJS, zgodnie z dokumentacją NestJS. Jednak częstym wzorcem jest rejestrowanie ich globalnie za pomocą [pluginu Deenruv](/docs/guides/developer-guide/plugins/):
+
+```ts title="src/plugins/my-plugin/my-plugin.ts"
+import { VendurePlugin } from '@deenruv/core';
+import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+
+// Some custom NestJS middleware classes which we want to apply globally
+import { MyCustomGuard, MyCustomInterceptor, MyCustomExceptionFilter } from './my-custom-middleware';
+
+@DeenruvPlugin({
+    // ...
+    providers: [
+        // This is the syntax needed to apply your guards,
+        // interceptors and filters globally
+        {
+            provide: APP_GUARD,
+            useClass: MyCustomGuard,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: MyCustomInterceptor,
+        },
+        {
+            // Note: registering a global "catch all" exception filter
+            // must be used with caution as it will override the built-in
+            // Deenruv exception filter. See https://github.com/nestjs/nest/issues/3252
+            // To implement custom error handling, it is recommended to use
+            // a custom ErrorHandlerStrategy instead.
+            provide: APP_FILTER,
+            useClass: MyCustomExceptionFilter,
+        },
+    ],
+})
+export class MyPlugin {}
+```
+
+Dodanie tego pluginu do tablicy `plugins` w konfiguracji Deenruv spowoduje zastosowanie tych klas middleware do wszystkich żądań.
+
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
+import { MyPlugin } from './plugins/my-plugin/my-plugin';
+
+export const config: DeenruvConfig = {
+    // ...
+    plugins: [MyPlugin],
+};
+```
+
+### Pluginy Apollo Server
+
+Apollo Server (biblioteka GraphQL używana przez Deenruv) pozwala definiować [pluginy](https://www.apollographql.com/docs/apollo-server/integrations/plugins/), które mogą podpinać się do różnych etapów cyklu życia żądania GraphQL i wykonywać zadania takie jak transformacja danych. Definiuje się je za pomocą właściwości konfiguracyjnej `apiOptions.apolloServerPlugins`.
+
+## Resolvery
+
+„Resolver" to pojęcie z GraphQL, które odnosi się do funkcji odpowiedzialnej za zwracanie danych dla konkretnego pola. W Deenruv resolver może również oznaczać klasę zawierającą wiele funkcji resolverów. Dla każdego zapytania lub mutacji istnieje odpowiednia funkcja resolvera, która jest odpowiedzialna za zwracanie żądanych danych (oraz wykonywanie efektów ubocznych, takich jak aktualizacja danych w przypadku mutacji).
+
+Oto uproszczony przykład funkcji resolvera dla zapytania `product`:
+
+```ts
+import { Query, Resolver, Args } from '@nestjs/graphql';
+import { Ctx, RequestContext, ProductService } from '@deenruv/core';
+
+@Resolver()
+export class ShopProductsResolver {
+    constructor(private productService: ProductService) {}
+
+    @Query()
+    product(@Ctx() ctx: RequestContext, @Args() args: { id: string }) {
+        return this.productService.findOne(ctx, args.id);
+    }
+}
+```
+
+- Dekorator `@Resolver()` oznacza tę klasę jako resolver.
+- Dekorator `@Query()` oznacza metodę `product()` jako funkcję resolvera.
+- Dekorator `@Ctx()` wstrzykuje obiekt `RequestContext`, który zawiera informacje o bieżącym żądaniu, takie jak aktualny użytkownik, aktywny kanał, aktywny język itp. `RequestContext` jest kluczową częścią architektury Deenruv i jest używany w całej aplikacji do dostarczania kontekstu różnym serwisom i pluginom. Ogólnie rzecz biorąc, funkcje resolverów powinny zawsze przyjmować `RequestContext` jako pierwszy argument i przekazywać go do serwisów.
+- Dekorator `@Args()` wstrzykuje argumenty przekazane do zapytania — w tym przypadku `id`, które podaliśmy w naszym zapytaniu.
+
+Jak widać, funkcja resolvera jest bardzo prosta i po prostu deleguje pracę do `ProductService`, który jest odpowiedzialny za pobieranie danych z bazy danych.
+
+<Callout type="info">
+Ogólnie rzecz biorąc, funkcje resolverów powinny być możliwie proste, a większość logiki biznesowej powinna być delegowana do warstwy serwisów.
+</Callout>
+
+## Dekoratory API
+
+Zgodnie ze wzorcem NestJS, Deenruv wykorzystuje dekoratory do kontrolowania różnych aspektów API. Oto najważniejsze dekoratory, o których warto wiedzieć:
+
+### `@Resolver()`
+
+Eksportowany przez pakiet `@nestjs/graphql`. Oznacza klasę jako resolver, co oznacza, że jej metody mogą być używane do rozwiązywania pól zapytania lub mutacji GraphQL.
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Resolver } from '@nestjs/graphql';
+
+@Resolver()
+export class WishlistResolver {
+    // ...
+}
+```
+
+### `@Query()`
+
+Eksportowany przez pakiet `@nestjs/graphql`. Oznacza metodę jako funkcję resolvera dla zapytania. Nazwa metody powinna odpowiadać nazwie zapytania w schemacie GraphQL, lub jeśli nazwa metody jest inna, można podać nazwę jako argument dekoratora.
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Query, Resolver } from '@nestjs/graphql';
+
+@Resolver()
+export class WishlistResolver {
+    @Query()
+    wishlist() {
+        // ...
+    }
+}
+```
+
+### `@Mutation()`
+
+Eksportowany przez pakiet `@nestjs/graphql`. Oznacza metodę jako funkcję resolvera dla mutacji. Nazwa metody powinna odpowiadać nazwie mutacji w schemacie GraphQL, lub jeśli nazwa metody jest inna, można podać nazwę jako argument dekoratora.
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Mutation, Resolver } from '@nestjs/graphql';
+
+@Resolver()
+export class WishlistResolver {
+    @Mutation()
+    addItemToWishlist() {
+        // ...
+    }
+}
+```
+
+### `@Allow()`
+
+Dekorator `Allow` jest eksportowany przez pakiet `@deenruv/core`. Służy do kontroli dostępu do zapytań i mutacji. Przyjmuje listę `Permissions`, a jeśli bieżący użytkownik nie posiada co najmniej jednego z wymaganych uprawnień, zapytanie lub mutacja zwróci błąd.
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Mutation, Resolver } from '@nestjs/graphql';
+import { Allow, Permission } from '@deenruv/core';
+
+@Resolver()
+export class WishlistResolver {
+    @Mutation()
+    @Allow(Permission.UpdateCustomer)
+    updateCustomerWishlist() {
+        // ...
+    }
+}
+```
+
+### `@Transaction()`
+
+Dekorator `Transaction` jest eksportowany przez pakiet `@deenruv/core`. Służy do opakowywania funkcji resolvera w transakcję bazodanową. Jest zwykle używany z mutacjami, ponieważ zapytania zazwyczaj nie modyfikują danych.
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Mutation, Resolver } from '@nestjs/graphql';
+import { Transaction } from '@deenruv/core';
+
+@Resolver()
+export class WishlistResolver {
+    @Transaction()
+    @Mutation()
+    addItemToWishlist() {
+        // if an error is thrown here, the
+        // entire transaction will be rolled back
+    }
+}
+```
+
+<Callout type="info">
+Dekorator `@Transaction()` działa _wyłącznie_ w połączeniu z obiektem `RequestContext` (patrz dekorator `@Ctx()` poniżej).
+
+Dzieje się tak, ponieważ dekorator `Transaction` przechowuje kontekst transakcji w obiekcie `RequestContext`, a przekazując ten obiekt do warstwy serwisów, serwisy i tym samym wywołania bazy danych mogą uzyskać dostęp do kontekstu transakcji.
+</Callout>
+
+### `@Ctx()`
+
+Dekorator `Ctx` jest eksportowany przez pakiet `@deenruv/core`. Służy do wstrzykiwania obiektu `RequestContext` do funkcji resolvera. `RequestContext` zawiera informacje o bieżącym żądaniu, takie jak aktualny użytkownik, aktywny kanał, aktywny język itp. `RequestContext` jest kluczową częścią architektury Deenruv i jest używany w całej aplikacji do dostarczania kontekstu różnym serwisom i pluginom.
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Mutation, Resolver } from '@nestjs/graphql';
+import { Ctx, RequestContext } from '@deenruv/core';
+
+@Resolver()
+export class WishlistResolver {
+    @Mutation()
+    addItemToWishlist(@Ctx() ctx: RequestContext) {
+        // ...
+    }
+}
+```
+
+<Callout type="info">
+Ogólna zasada: _zawsze_ używaj dekoratora `@Ctx()` do wstrzykiwania `RequestContext` w swoich funkcjach resolverów.
+</Callout>
+
+### `@Args()`
+
+Eksportowany przez pakiet `@nestjs/graphql`. Służy do wstrzykiwania argumentów przekazanych do zapytania lub mutacji.
+
+Mając definicję schematu taką jak ta:
+
+```graphql
+extend type Mutation {
+    addItemToWishlist(variantId: ID!): Wishlist
+}
+```
+
+Funkcja resolvera wyglądałaby następująco:
+
+```ts title="src/plugins/wishlist/api/wishlist.resolver.ts"
+import { Mutation, Resolver, Args } from '@nestjs/graphql';
+import { Ctx, RequestContext, ID } from '@deenruv/core';
+
+@Resolver()
+export class WishlistResolver {
+    @Mutation()
+    addItemToWishlist(
+        @Ctx() ctx: RequestContext,
+        @Args() args: { variantId: ID },
+    ) {
+        // ...
+    }
+}
+```
+
+Jak widać, dekorator `@Args()` wstrzykuje argumenty przekazane do zapytania — w tym przypadku `variantId`, które podaliśmy w naszym zapytaniu.
+
+## Resolvery pól
+
+Do tej pory widzieliśmy przykłady resolverów dla zapytań i mutacji. Istnieje jednak inny typ resolvera, który służy do rozwiązywania pól typu. Na przykład, mając następującą definicję schematu:
+
+```graphql
+type WishlistItem {
+    id: ID!
+    product: Product!
+}
+```
+
+Pole `product` jest relacją do typu `Product`. Resolver pola `product` wyglądałby następująco:
+
+```ts title="src/plugins/wishlist/api/wishlist-item.resolver.ts"
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Ctx, RequestContext } from '@deenruv/core';
+
+import { WishlistItem } from '../entities/wishlist-item.entity';
+
+@Resolver('WishlistItem')
+export class WishlistItemResolver {
+    @ResolveField()
+    product(
+        @Ctx() ctx: RequestContext,
+        @Parent() wishlistItem: WishlistItem,
+    ) {
+        // ...
+    }
+}
+```
+
+Zwróć uwagę, że w tym przykładzie dekorator `@Resolver()` ma argument `'WishlistItem'`. Informuje to NestJS, że ten resolver jest przeznaczony dla typu `WishlistItem` i że gdy używamy dekoratora `@ResolveField()`, definiujemy resolver dla pola tego typu.
+
+W tym przykładzie definiujemy resolver dla pola `product` typu `WishlistItem`. Dekorator `@ResolveField()` służy do oznaczenia metody jako resolvera pola. Nazwa metody powinna odpowiadać nazwie pola w schemacie GraphQL, lub jeśli nazwa metody jest inna, można podać nazwę jako argument dekoratora.
+
+## Endpointy REST
+
+Chociaż Deenruv jest przede wszystkim API opartym na GraphQL, istnieje możliwość dodania endpointów REST do API. Jest to przydatne, jeśli musisz zintegrować się z usługą zewnętrzną lub aplikacją kliencką, która obsługuje wyłącznie REST.
+
+Tworzenie endpointu REST jest szczegółowo opisane w [przewodniku Dodaj endpoint REST](/docs/guides/developer-guide/rest-endpoint/).

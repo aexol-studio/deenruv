@@ -3,21 +3,13 @@
   "root": true,
   "pages": [
     "index",
-    "---Getting Started---",
     "guides/getting-started",
-    "---Core Concepts---",
     "guides/core-concepts",
-    "---Developer Guide---",
     "guides/developer-guide",
-    "---How-to Guides---",
     "guides/how-to",
-    "---Admin UI---",
     "guides/extending-the-admin-ui",
-    "---Storefront---",
     "guides/storefront",
-    "---Deployment---",
     "guides/deployment",
-    "---User Guide---",
     "user-guide"
   ]
 }

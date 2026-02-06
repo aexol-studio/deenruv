@@ -1,0 +1,107 @@
+---
+title: "Instalacja"
+description: "Rozpocznij pracę z Deenruv w kilka minut"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Wymagania
+
+-   [Node.js](https://nodejs.org/en/) **v18** lub nowszy, ze wsparciem dla **parzystych wersji Node.js**.
+-   [Wspierana wersja TypeScript](https://github.com/aexol-studio/deenruv/blob/main/packages/create/src/constants.ts#L7) jest ustalana podczas instalacji. Aktualizacja do nowszej wersji TypeScript może powodować błędy kompilacji.
+-   Jeśli chcesz używać MySQL, MariaDB lub Postgres jako bazy danych, będziesz potrzebować lokalnie dostępnej instancji. Jednak **jeśli dopiero testujesz Deenruv, zalecamy użycie SQLite**, która nie wymaga żadnych zewnętrznych zależności.
+-   Jeśli używasz **Yarn**, od wersji Deenruv v2.2.0+ wymagany jest **Yarn 2** (Berry) lub nowszy.
+
+## @deenruv/create
+
+Zalecanym sposobem na rozpoczęcie pracy z Deenruv jest użycie narzędzia [@deenruv/create](https://github.com/aexol-studio/deenruv/tree/main/packages/create). Jest to narzędzie wiersza poleceń, które utworzy strukturę nowego projektu Deenruv, skonfiguruje go i zainstaluje wszystkie zależności.
+
+### 1. Uruchom polecenie
+
+```bash
+npx @deenruv/create my-shop
+```
+
+### 2. Wybierz bazę danych
+
+Deenruv obsługuje kilka różnych baz danych. Narzędzie `@deenruv/create` poprosi Cię o wybranie jednej z nich.
+
+**Aby szybko przetestować Deenruv, zalecamy użycie SQLite**, która nie wymaga żadnych zewnętrznych zależności. Zawsze możesz przełączyć się na inną bazę danych później, zmieniając plik konfiguracyjny.
+
+
+
+<Callout type="info">
+Jeśli wybierzesz MySQL, MariaDB lub Postgres, upewnij się, że:
+
+1. serwer bazy danych jest uruchomiony i dostępny
+2. utworzyłeś bazę danych do użytku przez Deenruv
+3. znasz nazwę użytkownika i hasło z dostępem do tej bazy danych
+</Callout>
+
+### 3. Wypełnij danymi
+
+Ostatnie pytanie dotyczy tego, czy wypełnić nowy serwer Deenruv przykładowymi danymi produktów.
+
+**Zalecamy to zrobić**, ponieważ da Ci to dobry punkt wyjścia do eksploracji API, które omówimy
+w [sekcji Wypróbuj API](/docs/guides/getting-started/try-the-api), a także dostarczy dane do wykorzystania
+przy budowaniu własnego sklepu.
+
+
+
+### 4. Zakończ konfigurację
+
+Następnie zostanie utworzona struktura projektu i zainstalowane zależności. Może to potrwać kilka minut.
+
+Po zakończeniu zobaczysz komunikat podobny do tego:
+
+
+
+### 5. Uruchom serwer
+
+Postępuj zgodnie z instrukcjami, aby przejść do nowo utworzonego katalogu projektu i uruchomić serwer:
+
+```bash
+cd my-shop
+
+yarn dev
+# lub
+npm run dev
+```
+
+Teraz powinieneś mieć dostęp do:
+
+-   Deenruv Admin GraphQL API: [http://localhost:3000/admin-api](http://localhost:3000/admin-api)
+-   Deenruv Shop GraphQL API: [http://localhost:3000/shop-api](http://localhost:3000/shop-api)
+-   Panel administracyjny Deenruv: [http://localhost:3000/admin](http://localhost:3000/admin)
+
+Gratulacje! 🥳 Masz teraz w pełni działający serwer Deenruv uruchomiony lokalnie.
+
+Teraz możesz eksplorować Deenruv, postępując zgodnie z naszym [przewodnikiem Wypróbuj API](/docs/guides/getting-started/try-the-api), aby dowiedzieć się, jak komunikować się z serwerem.
+
+Jeśli jesteś nowy w GraphQL, powinieneś również zapoznać się z naszym [Wprowadzeniem do GraphQL](/docs/guides/getting-started/graphql-intro).
+
+<Callout type="info">
+Otwórz panel administracyjny pod adresem [http://localhost:3000/admin](http://localhost:3000/admin) w przeglądarce i zaloguj się danymi superadmina, które podałeś. Domyślne dane to:
+
+-   **login**: superadmin
+-   **hasło**: superadmin
+</Callout>
+
+<Callout type="info">
+Użyj `npx deenruv add`, aby zacząć dodawać pluginy i niestandardowe funkcjonalności do swojego serwera Deenruv.
+</Callout>
+
+### Rozwiązywanie problemów
+
+Jeśli napotkasz jakiekolwiek problemy podczas instalacji, możesz uzyskać bardziej szczegółowe dane wyjściowe, ustawiając poziom logowania na `verbose`:
+
+```sh
+npx @deenruv/create my-shop --log-level verbose
+```
+
+## Konfiguracja sklepu
+
+Gdy serwer Deenruv jest już uruchomiony, możesz skonfigurować sklep, który będzie się z nim komunikować!
+
+Mamy dostępnych kilka zestawów startowych do budowy sklepów — przejdź na stronę [Zestawy startowe sklepów](/docs/guides/storefront/storefront-starters),
+aby dowiedzieć się więcej.

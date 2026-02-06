@@ -1,0 +1,109 @@
+---
+title: 'Przegląd rozwoju panelu administracyjnego'
+description: 'Dowiedz się, jak rozszerzać panel administracyjny Deenruv o niestandardowe pluginy za pomocą @deenruv/react-ui-devkit'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Pakiet `@deenruv/react-ui-devkit` to oficjalny zestaw narzędzi do tworzenia pluginów UI dla panelu administracyjnego Deenruv. Zapewnia wszystko, czego potrzebujesz do budowania typowo-bezpiecznych pluginów rozszerzających panel administracyjny o niestandardowe strony, komponenty, nawigację, widgety, powiadomienia i wiele więcej.
+
+## Co zapewnia react-ui-devkit?
+
+### System pluginów
+
+Typowo-bezpieczny system definiowania pluginów z **15 punktami rozszerzeń**, które pozwalają wstrzykiwać niestandardową funkcjonalność w każdą część panelu administracyjnego — strony, tabele, zakładki, akcje, paski boczne, nawigację, widgety dashboardu, powiadomienia i więcej.
+
+### Wstrzykiwanie oparte na lokalizacji
+
+Kompleksowy zestaw lokalizacji wstrzykiwania w panelu administracyjnym:
+
+- **21 lokalizacji list** — rozszerzanie widoków list dla produktów, zamówień, klientów i więcej
+- **20 lokalizacji szczegółów** — rozszerzanie widoków szczegółów/edycji o zakładki, komponenty paska bocznego i akcje
+- **Lokalizacje modali** — wstrzykiwanie do modali panelu administracyjnego
+
+### Biblioteka komponentów
+
+Ponad **70 komponentów** zorganizowanych według złożoności:
+
+| Kategoria | Liczba | Opis |
+|---|---|---|
+| Atom | 42 | Prymitywy oparte na shadcn/ui (Button, Input, Table, Dialog, itp.) |
+| Molecule | 13 | Złożone komponenty (SearchInput, SortButton, ListTable, itp.) |
+| Universal | 15 | Komponenty z logiką biznesową (RichTextEditor, AssetPicker, itp.) |
+| Template | 2 | Pełne układy stron (DetailList, DetailView) |
+| Core | 4 | Markery wstrzykiwania i renderery |
+
+### Hooki
+
+Dedykowane hooki do rozwoju panelu administracyjnego:
+
+- **`useGFFLP`** — Typowo-bezpieczne zarządzanie stanem formularza sterowane przez typy GraphQL ModelTypes
+- **`useList`** — Zarządzanie paginowanymi listami z sortowaniem, filtrowaniem i parametrami URL
+- **`useTranslation`** — Hook i18n powiązany z instancją i18n Deenruv
+- **`useAssets`** — Zarządzanie zasobami z paginacją i wyszukiwaniem
+- Oraz: `useDebounce`, `useLocalStorage`, `useValidators`, `useErrorHandler`
+
+### Klient GraphQL
+
+Klient GraphQL oparty na Zeus Thunder z automatycznym wstrzykiwaniem `customFields`:
+
+- **`apiClient`** — Standardowe zapytania i mutacje
+- **`apiUploadClient`** — Mutacje przesyłania plików
+- **`useQuery` / `useLazyQuery` / `useMutation`** — Hooki React do deklaratywnego pobierania danych
+
+### Zarządzanie stanem
+
+Globalne magazyny oparte na Zustand:
+
+- **`useSettings`** — Język, motyw, token autoryzacji, wybrany kanał
+- **`useServer`** — Konfiguracja serwera, kanały, uprawnienia
+- **`useOrder`** — Stan widoku szczegółów zamówienia
+- **`useGlobalSearch`** — Stan globalnego wyszukiwania
+
+### Nawigacja i routing
+
+Typowo-bezpieczne helpery tras i konfigurowalna nawigacja panelu administracyjnego z identyfikatorami grup.
+
+### i18n
+
+Wbudowany system tłumaczeń z przestrzeniami nazw per plugin.
+
+### Widgety dashboardu
+
+Skalowalne, konfigurowalne widgety dashboardu, które pluginy mogą rejestrować.
+
+### Powiadomienia
+
+System powiadomień oparty na odpytywaniu z konfigurowalnymi miejscami wyświetlania.
+
+## Przegląd architektury
+
+Typowy plugin Deenruv z UI składa się z dwóch części:
+
+```
+plugins/my-plugin/
+  src/
+    my-plugin.plugin.ts     # Plugin po stronie serwera (dekorator @DeenruvPlugin)
+    plugin-ui/
+      index.tsx              # Definicja pluginu UI (createDeenruvUIPlugin)
+      components/            # Komponenty React
+      pages/                 # Komponenty stron dla tras
+      locales/               # Pliki tłumaczeń
+      graphql/               # Zapytania, mutacje, selektory
+```
+
+**Plugin serwerowy** obsługuje logikę backendu (encje, serwisy, resolvery), natomiast **plugin UI** definiuje sposób rozszerzania panelu administracyjnego (strony, nawigacja, komponenty).
+
+<Callout type="info">
+Strony pluginów UI są automatycznie prefiksowane ścieżką `admin-ui/extensions/{plugin-name}/`, więc wystarczy zdefiniować ścieżki względne w ramach pluginu.
+</Callout>
+
+## Następne kroki
+
+- [Pierwsze kroki](/docs/guides/extending-the-admin-ui/getting-started) — Stwórz swój pierwszy plugin UI panelu administracyjnego
+- [System pluginów](/docs/guides/extending-the-admin-ui/plugin-system) — Szczegółowe omówienie wszystkich punktów rozszerzeń
+- [Hooki](/docs/guides/extending-the-admin-ui/hooks) — Hooki formularzy, list i tłumaczeń
+- [Komponenty](/docs/guides/extending-the-admin-ui/components) — Pełny katalog komponentów
+- [Szablony](/docs/guides/extending-the-admin-ui/templates) — Układy stron DetailList i DetailView
+- [Klient GraphQL](/docs/guides/extending-the-admin-ui/graphql-client) — Pobieranie danych i mutacje
+- [Zarządzanie stanem](/docs/guides/extending-the-admin-ui/state-management) — Magazyny Zustand

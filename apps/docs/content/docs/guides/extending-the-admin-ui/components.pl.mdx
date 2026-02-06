@@ -1,0 +1,301 @@
+---
+title: 'Komponenty'
+description: 'Kompletny katalog komponentów w @deenruv/react-ui-devkit — szablony, uniwersalne, molekuły i atomy'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+`@deenruv/react-ui-devkit` udostępnia ponad 70 komponentów zorganizowanych według złożoności i przeznaczenia. Wszystkie komponenty są stylizowane motywem Deenruv i obsługują tryb ciemny.
+
+## Kategorie komponentów
+
+| Kategoria | Ilość | Przeznaczenie |
+|---|---|---|
+| **Template** | 2 | Pełne layouty stron (strony listy i szczegółów) |
+| **Core** | 4 | Znaczniki i renderery wstrzykiwania pluginów |
+| **Universal** | 15 | Komponenty z logiką biznesową do typowych wzorców panelu admina |
+| **Molecule** | 13 | Złożone komponenty zbudowane z atomów |
+| **Atom** | 42 | Prymitywy oparte na shadcn/ui |
+
+## Komponenty Template
+
+To najważniejsze komponenty do budowania stron panelu administracyjnego. Zapewniają kompletne layouty stron z wbudowanymi punktami wstrzykiwania pluginów.
+
+| Komponent | Opis |
+|---|---|
+| `DetailList` | W pełni funkcjonalna strona listy z tabelą, paginacją, filtrowaniem, sortowaniem i akcjami zbiorczymi |
+| `DetailView` | Layout strony szczegółów/edycji z zakładkami, paskiem bocznym, akcjami i punktami wstrzykiwania pluginów |
+
+<Callout type="info">
+Szczegółowy opis `DetailList` i `DetailView` znajdziesz w przewodniku [Szablony](/docs/guides/extending-the-admin-ui/templates).
+</Callout>
+
+```tsx
+import { DetailList, DetailView } from '@deenruv/react-ui-devkit';
+```
+
+## Komponenty Core
+
+Komponenty używane przez system pluginów panelu administracyjnego:
+
+| Komponent | Opis |
+|---|---|
+| `DetailViewMarker` | Znacznik wstrzykiwania pluginów dla widoków szczegółów (przełączanie za pomocą Ctrl+Q) |
+| `ListViewMarker` | Znacznik wstrzykiwania pluginów dla widoków list (przełączanie za pomocą Ctrl+Q) |
+| `Renderer` | Dynamiczny renderer komponentów dla treści wstrzykiwanych przez pluginy |
+| `EntityCustomFields` | Renderuje inputy pól niestandardowych dla dowolnego typu encji |
+
+### `EntityCustomFields`
+
+Automatycznie renderuje inputy formularza dla wszystkich pól niestandardowych zdefiniowanych na encji:
+
+```tsx
+import { EntityCustomFields } from '@deenruv/react-ui-devkit';
+
+function ProductDetail({ product }) {
+  return (
+    <div>
+      {/* Standardowe pola produktu */}
+      <Input value={product.name} />
+
+      {/* Renderowanie wszystkich pól niestandardowych dla tej encji */}
+      <EntityCustomFields
+        entityType="Product"
+        entity={product}
+        onFieldChange={(fieldName, value) => {
+          // Obsługa aktualizacji pól niestandardowych
+        }}
+      />
+    </div>
+  );
+}
+```
+
+## Komponenty Universal (15)
+
+Wielokrotnego użytku komponenty z logiką biznesową do typowych wzorców panelu admina:
+
+| Komponent | Opis |
+|---|---|
+| `DialogProductPicker` | Dialog wyboru produktu z wyszukiwaniem i filtrowaniem |
+| `RichTextEditor` | Edytor tekstu sformatowanego oparty na Tiptap z paskiem formatowania |
+| `AssetsModalInput` | Selektor zasobów z modalną przeglądarką do wyboru obrazów/plików |
+| `ConfirmationDialog` | Dialog potwierdzenia z konfigurowalnym tytułem, wiadomością i akcjami |
+| `PageBlock` | Wrapper sekcji strony z tytułem i opisem |
+| `CustomCard` | Stylizowany komponent karty z spójnym motywem admina |
+| `CustomCardHeader` | Nagłówek karty z tytułem, opisem i slotami na akcje |
+| `EmptyState` | Placeholder pustego stanu z ikoną i wiadomością |
+| `FacetIdsSelector` | Multiselektor wartości facetów |
+| `DraggableSelect` | Komponent select z możliwością zmiany kolejności przez przeciąganie |
+| `SimpleTimePicker` | Input wyboru samego czasu |
+| `DateTimePicker` | Połączony selektor daty i czasu |
+| `DateTimeInput` | Pole input daty/czasu |
+| `EntityChannelManager` | Menedżer przypisywania kanałów dla encji |
+| `CustomerSearch` | Wyszukiwanie klientów z autouzupełnianiem |
+
+### Przykłady użycia
+
+#### PageBlock
+
+Opakowuje sekcję strony tytułem i opisem:
+
+```tsx
+import { PageBlock } from '@deenruv/react-ui-devkit';
+
+<PageBlock title="Product Details" description="Basic product information">
+  <Input label="Name" value={name} onChange={setName} />
+  <Input label="Slug" value={slug} onChange={setSlug} />
+</PageBlock>
+```
+
+#### ConfirmationDialog
+
+```tsx
+import { ConfirmationDialog } from '@deenruv/react-ui-devkit';
+
+<ConfirmationDialog
+  title="Delete Product"
+  description="Are you sure? This action cannot be undone."
+  onConfirm={handleDelete}
+  onCancel={() => setOpen(false)}
+/>
+```
+
+#### RichTextEditor
+
+```tsx
+import { RichTextEditor } from '@deenruv/react-ui-devkit';
+
+<RichTextEditor
+  value={description}
+  onChange={setDescription}
+/>
+```
+
+#### AssetsModalInput
+
+```tsx
+import { AssetsModalInput } from '@deenruv/react-ui-devkit';
+
+<AssetsModalInput
+  value={selectedAssets}
+  onChange={setSelectedAssets}
+/>
+```
+
+### Akcje tabel Universal (5)
+
+Gotowe akcje tabel do typowych operacji na encjach:
+
+| Komponent | Opis |
+|---|---|
+| `ManageEntityToChannelsDialog` | Dialog przypisywania encji do kanałów |
+| `DeleteEntityFromChannelsDialog` | Dialog usuwania encji z kanałów |
+| `EntityChannelManagementRowAction` | Akcja zarządzania kanałami na poziomie wiersza |
+| `EntityChannelManagementBulkAction` | Zbiorcza akcja zarządzania kanałami |
+| `EntityFacetManagementBulkAction` | Zbiorcza akcja przypisywania facetów |
+
+### Narzędzia Universal
+
+| Funkcja | Opis |
+|---|---|
+| `createDialogFunction` | Tworzy funkcję wyzwalającą dialog z komponentu dialogowego |
+| `createDialogFromComponentFunction` | Tworzy dialog z istniejącego komponentu |
+
+```tsx
+import { createDialogFunction, ConfirmationDialog } from '@deenruv/react-ui-devkit';
+
+const showConfirmation = createDialogFunction(ConfirmationDialog);
+
+// Użycie
+const confirmed = await showConfirmation({
+  title: 'Confirm',
+  description: 'Are you sure?',
+});
+```
+
+## Komponenty Molecule (13)
+
+Złożone komponenty łączące wiele atomów:
+
+| Komponent | Opis |
+|---|---|
+| `PaymentMethodImage` | Wyświetlanie ikony/obrazu metody płatności |
+| `OrderStateBadge` | Kolorowy badge statusu zamówienia |
+| `SimpleSelect` | Uproszczony dropdown select |
+| `SimpleTooltip` | Uproszczony wrapper tooltip |
+| `SortButton` | Przycisk przełączania sortowania kolumn |
+| `TranslationSelect` | Selektor języka/tłumaczeń |
+| `ListTable` | Tabela danych dla widoków list |
+| `SearchInput` | Input wyszukiwania z wbudowanym debounce |
+| `CustomFieldsModal` | Modal do edycji pól niestandardowych |
+| `ImageWithPreview` | Miniatura obrazu z podglądem lightbox |
+| `ErrorMessage` | Stylizowany komunikat błędu |
+| `ListBadge` | Badge statusu elementu listy |
+| `ContextMenu` | Menu kontekstowe (prawy przycisk myszy) |
+
+### Przykłady użycia
+
+#### SearchInput
+
+```tsx
+import { SearchInput } from '@deenruv/react-ui-devkit';
+
+<SearchInput
+  value={searchTerm}
+  onChange={setSearchTerm}
+  placeholder="Search products..."
+/>
+```
+
+#### SimpleSelect
+
+```tsx
+import { SimpleSelect } from '@deenruv/react-ui-devkit';
+
+<SimpleSelect
+  value={status}
+  onChange={setStatus}
+  options={[
+    { label: 'Active', value: 'active' },
+    { label: 'Draft', value: 'draft' },
+    { label: 'Archived', value: 'archived' },
+  ]}
+/>
+```
+
+#### OrderStateBadge
+
+```tsx
+import { OrderStateBadge } from '@deenruv/react-ui-devkit';
+
+<OrderStateBadge state={order.state} />
+```
+
+## Komponenty Atom (42)
+
+Prymitywne komponenty oparte na shadcn/ui, stylizowane motywem Deenruv. Wszystkie atomy obsługują tryb ciemny i są zgodne z systemem designu panelu administracyjnego.
+
+| Komponent | Opis |
+|---|---|
+| `Accordion` | Zwijane sekcje treści |
+| `AlertDialog` | Modalny alert z akcjami |
+| `AssetUploadButton` | Przycisk do przesyłania zasobów |
+| `AspectRatio` | Kontener o stałym stosunku proporcji |
+| `Badge` | Badge statusu/etykiety |
+| `Breadcrumb` | Nawigacja breadcrumb |
+| `Button` | Główny przycisk akcji |
+| `Calendar` | Kalendarz wyboru daty |
+| `Card` | Kontener karty z treścią |
+| `Chart` | Wykres wizualizacji danych |
+| `Checkbox` | Input checkbox |
+| `Command` | Komponent palety poleceń |
+| `Dialog` | Dialog modalny |
+| `Drawer` | Wysuwany panel boczny |
+| `DropdownMenu` | Menu rozwijane z elementami |
+| `FacetedFilter` | Komponent filtrowania wielofacetowego |
+| `Form` | Wrapper formularza z walidacją |
+| `HoverCard` | Karta treści wyzwalana najechaniem |
+| `ImagePlaceholder` | Placeholder dla brakujących obrazów |
+| `Input` | Pole tekstowe input |
+| `Label` | Etykieta pola formularza |
+| `LanguagePicker` | Dropdown wyboru języka |
+| `MultipleSelector` | Selektor wielowartościowy |
+| `Pagination` | Komponent nawigacji stron |
+| `Popover` | Panel treści popover |
+| `Progress` | Wskaźnik paska postępu |
+| `RadioGroup` | Grupa przycisków radio |
+| `ScrollArea` | Kontener z niestandardowym scrollbarem |
+| `Select` | Dropdown select jednowartościowy |
+| `Separator` | Wizualna linia separatora |
+| `Sheet` | Boczny panel sheet |
+| `Skeleton` | Placeholder ładowania |
+| `Sonner` | System powiadomień toast |
+| `Spinner` | Wskaźnik ładowania |
+| `Switch` | Przełącznik toggle |
+| `Table` | Tabela danych |
+| `Tabs` | Nawigacja zakładkowa |
+| `Textarea` | Wieloliniowe pole tekstowe |
+| `Timeline` | Komponent wyświetlania osi czasu |
+| `Toggle` | Przycisk toggle |
+| `ToggleGroup` | Grupa przycisków toggle |
+| `Tooltip` | Tooltip wyświetlany po najechaniu |
+
+### Przykłady importu
+
+```tsx
+import {
+  Button,
+  Input,
+  Card,
+  Dialog,
+  Table,
+  Badge,
+  Tabs,
+  Select,
+  Switch,
+  Spinner,
+} from '@deenruv/react-ui-devkit';
+```
+
+Wszystkie komponenty atom są zgodne ze wzorcami API shadcn/ui. Szczegółowe propsy i sposób użycia każdego atomu znajdziesz w [dokumentacji shadcn/ui](https://ui.shadcn.com/docs).

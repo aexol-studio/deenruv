@@ -26,8 +26,9 @@ export interface CreateTranslatableOptions<T extends Translatable> {
   typeOrmSubscriberData?: any;
 }
 
-export interface UpdateTranslatableOptions<T extends Translatable>
-  extends CreateTranslatableOptions<T> {
+export interface UpdateTranslatableOptions<
+  T extends Translatable,
+> extends CreateTranslatableOptions<T> {
   input: TranslatedInput<T> & { id: ID };
 }
 
