@@ -1,6 +1,6 @@
 include:
   - project: 'ci/templates/node'
-    file: ['pnpm-publish.yml']
+    file: ['pnpm-publish-public.yml']
   - project: 'ci/templates/docker'
     file: ['monorepo.yml']
     inputs:
