@@ -28,7 +28,9 @@ const outPath = join(__dirname, "src", "version.ts");
 const existing = existsSync(outPath) ? readFileSync(outPath, "utf-8") : null;
 
 if (existing === content) {
-  console.log(`[generate-version] DEENRUV_UI_VERSION = '${pkg.version}' (unchanged)`);
+  console.log(
+    `[generate-version] DEENRUV_UI_VERSION = '${pkg.version}' (unchanged)`,
+  );
 } else {
   writeFileSync(outPath, content, "utf-8");
   console.log(`[generate-version] wrote DEENRUV_UI_VERSION = '${pkg.version}'`);
