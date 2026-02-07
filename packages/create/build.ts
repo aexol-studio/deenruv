@@ -6,6 +6,7 @@ import { initialData } from "../core/mock-data/data-sources/initial-data";
 const dataDir = path.join(__dirname, "../core/mock-data");
 
 function copyTemplates() {
+  // Copies all templates including admin/ subdirectory into assets/
   return fs.copy("./templates", "./assets");
 }
 

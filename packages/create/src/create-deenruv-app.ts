@@ -2,6 +2,7 @@ import { intro, note, outro, select, spinner } from "@clack/prompts";
 import { program } from "commander";
 import detectPort from "detect-port";
 import fs from "fs-extra";
+import Handlebars from "handlebars";
 import os from "os";
 import path from "path";
 import pc from "picocolors";
@@ -16,6 +17,7 @@ import {
   checkDbConnection,
   checkNodeVersion,
   checkThatNpmCanReadCwd,
+  getAdminDependencies,
   getDependencies,
   installPackages,
   isSafeToCreateProjectIn,
@@ -139,11 +141,13 @@ export async function createDeenruvApp(
     scripts: {
       "dev:server": "ts-node ./src/index.ts",
       "dev:worker": "ts-node ./src/index-worker.ts",
+      "dev:admin": `cd admin && ${packageManager === "yarn" ? "yarn" : "npm run"} dev`,
       dev:
         packageManager === "yarn"
           ? "concurrently yarn:dev:*"
           : "concurrently npm:dev:*",
       build: "tsc",
+      "build:admin": `cd admin && ${packageManager === "yarn" ? "yarn" : "npm run"} build`,
       "start:server": "node ./dist/index.js",
       "start:worker": "node ./dist/index-worker.js",
       start:
@@ -262,6 +266,72 @@ export async function createDeenruvApp(
   }
   scaffoldSpinner.stop(`Generated app scaffold`);
 
+  // Scaffold the React admin panel
+  const adminSpinner = spinner();
+  adminSpinner.start(`Setting up React admin panel`);
+  const adminRoot = path.join(root, "admin");
+  try {
+    await scaffoldAdminPanel(adminRoot, appName, assetPath);
+  } catch (e) {
+    outro(pc.red(`Failed to scaffold admin panel. Please try again.`));
+    process.exit(1);
+  }
+  adminSpinner.stop(`Generated admin panel scaffold`);
+
+  // Install admin panel dependencies
+  const { dependencies: adminDeps, devDependencies: adminDevDeps } =
+    getAdminDependencies(`@${packageJson.version as string}`);
+
+  const adminInstallSpinner = spinner();
+  adminInstallSpinner.start(
+    `Installing admin panel dependencies`,
+  );
+  try {
+    await installPackages(
+      adminRoot,
+      packageManager === "yarn",
+      adminDeps,
+      false,
+      logLevel,
+      isCi,
+    );
+  } catch (e) {
+    outro(
+      pc.red(`Failed to install admin dependencies. Please try again.`),
+    );
+    process.exit(1);
+  }
+  adminInstallSpinner.stop(
+    `Successfully installed ${adminDeps.length} admin dependencies`,
+  );
+
+  if (adminDevDeps.length) {
+    const adminDevInstallSpinner = spinner();
+    adminDevInstallSpinner.start(
+      `Installing admin panel dev dependencies`,
+    );
+    try {
+      await installPackages(
+        adminRoot,
+        packageManager === "yarn",
+        adminDevDeps,
+        true,
+        logLevel,
+        isCi,
+      );
+    } catch (e) {
+      outro(
+        pc.red(
+          `Failed to install admin dev dependencies. Please try again.`,
+        ),
+      );
+      process.exit(1);
+    }
+    adminDevInstallSpinner.stop(
+      `Successfully installed ${adminDevDeps.length} admin dev dependencies`,
+    );
+  }
+
   const populateSpinner = spinner();
   populateSpinner.start(`Initializing your new Deenruv server`);
   // register ts-node so that the config file can be loaded
@@ -335,7 +405,7 @@ export async function createDeenruvApp(
 
   const startCommand = packageManager === "yarn" ? "yarn dev" : "npm run dev";
   const nextSteps = [
-    `${pc.green("Success!")} Created a new Deenruv server at:`,
+    `${pc.green("Success!")} Created a new Deenruv server + React admin at:`,
     `\n`,
     pc.italic(root),
     `\n`,
@@ -343,6 +413,9 @@ export async function createDeenruvApp(
     `\n`,
     pc.gray("$ ") + pc.blue(pc.bold(`cd ${name}`)),
     pc.gray("$ ") + pc.blue(pc.bold(`${startCommand}`)),
+    `\n`,
+    pc.dim(`Server API: http://localhost:3000/admin-api`),
+    pc.dim(`Admin UI:   http://localhost:3001/admin-ui`),
   ];
   note(nextSteps.join("\n"));
   outro(`Happy hacking!`);
@@ -398,4 +471,59 @@ async function copyEmailTemplates(root: string) {
   } catch (err: any) {
     console.error(pc.red("Failed to copy email templates."));
   }
+}
+
+/**
+ * Scaffold the React admin panel directory.
+ * Copies static template files and renders the admin package.json from Handlebars.
+ */
+async function scaffoldAdminPanel(
+  adminRoot: string,
+  appName: string,
+  assetPath: (fileName: string) => string,
+) {
+  const adminAssetDir = path.join(__dirname, "../assets/admin");
+
+  // Ensure the admin directory structure exists
+  await fs.ensureDir(path.join(adminRoot, "src"));
+
+  // Copy static files from the admin template
+  const staticFiles = [
+    { src: "index.html", dest: "index.html" },
+    { src: "vite.config.ts", dest: "vite.config.ts" },
+    { src: "tsconfig.json", dest: "tsconfig.json" },
+    { src: "tsconfig.app.json", dest: "tsconfig.app.json" },
+    { src: "tsconfig.node.json", dest: "tsconfig.node.json" },
+    { src: ".gitignore", dest: ".gitignore" },
+    { src: "src/main.tsx", dest: "src/main.tsx" },
+    { src: "src/App.tsx", dest: "src/App.tsx" },
+    { src: "src/App.css", dest: "src/App.css" },
+    { src: "src/vite-env.d.ts", dest: "src/vite-env.d.ts" },
+  ];
+
+  for (const file of staticFiles) {
+    await fs.copyFile(
+      path.join(adminAssetDir, file.src),
+      path.join(adminRoot, file.dest),
+    );
+  }
+
+  // Generate .env.local with default values (not a template copy to avoid
+  // issues with dotenv file patterns in build tooling).
+  const envLocalContent = [
+    "# Local environment overrides (not committed to git).",
+    "# See src/vite-env.d.ts for available variables.",
+    "",
+    "VITE_ADMIN_HOST_URL=http://localhost:3000",
+    "",
+  ].join("\n");
+  await fs.writeFile(path.join(adminRoot, ".env.local"), envLocalContent);
+
+  // Render the admin package.json from Handlebars template
+  const pkgTemplate = await fs.readFile(
+    path.join(adminAssetDir, "package.json.hbs"),
+    "utf-8",
+  );
+  const adminPkgJson = Handlebars.compile(pkgTemplate)({ name: appName });
+  await fs.writeFile(path.join(adminRoot, "package.json"), adminPkgJson);
 }

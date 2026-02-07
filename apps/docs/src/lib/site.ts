@@ -1,7 +1,8 @@
 const defaultBaseUrl = "https://deenruv.com";
 
-const normalizedBaseUrl =
-  process.env.NEXT_PUBLIC_DOCS_URL?.trim().replace(/\/$/, "") || defaultBaseUrl;
+const normalizedBaseUrl = (
+  process.env.NEXT_PUBLIC_DOCS_URL?.trim().replace(/\/$/, "") || defaultBaseUrl
+).replace(/deenruv\.io/, "deenruv.com");
 
 export const DOCS_BASE_URL = normalizedBaseUrl;
 

@@ -48,6 +48,7 @@ export function isSafeToCreateProjectIn(root: string, name: string) {
     "static",
     "tsconfig.json",
     "yarn.lock",
+    "admin",
   ];
   console.log();
 
@@ -257,6 +258,7 @@ export function installPackages(
 
     const child = spawn(command, args, {
       stdio: logLevel === "silent" ? "ignore" : "inherit",
+      cwd: root,
     });
 
     child.on("close", (code) => {
@@ -287,22 +289,44 @@ export function getDependencies(
     `@deenruv/asset-server-plugin${deenruvPkgVersion}`,
     "dotenv",
     "pg",
-    // Runtime peer dependencies of @deenruv/core that must be installed
-    // explicitly so the scaffolded project can bootstrap without errors.
-    "@nestjs/core",
-    "@nestjs/typeorm",
-    "typeorm",
-    "graphql",
-    "graphql-fields",
-    "graphql-scalars",
-    "graphql-tag",
-    "graphql-upload",
-    "rxjs",
+    "@nestjs/core@^10.3.10",
+    "@nestjs/typeorm@^10.0.2",
+    "typeorm@^0.3.20",
+    "graphql@~16.9.0",
+    "graphql-fields@^2.0.3",
+    "graphql-scalars@^1.22.5",
+    "graphql-tag@^2.12.6",
+    "graphql-upload@^16.0.2",
+    "rxjs@7.8.1",
   ];
   const devDependencies = [
     `@deenruv/cli${deenruvPkgVersion}`,
     "concurrently",
     `typescript@${TYPESCRIPT_VERSION}`,
+  ];
+  return { dependencies, devDependencies };
+}
+
+/**
+ * Returns the dependencies needed for the React admin panel.
+ * These are installed into the admin/ subdirectory.
+ */
+export function getAdminDependencies(
+  deenruvPkgVersion = "",
+): { dependencies: string[]; devDependencies: string[] } {
+  const dependencies = [
+    `@deenruv/admin-dashboard${deenruvPkgVersion}`,
+    `@deenruv/react-ui-devkit${deenruvPkgVersion}`,
+    "react",
+    "react-dom",
+  ];
+  const devDependencies = [
+    "@types/react",
+    "@types/react-dom",
+    "@vitejs/plugin-react-swc",
+    "vite-tsconfig-paths",
+    `typescript@${TYPESCRIPT_VERSION}`,
+    "vite",
   ];
   return { dependencies, devDependencies };
 }

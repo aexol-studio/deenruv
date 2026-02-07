@@ -1,8 +1,10 @@
 # Deenruv Create
 
-A CLI tool for rapidly scaffolding a new Deenruv server application. Heavily inspired by [create-react-app](https://github.com/facebook/create-react-app).
+A CLI tool for rapidly scaffolding a new Deenruv server application with a React admin panel. Heavily inspired by [create-react-app](https://github.com/facebook/create-react-app).
 
-The generated project uses **PostgreSQL** as its database and ships as a **server-only** application (no bundled admin UI).
+The generated project uses **PostgreSQL** as its database and ships with:
+- A **server application** (NestJS + GraphQL)
+- A **React admin panel** (Vite + React) powered by `@deenruv/admin-dashboard`
 
 ## Usage
 
@@ -34,7 +36,46 @@ yarn create @deenruv my-app
 
 _`yarn create` is available in Yarn 0.25+_
 
-It will create a directory called `my-app` inside the current folder.
+It will create a directory called `my-app` inside the current folder containing:
+- Server source code in `src/`
+- React admin panel in `admin/`
+
+## Generated Project Structure
+
+```
+my-app/
+├── src/                    # Server source (NestJS + GraphQL)
+│   ├── index.ts            # Server entry point
+│   ├── index-worker.ts     # Worker entry point
+│   ├── deenruv-config.ts   # Server configuration
+│   └── plugins/            # Custom plugins directory
+├── admin/                  # React admin panel (Vite + React)
+│   ├── src/
+│   │   ├── main.tsx        # React entry point
+│   │   └── App.tsx         # Main App component
+│   ├── index.html
+│   ├── vite.config.ts
+│   └── package.json
+├── static/                 # Static assets and email templates
+├── package.json
+├── .env
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
+```
+
+## Development
+
+After creating your project:
+
+```sh
+cd my-app
+npm run dev    # Starts server, worker, and admin panel concurrently
+```
+
+- **Admin API:** http://localhost:3000/admin-api
+- **Shop API:** http://localhost:3000/shop-api
+- **Admin UI:** http://localhost:3001/admin-ui
 
 ## Options
 

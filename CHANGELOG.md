@@ -810,7 +810,7 @@ so if you use these languages you will encounter layout issues.
 
 #### BREAKING CHANGES
 
-When updating from v1.x, please see the [Migration Guide](https://docs.deenruv.io/migrating-from-v1/).
+When updating from v1.x, please see the [Migration Guide](https://docs.deenruv.com/migrating-from-v1/).
 
 -   The Admin UI app has been refreshed, including upgrading to Angular v16 as well as a host of style, layout & functional improvements.
     If you have ui extensions, they should still work but the layout will look somewhat broken. A full upgrade guide will be published with the final v2 release, but for now, wrapping all your custom pages in `<vdr-page-block>` (or `<div class="page-block">`) will improve things.

@@ -24,12 +24,12 @@ import {
   EntityCustomFields,
   useTranslation,
   CustomerSearch,
+  type CustomerSearchType,
 } from '@deenruv/react-ui-devkit';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Edit, User, Check, Mail, Phone, Loader2, UserPlus, Search, AlertCircle } from 'lucide-react';
-import { CustomerSearchType } from '@deenruv/react-ui-devkit/dist/selectors/CustomerSearchSelector.js';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');

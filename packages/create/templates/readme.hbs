@@ -13,6 +13,7 @@ Useful links:
 
 * `/src` contains the source code of your Deenruv server. All your custom code and plugins should reside here.
 * `/static` contains static (non-code) files such as assets (e.g. uploaded images) and email templates.
+* `/admin` contains the React admin panel (Vite + React) for managing your shop.
 
 ## Development
 
@@ -20,8 +21,20 @@ Useful links:
 {{#if useYarn}}yarn dev{{else}}npm run dev{{/if}}
 ```
 
-will start the Deenruv server and [worker](https://deenruv.com/docs/developer-guide/deenruv-worker/) processes from
-the `src` directory.
+will start the Deenruv server, [worker](https://deenruv.com/docs/developer-guide/deenruv-worker/) processes, and the React admin panel concurrently.
+
+Once started, you can access:
+- **Admin API:** http://localhost:3000/admin-api
+- **Shop API:** http://localhost:3000/shop-api
+- **Admin UI:** http://localhost:3001/admin-ui
+
+You can also start individual services:
+
+```
+{{#if useYarn}}yarn dev:server{{else}}npm run dev:server{{/if}}   # Server only
+{{#if useYarn}}yarn dev:worker{{else}}npm run dev:worker{{/if}}   # Worker only
+{{#if useYarn}}yarn dev:admin{{else}}npm run dev:admin{{/if}}    # Admin panel only
+```
 
 ## Build
 
@@ -29,7 +42,13 @@ the `src` directory.
 {{#if useYarn}}yarn build{{else}}npm run build{{/if}}
 ```
 
-will compile the TypeScript sources into the `/dist` directory.
+will compile the TypeScript server sources into the `/dist` directory.
+
+```
+{{#if useYarn}}yarn build:admin{{else}}npm run build:admin{{/if}}
+```
+
+will build the React admin panel for production.
 
 ## Production
 

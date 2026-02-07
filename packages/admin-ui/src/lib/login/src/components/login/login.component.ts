@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
 
     loadImage() {
         // this.httpClient
-        //     .get('https://login-image.deenruv.io')
+        //     .get('https://login-image.deenruv.com')
         //     .toPromise()
         //     .then(res => {
         //         this.updateImage(res);

@@ -31,7 +31,7 @@ export type AdditionalEnabledPaymentMethodsParams = Partial<
 export interface MolliePluginOptions {
   /**
    * @description
-   * The host of your Deenruv server, e.g. `'https://my-deenruv.io'`.
+   * The host of your Deenruv server, e.g. `'https://my-deenruv.com'`.
    * This is used by Mollie to send webhook events to the Deenruv server
    */
   deenruvHost: string;

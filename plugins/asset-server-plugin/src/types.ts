@@ -82,7 +82,7 @@ export interface AssetServerOptions {
   assetUploadDir: string; // TODO: this is strategy-specific and should be moved out of the global options
   /**
    * @description
-   * The complete URL prefix of the asset files. For example, "https://demo.deenruv.io/assets/". A
+   * The complete URL prefix of the asset files. For example, "https://demo.deenruv.com/assets/". A
    * function can also be provided to handle more complex cases, such as serving multiple domains
    * from a single server. In this case, the function should return a string url prefix.
    *

@@ -68,7 +68,7 @@ import {
 } from "./payment-helpers";
 
 const mockData = {
-  host: "https://my-deenruv.io",
+  host: "https://my-deenruv.com",
   redirectUrl: "https://fallback-redirect/order",
   apiKey: "myApiKey",
   methodCode: `mollie-payment-${E2E_DEFAULT_CHANNEL_TOKEN}`,

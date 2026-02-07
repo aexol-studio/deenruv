@@ -2,7 +2,7 @@
 
 This is an example plugin which demonstrates how to build a multi-vendor marketplace with Deenruv. It uses new APIs and features introduced in Deenruv v2.0.
 
-<!-- The parts of the plugin are documented with explanations, and the overall guide can be found in the [Multi-vendor marketplace](https://docs.deenruv.io/developer-guide/multi-vendor-marketplaces/) section of the Deenruv docs. -->
+<!-- The parts of the plugin are documented with explanations, and the overall guide can be found in the [Multi-vendor marketplace](https://docs.deenruv.com/developer-guide/multi-vendor-marketplaces/) section of the Deenruv docs. -->
 
 ## Setup
 

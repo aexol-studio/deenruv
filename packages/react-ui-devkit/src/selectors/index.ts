@@ -7,3 +7,7 @@ export * from "./details/index.js";
 export * from "./FacetValueSelector.js";
 export * from "./PromotionsSelector.js";
 export * from "./PaymentMethodsSelector.js";
+export * from "./OrderHistorySelector.js";
+export * from "./CustomerSearchSelector.js";
+export * from "./AssetsSelector.js";
+export * from "./ModifyOrderSelector.js";
