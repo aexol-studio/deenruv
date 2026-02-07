@@ -8,7 +8,7 @@
  *
  * Usage: node generate-version.mjs
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -24,5 +24,12 @@ const content = `/**
 export const DEENRUV_UI_VERSION: string = '${pkg.version}';
 `;
 
-writeFileSync(join(__dirname, "src", "version.ts"), content, "utf-8");
-console.log(`[generate-version] wrote DEENRUV_UI_VERSION = '${pkg.version}'`);
+const outPath = join(__dirname, "src", "version.ts");
+const existing = existsSync(outPath) ? readFileSync(outPath, "utf-8") : null;
+
+if (existing === content) {
+  console.log(`[generate-version] DEENRUV_UI_VERSION = '${pkg.version}' (unchanged)`);
+} else {
+  writeFileSync(outPath, content, "utf-8");
+  console.log(`[generate-version] wrote DEENRUV_UI_VERSION = '${pkg.version}'`);
+}
