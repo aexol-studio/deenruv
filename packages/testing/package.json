@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/testing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "End-to-end testing tools for deenruv projects",
   "keywords": [
     "deenruv",
