@@ -283,9 +283,7 @@ export async function createDeenruvApp(
     getAdminDependencies(`@${packageJson.version as string}`);
 
   const adminInstallSpinner = spinner();
-  adminInstallSpinner.start(
-    `Installing admin panel dependencies`,
-  );
+  adminInstallSpinner.start(`Installing admin panel dependencies`);
   try {
     await installPackages(
       adminRoot,
@@ -296,9 +294,7 @@ export async function createDeenruvApp(
       isCi,
     );
   } catch (e) {
-    outro(
-      pc.red(`Failed to install admin dependencies. Please try again.`),
-    );
+    outro(pc.red(`Failed to install admin dependencies. Please try again.`));
     process.exit(1);
   }
   adminInstallSpinner.stop(
@@ -307,9 +303,7 @@ export async function createDeenruvApp(
 
   if (adminDevDeps.length) {
     const adminDevInstallSpinner = spinner();
-    adminDevInstallSpinner.start(
-      `Installing admin panel dev dependencies`,
-    );
+    adminDevInstallSpinner.start(`Installing admin panel dev dependencies`);
     try {
       await installPackages(
         adminRoot,
@@ -321,9 +315,7 @@ export async function createDeenruvApp(
       );
     } catch (e) {
       outro(
-        pc.red(
-          `Failed to install admin dev dependencies. Please try again.`,
-        ),
+        pc.red(`Failed to install admin dev dependencies. Please try again.`),
       );
       process.exit(1);
     }

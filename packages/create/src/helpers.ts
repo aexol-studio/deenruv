@@ -311,9 +311,10 @@ export function getDependencies(
  * Returns the dependencies needed for the React admin panel.
  * These are installed into the admin/ subdirectory.
  */
-export function getAdminDependencies(
-  deenruvPkgVersion = "",
-): { dependencies: string[]; devDependencies: string[] } {
+export function getAdminDependencies(deenruvPkgVersion = ""): {
+  dependencies: string[];
+  devDependencies: string[];
+} {
   const dependencies = [
     `@deenruv/admin-dashboard${deenruvPkgVersion}`,
     `@deenruv/react-ui-devkit${deenruvPkgVersion}`,
