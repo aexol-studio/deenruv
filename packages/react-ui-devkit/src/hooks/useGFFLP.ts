@@ -14,6 +14,49 @@ interface GFFLPFieldConfig<T> {
   initialValue?: T;
 }
 
+/**
+ * Create a clean field-state object. Single source of truth — avoids leaking
+ * config metadata (`validate`) into runtime state.
+ */
+function createFieldState<T>(
+  value: T,
+  initialValue: T | undefined,
+  errors: string[] | void,
+): GFFLPFormField<T> {
+  if (errors && errors.length > 0) {
+    return { value, initialValue, errors } as GFFLPFormField<T>;
+  }
+  return { value, initialValue, validatedValue: value } as GFFLPFormField<T>;
+}
+
+/**
+ * Validate a value against a field config and return a clean field-state.
+ */
+function validateAndCreateField<T>(
+  value: T,
+  initialValue: T | undefined,
+  fieldConfig: GFFLPFieldConfig<T> | undefined,
+): GFFLPFormField<T> {
+  const errors = fieldConfig?.validate?.(value);
+  return createFieldState(value, initialValue, errors);
+}
+
+/**
+ * Build the initial state object from config, using only `value` and
+ * `initialValue` (no config-spread leakage).
+ */
+function buildInitialState<X>(config: {
+  [K in keyof X]?: GFFLPFieldConfig<X[K]>;
+}): Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }> {
+  return Object.fromEntries(
+    Object.keys(config).map((k) => {
+      const key = k as keyof X;
+      const initial = config[key]?.initialValue as X[keyof X];
+      return [k, createFieldState(initial, initial, undefined)];
+    }),
+  ) as Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }>;
+}
+
 export const useGFFLP = <
   T extends keyof MT,
   Z extends keyof MT[T],
@@ -23,22 +66,18 @@ export const useGFFLP = <
   ..._pick: Z[]
 ) => useFFLP<Pick<MT[T], Z>>;
 
+/**
+ * @deprecated Use `useGFFLP` instead. This alias exists only for typo
+ * compatibility and will be removed in a future major version.
+ */
+export const useGLFFP = useGFFLP;
+
 export const useFFLP = <X>(config: {
   [K in keyof X]?: GFFLPFieldConfig<X[K]>;
 }) => {
   const [state, _setState] = useState<
     Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }>
-  >({
-    ...(Object.fromEntries(
-      Object.keys(config).map((v) => [
-        v,
-        {
-          value: config[v as keyof X]?.initialValue as X[keyof X],
-          ...config[v as keyof X],
-        },
-      ]),
-    ) as Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }>),
-  });
+  >(buildInitialState(config));
 
   const setField = useCallback(
     <F extends keyof X>(field: F, value: X[F]) => {
@@ -46,24 +85,25 @@ export const useFFLP = <X>(config: {
         const fullPath = (field as string).split(".");
         if (fullPath.length > 1) {
           const [parentField, childField] = fullPath;
-          const parentValue =
-            prevState && prevState[parentField as keyof X]?.value;
-          const parentInitialValue =
-            prevState && prevState[parentField as keyof X]?.initialValue;
-          const parentErrors =
-            prevState && prevState[parentField as keyof X]?.errors;
-          const parentValidatedValue =
-            prevState && prevState[parentField as keyof X]?.validatedValue;
+          const parentKey = parentField as keyof X;
+          const existing = prevState[parentKey];
+          const parentValue = existing?.value;
+          const parentInitialValue = existing?.initialValue;
+          const parentValidatedValue = existing?.validatedValue;
+          const parentErrors = existing?.errors;
+
+          // Plain nested value update — the child value is set directly,
+          // not wrapped in `{ value }`.
           const updatedParentField = {
-            value: { ...parentValue, [childField]: { value } },
+            value: { ...parentValue, [childField]: value },
             initialValue: { ...parentInitialValue, [childField]: value },
             errors: parentErrors,
-            validatedValue: { ...parentValidatedValue, [childField]: value },
+            validatedValue: parentValidatedValue
+              ? { ...parentValidatedValue, [childField]: value }
+              : undefined,
           };
           return { ...prevState, [parentField]: updatedParentField };
         } else {
-          const isToBeValidated = !!config[field]?.validate;
-          const errors = config[field]?.validate?.(value);
           const initialValue = prevState[field]?.initialValue;
 
           let updatedValue = value;
@@ -72,19 +112,14 @@ export const useFFLP = <X>(config: {
             updatedValue = { ...existingValue, ...value } as X[F];
           }
 
-          const updatedField =
-            isToBeValidated && errors && errors.length > 0
-              ? ({
-                  value: updatedValue,
-                  initialValue,
-                  errors,
-                } as GFFLPFormField<X[F]>)
-              : ({
-                  value: updatedValue,
-                  initialValue,
-                  validatedValue: updatedValue,
-                } as GFFLPFormField<X[F]>);
-          return { ...prevState, [field]: updatedField };
+          return {
+            ...prevState,
+            [field]: validateAndCreateField(
+              updatedValue,
+              initialValue,
+              config[field],
+            ),
+          };
         }
       });
     },
@@ -97,20 +132,18 @@ export const useFFLP = <X>(config: {
       let newState = { ...prevState };
       Object.keys(config).forEach((field) => {
         const fieldKey = field as keyof X;
-        const fieldValue = newState[fieldKey];
-        if (fieldValue && fieldKey) {
-          const isToBeValidated = !!config[fieldKey]?.validate;
-          const isInvalid = config[fieldKey]?.validate?.(fieldValue.value);
-          const initialValue = fieldValue.initialValue;
-          const value = fieldValue.value;
-          newState = {
-            ...newState,
-            [fieldKey]:
-              isToBeValidated && isInvalid && isInvalid.length > 0
-                ? { initialValue, value, errors: isInvalid }
-                : { initialValue, value, validatedValue: value },
-          };
-        }
+        const existing = newState[fieldKey];
+        const value = existing?.value as X[keyof X];
+        const initialValue = existing?.initialValue;
+
+        newState = {
+          ...newState,
+          [fieldKey]: validateAndCreateField(
+            value,
+            initialValue,
+            config[fieldKey],
+          ),
+        };
       });
       isValid = !Object.keys(config).some(
         (field) =>
@@ -137,24 +170,18 @@ export const useFFLP = <X>(config: {
       let newState = { ...prevState };
       Object.keys(config).forEach((field) => {
         const fieldKey = field as keyof X;
-        const fieldValue = newState[fieldKey];
+        // Deterministic: process all configured fields regardless of
+        // whether they already exist in prevState.
+        const initialValue = prevState[fieldKey]?.initialValue;
 
-        if (fieldValue && fieldKey) {
-          const isToBeValidated = !!config[fieldKey]?.validate;
-          const isInvalid = config[fieldKey]?.validate?.(value[fieldKey]);
-          const initialValue = fieldValue.initialValue;
-          newState = {
-            ...newState,
-            [fieldKey]:
-              isToBeValidated && isInvalid && isInvalid.length > 0
-                ? { initialValue, value: value[fieldKey], errors: isInvalid }
-                : {
-                    initialValue,
-                    value: value[fieldKey],
-                    validatedValue: value[fieldKey],
-                  },
-          };
-        }
+        newState = {
+          ...newState,
+          [fieldKey]: validateAndCreateField(
+            value[fieldKey],
+            initialValue,
+            config[fieldKey],
+          ),
+        };
       });
       return newState;
     });
@@ -165,31 +192,23 @@ export const useFFLP = <X>(config: {
       let newState = { ...prevState };
       Object.keys(config).forEach((field) => {
         const fieldKey = field as keyof X;
-        const fieldValue = prevState[fieldKey];
-
+        const existing = prevState[fieldKey];
+        // Clear errors by marking the field as valid with its current value,
+        // preserving a consistent state shape (validatedValue is set).
         newState = {
           ...newState,
-          [fieldKey]: {
-            initialValue: fieldValue?.initialValue,
-            value: fieldValue?.value,
-            errors: [],
-          },
+          [fieldKey]: createFieldState(
+            existing?.value as X[keyof X],
+            existing?.initialValue,
+            undefined,
+          ),
         };
       });
       return newState;
     });
 
   const clearAllForm = () => {
-    const clearForm = Object.fromEntries(
-      Object.keys(config).map((v) => [
-        v,
-        {
-          value: config[v as keyof X]?.initialValue as X[keyof X],
-          ...config[v as keyof X],
-        },
-      ]),
-    ) as Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }>;
-    _setState(clearForm);
+    _setState(buildInitialState(config));
   };
 
   return {

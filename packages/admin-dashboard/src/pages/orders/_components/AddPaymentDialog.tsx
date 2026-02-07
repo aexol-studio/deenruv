@@ -141,7 +141,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
             />
           </div>
 
-          <div className="bg-muted/50 mt-2 rounded-md p-3">
+          <div className="mt-2 rounded-md bg-muted/50 p-3">
             <div className="flex items-center gap-2">
               <FileText className="size-4 text-teal-500 dark:text-teal-400" />
               <span className="text-sm font-medium">{t('payments.summary')}</span>

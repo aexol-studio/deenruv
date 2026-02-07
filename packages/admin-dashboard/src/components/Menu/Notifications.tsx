@@ -145,19 +145,19 @@ export const Notifications = () => {
         <Button variant="outline" size="icon" className="relative size-10">
           <Bell className="size-4" />
           {hasUnread && (
-            <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-red-500">
+            <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red-500">
               <span className="absolute inset-0 animate-ping rounded-full bg-red-400 opacity-75"></span>
             </span>
           )}
           <span className="sr-only">{t('notificationsBox.toggleNotifications')}</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-md z-[2138] p-0" align="end">
+      <PopoverContent className="z-[2138] w-md p-0" align="end">
         <Tabs defaultValue="ALL" className="w-full">
           <Card className="w-full border-0 shadow-none">
             <CardHeader
               className={cn(
-                'bg-muted/30 flex w-full flex-col items-start justify-start gap-2 p-0',
+                'flex w-full flex-col items-start justify-start gap-2 bg-muted/30 p-0',
                 components.length === 0 && 'pb-3',
               )}
             >
@@ -204,11 +204,11 @@ export const Notifications = () => {
                       >
                         <div className="mt-0.5">{notification.icon}</div>
                         <div className="flex-1 space-y-1">
-                          <p className="text-sm font-medium leading-none">{notification.title}</p>
-                          <p className="text-muted-foreground text-xs">{notification.description}</p>
+                          <p className="text-sm leading-none font-medium">{notification.title}</p>
+                          <p className="text-xs text-muted-foreground">{notification.description}</p>
                           <div className="flex items-center pt-1">
-                            <Clock className="text-muted-foreground mr-1 size-3" />
-                            <span className="text-muted-foreground text-xs">{notification.time}</span>
+                            <Clock className="mr-1 size-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">{notification.time}</span>
                           </div>
                         </div>
                       </div>
@@ -216,11 +216,11 @@ export const Notifications = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center px-4 py-8 text-center">
-                    <div className="bg-muted mb-3 rounded-full p-3">
-                      <Bell className="text-muted-foreground size-6" />
+                    <div className="mb-3 rounded-full bg-muted p-3">
+                      <Bell className="size-6 text-muted-foreground" />
                     </div>
                     <h3 className="text-sm font-medium">{t('notificationsBox.emptyStateMessage')}</h3>
-                    <p className="text-muted-foreground mt-1 text-xs">{t('notificationsBox.emptyStateDescription')}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t('notificationsBox.emptyStateDescription')}</p>
                   </div>
                 )}
               </TabsContent>

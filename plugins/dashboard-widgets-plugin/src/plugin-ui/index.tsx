@@ -1,4 +1,7 @@
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import {
+  createDeenruvUIPlugin,
+  DEENRUV_UI_VERSION,
+} from "@deenruv/react-ui-devkit";
 import { widgets } from "./widgets";
 import pl from "./locales/pl";
 import en from "./locales/en";
@@ -17,7 +20,7 @@ export const UIPlugin = createDeenruvUIPlugin<UIPluginOptions>({
     },
     barChartColors: ["#2563eb", "#60a5fa", "#3b82f6", "#93c5fd", "#bfdbfe"],
   },
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "Dashboard Widgets Plugin",
   widgets,
   translations: {

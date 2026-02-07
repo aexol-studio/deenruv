@@ -1,7 +1,7 @@
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
 
 export const UIPlugin = createDeenruvUIPlugin<{}>({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "UI Plugin",
   pages: [],
   navMenuLinks: [],

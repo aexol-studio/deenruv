@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { usePluginStore } from "@/plugins/plugin-context";
 import { DetailLocationID, DetailLocationSidebarID } from "@/types";
@@ -7,22 +7,16 @@ export const Renderer: React.FC<{
   position: DetailLocationID | DetailLocationSidebarID;
   tab?: string;
 }> = ({ position, tab }) => {
-  const { getComponents } = usePluginStore();
-  const [components, setComponents] = useState<JSX.Element[]>([]);
+  const { getSurfaceComponents } = usePluginStore();
+  const entries = getSurfaceComponents(position, tab);
 
-  useEffect(() => {
-    const stored = getComponents(position, tab);
-    setComponents(
-      stored.map((component, index) => (
-        <React.Fragment key={index}>
-          {React.createElement(component)}
+  return (
+    <>
+      {entries.map(({ key, component: Component }) => (
+        <React.Fragment key={key}>
+          <Component />
         </React.Fragment>
-      )),
-    );
-    return () => {
-      setComponents([]);
-    };
-  }, [tab]);
-
-  return <>{components}</>;
+      ))}
+    </>
+  );
 };

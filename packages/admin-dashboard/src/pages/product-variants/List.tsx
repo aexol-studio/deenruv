@@ -13,7 +13,7 @@ import {
   EntityChannelManagementBulkAction,
   EntityFacetManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const tableId = 'productVariants-list-view';
 const { selector } = ListLocations[tableId];

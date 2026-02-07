@@ -76,7 +76,7 @@ export const CollectionProductVariantsDrawer: React.FC<CollectionProductVariants
     <div>
       <Drawer direction="right">
         {children}
-        <DrawerContent className="left-auto right-0 top-0 mt-0 w-[85vw]">
+        <DrawerContent className="top-0 right-0 left-auto mt-0 w-[85vw]">
           <DrawerHeader className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="shrink-0">

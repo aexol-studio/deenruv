@@ -20,7 +20,7 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "@deenruv/common": "workspace:^",
     "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/admin-types": "workspace:^",
@@ -37,12 +37,12 @@
     "@deenruv/core": "workspace:^",
     "typescript": "5.3.3",
     "@graphql-typed-document-node/core": "3.2.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "rimraf": "^5.0.10"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.1.0",
+    "@deenruv/core": "^1.0.0",
     "typeorm": "^0.3.20"
   }
 }

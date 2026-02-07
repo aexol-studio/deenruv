@@ -35,8 +35,10 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
   wrapperClassName,
   placeholder,
 }) => {
+  const hasErrors = errors && errors.length > 0;
+
   return (
-    <div className={cn("flex flex-col w-full gap-2 ", wrapperClassName)}>
+    <div className={cn("flex w-full flex-col gap-2", wrapperClassName)}>
       {label && <Label>{label}</Label>}
       <Select
         defaultValue={defaultValue}
@@ -45,7 +47,13 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
         disabled={disabled}
       >
         <SelectTrigger
-          className={cn(className, size === "sm" && "h-[30px] text-[13px]")}
+          aria-invalid={hasErrors || undefined}
+          data-invalid={hasErrors || undefined}
+          className={cn(
+            className,
+            size === "sm" && "h-[30px] text-[13px]",
+            hasErrors && "border-destructive",
+          )}
         >
           <SelectValue placeholder={placeholder ?? "Select element"} />
         </SelectTrigger>

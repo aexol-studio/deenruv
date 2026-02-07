@@ -2,9 +2,11 @@
 
 A CLI tool for rapidly scaffolding a new Deenruv server application. Heavily inspired by [create-react-app](https://github.com/facebook/create-react-app).
 
+The generated project uses **PostgreSQL** as its database and ships as a **server-only** application (no bundled admin UI).
+
 ## Usage
 
-Deenruv Create requires [Node.js](https://nodejs.org/en/) v8.9.0+ to be installed.
+Deenruv Create requires [Node.js](https://nodejs.org/en/) v18+ to be installed and a running PostgreSQL instance.
 
 To create a new project, you may choose one of the following methods:
 

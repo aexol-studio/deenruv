@@ -62,7 +62,7 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
   const [setAsDefaultShippingAddress] = useMutation(SetAsDefaultShippingAddressMutation);
 
   return (
-    <Card className="bg-secondary text-primary flex w-56 flex-col justify-between">
+    <Card className="flex w-56 flex-col justify-between bg-secondary text-primary">
       <CardContent className="mt-4 flex flex-col gap-1">
         <h5 className="mb-2">{address.streetLine1}</h5>
         <span className="block text-sm">{address?.fullName}</span>

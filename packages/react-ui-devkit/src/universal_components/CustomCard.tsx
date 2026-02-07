@@ -78,7 +78,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
 
   const iconWithClassName =
     icon && typeof icon === "object" && "type" in icon
-      ? cloneElement(icon as ReactElement, {
+      ? cloneElement(icon as ReactElement<{ className?: string }>, {
           className: `${baseClasses} ${textColor}`,
         })
       : icon;

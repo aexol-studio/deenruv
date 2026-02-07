@@ -41,12 +41,12 @@ export const useDetailListHook = <
   searchTranslations?: Array<{ key: S; value: string }>;
   refetchTimeout?: number;
 }): {
-  Paginate: JSX.Element;
-  Search: JSX.Element;
+  Paginate: React.JSX.Element;
+  Search: React.JSX.Element;
   SortButton: (
     key: keyof Awaited<ReturnType<PromisePaginated>>["items"][number],
     translated?: string,
-  ) => JSX.Element;
+  ) => React.JSX.Element;
   objects: GenericReturn<T> | undefined;
   searchParamValues: PaginationInput;
   refetch: (initialFilterState?: ModelTypes[ListType[K]] | undefined) => void;

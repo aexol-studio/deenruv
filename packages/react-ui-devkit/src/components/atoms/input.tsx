@@ -21,9 +21,11 @@ export interface InputProps extends Omit<
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, onChange, value, ...props }, ref) => {
+    const hasErrors = props.errors && props.errors.length > 0;
     const inputClassName = cn(
-      "flex h-10 w-full rounded-md border border-stone-200 bg-white px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-stone-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-stone-800 dark:bg-stone-950 dark:placeholder:text-stone-400",
-      "focus:outline-none focus:ring-0 focus:border-stone-200 dark:focus:border-stone-800",
+      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+      "focus:outline-none focus:ring-0 focus:border-input",
+      hasErrors && "border-destructive focus:border-destructive",
       className,
     );
 
@@ -111,7 +113,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {props.startAdornment && (
               <div
                 className={cn(
-                  "bg-gray-50 dark:bg-gray-700 border border-solid border-gray-200 dark:border-gray-600 -mr-2 h-full pr-2 pl-2 flex items-center rounded-l-md",
+                  "-mr-2 flex h-full items-center rounded-l-md border border-solid border-input bg-muted pl-2 pr-2",
                   props.adornmentPlain && "bg-background z-10 border-r-0",
                 )}
               >
@@ -122,13 +124,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               type={type === "currency" ? "text" : type}
               className={inputClassName}
               ref={ref}
+              aria-invalid={hasErrors || undefined}
+              data-invalid={hasErrors || undefined}
               value={type === "currency" ? internalValue : value}
               onChange={type === "currency" ? handleCurrencyChange : onChange}
               onBlur={type === "currency" ? handleCurrencyBlur : props.onBlur}
               {...props}
             />
             {props.endAdornment && (
-              <div className="-ml-2 flex h-full items-center rounded-r-md border border-solid border-gray-200 bg-gray-50 px-2 dark:border-gray-600 dark:bg-gray-700">
+              <div className="-ml-2 flex h-full items-center rounded-r-md border border-solid border-input bg-muted px-2">
                 {props.endAdornment}
               </div>
             )}
@@ -143,6 +147,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         type={type === "currency" ? "text" : type}
         className={inputClassName}
         ref={ref}
+        aria-invalid={hasErrors || undefined}
+        data-invalid={hasErrors || undefined}
         value={type === "currency" ? internalValue : value}
         onChange={type === "currency" ? handleCurrencyChange : onChange}
         onBlur={type === "currency" ? handleCurrencyBlur : props.onBlur}

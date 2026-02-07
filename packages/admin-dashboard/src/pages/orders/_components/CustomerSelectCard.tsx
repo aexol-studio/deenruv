@@ -166,7 +166,7 @@ export const CustomerSelectCard: React.FC = () => {
                   <User className="size-5 text-indigo-500 dark:text-indigo-400" />
                   {t('create.selectCustomer.label', 'Select Customer')}
                 </DialogTitle>
-                <DialogDescription className="text-muted-foreground mt-2">
+                <DialogDescription className="mt-2 text-muted-foreground">
                   {t(
                     'create.selectCustomer.description',
                     'Choose an existing customer or create a new one for this order',
@@ -319,15 +319,15 @@ export const CustomerSelectCard: React.FC = () => {
         )
       }
     >
-      <div className="border-border bg-muted/50 rounded-lg border p-3">
+      <div className="rounded-lg border border-border bg-muted/50 p-3">
         <div className="flex items-start gap-3">
           {!order?.customer ? (
             <>
-              <div className="bg-secondary mt-0.5 flex size-8 items-center justify-center rounded-full">
+              <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-secondary">
                 <AlertCircle className="size-4 text-green-500 dark:text-green-600" />
               </div>
               <div className="flex-1">
-                <p className="text-muted-foreground text-sm italic">
+                <p className="text-sm text-muted-foreground italic">
                   {t('create.selectCustomer.noCustomer', 'No customer assigned to this order')}
                 </p>
                 {mode !== 'view' && (

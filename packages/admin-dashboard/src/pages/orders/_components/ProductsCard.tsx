@@ -343,10 +343,10 @@ export const ProductsCard: React.FC = () => {
   return (
     <>
       <Dialog open={open} onOpenChange={(e) => (!e ? closeAddVariantDialog() : setOpen(true))}>
-        <DialogContent className="bg-background max-h-[90vh] min-h-[60vh] max-w-[65vw] overflow-auto">
+        <DialogContent className="max-h-[90vh] min-h-[60vh] max-w-[65vw] overflow-auto bg-background">
           {selectedVariant ? (
             <div className="flex size-full flex-col justify-between">
-              <h3 className="text-primary pb-4 text-xl font-semibold">{t('create.addVariant')}</h3>
+              <h3 className="pb-4 text-xl font-semibold text-primary">{t('create.addVariant')}</h3>
               <div className="flex h-full flex-col gap-8">
                 <div className="flex size-full flex-col items-center gap-2">
                   <div className="flex size-full justify-between gap-4">
@@ -357,7 +357,7 @@ export const ProductsCard: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="text-muted-foreground flex items-center justify-center p-8">
+            <div className="flex items-center justify-center p-8 text-muted-foreground">
               {t('create.somethingWrong')}
             </div>
           )}
@@ -427,7 +427,7 @@ export const ProductsCard: React.FC = () => {
             />
           )}
 
-          <div className="border-border rounded-lg border-0 shadow-sm">
+          <div className="rounded-lg border-0 border-border shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow noHover className="hover:bg-transparent">
@@ -458,10 +458,10 @@ export const ProductsCard: React.FC = () => {
                                 '/placeholder.svg'
                               }
                             />
-                            <div className="text-primary font-medium">{line.productVariant.product.name}</div>
+                            <div className="font-medium text-primary">{line.productVariant.product.name}</div>
                           </div>
                         </TableCell>
-                        <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+                        <TableCell className="min-w-[200px] py-3 font-mono text-sm text-muted-foreground">
                           <div className="flex items-center gap-2">
                             <Tag className="size-4 text-blue-500 dark:text-blue-400" />
                             {line.productVariant.sku}
@@ -482,7 +482,7 @@ export const ProductsCard: React.FC = () => {
                         <TableCell className="py-3">
                           <div className="flex flex-col">
                             <span>{priceFormatter(line.unitPrice, line.productVariant.currencyCode)}</span>
-                            <span className="text-muted-foreground text-sm">
+                            <span className="text-sm text-muted-foreground">
                               ({priceFormatter(line.unitPriceWithTax, line.productVariant.currencyCode)})
                             </span>
                           </div>
@@ -491,7 +491,7 @@ export const ProductsCard: React.FC = () => {
                           <TableCell className="py-3 text-right">
                             <div className="flex items-center justify-end gap-3">
                               <DropdownMenu>
-                                <DropdownMenuTrigger className="hover:bg-muted flex size-8 items-center justify-center rounded-md">
+                                <DropdownMenuTrigger className="flex size-8 items-center justify-center rounded-md hover:bg-muted">
                                   <EllipsisVertical className="size-5" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
@@ -516,7 +516,7 @@ export const ProductsCard: React.FC = () => {
                                       <TooltipProvider>
                                         <Tooltip>
                                           <TooltipTrigger asChild>
-                                            <InfoIcon className="text-muted-foreground size-4" />
+                                            <InfoIcon className="size-4 text-muted-foreground" />
                                           </TooltipTrigger>
                                           <TooltipContent>
                                             <p>
@@ -546,23 +546,23 @@ export const ProductsCard: React.FC = () => {
 
                     {currentOrder?.surcharges.map((surcharge) => (
                       <TableRow key={surcharge.sku} className="bg-muted/10 hover:bg-muted/20">
-                        <TableCell className="text-primary py-3 font-medium">
+                        <TableCell className="py-3 font-medium text-primary">
                           <div className="flex items-center gap-2">
                             <Package className="size-4 text-blue-500 dark:text-blue-400" />
                             {surcharge.description}
                           </div>
                         </TableCell>
-                        <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+                        <TableCell className="min-w-[200px] py-3 font-mono text-sm text-muted-foreground">
                           <div className="flex items-center gap-2">
                             <Tag className="size-4 text-blue-500 dark:text-blue-400" />
                             {surcharge.sku}
                           </div>
                         </TableCell>
                         <TableCell className="py-3"></TableCell>
-                        <TableCell className="text-nowrap py-3 font-medium">
+                        <TableCell className="py-3 font-medium text-nowrap">
                           {priceFormatter(surcharge.price, order.currencyCode)}
                         </TableCell>
-                        <TableCell className="text-nowrap py-3 font-medium">
+                        <TableCell className="py-3 font-medium text-nowrap">
                           {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
                         </TableCell>
                         <TableCell className="py-3"></TableCell>
@@ -580,11 +580,11 @@ export const ProductsCard: React.FC = () => {
                         <div className="mb-4 rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
                           <ShoppingCart className="size-6 text-blue-500 dark:text-blue-400" />
                         </div>
-                        <span className="text-muted-foreground text-lg font-medium">
+                        <span className="text-lg font-medium text-muted-foreground">
                           {t('create.noItems', 'No products in this order')}
                         </span>
                         {mode !== 'view' && (
-                          <span className="text-muted-foreground mt-2 text-sm">
+                          <span className="mt-2 text-sm text-muted-foreground">
                             {t('create.searchPlaceholder', 'Use the search above to add products')}
                           </span>
                         )}
@@ -596,15 +596,15 @@ export const ProductsCard: React.FC = () => {
             </Table>
           </div>
           <div className="mt-6 border-t pt-4">
-            <div className="bg-card rounded-lg border p-4 shadow-sm">
+            <div className="rounded-lg border bg-card p-4 shadow-sm">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-base font-semibold">{t('total')}</span>
-                  <span className="text-primary text-base font-bold">
+                  <span className="text-base font-bold text-primary">
                     {priceFormatter(currentOrder?.totalWithTax || 0, currentOrder?.currencyCode)}
                   </span>
                 </div>
-                <div className="text-muted-foreground mt-2 text-xs">
+                <div className="mt-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <InfoIcon className="size-3" />
                     <span>

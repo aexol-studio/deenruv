@@ -79,7 +79,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
   const { order } = useOrder();
 
   return (
-    <div className="bg-card rounded-md border p-4">
+    <div className="rounded-md border bg-card p-4">
       <h3 className="mb-4 font-medium">{t('history.timeline')}</h3>
       <TimelineWrapper positions="left" className="w-full">
         {data?.map((history) => {
@@ -98,7 +98,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                   <div className="flex items-center gap-2">
                     {history.administrator ? (
                       <div className="flex items-center gap-2">
-                        <div className="bg-muted flex size-8 items-center justify-center rounded-full">
+                        <div className="flex size-8 items-center justify-center rounded-full bg-muted">
                           <span className="text-xs font-medium">
                             {history.administrator.firstName?.[0]}
                             {history.administrator.lastName?.[0]}
@@ -108,7 +108,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                           <div className="font-medium">
                             {history.administrator?.firstName} {history.administrator?.lastName}
                           </div>
-                          <div className="text-muted-foreground text-xs">
+                          <div className="text-xs text-muted-foreground">
                             {format(new Date(history.createdAt), 'MMM d, yyyy • h:mm a')}
                             {Math.floor(new Date(history.createdAt).getTime() / 1000) !==
                               Math.floor(new Date(history.updatedAt).getTime() / 1000) && (
@@ -118,7 +118,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <div className="text-muted-foreground text-sm">
+                      <div className="text-sm text-muted-foreground">
                         {format(new Date(history.createdAt), 'MMM d, yyyy • h:mm a')}
                       </div>
                     )}
@@ -184,7 +184,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                       'to' in history.data && (
                         <div className="flex items-center gap-2">
                           <OrderStateBadge state={history.data.from as string} />
-                          <ArrowRightLeft className="text-muted-foreground size-4" />
+                          <ArrowRightLeft className="size-4 text-muted-foreground" />
                           <OrderStateBadge state={history.data.to as string} />
                         </div>
                       )
@@ -197,7 +197,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
               <TimelineLine done className="bg-muted" />
 
               <TimelineContent className="relative mt-2">
-                <div className="bg-muted/30 rounded-md border p-3">
+                <div className="rounded-md border bg-muted/30 p-3">
                   <div className="mb-1 flex items-center gap-2">
                     {entryIcon}
                     <span className="font-medium">
@@ -206,7 +206,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                   </div>
 
                   {isNote && history.data?.note && (
-                    <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
+                    <div className="mt-2 rounded-md bg-background p-3 text-sm whitespace-pre-wrap">
                       {history.data.note as string}
                     </div>
                   )}
@@ -215,7 +215,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                     <div className="mt-2 flex items-center gap-2 text-sm">
                       <CreditCard className="size-4 text-purple-500" />
                       <span className="font-medium">Payment ID:</span>
-                      <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
+                      <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
                         {history.data.paymentId as string}
                       </code>
                     </div>
@@ -225,21 +225,21 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                     <div className="mt-2 flex items-center gap-2 text-sm">
                       <Package className="size-4 text-green-500" />
                       <span className="font-medium">Fulfillment ID:</span>
-                      <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
+                      <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
                         {history.data.fulfillmentId as string}
                       </code>
                     </div>
                   )}
 
                   {'modificationId' in history.data && (
-                    <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
+                    <div className="mt-2 rounded-md bg-background p-3 text-sm whitespace-pre-wrap">
                       {modificationNote}
                     </div>
                   )}
 
                   {'reason' in history.data && (
                     <div>
-                      <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
+                      <div className="mt-2 rounded-md bg-background p-3 text-sm whitespace-pre-wrap">
                         {history.data.reason}
                       </div>
                       {'lines' in history.data && (

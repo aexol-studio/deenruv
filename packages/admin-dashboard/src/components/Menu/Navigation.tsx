@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router';
 import React, { useMemo } from 'react';
 import {
   cn,
@@ -354,7 +354,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                       <h4 className="text-xs font-bold uppercase hover:underline">{group.label}</h4>
                       {getNavigationNotification(group.id)}
                       {viewMarkers ? (
-                        <p className="text-muted-foreground dark:text-muted-foreground text-xs font-semibold lowercase">
+                        <p className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
                           {group.id}
                         </p>
                       ) : null}
@@ -364,7 +364,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                 <AccordionContent className={cn(isCollapsed ? 'py-2' : 'pb-4')}>
                   <nav
                     id={group.id}
-                    className="text-muted-foreground grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+                    className="grid gap-1 px-2 text-muted-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
                   >
                     {group.links.map((link, index) => {
                       const notifications = getNavigationNotification(link.id);
@@ -380,7 +380,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                         buttonVariants({ variant: 'navigation-link', size: 'icon' }),
                                         'h-9 w-9',
                                         location.pathname === link.href &&
-                                          'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted opacity-100',
+                                          'bg-muted opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
                                       )}
                                     >
                                       <link.icon className="size-6" />
@@ -391,7 +391,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                               </TooltipTrigger>
                               <TooltipContent side="right" className="relative flex items-center gap-4">
                                 {viewMarkers ? (
-                                  <div className="text-muted-foreground dark:text-muted-foreground text-xs font-semibold lowercase">
+                                  <div className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
                                     {link.id}
                                   </div>
                                 ) : null}
@@ -406,11 +406,11 @@ export function Navigation({ isCollapsed }: NavProps) {
                                 className={cn(
                                   'relative flex items-center justify-start rounded-md px-4 py-2 capitalize',
                                   location.pathname === link.href &&
-                                    'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold opacity-100',
+                                    'bg-muted font-semibold opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
                                 )}
                               >
                                 {viewMarkers ? (
-                                  <div className="text-muted-foreground dark:text-muted-foreground absolute right-2 top-1/2 -translate-y-1/2 text-xs font-semibold lowercase">
+                                  <div className="absolute top-1/2 right-2 -translate-y-1/2 text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
                                     {link.id}
                                   </div>
                                 ) : null}

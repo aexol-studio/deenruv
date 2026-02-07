@@ -1,6 +1,6 @@
 import { useRouteGuardStore } from "@/state";
 import { useEffect } from "react";
-import { useBlocker, useLocation } from "react-router-dom";
+import { useBlocker, useLocation } from "react-router";
 
 interface UseRouteGuardProps {
   shouldBlock: boolean;

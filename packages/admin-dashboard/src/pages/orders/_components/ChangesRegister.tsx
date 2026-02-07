@@ -78,7 +78,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
             <Loader className="size-10 animate-spin text-orange-500" />
           </div>
           <h3 className="mb-2 text-xl font-medium">{t('changes.loading.title')}</h3>
-          <p className="text-muted-foreground max-w-md">{t('changes.loading.description')}</p>
+          <p className="max-w-md text-muted-foreground">{t('changes.loading.description')}</p>
         </CardContent>
       </Card>
     );
@@ -268,8 +268,8 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Tag className="text-muted-foreground size-4" />
-                            <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
+                            <Tag className="size-4 text-muted-foreground" />
+                            <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
                               {String(item.sku || '') || '—'}
                             </code>
                           </div>
@@ -334,7 +334,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
           <Loader className="size-10 animate-spin text-orange-500" />
         </div>
         <h3 className="mb-2 text-xl font-medium">Checking for Changes</h3>
-        <p className="text-muted-foreground max-w-md">Order changes are being checked. This may take a moment...</p>
+        <p className="max-w-md text-muted-foreground">Order changes are being checked. This may take a moment...</p>
       </CardContent>
     </Card>
   );

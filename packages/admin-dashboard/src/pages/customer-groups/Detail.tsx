@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useValidators, DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { CustomerGroupsDetailView } from './_components/CustomerGroupsDetailView';
 import { typedGql, scalars, $, ModelTypes, Permission } from '@deenruv/admin-types';

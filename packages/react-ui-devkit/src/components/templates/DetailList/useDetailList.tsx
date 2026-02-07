@@ -8,7 +8,7 @@ interface DetailListStore {
   sortButton: (
     key: keyof Awaited<ReturnType<PromisePaginated>>["items"][number],
     translated?: string,
-  ) => JSX.Element;
+  ) => React.JSX.Element;
   refetch: () => void;
 }
 

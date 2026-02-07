@@ -27,8 +27,8 @@ export const ManualOrderChangeModal: React.FC<{
   currentPossibilities: { name: string; to: string[] };
   onConfirm: (to: string) => Promise<void>;
 }> = ({ currentPossibilities, wantedState, order, open, setOpen, onConfirm }) => {
-  const [components, setComponents] = useState<JSX.Element[]>([]);
-  const beforeSubmit = useRef<() => Promise<void> | undefined>();
+  const [components, setComponents] = useState<React.ReactElement[]>([]);
+  const beforeSubmit = useRef<(() => Promise<void>) | undefined>(undefined);
   const { getModalComponents } = usePluginStore();
   const { t } = useTranslation('orders');
   const [value, setValue] = useState<string>(() => {
@@ -72,7 +72,7 @@ export const ManualOrderChangeModal: React.FC<{
 
   return (
     <Dialog open={open} modal={open} onOpenChange={(state) => setOpen({ state })}>
-      <DialogContent className="min-w-fit max-w-[50vw]">
+      <DialogContent className="max-w-[50vw] min-w-fit">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {t('changeStatus.header')}

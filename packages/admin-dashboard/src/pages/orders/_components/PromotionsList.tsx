@@ -129,7 +129,7 @@ export const PromotionsList: React.FC = () => {
         <ScrollArea className="h-[280px]">
           <Table className="h-full">
             <TableHeader>
-              <TableRow noHover className="border-border border-b">
+              <TableRow noHover className="border-b border-border">
                 <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
                 <TableHead className="py-3">{t('couponCodes.title')}</TableHead>
                 <TableHead align="right" style={{ textAlign: 'right' }}>
@@ -221,7 +221,7 @@ export const PromotionsList: React.FC = () => {
         <ScrollArea className="h-[280px]">
           <Table>
             <TableHeader>
-              <TableRow noHover className="border-border border-b">
+              <TableRow noHover className="border-b border-border">
                 <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
                 <TableHead className="py-3">{t('taxSummary.taxRate', 'Type')}</TableHead>
                 <TableHead className="py-3">{t('taxSummary.taxBase', 'Amount')}</TableHead>

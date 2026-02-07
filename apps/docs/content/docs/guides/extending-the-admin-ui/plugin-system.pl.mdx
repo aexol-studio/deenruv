@@ -473,3 +473,59 @@ export const ReviewsPlugin = createDeenruvUIPlugin({
 ## Markery widoku pluginów
 
 Naciśnij **Ctrl+Q** w panelu administracyjnym, aby przełączyć markery widoku pluginów. Podświetla to wszystkie punkty wstrzykiwania w bieżącym widoku, ułatwiając zobaczenie, gdzie będą renderowane komponenty Twojego pluginu.
+
+## Rejestr pluginów i zmienna środowiskowa
+
+### Jak to działa
+
+Panel administracyjny korzysta z **centralnego manifestu** w pliku `apps/panel/src/plugins/registry.ts`, który deklaruje każdy dostępny plugin UI. Każdy wpis manifestu zawiera:
+
+| Pole | Typ | Opis |
+|---|---|---|
+| `id` | `string` | Unikalny identyfikator używany w zmiennej środowiskowej |
+| `plugin` | `DeenruvUIPlugin` | Instancja pluginu (importowana z pakietu pluginu) |
+| `enabledByDefault` | `boolean` | Czy plugin ładuje się, gdy zmienna środowiskowa **nie jest ustawiona** |
+
+Podczas budowania aplikacji plik `apps/panel/src/plugins/enabled.ts` odczytuje zmienną środowiskową `VITE_ADMIN_UI_PLUGINS` i ustala, które pluginy aktywować.
+
+### Semantyka `VITE_ADMIN_UI_PLUGINS`
+
+| Wartość | Zachowanie |
+|---|---|
+| *nieustawiona* (`undefined`) | Ładowane są tylko pluginy z `enabledByDefault: true` |
+| `""` (pusty string) | **Żadne** pluginy nie są ładowane |
+| `"all"` lub `"*"` | Ładowane są **wszystkie** pluginy z manifestu |
+| Lista CSV (np. `"dashboard-widgets,badges"`) | Ładowane są tylko wymienione identyfikatory |
+
+Nieznane identyfikatory (literówki, usunięte pluginy) wywołują ostrzeżenie w konsoli z listą dostępnych ID.
+
+```bash
+# Przykłady
+VITE_ADMIN_UI_PLUGINS="dashboard-widgets,badges" pnpm start:admin-ui
+VITE_ADMIN_UI_PLUGINS="all" pnpm start:admin-ui
+VITE_ADMIN_UI_PLUGINS="" pnpm start:admin-ui   # brak pluginów
+```
+
+### Dodawanie pluginu do manifestu
+
+1. Zainstaluj pakiet pluginu w `apps/panel/package.json`.
+2. Importuj eksport pluginu UI na górze pliku `apps/panel/src/plugins/registry.ts`.
+3. Dodaj wpis do tablicy `pluginManifest` z unikalnym `id`.
+
+```ts title="apps/panel/src/plugins/registry.ts"
+import { BadgesUiPlugin } from '@deenruv/product-badges-plugin/plugin-ui';
+
+export const pluginManifest = [
+  // ...istniejące wpisy
+  { id: 'badges', plugin: BadgesUiPlugin, enabledByDefault: false },
+];
+```
+
+### Współistnienie z rejestracją pluginów po stronie serwera
+
+Manifest w `registry.ts` kontroluje jedynie stronę **UI panelu administracyjnego**. Pluginy serwerowe rejestrowane są osobno w tablicy `DeenruvConfig.plugins`. Typowa konfiguracja obejmuje oba:
+
+- **Plugin serwerowy** → `DeenruvConfig.plugins` (obsługuje rozszerzenia GraphQL, serwisy itp.)
+- **Plugin UI** → `pluginManifest` w `registry.ts` (obsługuje rozszerzenia UI panelu administracyjnego)
+
+Obie strony są niezależne — można mieć plugin serwerowy bez pluginu UI i odwrotnie.

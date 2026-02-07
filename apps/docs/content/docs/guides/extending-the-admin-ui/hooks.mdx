@@ -12,6 +12,10 @@ The `@deenruv/react-ui-devkit` package provides a set of purpose-built React hoo
 
 The primary form hook. `useGFFLP` (GraphQL Form Field Layout Props) creates type-safe form state driven by GraphQL `ModelTypes`. It picks specific fields from a GraphQL type and provides validation, error tracking, and state management.
 
+<Callout type="info">
+The correct hook name is **`useGFFLP`** (not `useGLFFP`). A deprecated alias `useGLFFP` is exported for backward compatibility but will be removed in a future major version. Always use `useGFFLP` in new code.
+</Callout>
+
 ### Basic Usage
 
 ```ts
@@ -51,15 +55,36 @@ const isNameValid = state.name?.validatedValue; // set after validation
 // Update a single field
 setField('name', 'My New Product');
 
-// Supports dot notation for nested fields
+// Supports dot notation for nested fields (e.g. parent object updates)
 setField('translations.name', 'Mon Produit');
 
-// Set all fields at once
+// Set all fields at once (bulk update from fetched entity)
 setState({
-  name: { value: 'Product A', initialValue: '', errors: undefined },
-  slug: { value: 'product-a', initialValue: '', errors: undefined },
+  name: 'Product A',
+  slug: 'product-a',
+  description: 'A great product',
 });
 ```
+
+#### Nested (dot-path) updates explained
+
+When you call `setField('parent.child', value)`, the hook updates the `parent` field's value object directly:
+
+```ts
+// Before: state.translations.value = { name: 'Old', slug: 'old-slug' }
+setField('translations.name', 'New Name');
+// After:  state.translations.value = { name: 'New Name', slug: 'old-slug' }
+```
+
+The child value is stored as a **plain value** — not wrapped in `{ value }`. This keeps the state shape consistent with how entities are fetched from the API.
+
+<Callout type="warn">
+Dot-path updates bypass field-level validation. The parent field's `errors`/`validatedValue` are preserved as-is. If you need validation on nested updates, call `checkIfAllFieldsAreValid()` after setting.
+</Callout>
+
+#### `customFields` merge behavior
+
+The `customFields` key has special merge semantics — `setField('customFields', { myField: 'x' })` merges into the existing `customFields` object rather than replacing it entirely.
 
 ### Validation
 
@@ -123,12 +148,11 @@ function ProductForm({ productId }: { productId: string }) {
   return (
     <form>
       <Input
+        label="Product name"
         value={state.name?.value ?? ''}
         onChange={(e) => setField('name', e.target.value)}
+        errors={state.name?.errors}
       />
-      {state.name?.errors?.map((err) => (
-        <ErrorMessage key={err}>{err}</ErrorMessage>
-      ))}
       {/* ...more fields */}
       <Button onClick={handleSave}>Save</Button>
     </form>
@@ -136,16 +160,46 @@ function ProductForm({ productId }: { productId: string }) {
 }
 ```
 
+### Wiring Errors to Input Components (Accessibility)
+
+The `Input`, `SimpleSelect`, and form components support error display and accessibility attributes out of the box. Pass the `errors` array from hook state to get:
+
+- Visible `ErrorMessage` below the field
+- `aria-invalid` attribute for screen readers
+- `data-invalid` attribute for CSS hooks
+- Destructive border color when invalid
+
+```tsx
+<Input
+  label="Email"
+  value={state.email?.value ?? ''}
+  onChange={(e) => setField('email', e.target.value)}
+  errors={state.email?.errors}  // ← wires ErrorMessage + aria-invalid automatically
+/>
+
+<SimpleSelect
+  label="Country"
+  value={state.country?.value ?? ''}
+  onValueChange={(v) => setField('country', v)}
+  options={countryOptions}
+  errors={state.country?.errors}  // ← wires ErrorMessage + aria-invalid automatically
+/>
+```
+
+<Callout type="info">
+**Accessibility note:** When `errors` is a non-empty array, `Input` and `SimpleSelect` set `aria-invalid="true"` and `data-invalid` on the underlying form control. The `ErrorMessage` component renders with `role="alert"` so screen readers announce errors immediately.
+</Callout>
+
 ### Return Value Reference
 
 | Property | Type | Description |
 |---|---|---|
 | `state` | `Partial<Record<K, GFFLPFormField<T>>>` | Current form state with `value`, `initialValue`, `errors`, `validatedValue` per field |
 | `setField` | `(field, value) => void` | Update a single field (supports dot notation) |
-| `setState` | `(value) => void` | Set all fields at once |
+| `setState` | `(value) => void` | Set all fields at once (accepts a plain object with field values) |
 | `checkIfAllFieldsAreValid` | `() => boolean` | Run all validators, return validity |
 | `haveValidFields` | `boolean` | Whether all validated fields have valid values |
-| `clearErrors` | `() => void` | Clear all validation errors |
+| `clearErrors` | `() => void` | Clear all validation errors (sets `validatedValue` for consistency) |
 | `clearAllForm` | `() => void` | Reset form to initial values |
 
 ## `useFFLP` — Lower-Level Form Hook
@@ -166,6 +220,21 @@ const { state, setField, checkIfAllFieldsAreValid } = useFFLP<{
   age: { initialValue: 0 },
 });
 ```
+
+## Contributor Checklist: Form Hook Documentation
+
+When updating the form hook (`useGFFLP`/`useFFLP`) or its documentation:
+
+1. **Source code:** Edit `packages/react-ui-devkit/src/hooks/useGFFLP.ts`
+2. **Docs (EN):** Edit `apps/docs/content/docs/guides/extending-the-admin-ui/hooks.mdx`
+3. **Docs (PL):** Edit `apps/docs/content/docs/guides/extending-the-admin-ui/hooks.pl.mdx` — mirror all EN changes
+4. **README:** Update `packages/react-ui-devkit/README.md` — keep the hook reference table in sync
+5. **Validate builds:**
+   - `pnpm --filter @deenruv/react-ui-devkit build`
+   - `pnpm --filter @deenruv/admin-dashboard build`
+   - `pnpm --filter @deenruv/docs build`
+6. **Check existing callers:** Run `grep -r "useGFFLP\|useFFLP" packages/ plugins/` to verify no breakage
+7. **Exports:** Ensure `packages/react-ui-devkit/src/hooks/index.ts` re-exports any new symbols
 
 ## `useList` — Paginated Lists
 

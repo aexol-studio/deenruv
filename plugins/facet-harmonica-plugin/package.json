@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "graphql-tag": "^2.12.6",
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "@deenruv/common": "workspace:^",
     "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/admin-types": "workspace:^",
@@ -38,11 +38,11 @@
     "rimraf": "^5.0.10",
     "@graphql-typed-document-node/core": "3.2.0",
     "typescript": "5.3.3",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.1.0",
+    "@deenruv/core": "^1.0.0",
     "typeorm": "^0.3.20"
   }
 }

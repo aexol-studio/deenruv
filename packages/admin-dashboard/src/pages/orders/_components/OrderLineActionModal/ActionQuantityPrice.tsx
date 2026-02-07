@@ -77,9 +77,9 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
     <div className="flex flex-col">
       <div className="space-y-6 p-2">
         {/* Product Information */}
-        <div className="bg-card flex items-center gap-4 rounded-lg border p-5 shadow-sm transition-all hover:shadow-md">
+        <div className="flex items-center gap-4 rounded-lg border bg-card p-5 shadow-sm transition-all hover:shadow-md">
           {productImage ? (
-            <div className="bg-background relative overflow-hidden rounded-md border">
+            <div className="relative overflow-hidden rounded-md border bg-background">
               <img
                 alt={line?.productVariant.name || 'Product image'}
                 className="aspect-square size-24 object-cover transition-transform hover:scale-105"
@@ -87,20 +87,20 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               />
             </div>
           ) : (
-            <div className="bg-muted/50 flex size-24 items-center justify-center rounded-md border">
-              <Package className="text-muted-foreground size-10" />
+            <div className="flex size-24 items-center justify-center rounded-md border bg-muted/50">
+              <Package className="size-10 text-muted-foreground" />
             </div>
           )}
           <div className="flex flex-col">
             <span className="text-lg font-medium">{line?.productVariant.name}</span>
-            <span className="text-muted-foreground text-sm">{line?.productVariant.sku || 'No SKU available'}</span>
-            <div className="bg-primary/10 text-primary mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium">
+            <span className="text-sm text-muted-foreground">{line?.productVariant.sku || 'No SKU available'}</span>
+            <div className="mt-2 inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
               {formatPrice(baseOrderLine?.unitPriceWithTax)} / unit
             </div>
           </div>
         </div>
 
-        <div className="bg-card rounded-lg border p-4 shadow-sm">
+        <div className="rounded-lg border bg-card p-4 shadow-sm">
           <div className="space-y-3">
             <label className="text-sm font-medium" htmlFor="quantity-input">
               {t('orderLineActionModal.quantityChange')}
@@ -109,7 +109,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <button
                 type="button"
                 onClick={decrementQuantity}
-                className="bg-muted/50 text-muted-foreground hover:bg-muted flex size-10 items-center justify-center rounded-l-md border border-r-0 transition-colors"
+                className="flex size-10 items-center justify-center rounded-l-md border border-r-0 bg-muted/50 text-muted-foreground transition-colors hover:bg-muted"
                 aria-label="Decrease quantity"
               >
                 <MinusCircle className="size-4" />
@@ -126,7 +126,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <button
                 type="button"
                 onClick={incrementQuantity}
-                className="bg-muted/50 text-muted-foreground hover:bg-muted flex size-10 items-center justify-center rounded-r-md border border-l-0 transition-colors"
+                className="flex size-10 items-center justify-center rounded-r-md border border-l-0 bg-muted/50 text-muted-foreground transition-colors hover:bg-muted"
                 aria-label="Increase quantity"
               >
                 <PlusCircle className="size-4" />
@@ -134,28 +134,28 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
             </div>
           </div>
 
-          <div className="bg-muted/40 mt-4 space-y-3 rounded-md p-5">
-            <div className="border-border/50 grid grid-cols-3 gap-2 border-b pb-2">
+          <div className="mt-4 space-y-3 rounded-md bg-muted/40 p-5">
+            <div className="grid grid-cols-3 gap-2 border-b border-border/50 pb-2">
               <span className="text-sm font-medium">{t('orderLineActionModal.item')}</span>
               <span className="text-center text-sm font-medium">{t('orderLineActionModal.quantity')}</span>
               <span className="text-right text-sm font-medium">{t('orderLineActionModal.price')}</span>
             </div>
 
             <div className="grid grid-cols-3 gap-2 py-2">
-              <span className="text-muted-foreground text-sm">{t('orderLineActionModal.current')}</span>
+              <span className="text-sm text-muted-foreground">{t('orderLineActionModal.current')}</span>
               <span className="text-center text-sm">{baseOrderLine?.quantity}</span>
               <span className="text-right text-sm">{formatPrice(baseOrderLine?.unitPriceWithTax)}</span>
             </div>
 
-            <div className="bg-muted/60 grid grid-cols-3 gap-2 rounded-md py-2">
-              <span className="text-muted-foreground pl-2 text-sm">{t('orderLineActionModal.change')}</span>
+            <div className="grid grid-cols-3 gap-2 rounded-md bg-muted/60 py-2">
+              <span className="pl-2 text-sm text-muted-foreground">{t('orderLineActionModal.change')}</span>
               <div className="flex items-center justify-center">
                 {quantityDelta !== 0 && (
                   <>
                     {quantityDelta > 0 ? (
                       <ArrowUp className="mr-1 size-3 text-green-500" />
                     ) : (
-                      <ArrowDown className="text-destructive mr-1 size-3" />
+                      <ArrowDown className="mr-1 size-3 text-destructive" />
                     )}
                   </>
                 )}
@@ -171,7 +171,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <span className="pr-2 text-right text-sm">-</span>
             </div>
 
-            <div className="bg-border my-3 h-px w-full" />
+            <div className="my-3 h-px w-full bg-border" />
 
             <div className="grid grid-cols-3 gap-2 py-2">
               <span className="text-sm font-medium">{t('orderLineActionModal.after')}</span>
@@ -181,10 +181,10 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <span className="text-right text-sm font-semibold">{formatPrice(baseOrderLine?.unitPriceWithTax)}</span>
             </div>
 
-            <div className="border-border bg-primary/5 mt-3 grid grid-cols-3 gap-2 rounded-md border-t p-2">
+            <div className="mt-3 grid grid-cols-3 gap-2 rounded-md border-t border-border bg-primary/5 p-2">
               <span className="text-sm font-medium">{t('orderLineActionModal.total')}</span>
               <span className="text-center"></span>
-              <span className="text-primary text-right text-sm font-semibold">
+              <span className="text-right text-sm font-semibold text-primary">
                 {formatPrice((quantityChange || 0) * (baseOrderLine?.unitPriceWithTax || 0))}
               </span>
             </div>
@@ -192,7 +192,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
         </div>
       </div>
 
-      <DialogFooter className="bg-muted/30 gap-2 border-t p-4">
+      <DialogFooter className="gap-2 border-t bg-muted/30 p-4">
         <Button
           onClick={() => onOpenChange(false)}
           variant="outline"
@@ -204,7 +204,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
         <Button
           onClick={handleApprove}
           disabled={isLoading || quantityChange === undefined || quantityChange < 0}
-          className="bg-primary hover:bg-primary/90 min-w-[100px] flex-1 sm:flex-none"
+          className="min-w-[100px] flex-1 bg-primary hover:bg-primary/90 sm:flex-none"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">

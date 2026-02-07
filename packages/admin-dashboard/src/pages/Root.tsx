@@ -12,7 +12,7 @@ import {
   capitalizeFirstLetter,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useState } from 'react';
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import { Outlet, useLocation, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import {
   PaymentMethodsType,
@@ -282,7 +282,7 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
 
   return (
     <>
-      <div className="bg-background text-foreground flex max-h-screen w-full max-w-full overflow-hidden">
+      <div className="flex max-h-screen w-full max-w-full overflow-hidden bg-background text-foreground">
         {loaded ? (
           <>
             <Menu>

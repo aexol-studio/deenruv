@@ -128,7 +128,7 @@ export const Extensions = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Extensions Dashboard</h1>
-              <p className="text-muted-foreground mt-1">Manage and monitor your installed plugins</p>
+              <p className="mt-1 text-muted-foreground">Manage and monitor your installed plugins</p>
             </div>
             <Button>
               <Download className="mr-2 size-4" />
@@ -141,11 +141,11 @@ export const Extensions = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Extensions</CardTitle>
-              <Puzzle className="text-muted-foreground size-4" />
+              <Puzzle className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalPlugins}</div>
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 {activePlugins} active, {totalPlugins - activePlugins} inactive
               </p>
             </CardContent>
@@ -154,11 +154,11 @@ export const Extensions = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Widgets</CardTitle>
-              <Grid3X3 className="text-muted-foreground size-4" />
+              <Grid3X3 className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalWidgets}</div>
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 Across {plugins.filter((p) => (p.widgets?.length || 0) > 0).length} extensions
               </p>
             </CardContent>
@@ -167,11 +167,11 @@ export const Extensions = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Components</CardTitle>
-              <Code2 className="text-muted-foreground size-4" />
+              <Code2 className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalComponents}</div>
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 Across {plugins.filter((p) => (p.components?.length || 0) > 0).length} extensions
               </p>
             </CardContent>
@@ -180,11 +180,11 @@ export const Extensions = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Categories</CardTitle>
-              <LayoutDashboard className="text-muted-foreground size-4" />
+              <LayoutDashboard className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{categories.length - 1}</div>
-              <p className="text-muted-foreground text-xs">Different extension types</p>
+              <p className="text-xs text-muted-foreground">Different extension types</p>
             </CardContent>
           </Card>
         </div>
@@ -196,7 +196,7 @@ export const Extensions = () => {
               className="max-w-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              startAdornment={<Search className="text-muted-foreground size-4" />}
+              startAdornment={<Search className="size-4 text-muted-foreground" />}
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -318,9 +318,9 @@ export const Extensions = () => {
 
         {filteredPlugins.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-            <Info className="text-muted-foreground size-10" />
+            <Info className="size-10 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-semibold">No extensions found</h3>
-            <p className="text-muted-foreground mt-2 text-sm">Try adjusting your search or filter criteria</p>
+            <p className="mt-2 text-sm text-muted-foreground">Try adjusting your search or filter criteria</p>
             <Button
               variant="outline"
               className="mt-4"
@@ -340,7 +340,7 @@ export const Extensions = () => {
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="bg-primary/10 rounded-md p-2">{getCategoryIcon(plugin.category)}</div>
+                      <div className="rounded-md bg-primary/10 p-2">{getCategoryIcon(plugin.category)}</div>
                       <CardTitle className="text-lg">{plugin.name}</CardTitle>
                     </div>
                     {getStatusBadge(plugin.status)}
@@ -362,19 +362,19 @@ export const Extensions = () => {
                   <div className="grid grid-cols-4 gap-2 text-center text-sm">
                     <div>
                       <div className="font-medium">{plugin.tables?.length}</div>
-                      <div className="text-muted-foreground text-xs">Tables</div>
+                      <div className="text-xs text-muted-foreground">Tables</div>
                     </div>
                     <div>
                       <div className="font-medium">{plugin.tabs?.length}</div>
-                      <div className="text-muted-foreground text-xs">Tabs</div>
+                      <div className="text-xs text-muted-foreground">Tabs</div>
                     </div>
                     <div>
                       <div className="font-medium">{plugin.components?.length}</div>
-                      <div className="text-muted-foreground text-xs">Components</div>
+                      <div className="text-xs text-muted-foreground">Components</div>
                     </div>
                     <div>
                       <div className="font-medium">{plugin.widgets?.length}</div>
-                      <div className="text-muted-foreground text-xs">Widgets</div>
+                      <div className="text-xs text-muted-foreground">Widgets</div>
                     </div>
                   </div>
                 </CardContent>
@@ -399,7 +399,7 @@ export const Extensions = () => {
                       className="h-6 w-11"
                     >
                       <span className="sr-only">Toggle plugin status</span>
-                      <span className="bg-primary absolute left-0 top-0 size-6 rounded-full transition-transform duration-200 ease-in-out" />
+                      <span className="absolute top-0 left-0 size-6 rounded-full bg-primary transition-transform duration-200 ease-in-out" />
                     </Switch>
                   </div>
                 </CardFooter>
@@ -421,10 +421,10 @@ export const Extensions = () => {
                 <div className="grid grid-cols-12 items-center gap-4 p-4">
                   <div className="col-span-4">
                     <div className="flex items-center gap-3">
-                      <div className="bg-primary/10 rounded-md p-2">{getCategoryIcon(plugin.category)}</div>
+                      <div className="rounded-md bg-primary/10 p-2">{getCategoryIcon(plugin.category)}</div>
                       <div>
                         <div className="font-medium">{plugin.name}</div>
-                        <div className="text-muted-foreground text-xs">{plugin.description}</div>
+                        <div className="text-xs text-muted-foreground">{plugin.description}</div>
                       </div>
                     </div>
                   </div>
@@ -444,7 +444,7 @@ export const Extensions = () => {
                       className="h-6 w-11"
                     >
                       <span className="sr-only">Toggle plugin status</span>
-                      <span className="bg-primary absolute left-0 top-0 size-6 rounded-full transition-transform duration-200 ease-in-out" />
+                      <span className="absolute top-0 left-0 size-6 rounded-full bg-primary transition-transform duration-200 ease-in-out" />
                     </Switch>
                   </div>
                 </div>

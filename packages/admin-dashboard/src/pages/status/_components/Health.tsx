@@ -16,7 +16,7 @@ const getStatusBadge = (status: string) => {
     return (
       <Badge
         variant="outline"
-        className="flex select-none items-center gap-1 border-green-200 bg-green-50 text-green-700"
+        className="flex items-center gap-1 border-green-200 bg-green-50 text-green-700 select-none"
       >
         <CheckCircle className="size-3.5" />
         {status}
@@ -26,7 +26,7 @@ const getStatusBadge = (status: string) => {
     return (
       <Badge
         variant="outline"
-        className="flex select-none items-center gap-1 border-amber-200 bg-amber-50 text-amber-700"
+        className="flex items-center gap-1 border-amber-200 bg-amber-50 text-amber-700 select-none"
       >
         <AlertCircle className="size-3.5" />
         {status}
@@ -34,7 +34,7 @@ const getStatusBadge = (status: string) => {
     );
   } else {
     return (
-      <Badge variant="outline" className="flex select-none items-center gap-1 border-red-200 bg-red-50 text-red-700">
+      <Badge variant="outline" className="flex items-center gap-1 border-red-200 bg-red-50 text-red-700 select-none">
         <XCircle className="size-3.5" />
         {status}
       </Badge>
@@ -95,9 +95,9 @@ export const Health = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <AlertCircle className="text-muted-foreground mb-3 size-10" />
+          <AlertCircle className="mb-3 size-10 text-muted-foreground" />
           <h3 className="text-lg font-medium">{t('health.error.title')}</h3>
-          <p className="text-muted-foreground mt-1 text-sm">{t('health.error.description')}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t('health.error.description')}</p>
           <Button variant="outline" size="sm" onClick={fetchStatus} className="mt-4">
             {t('health.error.button')}
           </Button>

@@ -167,7 +167,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   className="pl-9"
                   errors={state.description?.errors}
                 />
-                <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
+                <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <FileText className="size-4" />
                 </div>
               </div>
@@ -186,7 +186,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   className="pl-9"
                   errors={state.sku?.errors}
                 />
-                <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
+                <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <Tag className="size-4" />
                 </div>
               </div>
@@ -209,7 +209,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   className="pl-9"
                   errors={state.price?.errors}
                 />
-                <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
+                <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <DollarSign className="size-4" />
                 </div>
               </div>
@@ -230,7 +230,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   onChange={(e) => setField('taxRate', +e.target.value)}
                   className="pl-9"
                 />
-                <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
+                <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <Percent className="size-4" />
                 </div>
               </div>
@@ -247,7 +247,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   onChange={(e) => setField('taxDescription', e.target.value)}
                   className="pl-9"
                 />
-                <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
+                <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <FileText className="size-4" />
                 </div>
               </div>

@@ -12,7 +12,7 @@ import {
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { LayoutDashboard, ListPlus, FileText, Puzzle, ArrowRight } from 'lucide-react';
 
 type Route = {
@@ -145,7 +145,7 @@ export const GlobalSearch = () => {
     <CommandDialog open={isOpen} onOpenChange={toggle} modal>
       <CommandInput
         placeholder={t('globalSearch.placeholder')}
-        className="placeholder:text-muted-foreground flex-1 bg-transparent text-base outline-none"
+        className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
       />
       <CommandList className="max-h-[300px] overflow-y-auto py-2">
         <CommandEmpty className="py-6 text-center text-sm">{t('globalSearch.emptyState')}</CommandEmpty>
@@ -161,12 +161,12 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="hover:bg-accent group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors"
+                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
                   <span className="font-medium">{route.name}</span>
-                  {route.description && <span className="text-muted-foreground text-xs">{route.description}</span>}
+                  {route.description && <span className="text-xs text-muted-foreground">{route.description}</span>}
                 </div>
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-hover:opacity-70" />
               </CommandItem>
@@ -185,12 +185,12 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="hover:bg-accent group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors"
+                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
                   <span className="font-medium">{route.name}</span>
-                  {route.description && <span className="text-muted-foreground text-xs">{route.description}</span>}
+                  {route.description && <span className="text-xs text-muted-foreground">{route.description}</span>}
                 </div>
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-hover:opacity-70" />
               </CommandItem>
@@ -209,12 +209,12 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="hover:bg-accent group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors"
+                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
                   <span className="font-medium">{route.name}</span>
-                  {route.description && <span className="text-muted-foreground text-xs">{route.description}</span>}
+                  {route.description && <span className="text-xs text-muted-foreground">{route.description}</span>}
                 </div>
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-hover:opacity-70" />
               </CommandItem>
@@ -233,12 +233,12 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="hover:bg-accent group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors"
+                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
                   <span className="font-medium">{route.name}</span>
-                  {route.description && <span className="text-muted-foreground text-xs">{route.description}</span>}
+                  {route.description && <span className="text-xs text-muted-foreground">{route.description}</span>}
                 </div>
                 <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-hover:opacity-70" />
               </CommandItem>
@@ -247,21 +247,21 @@ export const GlobalSearch = () => {
         )}
       </CommandList>
 
-      <div className="bg-muted/50 border-t p-2">
-        <div className="text-muted-foreground flex items-center justify-between text-xs">
+      <div className="border-t bg-muted/50 p-2">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex gap-2">
             <div className="flex items-center gap-1">
-              <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">↑</kbd>
-              <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">↓</kbd>
+              <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">↑</kbd>
+              <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">↓</kbd>
               <span>{t('globalSearch.navigate')}</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">Enter</kbd>
+              <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">Enter</kbd>
               <span>{t('globalSearch.select')}</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">Esc</kbd>
+            <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">Esc</kbd>
             <span>{t('globalSearch.close')}</span>
           </div>
         </div>

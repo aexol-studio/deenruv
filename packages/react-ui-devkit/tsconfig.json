@@ -15,6 +15,7 @@
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
     "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "resolveJsonModule": true,
     "skipLibCheck": true, // TODO: @kamil temponary hack we can't resolve good dependecies.
     "paths": {
       "@/*": ["./src/*"]

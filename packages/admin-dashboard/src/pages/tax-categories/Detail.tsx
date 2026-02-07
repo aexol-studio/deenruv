@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useTranslation, DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { TaxCategoryDetailView } from './_components/TaxCategoryDetailView';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';

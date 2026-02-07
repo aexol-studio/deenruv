@@ -558,19 +558,19 @@ Więcej informacji o resolverach znajdziesz w [dokumentacji NestJS](https://docs
 
 ### Krok 7: Określ kompatybilność
 
-Od Deenruv v2.0.0 plugin może określić, z jakimi wersjami Deenruv core jest kompatybilny. Jest to szczególnie ważne, jeśli plugin ma być publicznie dostępny przez npm lub inny rejestr pakietów.
+Deenruv pozwala pluginowi określić, z jakimi wersjami Deenruv core jest kompatybilny. Jest to szczególnie ważne, jeśli plugin ma być publicznie dostępny przez npm lub inny rejestr pakietów.
 
 Kompatybilność określa się za pomocą właściwości `compatibility` w metadanych pluginu:
 
 ```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
 @DeenruvPlugin({
     // ...
-    compatibility: '^2.0.0',
+    compatibility: '^1.0.0',
 })
 export class WishlistPlugin {}
 ```
 
-Wartość tej właściwości to [zakres semver](https://docs.npmjs.com/about-semantic-versioning), który określa zakres kompatybilnych wersji. W tym przypadku mówimy, że ten plugin jest kompatybilny z każdą wersją Deenruv core, która jest `>= 2.0.0 < 3.0.0`.
+Wartość tej właściwości to [zakres semver](https://docs.npmjs.com/about-semantic-versioning), który określa zakres kompatybilnych wersji. W tym przypadku mówimy, że ten plugin jest kompatybilny z każdą wersją Deenruv core, która jest `>= 1.0.0 < 2.0.0`.
 
 ### Krok 8: Dodaj plugin do DeenruvConfig
 

@@ -122,7 +122,7 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-tailwindcss": "^3.18.0",
-    "prettier-plugin-tailwindcss": "^0.5.14",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "graphql": "~16.9.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.5",
@@ -134,9 +134,9 @@
   "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264",
   "pnpm": {
     "overrides": {
-      "lucide-react": "^0.460.0",
-      "@types/react": "^18.3.23",
-      "@types/react-dom": "^18.3.7"
+      "lucide-react": "^0.475.0",
+      "@types/react": "^19.0.0",
+      "@types/react-dom": "^19.0.0"
     }
   }
 }

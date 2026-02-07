@@ -10,7 +10,7 @@ import {
 import { DetailViewMarker, checkUnsavedChanges } from "@/components";
 import { apiClient } from "@/zeus_client/deenruvAPICall";
 import { toast } from "sonner";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router";
 import { GraphQLError } from "graphql";
 import type { EntityType, PropsType, StoreContextType } from "./types";
 import { useRouteGuard } from "@/hooks";

@@ -12,6 +12,10 @@ Pakiet `@deenruv/react-ui-devkit` udostępnia zestaw dedykowanych hooków React 
 
 Główny hook formularza. `useGFFLP` (GraphQL Form Field Layout Props) tworzy typowo-bezpieczny stan formularza sterowany przez `ModelTypes` GraphQL. Wybiera konkretne pola z typu GraphQL i zapewnia walidację, śledzenie błędów oraz zarządzanie stanem.
 
+<Callout type="info">
+Prawidłowa nazwa hooka to **`useGFFLP`** (nie `useGLFFP`). Zdeprecjonowany alias `useGLFFP` jest eksportowany dla wstecznej kompatybilności, ale zostanie usunięty w przyszłej wersji major. Zawsze używaj `useGFFLP` w nowym kodzie.
+</Callout>
+
 ### Podstawowe użycie
 
 ```ts
@@ -51,15 +55,36 @@ const isNameValid = state.name?.validatedValue; // ustawiane po walidacji
 // Aktualizacja pojedynczego pola
 setField('name', 'My New Product');
 
-// Obsługuje notację z kropką dla zagnieżdżonych pól
+// Obsługuje notację z kropką dla zagnieżdżonych pól (np. aktualizacja obiektu nadrzędnego)
 setField('translations.name', 'Mon Produit');
 
-// Ustawienie wszystkich pól naraz
+// Ustawienie wszystkich pól naraz (hurtowa aktualizacja z pobranej encji)
 setState({
-  name: { value: 'Product A', initialValue: '', errors: undefined },
-  slug: { value: 'product-a', initialValue: '', errors: undefined },
+  name: 'Product A',
+  slug: 'product-a',
+  description: 'Świetny produkt',
 });
 ```
+
+#### Zagnieżdżone (dot-path) aktualizacje — wyjaśnienie
+
+Gdy wywołujesz `setField('parent.child', value)`, hook aktualizuje obiekt wartości pola `parent` bezpośrednio:
+
+```ts
+// Przed: state.translations.value = { name: 'Old', slug: 'old-slug' }
+setField('translations.name', 'New Name');
+// Po:    state.translations.value = { name: 'New Name', slug: 'old-slug' }
+```
+
+Wartość potomna jest przechowywana jako **zwykła wartość** — nie opakowana w `{ value }`. Utrzymuje to kształt stanu spójny ze sposobem pobierania encji z API.
+
+<Callout type="warn">
+Aktualizacje dot-path pomijają walidację na poziomie pola. `errors`/`validatedValue` pola nadrzędnego są zachowane bez zmian. Jeśli potrzebujesz walidacji przy zagnieżdżonych aktualizacjach, wywołaj `checkIfAllFieldsAreValid()` po ustawieniu.
+</Callout>
+
+#### Zachowanie scalania `customFields`
+
+Klucz `customFields` ma specjalną semantykę scalania — `setField('customFields', { myField: 'x' })` scala z istniejącym obiektem `customFields` zamiast go całkowicie zastępować.
 
 ### Walidacja
 
@@ -123,12 +148,11 @@ function ProductForm({ productId }: { productId: string }) {
   return (
     <form>
       <Input
+        label="Nazwa produktu"
         value={state.name?.value ?? ''}
         onChange={(e) => setField('name', e.target.value)}
+        errors={state.name?.errors}
       />
-      {state.name?.errors?.map((err) => (
-        <ErrorMessage key={err}>{err}</ErrorMessage>
-      ))}
       {/* ...więcej pól */}
       <Button onClick={handleSave}>Save</Button>
     </form>
@@ -136,16 +160,46 @@ function ProductForm({ productId }: { productId: string }) {
 }
 ```
 
+### Podpięcie błędów do komponentów Input (Dostępność)
+
+Komponenty `Input`, `SimpleSelect` i inne wspierają wyświetlanie błędów oraz atrybuty dostępności automatycznie. Przekaż tablicę `errors` ze stanu hooka, aby uzyskać:
+
+- Widoczny `ErrorMessage` pod polem
+- Atrybut `aria-invalid` dla czytników ekranu
+- Atrybut `data-invalid` dla hooków CSS
+- Destrukcyjny kolor obramowania gdy pole jest niepoprawne
+
+```tsx
+<Input
+  label="Email"
+  value={state.email?.value ?? ''}
+  onChange={(e) => setField('email', e.target.value)}
+  errors={state.email?.errors}  // ← podpina ErrorMessage + aria-invalid automatycznie
+/>
+
+<SimpleSelect
+  label="Kraj"
+  value={state.country?.value ?? ''}
+  onValueChange={(v) => setField('country', v)}
+  options={countryOptions}
+  errors={state.country?.errors}  // ← podpina ErrorMessage + aria-invalid automatycznie
+/>
+```
+
+<Callout type="info">
+**Uwaga dot. dostępności:** Gdy `errors` jest niepustą tablicą, `Input` i `SimpleSelect` ustawiają `aria-invalid="true"` oraz `data-invalid` na kontrolce formularza. Komponent `ErrorMessage` renderuje się z `role="alert"`, dzięki czemu czytniki ekranu ogłaszają błędy natychmiast.
+</Callout>
+
 ### Opis zwracanych wartości
 
 | Właściwość | Typ | Opis |
 |---|---|---|
 | `state` | `Partial<Record<K, GFFLPFormField<T>>>` | Bieżący stan formularza z `value`, `initialValue`, `errors`, `validatedValue` na pole |
 | `setField` | `(field, value) => void` | Aktualizacja pojedynczego pola (obsługuje notację z kropką) |
-| `setState` | `(value) => void` | Ustawienie wszystkich pól naraz |
+| `setState` | `(value) => void` | Ustawienie wszystkich pól naraz (przyjmuje zwykły obiekt z wartościami pól) |
 | `checkIfAllFieldsAreValid` | `() => boolean` | Uruchom wszystkie walidatory, zwróć poprawność |
 | `haveValidFields` | `boolean` | Czy wszystkie zwalidowane pola mają poprawne wartości |
-| `clearErrors` | `() => void` | Wyczyść wszystkie błędy walidacji |
+| `clearErrors` | `() => void` | Wyczyść wszystkie błędy walidacji (ustawia `validatedValue` dla spójności) |
 | `clearAllForm` | `() => void` | Zresetuj formularz do wartości początkowych |
 
 ## `useFFLP` — Niskopoziomowy hook formularza
@@ -166,6 +220,21 @@ const { state, setField, checkIfAllFieldsAreValid } = useFFLP<{
   age: { initialValue: 0 },
 });
 ```
+
+## Checklista kontrybutora: Dokumentacja hooka formularza
+
+Przy aktualizacji hooka formularza (`useGFFLP`/`useFFLP`) lub jego dokumentacji:
+
+1. **Kod źródłowy:** Edytuj `packages/react-ui-devkit/src/hooks/useGFFLP.ts`
+2. **Docs (EN):** Edytuj `apps/docs/content/docs/guides/extending-the-admin-ui/hooks.mdx`
+3. **Docs (PL):** Edytuj `apps/docs/content/docs/guides/extending-the-admin-ui/hooks.pl.mdx` — odzwierciedlaj wszystkie zmiany EN
+4. **README:** Zaktualizuj `packages/react-ui-devkit/README.md` — utrzymuj tabelę referencji hooka w synchronizacji
+5. **Zwaliduj buildy:**
+   - `pnpm --filter @deenruv/react-ui-devkit build`
+   - `pnpm --filter @deenruv/admin-dashboard build`
+   - `pnpm --filter @deenruv/docs build`
+6. **Sprawdź istniejących wywołujących:** Uruchom `grep -r "useGFFLP\|useFFLP" packages/ plugins/` aby zweryfikować brak regresji
+7. **Eksporty:** Upewnij się, że `packages/react-ui-devkit/src/hooks/index.ts` reeksportuje nowe symbole
 
 ## `useList` — Paginowane listy
 

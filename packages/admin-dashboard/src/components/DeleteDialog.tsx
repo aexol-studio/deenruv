@@ -34,7 +34,7 @@ export const DeleteDialog: React.FC<ConfirmationDialogProps> = ({
       <DialogContent>
         <DialogTitle> {title}</DialogTitle>
         <div className="flex max-h-[50vh] flex-col gap-2">
-          <DialogDescription className="text-primary text-lg">{description}</DialogDescription>
+          <DialogDescription className="text-lg text-primary">{description}</DialogDescription>
           <DialogDescription>
             {deletedNames.map((n) => (
               <div key={n}>{n}</div>

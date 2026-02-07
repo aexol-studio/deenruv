@@ -52,7 +52,7 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
         <Checkbox id="live-update" checked={liveUpdate} onCheckedChange={setLiveUpdate} />
         <label
           htmlFor="live-update"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {t('jobs.live')}
         </label>

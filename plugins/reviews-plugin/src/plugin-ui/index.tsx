@@ -1,5 +1,5 @@
 import React from "react";
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
 import { Reviews } from "./pages/Reviews";
 import { ListIcon } from "lucide-react";
 import { Review } from "./pages/Review";
@@ -21,7 +21,7 @@ export const REVIEWS_ROUTES = {
 };
 
 export const ReviewsUIPlugin = createDeenruvUIPlugin({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: PLUGIN_NAME.split("-")
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join(" "),

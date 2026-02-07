@@ -99,7 +99,7 @@ const DateTimeInput = React.forwardRef<HTMLInputElement, DateTimeInputProps>(
       () => formatProp || "dd/MM/yyyy-hh:mm aa",
       [formatProp],
     );
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(undefined);
 
     const [segments, setSegments] = useState<Segment[]>([]);
     const [selectedSegmentAt, setSelectedSegmentAt] = useState<

@@ -29,13 +29,13 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ progress }) => {
     <div className="my-4">
       <div className="mb-2 flex items-center justify-between">
         <span className="text-sm font-medium">{progress < 100 ? 'Uploading...' : 'Upload complete'}</span>
-        <span className="text-muted-foreground text-sm">{progress.toFixed(0)}%</span>
+        <span className="text-sm text-muted-foreground">{progress.toFixed(0)}%</span>
       </div>
 
       <div className="relative">
         <Progress value={progress} className="h-2" />
         {showCheck && (
-          <div className="text-primary animate-in fade-in absolute right-0 top-1/2 -translate-x-1 -translate-y-1/2">
+          <div className="absolute top-1/2 right-0 -translate-x-1 -translate-y-1/2 animate-in text-primary fade-in">
             <CheckCircle2 size={16} />
           </div>
         )}

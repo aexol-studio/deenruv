@@ -161,12 +161,12 @@ export const MoveCollectionsToCollections: React.FC<
           <span>{t('moveCollectionsToCollections.moveCollections')}</span>
         </DialogTitle>
       </DialogHeader>
-      <div className="grid h-full min-h-0  grid-cols-[1fr_auto_1fr]">
-        <div className="flex h-full min-h-0 flex-col ">
+      <div className="grid h-full min-h-0 grid-cols-[1fr_auto_1fr]">
+        <div className="flex h-full min-h-0 flex-col">
           <h1 className="p-4">{t('moveCollectionsToCollections.selected')}</h1>
 
           <Table>
-            <TableHeader className="bg-primary-foreground sticky top-0">
+            <TableHeader className="sticky top-0 bg-primary-foreground">
               {selectedTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -192,7 +192,7 @@ export const MoveCollectionsToCollections: React.FC<
           </Table>
         </div>
         <div className="mx-4 h-full w-px bg-stone-700"></div>
-        <div className="flex h-full min-h-0 flex-col ">
+        <div className="flex h-full min-h-0 flex-col">
           <div className="flex items-center gap-2">
             <h1 className="shrink-0 p-4"> {t('moveCollectionsToCollections.targetCollection')}</h1>
             <Input
@@ -207,7 +207,7 @@ export const MoveCollectionsToCollections: React.FC<
           </div>
 
           <Table>
-            <TableHeader className="bg-primary-foreground sticky top-0">
+            <TableHeader className="sticky top-0 bg-primary-foreground">
               {allCollectionsTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

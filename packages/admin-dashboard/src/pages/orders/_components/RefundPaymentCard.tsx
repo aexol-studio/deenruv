@@ -35,25 +35,25 @@ export const RefundPaymentCard: React.FC<RefundPaymentCardProps> = ({
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.method')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.method')}</p>
               <p className="font-medium">{currentPayment?.method}</p>
             </div>
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.id')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.id')}</p>
               <p className="font-medium">{currentPayment?.transactionId}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.amount')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.amount')}</p>
               <p className="font-medium">{priceFormatter(currentPayment?.amount ?? 0, modifiedOrder?.currencyCode)}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.refund')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.refund')}</p>
               <Input
                 // type="currency"
                 startAdornment={modifiedOrder?.currencyCode}

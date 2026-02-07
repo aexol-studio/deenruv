@@ -1,12 +1,7 @@
 import { ChannelType } from "@/selectors";
 import { LanguageCode } from "@deenruv/admin-types";
 import { create } from "zustand";
-import {
-  createJSONStorage,
-  persist,
-  PersistStorage,
-  StateStorage,
-} from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 export const SETTINGS_LOCAL_STORAGE_KEY = "deenruv-admin-panel-storage";
 type ThemeType = "dark" | "light" | "system";

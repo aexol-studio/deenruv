@@ -15,7 +15,7 @@ import { LanguageCode } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface PageHeaderProps {
   collection: CollectionDetailsType | undefined;
@@ -51,7 +51,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           >
             <ChevronLeft className="size-4" />
           </Button>
-          <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
+          <h1 className="flex-1 shrink-0 text-xl font-semibold tracking-tight whitespace-nowrap sm:grow-0">
             {editMode ? collection?.name : t('create')}
           </h1>
         </div>

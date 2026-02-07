@@ -50,17 +50,17 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
   if (assets.length === 0) {
     return (
       <div className="flex min-h-[300px] flex-col items-center justify-center rounded-lg border p-8 text-center">
-        <div className="bg-muted/50 mb-4 rounded-full p-6">
+        <div className="mb-4 rounded-full bg-muted/50 p-6">
           <Pencil size={32} className="text-muted-foreground" />
         </div>
         <h3 className="text-lg font-medium">No assets found</h3>
-        <p className="text-muted-foreground mt-2 text-sm">Upload some assets or try a different filter</p>
+        <p className="mt-2 text-sm text-muted-foreground">Upload some assets or try a different filter</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-background overflow-hidden rounded-lg border">
+    <div className="overflow-hidden rounded-lg border bg-background">
       <div className="grid grid-cols-[auto_1fr_auto] gap-4 border-b border-stone-200 p-3 text-sm font-medium">
         <div className="w-16 text-center">
           <TableLabel>{t('assets:preview')}</TableLabel>
@@ -74,13 +74,13 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
         {assets.map((asset) => (
           <div
             key={asset.id}
-            className="hover:bg-muted/10 grid grid-cols-[auto_1fr_auto] items-center gap-4 p-3 transition-colors"
+            className="grid grid-cols-[auto_1fr_auto] items-center gap-4 p-3 transition-colors hover:bg-muted/10"
           >
-            <div className="bg-muted/20 size-16 overflow-hidden rounded">
+            <div className="size-16 overflow-hidden rounded bg-muted/20">
               <img src={`${asset.preview}?preset=tile`} alt={asset.name} className="size-full object-cover" />
             </div>
 
-            <div className="text-muted-foreground truncate text-sm" title={asset.name}>
+            <div className="truncate text-sm text-muted-foreground" title={asset.name}>
               {asset.name}
             </div>
 
@@ -102,7 +102,7 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
                     <span>{t('assets:open', 'Open')}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => onDelete(asset.id)} className="text-destructive gap-2">
+                  <DropdownMenuItem onClick={() => onDelete(asset.id)} className="gap-2 text-destructive">
                     <Trash size={14} />
                     <span>{t('assets:delete', 'Delete')}</span>
                   </DropdownMenuItem>

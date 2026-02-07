@@ -1,12 +1,13 @@
 import React from "react";
 
 import { defaultInputComponents } from "./default-input-components.js";
+import { DetailLocationID, LocationKeys } from "@/types/index.js";
 import {
-  DetailLocationID,
-  ListLocationID,
-  LocationKeys,
-} from "@/types/index.js";
-import { DeenruvUIPlugin } from "./types.js";
+  DeenruvUIPlugin,
+  DeenruvUIPluginManifestItem,
+  PluginInstallReport,
+  ResolvedSurfaceExtension,
+} from "./types.js";
 
 const pagePathPrefix = "admin-ui/extensions";
 
@@ -44,6 +45,18 @@ export class PluginStore {
       }
     >;
   } = { groups: [], links: [] };
+
+  /**
+   * Registry of extension-surface entries from the new `extensions` API.
+   * Populated during `install()`. Entries are sorted deterministically.
+   */
+  private extensionRegistry: ResolvedSurfaceExtension[] = [];
+
+  /**
+   * Monotonically increasing counter used to assign a stable registration
+   * index to each extension across all plugins.
+   */
+  private extensionSeq = 0;
 
   getPluginMap() {
     return Array.from(this.pluginMap.values()).filter(
@@ -105,9 +118,28 @@ export class PluginStore {
   install(plugins: DeenruvUIPlugin[], i18next: I18Next) {
     this.i18next = i18next;
     plugins.forEach(
-      ({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {
+      ({
+        translations,
+        pages,
+        navMenuGroups,
+        navMenuLinks,
+        extensions,
+        ...plugin
+      }) => {
         this.pluginMap.set(plugin.name, { ...plugin, status: "active" });
         this.pluginConfig.set(plugin.name, plugin.config || {});
+
+        // Index extension-surface entries
+        if (extensions) {
+          for (const ext of extensions) {
+            this.extensionRegistry.push({
+              ...ext,
+              pluginName: plugin.name,
+              registrationIndex: this.extensionSeq++,
+            });
+          }
+        }
+
         if (!translations) return;
         for (const [lng, locales] of Object.entries(translations.data)) {
           locales.forEach((trans) =>
@@ -147,10 +179,71 @@ export class PluginStore {
       );
   }
 
-  private getUUID() {
-    const timestamp = Date.now().toString(16);
-    const randomString = Math.random().toString(16).slice(2);
-    return `${timestamp}-${randomString}`;
+  /**
+   * Install plugins from a manifest, filtered by a set of enabled IDs.
+   * This is a convenience wrapper around `install()` that resolves which
+   * plugins to activate based on the provided `enabledIds`.
+   *
+   * Duplicate manifest IDs are handled deterministically: the first entry
+   * wins and subsequent duplicates are skipped (with a console warning).
+   *
+   * @param manifest - Full list of available plugin manifest entries
+   * @param enabledIds - Set of plugin IDs to install (only these will be activated)
+   * @param i18next - i18next instance for translation registration
+   * @returns A typed report describing what was installed, skipped, or unknown
+   */
+  installFromManifest(
+    manifest: ReadonlyArray<DeenruvUIPluginManifestItem>,
+    enabledIds: ReadonlySet<string>,
+    i18next: I18Next,
+  ): PluginInstallReport {
+    // Deduplicate manifest entries (first wins)
+    const seenIds = new Set<string>();
+    const duplicates: string[] = [];
+    const deduped: DeenruvUIPluginManifestItem[] = [];
+
+    for (const entry of manifest) {
+      if (seenIds.has(entry.id)) {
+        duplicates.push(entry.id);
+        console.warn(
+          `[PluginStore] Duplicate manifest ID "${entry.id}" — skipping (first entry wins).`,
+        );
+        continue;
+      }
+      seenIds.add(entry.id);
+      deduped.push(entry);
+    }
+
+    // Detect unknown IDs (requested but not in manifest)
+    const manifestIds = new Set(deduped.map((e) => e.id));
+    const unknown: string[] = [];
+    Array.from(enabledIds).forEach((id) => {
+      if (!manifestIds.has(id)) {
+        unknown.push(id);
+      }
+    });
+
+    if (unknown.length > 0) {
+      console.warn(
+        `[PluginStore] Unknown plugin IDs: ${unknown.join(", ")}. ` +
+          `Available: ${Array.from(manifestIds).join(", ")}`,
+      );
+    }
+
+    // Filter and install
+    const toInstall = deduped.filter((entry) => enabledIds.has(entry.id));
+    const installed = toInstall.map((entry) => entry.id);
+    this.install(
+      toInstall.map((entry) => entry.plugin),
+      i18next,
+    );
+
+    return {
+      installed,
+      unknown,
+      duplicates,
+      manifestSize: manifest.length,
+    };
   }
 
   getInputComponent(id: string) {
@@ -165,46 +258,93 @@ export class PluginStore {
     return component;
   }
 
-  getComponents(location: string, passedTab?: string) {
-    const uniqueMappedComponents = new Map<string, React.ComponentType>();
+  /**
+   * Resolve extension-surface components for a given location and optional tab.
+   *
+   * Merges entries from:
+   * 1. New `extensions` API — sorted by `order` (ascending), then by
+   *    registration sequence for entries with equal or missing order.
+   * 2. Legacy `components` API — appended **after** new-API entries in
+   *    plugin-registration order.
+   *
+   * Each returned entry includes a stable `key` suitable for React rendering.
+   */
+  getSurfaceComponents(
+    location: string,
+    passedTab?: string,
+  ): Array<{ key: string; component: React.ComponentType<any> }> {
+    const results: Array<{
+      key: string;
+      component: React.ComponentType<any>;
+    }> = [];
+
+    // ── 1. New extensions API (deterministic ordering) ──────────────────
+    const activePluginNames = new Set(this.getPluginMap().map((p) => p.name));
+    const matchingExtensions = this.extensionRegistry
+      .filter(
+        (ext) =>
+          activePluginNames.has(ext.pluginName) &&
+          ext.surface === location &&
+          (!passedTab || ext.tab === passedTab),
+      )
+      .sort((a, b) => {
+        // Entries with explicit order come first
+        const aOrder = a.order ?? Number.MAX_SAFE_INTEGER;
+        const bOrder = b.order ?? Number.MAX_SAFE_INTEGER;
+        if (aOrder !== bOrder) return aOrder - bOrder;
+        return a.registrationIndex - b.registrationIndex;
+      });
+
+    for (const ext of matchingExtensions) {
+      const key = `ext:${ext.pluginName}:${ext.id}`;
+      results.push({ key, component: ext.component });
+    }
+
+    // ── 2. Legacy components API (registration order, after extensions) ─
+    let legacyIndex = 0;
     this.getPluginMap().forEach((plugin) => {
       plugin.components?.forEach(({ component, tab, id }) => {
-        const uniqueUUID = [
-          id,
-          plugin.name,
-          this.getUUID(),
-          component.displayName && `-${component.displayName}`,
-          tab && `-${tab}`,
-        ]
-          .filter(Boolean)
-          .join("-");
         if (id === location && (!passedTab || tab === passedTab)) {
-          uniqueMappedComponents.set(uniqueUUID, component as any);
+          const key = `legacy:${plugin.name}:${id}:${legacyIndex}`;
+          results.push({ key, component });
         }
+        legacyIndex++;
       });
     });
-    return Array.from(uniqueMappedComponents.values());
+
+    return results;
+  }
+
+  /**
+   * Legacy resolver — returns bare component array for backward compatibility.
+   *
+   * Delegates to `getSurfaceComponents()` internally so both APIs produce
+   * consistent results.
+   *
+   * @deprecated Prefer `getSurfaceComponents()` for stable keys and ordering.
+   */
+  getComponents(location: string, passedTab?: string): React.ComponentType[] {
+    return this.getSurfaceComponents(location, passedTab).map(
+      (entry) => entry.component,
+    );
   }
 
   getModalComponents(location: string) {
-    const uniqueMappedComponents = new Map<string, React.ComponentType>();
+    const components: Array<{
+      key: string;
+      component: React.ComponentType<any>;
+    }> = [];
+    let index = 0;
     this.getPluginMap().forEach((plugin) => {
       plugin.modals?.forEach(({ component, id }) => {
-        const uniqueUUID = [
-          id,
-          plugin.name,
-          this.getUUID(),
-          component.displayName && `-${component.displayName}`,
-        ]
-          .filter(Boolean)
-          .join("-");
-
         if (id === location) {
-          uniqueMappedComponents.set(uniqueUUID, component as any);
+          const key = `modal:${plugin.name}:${id}:${index}`;
+          components.push({ key, component });
         }
+        index++;
       });
     });
-    return Array.from(uniqueMappedComponents.values());
+    return components.map((entry) => entry.component);
   }
 
   getTableExtensions(location: LocationKeys) {

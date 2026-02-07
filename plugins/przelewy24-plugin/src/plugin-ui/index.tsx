@@ -1,6 +1,6 @@
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
 
 export const CardMarketUIPlugin = createDeenruvUIPlugin({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "First Plugin",
 });

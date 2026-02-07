@@ -24,7 +24,7 @@
     "libphonenumber-js": "^1.12.6"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.1.0"
+    "@deenruv/core": "^1.0.0"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",

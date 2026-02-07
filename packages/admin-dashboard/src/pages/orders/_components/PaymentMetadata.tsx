@@ -27,12 +27,12 @@ export const MetadataDisplay = ({ metadata }: { metadata: any }) => {
           </DialogTitle>
           <DialogDescription>Additional information associated with this payment</DialogDescription>
         </DialogHeader>
-        <div className="bg-muted/50 mt-4 rounded-md border p-4">
+        <div className="mt-4 rounded-md border bg-muted/50 p-4">
           <div className="max-h-[300px] overflow-auto">
             {Object.entries(metadata).map(([key, value]) => (
-              <div key={key} className="border-border mb-3 border-b pb-2 last:border-0">
-                <div className="text-muted-foreground mb-1 text-xs font-medium uppercase tracking-wide">{key}</div>
-                <div className="break-all font-mono text-sm">
+              <div key={key} className="mb-3 border-b border-border pb-2 last:border-0">
+                <div className="mb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{key}</div>
+                <div className="font-mono text-sm break-all">
                   {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
                 </div>
               </div>

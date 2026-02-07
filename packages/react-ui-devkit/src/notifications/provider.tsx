@@ -7,7 +7,7 @@ export function NotificationProvider<T>({
   children,
   ...props
 }: NotificationProviderProps) {
-  const storeRef = useRef<NotificationStore>();
+  const storeRef = useRef<NotificationStore>(undefined);
   if (!storeRef.current) {
     storeRef.current = createNotificationsStore(props);
   }

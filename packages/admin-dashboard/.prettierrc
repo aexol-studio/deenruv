@@ -6,6 +6,7 @@
   "printWidth": 120,
   "bracketSpacing": true,
   "endOfLine": "lf",
+  "tailwindStylesheet": "./src/root.css",
   "plugins": [
     "prettier-plugin-tailwindcss"
   ]

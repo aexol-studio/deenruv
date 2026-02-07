@@ -202,7 +202,33 @@ export default { 'my-plugin': myPlugin };
 **Nigdy nie importuj `react-i18next` bezpośrednio.** Zawsze używaj `useTranslation` z `@deenruv/react-ui-devkit`, aby zapewnić użycie prawidłowej instancji i18n. Hook wiąże się z globalną instancją i18n Deenruv poprzez `window.__DEENRUV_SETTINGS__.i18n`.
 </Callout>
 
-## Krok 5: Zarejestruj plugin na serwerze
+## Krok 5: Zarejestruj plugin w panelu administracyjnym
+
+Istnieją **dwie ścieżki rejestracji** w zależności od konfiguracji:
+
+### Opcja A — Manifest pluginów panelu (zalecana)
+
+Dodaj swój plugin UI do centralnego manifestu w `apps/panel/src/plugins/registry.ts`:
+
+```ts title="apps/panel/src/plugins/registry.ts"
+import { MyPlugin } from '@my-scope/my-plugin/plugin-ui';
+
+export const pluginManifest = [
+  // ...istniejące wpisy
+  { id: 'my-plugin', plugin: MyPlugin, enabledByDefault: true },
+];
+```
+
+Możesz następnie przełączać plugin w czasie budowania za pomocą zmiennej środowiskowej `VITE_ADMIN_UI_PLUGINS`:
+
+| Wartość | Zachowanie |
+|---|---|
+| *nieustawiona* | Wpisy z `enabledByDefault` ładują się automatycznie |
+| `""` | Brak pluginów |
+| `"all"` / `"*"` | Każdy wpis manifestu |
+| Lista CSV (np. `"dashboard-widgets,my-plugin"`) | Tylko wymienione ID |
+
+### Opcja B — Konfiguracja adminUiConfig po stronie serwera
 
 Dodaj swój plugin UI do konfiguracji panelu administracyjnego serwera:
 
@@ -225,6 +251,10 @@ export const config: DeenruvConfig = {
   },
 };
 ```
+
+<Callout type="info">
+Opcja A (manifest) i Opcja B (konfiguracja serwera) to niezależne mechanizmy rejestracji. Manifest panelu kontroluje panel administracyjny React w `apps/panel/`, podczas gdy `adminUiConfig` jest używany przez starszy panel administracyjny. Użyj Opcji A dla nowoczesnego panelu React.
+</Callout>
 
 ## Krok 6: Zdefiniuj stałe pluginu
 

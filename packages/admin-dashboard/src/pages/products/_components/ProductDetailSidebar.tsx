@@ -5,7 +5,7 @@ import { SettingsCard } from './SettingsCard';
 
 import { CollectionsCard } from '@/pages/products/_components/CollectionsCard';
 import { FacetValuesCard } from '@/pages/products/_components/FacetValuesCard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const PRODUCT_FORM_KEYS = [
   'CreateProductInput',

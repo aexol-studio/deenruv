@@ -8,7 +8,7 @@ import {
   useServer,
 } from '@deenruv/react-ui-devkit';
 import { motion } from 'framer-motion';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export const ActiveAdmins = () => {
   const { t } = useTranslation('common');
@@ -49,9 +49,9 @@ export const ActiveAdmins = () => {
                       className="size-2 rounded-full bg-green-500"
                     />
                   </div>
-                  <span className="text-muted-foreground text-sm">{formatTimeAgo(client.lastActive)}</span>
+                  <span className="text-sm text-muted-foreground">{formatTimeAgo(client.lastActive)}</span>
                   {!client.me && (
-                    <NavLink to={client.location} className="text-muted-foreground text-sm" viewTransition>
+                    <NavLink to={client.location} className="text-sm text-muted-foreground" viewTransition>
                       {client.location.replace(window.location.origin, '')}
                     </NavLink>
                   )}
@@ -60,7 +60,7 @@ export const ActiveAdmins = () => {
             ))
           ) : (
             <div>
-              <span className="text-muted-foreground text-sm">{t('awesomeMenu.noActiveAdministrators')}</span>
+              <span className="text-sm text-muted-foreground">{t('awesomeMenu.noActiveAdministrators')}</span>
             </div>
           )}
         </div>

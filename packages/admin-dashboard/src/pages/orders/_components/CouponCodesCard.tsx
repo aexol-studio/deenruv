@@ -128,7 +128,7 @@ export const CouponCodesCard: React.FC<{}> = () => {
           }}
           delay={500}
         />
-        <div className="text-muted-foreground absolute right-3 top-2.5">
+        <div className="absolute top-2.5 right-3 text-muted-foreground">
           {isSearching ? (
             <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (

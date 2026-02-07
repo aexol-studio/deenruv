@@ -29,32 +29,32 @@ export const LineItem: React.FC<
               src={imageUrl || '/placeholder.svg'}
             />
           ) : (
-            <div className="bg-muted/30 flex size-12 items-center justify-center rounded-md border">
-              <Package className="text-muted-foreground size-6" />
+            <div className="flex size-12 items-center justify-center rounded-md border bg-muted/30">
+              <Package className="size-6 text-muted-foreground" />
             </div>
           )}
           <div className="flex flex-col">
             <span className="line-clamp-1 text-sm font-medium md:text-base">{variant?.product.name}</span>
             {variant?.name && variant.name !== variant?.product.name && (
-              <span className="text-muted-foreground line-clamp-1 text-xs">{variant.name}</span>
+              <span className="line-clamp-1 text-xs text-muted-foreground">{variant.name}</span>
             )}
           </div>
         </div>
       </TableCell>
 
-      <TableCell className="text-muted-foreground font-mono text-sm">{variant?.sku}</TableCell>
+      <TableCell className="font-mono text-sm text-muted-foreground">{variant?.sku}</TableCell>
 
       {variant?.quantity ? (
         <TableCell>
           {adjustLineItem ? (
             <div className="flex items-center">
-              <div className="bg-background inline-flex items-center rounded-md border shadow-sm">
+              <div className="inline-flex items-center rounded-md border bg-background shadow-sm">
                 <Button
                   variant="ghost"
                   size="sm"
                   type="button"
                   onClick={() => adjustLineItem(Math.max(1, (variant.quantity || 1) - 1))}
-                  className="hover:bg-muted h-8 rounded-r-none border-r px-2"
+                  className="h-8 rounded-r-none border-r px-2 hover:bg-muted"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="size-3.5" />
@@ -65,7 +65,7 @@ export const LineItem: React.FC<
                   size="sm"
                   type="button"
                   onClick={() => adjustLineItem((variant.quantity || 0) + 1)}
-                  className="hover:bg-muted h-8 rounded-l-none border-l px-2"
+                  className="h-8 rounded-l-none border-l px-2 hover:bg-muted"
                   aria-label="Increase quantity"
                 >
                   <Plus className="size-3.5" />
@@ -73,7 +73,7 @@ export const LineItem: React.FC<
               </div>
             </div>
           ) : (
-            <span className="bg-primary/10 text-primary inline-flex min-w-8 items-center justify-center rounded-full px-2 py-0.5 text-xs font-medium">
+            <span className="inline-flex min-w-8 items-center justify-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
               {variant?.quantity}
             </span>
           )}

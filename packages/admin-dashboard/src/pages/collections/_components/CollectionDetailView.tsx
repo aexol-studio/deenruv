@@ -19,7 +19,7 @@ import {
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export const CollectionsDetailView = () => {
   const { t } = useTranslation('collections');

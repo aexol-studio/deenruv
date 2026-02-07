@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useTranslation, useValidators, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { PromotionDetailView } from '@/pages/promotions/_components/PromotionDetailView';

@@ -174,7 +174,7 @@ export const RealizationCard: React.FC = () => {
                       <TableCell className="py-3">
                         {fulfillment.trackingCode ? (
                           <div className="flex items-center gap-2">
-                            <code className="bg-muted rounded px-2 py-1 font-mono text-xs">
+                            <code className="rounded bg-muted px-2 py-1 font-mono text-xs">
                               {fulfillment.trackingCode}
                             </code>
                           </div>

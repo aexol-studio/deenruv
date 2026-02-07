@@ -174,7 +174,7 @@ export function UploadAssetDialog<T extends { id: string }>({
         <div className="relative flex h-full w-full flex-col md:w-3/5">
           {!file ? (
             <div
-              className="bg-muted/30 relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed p-12 text-center"
+              className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed bg-muted/30 p-12 text-center"
               onDragOver={handleDragOver}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
@@ -186,16 +186,16 @@ export function UploadAssetDialog<T extends { id: string }>({
                 className="hidden"
                 accept="image/*,video/*,audio/*"
               />
-              <Upload className="text-muted-foreground mb-4 h-12 w-12" />
+              <Upload className="mb-4 h-12 w-12 text-muted-foreground" />
               <h3 className="mb-2 text-lg font-medium">{t('dialogs.dragAndDrop')}</h3>
-              <p className="text-muted-foreground mb-4 text-sm">{t('dialogs.browse')}</p>
+              <p className="mb-4 text-sm text-muted-foreground">{t('dialogs.browse')}</p>
               <Button variant="outline" size="sm" className="mt-2">
                 {t('dialogs.selectFile')}
               </Button>
             </div>
           ) : (
             <div
-              className={`bg-muted/30 relative flex h-full w-full overflow-hidden rounded-lg ${isEditingFocalPoint ? 'cursor-crosshair' : ''}`}
+              className={`relative flex h-full w-full overflow-hidden rounded-lg bg-muted/30 ${isEditingFocalPoint ? 'cursor-crosshair' : ''}`}
               onClick={handleImageClick}
             >
               {file?.preview ? (
@@ -203,9 +203,9 @@ export function UploadAssetDialog<T extends { id: string }>({
                   <img
                     src={file.preview || '/placeholder.svg'}
                     alt={file.name}
-                    className="absolute left-0 top-0 h-full w-full object-contain"
+                    className="absolute top-0 left-0 h-full w-full object-contain"
                   />
-                  <div className="absolute right-2 top-2 opacity-50 hover:opacity-100">
+                  <div className="absolute top-2 right-2 opacity-50 hover:opacity-100">
                     <Button
                       ref={button}
                       variant={isEditingFocalPoint ? 'default' : 'outline'}
@@ -217,7 +217,7 @@ export function UploadAssetDialog<T extends { id: string }>({
                       {isEditingFocalPoint ? t('dialogs.focalStop') : t('dialogs.focalEdit')}
                     </Button>
                     {file.focalPoint && (
-                      <span className="text-muted-foreground text-xs">
+                      <span className="text-xs text-muted-foreground">
                         x: {file.focalPoint.x.toFixed(2)}, y: {file.focalPoint.y.toFixed(2)}
                       </span>
                     )}
@@ -235,16 +235,16 @@ export function UploadAssetDialog<T extends { id: string }>({
                   )}
                 </div>
               ) : (
-                <div className="bg-muted flex h-full w-full items-center justify-center">
-                  <ImageIcon className="text-muted-foreground/50 h-16 w-16" />
+                <div className="flex h-full w-full items-center justify-center bg-muted">
+                  <ImageIcon className="h-16 w-16 text-muted-foreground/50" />
                 </div>
               )}
             </div>
           )}
         </div>
         <div className="flex w-full flex-col md:w-2/5">
-          <Card className="bg-card flex w-full flex-col border p-4 shadow-sm">
-            <h3 className="text-muted-foreground mb-3 text-sm font-medium">{t('dialogs.details')}</h3>
+          <Card className="flex w-full flex-col border bg-card p-4 shadow-sm">
+            <h3 className="mb-3 text-sm font-medium text-muted-foreground">{t('dialogs.details')}</h3>
             {file ? (
               <ScrollArea className="h-[450px] w-full overflow-auto pr-4">
                 <div className="space-y-3">
@@ -252,7 +252,7 @@ export function UploadAssetDialog<T extends { id: string }>({
                     <>
                       <div className="group">
                         <div className="flex flex-col gap-1">
-                          <span className="text-muted-foreground text-xs font-medium capitalize">
+                          <span className="text-xs font-medium text-muted-foreground capitalize">
                             {t('detailsTable.name')}
                           </span>
                           <div>
@@ -263,29 +263,29 @@ export function UploadAssetDialog<T extends { id: string }>({
                       <Separator className="my-2 opacity-50" />
                       <div className="group">
                         <div className="flex flex-col gap-1">
-                          <span className="text-muted-foreground text-xs font-medium capitalize">
+                          <span className="text-xs font-medium text-muted-foreground capitalize">
                             {t('detailsTable.fileSize')}
                           </span>
                           <div>
-                            <span className="break-words text-sm">{formatFileSize(file.fileSize)}</span>
+                            <span className="text-sm break-words">{formatFileSize(file.fileSize)}</span>
                           </div>
                         </div>
                       </div>
                       <Separator className="my-2 opacity-50" />
                       <div className="group">
                         <div className="flex flex-col gap-1">
-                          <span className="text-muted-foreground text-xs font-medium capitalize">
+                          <span className="text-xs font-medium text-muted-foreground capitalize">
                             {t('detailsTable.type')}
                           </span>
                           <div>
-                            <span className="break-words text-sm">{file.type}</span>
+                            <span className="text-sm break-words">{file.type}</span>
                           </div>
                         </div>
                       </div>
                       <Separator className="my-2 opacity-50" />
                       <div className="group">
                         <div className="flex flex-col gap-1">
-                          <span className="text-muted-foreground text-xs font-medium capitalize">
+                          <span className="text-xs font-medium text-muted-foreground capitalize">
                             {t('detailsTable.tags')}
                           </span>
                           <div className="mt-1 flex flex-wrap gap-1">
@@ -297,7 +297,7 @@ export function UploadAssetDialog<T extends { id: string }>({
                                 </Badge>
                               ))
                             ) : (
-                              <span className="text-muted-foreground text-xs">{t('dialogs.noTags')}</span>
+                              <span className="text-xs text-muted-foreground">{t('dialogs.noTags')}</span>
                             )}
                           </div>
                           <div className="mt-2 flex gap-2">
@@ -318,15 +318,15 @@ export function UploadAssetDialog<T extends { id: string }>({
                       <Separator className="my-2 opacity-50" />
                       <div className="group">
                         <div className="flex flex-col gap-1">
-                          <span className="text-muted-foreground text-xs font-medium capitalize">
+                          <span className="text-xs font-medium text-muted-foreground capitalize">
                             {t('dialogs.focal')}
                           </span>
                           {file.focalPoint ? (
-                            <span className="bg-muted rounded px-2 py-1 font-mono text-sm">
+                            <span className="rounded bg-muted px-2 py-1 font-mono text-sm">
                               x: {file.focalPoint.x.toFixed(2)}, y: {file.focalPoint.y.toFixed(2)}
                             </span>
                           ) : (
-                            <span className="text-muted-foreground text-sm">{t('dialogs.noFocal')}</span>
+                            <span className="text-sm text-muted-foreground">{t('dialogs.noFocal')}</span>
                           )}
                         </div>
                       </div>

@@ -95,7 +95,7 @@ export const EditEntryDialog: React.FC<EditEntryDialogProps> = ({
                 className={cn('h-4 w-4', !selectedNote?.isPublic ? 'text-emerald-500' : 'text-muted-foreground')}
               />
               {t('history.isPrivate', 'Private note')}
-              <span className="text-muted-foreground ml-1 text-xs">
+              <span className="ml-1 text-xs text-muted-foreground">
                 {t('history.isPrivateDescription', '(visible only to admins)')}
               </span>
             </Label>

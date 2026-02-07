@@ -9,7 +9,7 @@ import {
 } from "@/components";
 import { Copy, ExternalLink, Grip, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction } from "react-router";
 import React, { useMemo } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";

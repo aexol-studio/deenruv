@@ -37,7 +37,7 @@ export const LoginScreen = () => {
     }
   };
   return (
-    <div className="bg-background text-foreground flex h-screen w-screen">
+    <div className="flex h-screen w-screen bg-background text-foreground">
       <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
@@ -53,7 +53,7 @@ export const LoginScreen = () => {
                 <Checkbox id="rememberMe" name="rememberMe" />
                 <label
                   htmlFor="rememberMe"
-                  className="select-none text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm leading-none font-medium select-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   {t('rememberMe')}
                 </label>
@@ -67,7 +67,7 @@ export const LoginScreen = () => {
             </form>
           </div>
         </div>
-        <div className="bg-muted relative hidden lg:block">
+        <div className="relative hidden bg-muted lg:block">
           {image && typeof image === 'string' ? (
             <img
               src={image}
@@ -81,11 +81,11 @@ export const LoginScreen = () => {
               {image}
             </div>
           ) : null}
-          <div className="absolute bottom-0 right-0 bg-gradient-to-t from-black to-transparent p-6 dark:from-black/50 dark:to-transparent">
-            <h1 className="mb-2 select-none text-3xl font-bold text-white">{t('welcome')}</h1>
+          <div className="absolute right-0 bottom-0 bg-gradient-to-t from-black to-transparent p-6 dark:from-black/50 dark:to-transparent">
+            <h1 className="mb-2 text-3xl font-bold text-white select-none">{t('welcome')}</h1>
             <div
               className={cn(
-                `mt-4 flex select-none items-center gap-2`,
+                `mt-4 flex items-center gap-2 select-none`,
                 showAppVersion ? 'justify-between' : 'justify-end',
               )}
             >

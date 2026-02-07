@@ -46,7 +46,7 @@ export const History: React.FC<HistoryProps> = ({ data, onNoteAdd, onNoteEdit, o
           </div>
           <div>
             <p className="font-medium">No history entries yet</p>
-            <p className="text-muted-foreground mt-1 text-sm">Add a note above to start building the order history</p>
+            <p className="mt-1 text-sm text-muted-foreground">Add a note above to start building the order history</p>
           </div>
         </div>
       )}

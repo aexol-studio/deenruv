@@ -46,7 +46,7 @@ import {
 import * as ResizablePrimitive from 'react-resizable-panels';
 
 import { Navigation } from './Navigation.js';
-import { NavLink, useMatches, useNavigate } from 'react-router-dom';
+import { NavLink, useMatches, useNavigate } from 'react-router';
 import { ChannelSwitcher } from './ChannelSwitcher.js';
 import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
@@ -71,13 +71,13 @@ const ResizableHandle = ({
 }) => (
   <ResizablePrimitive.PanelResizeHandle
     className={cn(
-      'bg-border focus-visible:ring-ring relative flex w-px items-center justify-center after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1 data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-1 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:-translate-y-1/2 data-[panel-group-direction=vertical]:after:translate-x-0 [&[data-panel-group-direction=vertical]>div]:rotate-90',
+      'relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-none data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-1 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:translate-x-0 data-[panel-group-direction=vertical]:after:-translate-y-1/2 [&[data-panel-group-direction=vertical]>div]:rotate-90',
       className,
     )}
     {...props}
   >
     {withHandle && (
-      <div className="bg-border z-10 flex h-4 w-3 items-center justify-center rounded-sm border">
+      <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border">
         <GripVertical className="size-2.5" />
       </div>
     )}
@@ -124,7 +124,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   );
 
   return (
-    <div className="bg-muted/40 w-full border-r">
+    <div className="w-full border-r bg-muted/40">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex-1">
           <TooltipProvider delayDuration={100}>
@@ -177,7 +177,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
                                   <NavLink to={buildURL(linkPath)} viewTransition>
-                                    <p className={cn('text-md text-foreground font-bold capitalize')}>
+                                    <p className={cn('text-md font-bold text-foreground capitalize')}>
                                       {i === 0 ? t('menu.' + dashToCamelCase(c)) : c}
                                     </p>
                                   </NavLink>
@@ -193,7 +193,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         ) : (
                           <BreadcrumbItem>
                             <NavLink to={Routes.dashboard} viewTransition>
-                              <p className="text-foreground text-2xl font-bold">{t('dashboard')}</p>
+                              <p className="text-2xl font-bold text-foreground">{t('dashboard')}</p>
                             </NavLink>
                           </BreadcrumbItem>
                         )}
@@ -219,9 +219,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="icon">
                           {theme === 'light' ? (
-                            <Sun className="size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                            <Sun className="size-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                           ) : theme === 'dark' ? (
-                            <Moon className="absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                            <Moon className="absolute size-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
                           ) : (
                             <SunMoon className="absolute size-[1.2rem] rotate-90 transition-all" />
                           )}
@@ -243,7 +243,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                       <DropdownMenuContent className="z-[150] mr-6 min-w-40">
                         {activeAdministrator?.emailAddress && (
                           <>
-                            <DropdownMenuLabel className="flex items-center gap-2 px-3 py-2 font-medium ">
+                            <DropdownMenuLabel className="flex items-center gap-2 px-3 py-2 font-medium">
                               <div className="flex size-5 items-center justify-center rounded-full bg-gray-100 text-xs text-gray-600">
                                 {activeAdministrator.firstName.charAt(0).toUpperCase()}
                               </div>

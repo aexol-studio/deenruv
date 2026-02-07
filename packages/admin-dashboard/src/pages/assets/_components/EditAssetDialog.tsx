@@ -104,7 +104,7 @@ export function EditAssetDialog<T extends { id: string }>({
       <div className="flex h-full flex-col gap-6 md:flex-row">
         <div className="relative flex h-full w-full flex-col md:w-3/5">
           <div
-            className={`bg-muted/30 relative flex h-full w-full overflow-hidden rounded-lg ${isEditingFocalPoint ? 'cursor-crosshair' : ''}`}
+            className={`relative flex h-full w-full overflow-hidden rounded-lg bg-muted/30 ${isEditingFocalPoint ? 'cursor-crosshair' : ''}`}
             onClick={handleImageClick}
           >
             {data?.source ? (
@@ -112,9 +112,9 @@ export function EditAssetDialog<T extends { id: string }>({
                 <img
                   src={data.source || '/placeholder.svg'}
                   alt={data.name}
-                  className="absolute left-0 top-0 h-full w-full"
+                  className="absolute top-0 left-0 h-full w-full"
                 />
-                <div className="absolute right-2 top-2 opacity-50 hover:opacity-100">
+                <div className="absolute top-2 right-2 opacity-50 hover:opacity-100">
                   <Button
                     ref={button}
                     variant={isEditingFocalPoint ? 'default' : 'outline'}
@@ -126,7 +126,7 @@ export function EditAssetDialog<T extends { id: string }>({
                     {isEditingFocalPoint ? t('dialogs.focalStop') : t('dialogs.focalEdit')}
                   </Button>
                   {data.focalPoint && (
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-xs text-muted-foreground">
                       x: {data.focalPoint.x.toFixed(2)}, y: {data.focalPoint.y.toFixed(2)}
                     </span>
                   )}
@@ -144,16 +144,16 @@ export function EditAssetDialog<T extends { id: string }>({
                 )}
               </div>
             ) : (
-              <div className="bg-muted flex h-full w-full items-center justify-center">
-                <ImageIcon className="text-muted-foreground/50 h-16 w-16" />
+              <div className="flex h-full w-full items-center justify-center bg-muted">
+                <ImageIcon className="h-16 w-16 text-muted-foreground/50" />
               </div>
             )}
           </div>
         </div>
 
         <div className="flex w-full flex-col md:w-[45%]">
-          <Card className="bg-card flex w-full flex-col border p-4 shadow-sm">
-            <h3 className="text-muted-foreground mb-3 text-sm font-medium">{t('dialogs.details')}</h3>
+          <Card className="flex w-full flex-col border bg-card p-4 shadow-sm">
+            <h3 className="mb-3 text-sm font-medium text-muted-foreground">{t('dialogs.details')}</h3>
 
             <ScrollArea className="h-[450px] w-full overflow-auto pr-4">
               <div className="space-y-3">
@@ -163,7 +163,7 @@ export function EditAssetDialog<T extends { id: string }>({
                     <div key={key} className="group">
                       {index > 0 && <Separator className="my-2 opacity-50" />}
                       <div className="flex flex-col gap-1">
-                        <span className="text-muted-foreground text-xs font-medium capitalize">
+                        <span className="text-xs font-medium text-muted-foreground capitalize">
                           {t(`detailsTable.${key}`)}
                         </span>
                         {(key === 'createdAt' || key === 'updatedAt') && typeof value === 'string' ? (
@@ -183,7 +183,7 @@ export function EditAssetDialog<T extends { id: string }>({
                                     </Badge>
                                   ))
                                 ) : (
-                                  <span className="text-muted-foreground text-xs">{t('dialogs.noTags')}</span>
+                                  <span className="text-xs text-muted-foreground">{t('dialogs.noTags')}</span>
                                 )}
                               </div>
                               <div className="mt-2 flex gap-2">
@@ -218,11 +218,11 @@ export function EditAssetDialog<T extends { id: string }>({
                           typeof value === 'object' &&
                           'x' in value &&
                           'y' in value ? (
-                          <span className="bg-muted rounded px-2 py-1 font-mono text-sm">
+                          <span className="rounded bg-muted px-2 py-1 font-mono text-sm">
                             x: {value.x.toFixed(2)}, y: {value.y.toFixed(2)}
                           </span>
                         ) : key === 'preview' ? (
-                          <div className="bg-secondary flex items-center justify-between rounded-md p-2 font-mono text-sm">
+                          <div className="flex items-center justify-between rounded-md bg-secondary p-2 font-mono text-sm">
                             <span className="truncate">{String(value)}</span>
                             <button
                               onClick={() => {
@@ -234,17 +234,17 @@ export function EditAssetDialog<T extends { id: string }>({
                             </button>
                           </div>
                         ) : key === 'width' || key === 'height' ? (
-                          <span className="break-words text-sm">{`${value}px`}</span>
+                          <span className="text-sm break-words">{`${value}px`}</span>
                         ) : key === 'type' ? (
-                          <span className="break-words text-sm">{t('types.' + value)}</span>
+                          <span className="text-sm break-words">{t('types.' + value)}</span>
                         ) : key === 'fileSize' ? (
-                          <span className="break-words text-sm">{formatFileSize(+value)}</span>
+                          <span className="text-sm break-words">{formatFileSize(+value)}</span>
                         ) : (
                           <div>
                             {value ? (
-                              <span className="break-words text-sm">{String(value)}</span>
+                              <span className="text-sm break-words">{String(value)}</span>
                             ) : (
-                              <span className="text-muted-foreground text-sm">{t('dialogs.noFocal')}</span>
+                              <span className="text-sm text-muted-foreground">{t('dialogs.noFocal')}</span>
                             )}
                           </div>
                         )}

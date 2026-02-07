@@ -57,7 +57,7 @@ export const DeleteEntryDialog: React.FC<DeleteEntryDialogProps> = ({ isOpen, se
         </AlertDialogHeader>
 
         {selectedNote?.data?.note && (
-          <div className="bg-muted/30 my-4 max-h-[200px] overflow-y-auto rounded-md border p-3 text-sm">
+          <div className="my-4 max-h-[200px] overflow-y-auto rounded-md border bg-muted/30 p-3 text-sm">
             <div className="whitespace-pre-wrap">{selectedNote.data.note as string}</div>
           </div>
         )}

@@ -15,7 +15,8 @@ export interface CdsIconProps {
     badge: 'info' | 'success' | 'warning' | 'danger';
 }
 
-declare global {
+declare module 'react' {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace JSX {
         interface IntrinsicElements {
             ['cds-icon']: CustomElement<CdsIconProps>;

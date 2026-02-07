@@ -87,10 +87,10 @@ export const PossibleOrderStates: React.FC<{
         </DialogHeader>
 
         {/* Current state summary */}
-        <div className="bg-muted/50 mb-4 rounded-md border p-4">
+        <div className="mb-4 rounded-md border bg-muted/50 p-4">
           <h3 className="mb-2 text-sm font-medium">{t('orderStates.currentState')}</h3>
           <div className="mb-3 flex items-center gap-2">
-            <CircleDot className="text-primary size-5" />
+            <CircleDot className="size-5 text-primary" />
             <span className="font-semibold">{orderState}</span>
           </div>
 
@@ -107,7 +107,7 @@ export const PossibleOrderStates: React.FC<{
               </div>
             </>
           ) : (
-            <p className="text-muted-foreground text-sm">{t('orderStates.finalState')}</p>
+            <p className="text-sm text-muted-foreground">{t('orderStates.finalState')}</p>
           )}
         </div>
 
@@ -123,12 +123,12 @@ export const PossibleOrderStates: React.FC<{
                   <TimelineLine done={isPast} />
                   <TimelineDot
                     status={isPast ? 'done' : isCurrent ? 'current' : 'default'}
-                    className={isPossibleNext ? 'ring-primary ring-1 ring-offset-1' : ''}
+                    className={isPossibleNext ? 'ring-1 ring-primary ring-offset-1' : ''}
                   >
                     {isPast && <Check className="size-4" />}
                   </TimelineDot>
                   <TimelineContent>
-                    <TimelineHeading className={isCurrent ? 'text-primary font-bold' : ''}>
+                    <TimelineHeading className={isCurrent ? 'font-bold text-primary' : ''}>
                       {tCommon('search.inOperator.' + state.name)}
                       {isCurrent && (
                         <Badge className="ml-2" variant="default">
@@ -143,13 +143,13 @@ export const PossibleOrderStates: React.FC<{
                     </TimelineHeading>
                     {state.to.length > 0 && (
                       <div className="mt-1">
-                        <p className="text-muted-foreground mb-1 text-sm">{t('orderStates.canTransitionTo')}:</p>
+                        <p className="mb-1 text-sm text-muted-foreground">{t('orderStates.canTransitionTo')}:</p>
                         <div className="mt-1 flex flex-wrap gap-1">
                           {state.to.map((nextState) => (
                             <Badge
                               key={nextState}
                               variant="outline"
-                              className={`text-xs ${orderState === nextState ? 'bg-primary/10 border-primary' : ''}`}
+                              className={`text-xs ${orderState === nextState ? 'border-primary bg-primary/10' : ''}`}
                             >
                               {tCommon('search.inOperator.' + nextState)}
                             </Badge>
@@ -158,7 +158,7 @@ export const PossibleOrderStates: React.FC<{
                       </div>
                     )}
                     {state.to.length === 0 && (
-                      <p className="text-muted-foreground mt-1 text-sm">{t('orderStates.finalState')}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{t('orderStates.finalState')}</p>
                     )}
                   </TimelineContent>
                 </TimelineItem>

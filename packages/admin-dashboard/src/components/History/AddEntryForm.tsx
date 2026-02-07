@@ -5,7 +5,7 @@ import type React from 'react';
 import type { ModelTypes } from '@deenruv/admin-types';
 import { useTranslation, Badge, Button, Checkbox, Label, Textarea, cn } from '@deenruv/react-ui-devkit';
 import { type Dispatch, type SetStateAction, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { MessageCircle, ShieldCheck, Send } from 'lucide-react';
 
 interface DeleteEntryDialogProps {
@@ -40,7 +40,7 @@ export const AddEntryForm: React.FC<DeleteEntryDialogProps> = ({
   };
 
   return (
-    <div className="bg-card rounded-md border p-4">
+    <div className="rounded-md border bg-card p-4">
       <Label htmlFor="comment" className="mb-2 block font-medium">
         {t('history.addCommentButton', 'Add a note')}
       </Label>
@@ -65,7 +65,7 @@ export const AddEntryForm: React.FC<DeleteEntryDialogProps> = ({
           <Label htmlFor="isPublic" className="flex cursor-pointer items-center gap-1 text-sm">
             <ShieldCheck className={cn('h-4 w-4', isPrivate ? 'text-emerald-500' : 'text-muted-foreground')} />
             {t('history.isPrivate', 'Private note')}
-            <span className="text-muted-foreground ml-1 text-xs">
+            <span className="ml-1 text-xs text-muted-foreground">
               {t('history.isPrivateDescription', '(visible only to admins)')}
             </span>
           </Label>

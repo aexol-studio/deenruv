@@ -12,7 +12,7 @@ export const CombinationMode: React.FC<CombinationModeProps> = ({ label, value, 
   return (
     <div className="flex basis-full flex-col gap-3">
       <Label>{label}</Label>
-      <ToggleGroup type="single" value={value} onValueChange={onChange} className=" justify-start">
+      <ToggleGroup type="single" value={value} onValueChange={onChange} className="justify-start">
         <ToggleGroupItem variant={'outline'} size={'sm'} value={'true'}>
           {t('details.filters.labels.arguments.and')}
         </ToggleGroupItem>

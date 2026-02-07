@@ -21,9 +21,9 @@ export const OrderLineActionModal: React.FC<OrderLineActonModalProps> = ({
   return (
     <Dialog open={!!line} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-w-[90dvw] flex-col rounded-lg border-0 p-0 shadow-lg sm:max-w-[550px] lg:max-w-[650px]">
-        <DialogHeader className="bg-muted/30 border-b p-6">
+        <DialogHeader className="border-b bg-muted/30 p-6">
           <DialogTitle className="text-xl font-semibold">{t(`orderLineActionModal.title.!TODO`)}</DialogTitle>
-          <p className="text-muted-foreground text-sm">{t(`orderLineActionModal.subTitle.!TODO`)}</p>
+          <p className="text-sm text-muted-foreground">{t(`orderLineActionModal.subTitle.!TODO`)}</p>
         </DialogHeader>
         <ActionQuantityPrice
           onPriceQuantityChangeApprove={onPriceQuantityChangeApprove}

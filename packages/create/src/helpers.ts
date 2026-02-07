@@ -258,6 +258,7 @@ export function installPackages(
     const child = spawn(command, args, {
       stdio: logLevel === "silent" ? "ignore" : "inherit",
     });
+
     child.on("close", (code) => {
       if (code !== 0) {
         let message = "An error occurred when installing dependencies.";
@@ -277,16 +278,26 @@ export function installPackages(
 }
 
 export function getDependencies(
-  dbType: DbType,
+  _dbType: DbType,
   deenruvPkgVersion = "",
 ): { dependencies: string[]; devDependencies: string[] } {
   const dependencies = [
     `@deenruv/core${deenruvPkgVersion}`,
     `@deenruv/email-plugin${deenruvPkgVersion}`,
     `@deenruv/asset-server-plugin${deenruvPkgVersion}`,
-    `@deenruv/admin-ui-plugin${deenruvPkgVersion}`,
     "dotenv",
-    dbDriverPackage(dbType),
+    "pg",
+    // Runtime peer dependencies of @deenruv/core that must be installed
+    // explicitly so the scaffolded project can bootstrap without errors.
+    "@nestjs/core",
+    "@nestjs/typeorm",
+    "typeorm",
+    "graphql",
+    "graphql-fields",
+    "graphql-scalars",
+    "graphql-tag",
+    "graphql-upload",
+    "rxjs",
   ];
   const devDependencies = [
     `@deenruv/cli${deenruvPkgVersion}`,
@@ -297,76 +308,11 @@ export function getDependencies(
 }
 
 /**
- * Returns the name of the npm driver package for the
- * selected database.
- */
-function dbDriverPackage(dbType: DbType): string {
-  switch (dbType) {
-    case "mysql":
-    case "mariadb":
-      return "mysql";
-    case "postgres":
-      return "pg";
-    case "sqlite":
-      return "better-sqlite3";
-    case "sqljs":
-      return "sql.js";
-    case "mssql":
-      return "mssql";
-    case "oracle":
-      return "oracledb";
-    default:
-      const n: never = dbType;
-      console.error(
-        pc.red(`No driver package configured for type "${dbType as string}"`),
-      );
-      return "";
-  }
-}
-
-/**
  * Checks that the specified DB connection options are working (i.e. a connection can be
  * established) and that the named database exists.
  */
 export function checkDbConnection(options: any, root: string): Promise<true> {
-  switch (options.type) {
-    case "mysql":
-      return checkMysqlDbExists(options, root);
-    case "postgres":
-      return checkPostgresDbExists(options, root);
-    default:
-      return Promise.resolve(true);
-  }
-}
-
-async function checkMysqlDbExists(options: any, root: string): Promise<true> {
-  const mysql = await import(path.join(root, "node_modules/mysql"));
-  const connectionOptions = {
-    host: options.host,
-    user: options.username,
-    password: options.password,
-    port: options.port,
-    database: options.database,
-  };
-  const connection = mysql.createConnection(connectionOptions);
-
-  return new Promise<boolean>((resolve, reject) => {
-    connection.connect((err: any) => {
-      if (err) {
-        if (err.code === "ER_BAD_DB_ERROR") {
-          throwDatabaseDoesNotExist(options.database);
-        }
-        throwConnectionError(err);
-      }
-      resolve(true);
-    });
-  }).then(() => {
-    return new Promise((resolve, reject) => {
-      connection.end((err: any) => {
-        resolve(true);
-      });
-    });
-  });
+  return checkPostgresDbExists(options, root);
 }
 
 async function checkPostgresDbExists(

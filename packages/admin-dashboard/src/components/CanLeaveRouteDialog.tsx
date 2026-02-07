@@ -10,7 +10,7 @@ import {
   useRouteGuardStore,
 } from '@deenruv/react-ui-devkit';
 import React, { Dispatch, SetStateAction } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface CanLeaveRouteDialogProps {
   open: boolean;

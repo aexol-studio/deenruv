@@ -46,7 +46,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({ setRefundLines, re
   );
 
   return (
-    <div className="border-border rounded-lg border-0 shadow-sm">
+    <div className="rounded-lg border-0 border-border shadow-sm">
       <Table>
         <TableHeader>
           <TableRow noHover className="hover:bg-transparent">
@@ -72,10 +72,10 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({ setRefundLines, re
                       '/placeholder.svg'
                     }
                   />
-                  <div className="text-primary font-medium">{line.productVariant.product.name}</div>
+                  <div className="font-medium text-primary">{line.productVariant.product.name}</div>
                 </div>
               </TableCell>
-              <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+              <TableCell className="min-w-[200px] py-3 font-mono text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                   {line.productVariant.sku}

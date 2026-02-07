@@ -1,7 +1,7 @@
 import React, {
   createContext,
-  FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -31,7 +31,7 @@ export type Channel = {
   defaultLanguageCode: string;
 };
 
-const PluginStoreContext = createContext<{
+type PluginStoreContextType = {
   channel?: Channel;
   language: string;
   translationsLanguage: string;
@@ -40,6 +40,10 @@ const PluginStoreContext = createContext<{
   openDropdown: boolean;
   setOpenDropdown: (open: boolean) => void;
   getComponents: (position: string, tab?: string) => React.ComponentType<any>[];
+  getSurfaceComponents: (
+    position: string,
+    tab?: string,
+  ) => Array<{ key: string; component: React.ComponentType<any> }>;
   getModalComponents: (
     location: ModalLocationsKeys,
   ) => React.ComponentType<any>[];
@@ -59,7 +63,9 @@ const PluginStoreContext = createContext<{
   topNavigationActionsMenu: DeenruvUIPlugin["topNavigationActionsMenu"];
   configs: Map<string, any>;
   plugins: DeenruvPluginStored[];
-}>({
+};
+
+const PluginStoreContext = createContext<PluginStoreContextType>({
   channel: undefined,
   language: "",
   translationsLanguage: "",
@@ -68,6 +74,7 @@ const PluginStoreContext = createContext<{
   openDropdown: false,
   setOpenDropdown: () => undefined,
   getComponents: () => [],
+  getSurfaceComponents: () => [],
   getModalComponents: () => [],
   getInputComponent: () => () => null,
   getDetailViewTabs: () => [],
@@ -82,16 +89,18 @@ const PluginStoreContext = createContext<{
   plugins: [],
 });
 
-export const PluginProvider: FC<
-  PropsWithChildren<{
-    plugins: PluginStore;
-    context: {
-      channel?: Channel;
-      language: string;
-      translationsLanguage: string;
-    };
-  }>
-> = ({ children, plugins, context }) => {
+export function PluginProvider({
+  children,
+  plugins,
+  context,
+}: PropsWithChildren<{
+  plugins: PluginStore;
+  context: {
+    channel?: Channel;
+    language: string;
+    translationsLanguage: string;
+  };
+}>) {
   const [_plugins, setPlugins] = useState<DeenruvPluginStored[]>(() =>
     plugins.getPluginMap(),
   );
@@ -99,22 +108,44 @@ export const PluginProvider: FC<
   const [openDropdown, setOpenDropdown] = useState(false);
   const navMenuData = useMemo(() => plugins.navMenuData, [_plugins]);
 
-  const getComponents = (position: string, tab?: string) =>
-    plugins.getComponents(position, tab) || [];
-  const getInputComponent = (id: string) =>
-    plugins.getInputComponent(id) || null;
-  const getTableExtensions = (location: LocationKeys) =>
-    plugins.getTableExtensions(location);
-  const getDetailViewTabs = (location: DetailLocationID) =>
-    plugins.getDetailViewTabs(location);
-  const getDetailViewActions = (location: DetailLocationID) =>
-    plugins.getDetailViewActions(location);
-  const getModalComponents = (location: ModalLocationsKeys) =>
-    plugins.getModalComponents(location);
-  const changePluginStatus = (name: string, status: "active" | "inactive") => {
-    plugins.changePluginStatus(name, status);
-    setPlugins(plugins.getPluginMap());
-  };
+  const getComponents = useCallback(
+    (position: string, tab?: string) =>
+      plugins.getComponents(position, tab) || [],
+    [plugins],
+  );
+  const getSurfaceComponents = useCallback(
+    (position: string, tab?: string) =>
+      plugins.getSurfaceComponents(position, tab),
+    [plugins],
+  );
+  const getInputComponent = useCallback(
+    (id: string) => plugins.getInputComponent(id) || null,
+    [plugins],
+  );
+  const getTableExtensions = useCallback(
+    (location: LocationKeys) => plugins.getTableExtensions(location),
+    [plugins],
+  );
+  const getDetailViewTabs = useCallback(
+    (location: DetailLocationID) => plugins.getDetailViewTabs(location),
+    [plugins],
+  );
+  const getDetailViewActions = useCallback(
+    (location: DetailLocationID) => plugins.getDetailViewActions(location),
+    [plugins],
+  );
+  const getModalComponents = useCallback(
+    (location: ModalLocationsKeys) => plugins.getModalComponents(location),
+    [plugins],
+  );
+  const changePluginStatus = useCallback(
+    (name: string, status: "active" | "inactive") => {
+      plugins.changePluginStatus(name, status);
+      setPlugins(plugins.getPluginMap());
+    },
+    [plugins],
+  );
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "q") {
@@ -127,35 +158,54 @@ export const PluginProvider: FC<
     };
   }, []);
 
+  const value = useMemo<PluginStoreContextType>(
+    () => ({
+      ...context,
+      viewMarkers,
+      setViewMarkers,
+      openDropdown,
+      setOpenDropdown,
+      getComponents,
+      getSurfaceComponents,
+      getModalComponents,
+      getInputComponent,
+      getTableExtensions,
+      getDetailViewTabs,
+      getDetailViewActions,
+      changePluginStatus,
+      navMenuData,
+      widgets: plugins.widgets,
+      topNavigationComponents: plugins.topNavigationComponents,
+      topNavigationActionsMenu: plugins.topNavigationActionsMenu,
+      configs: plugins.configs,
+      plugins: _plugins,
+    }),
+    [
+      context,
+      viewMarkers,
+      openDropdown,
+      getComponents,
+      getSurfaceComponents,
+      getModalComponents,
+      getInputComponent,
+      getTableExtensions,
+      getDetailViewTabs,
+      getDetailViewActions,
+      changePluginStatus,
+      navMenuData,
+      _plugins,
+      plugins,
+    ],
+  );
+
   return (
-    <PluginStoreContext.Provider
-      value={{
-        ...context,
-        viewMarkers,
-        setViewMarkers,
-        openDropdown,
-        setOpenDropdown,
-        getComponents,
-        getModalComponents,
-        getInputComponent,
-        getTableExtensions,
-        getDetailViewTabs,
-        getDetailViewActions,
-        changePluginStatus,
-        navMenuData,
-        widgets: plugins.widgets,
-        topNavigationComponents: plugins.topNavigationComponents,
-        topNavigationActionsMenu: plugins.topNavigationActionsMenu,
-        configs: plugins.configs,
-        plugins: _plugins,
-      }}
-    >
+    <PluginStoreContext.Provider value={value}>
       <WidgetsStoreProvider context={context} widgets={plugins.widgets}>
         {children}
       </WidgetsStoreProvider>
     </PluginStoreContext.Provider>
   );
-};
+}
 
 export function usePluginStore() {
   if (!PluginStoreContext) throw new Error("PluginStoreContext is not defined");

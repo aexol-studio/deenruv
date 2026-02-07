@@ -1,4 +1,4 @@
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
 import pl from "./locales/pl/translations.json";
 import en from "./locales/en/translations.json";
 import { TimerIcon } from "lucide-react";
@@ -7,7 +7,7 @@ import React from "react";
 import { TRANSLATION_NAMESPACE } from "./constants";
 
 export const CronJobsPluginUI = createDeenruvUIPlugin({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "CronJobs Plugin",
   translations: {
     ns: TRANSLATION_NAMESPACE,

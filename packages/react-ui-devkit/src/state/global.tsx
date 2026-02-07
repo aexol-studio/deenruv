@@ -38,7 +38,7 @@ export function GlobalStoreProvider({
   children,
   ...props
 }: GlobalStoreProviderProps) {
-  const storeRef = useRef<GlobalStoreType>();
+  const storeRef = useRef<GlobalStoreType>(undefined);
   if (!storeRef.current) {
     storeRef.current = createGlobalStore(props);
   }

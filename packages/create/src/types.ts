@@ -1,11 +1,4 @@
-export type DbType =
-  | "mysql"
-  | "mariadb"
-  | "postgres"
-  | "sqlite"
-  | "sqljs"
-  | "mssql"
-  | "oracle";
+export type DbType = "postgres";
 
 export interface FileSources {
   indexSource: string;

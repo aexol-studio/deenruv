@@ -39,7 +39,7 @@ export const CustomComponent = ({
           additionalData={{ product: orderLine.product, variant: orderLine }}
         />
       </div>
-      <div className="bg-muted/30 border-t p-4">
+      <div className="border-t bg-muted/30 p-4">
         <div className="flex flex-col items-start justify-end gap-4 sm:flex-row sm:items-center">
           <Button onClick={onSubmit} disabled={isSubmitting} className="min-w-[120px] self-end sm:self-auto">
             {isSubmitting ? (

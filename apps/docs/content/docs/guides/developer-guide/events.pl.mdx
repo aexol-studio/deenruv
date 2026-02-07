@@ -291,7 +291,7 @@ export class BlogPlugin implements OnModuleInit {
 <Callout type="info">
 Poniższa sekcja jest tematem zaawansowanym.
 
-API opisane w tej sekcji zostało dodane w Deenruv v2.2.0.
+API opisane w tej sekcji jest dostępne w Deenruv.
 </Callout>
 
 Gdy korzystamy ze wzorca `.ofType().subscribe()`, handler zdarzenia jest nieblokujący. Oznacza to, że kod publikujący zdarzenie („kod publikujący") nie ma wiedzy o żadnych subskrybentach, a de facto subskrybenci zostaną wykonani po zakończeniu działania kodu publikującego (technicznie, wszelkie trwające transakcje bazodanowe są kończone zanim zdarzenie zostanie wyemitowane do subskrybentów). Jest to zgodne z typowym [wzorcem Obserwatora](https://en.wikipedia.org/wiki/Observer_pattern) i sprawdza się w większości przypadków użycia.

@@ -73,7 +73,7 @@ export const OrderHistory: React.FC = () => {
       {loading && (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <div className="size-8 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500"></div>
-          <p className="text-muted-foreground mt-4 text-sm">{t('history.loading', 'Loading order history...')}</p>
+          <p className="mt-4 text-sm text-muted-foreground">{t('history.loading', 'Loading order history...')}</p>
         </div>
       )}
       {error && (
@@ -83,7 +83,7 @@ export const OrderHistory: React.FC = () => {
           </div>
           <div>
             <p className="font-medium text-red-600">{t('toasts.orderHistoryLoadingError', { value: order?.id })}</p>
-            <p className="text-muted-foreground mt-2 text-sm">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t('history.tryAgain', 'Please try refreshing the page')}
             </p>
           </div>

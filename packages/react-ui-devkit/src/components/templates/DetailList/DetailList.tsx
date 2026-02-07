@@ -12,7 +12,7 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import {
   ArrowRight,
   Group,
@@ -197,23 +197,42 @@ export function DetailList<
 
   const navigate = useNavigate();
   const { getTableExtensions } = usePluginStore();
-  const tableExtensions = getTableExtensions(tableId as LocationKeys);
-  const mergedSelectors = tableExtensions?.reduce(
-    (acc, table) => deepMerge(acc, table.externalSelector || {}),
-    {},
+  const tableExtensions = useMemo(
+    () => getTableExtensions(tableId as LocationKeys),
+    [tableId],
   );
-  const rowActions = [
-    ...(tableExtensions?.flatMap((table) => table.rowActions || []) || []),
-    ...((additionalRowActions || []) as any), //TODO: fix types
-  ];
-  const bulkActions = [
-    ...(tableExtensions?.flatMap((table) => table.bulkActions || []) || []),
-    ...((additionalBulkActions || []) as any), //TODO: fix types
-  ];
-  const customColumns = (tableExtensions?.flatMap((table) => table.columns) ||
-    []) as ColumnDef<AwaitedReturnType<T>["items"]>[];
-  const customHideColumns = tableExtensions?.flatMap(
-    (table) => table.hideColumns || [],
+  const mergedSelectors = useMemo(
+    () =>
+      tableExtensions?.reduce(
+        (acc, table) => deepMerge(acc, table.externalSelector || {}),
+        {},
+      ),
+    [tableExtensions],
+  );
+  const rowActions = useMemo(
+    () => [
+      ...(tableExtensions?.flatMap((table) => table.rowActions || []) || []),
+      ...((additionalRowActions || []) as any), //TODO: fix types
+    ],
+    [tableExtensions, additionalRowActions],
+  );
+  const bulkActions = useMemo(
+    () => [
+      ...(tableExtensions?.flatMap((table) => table.bulkActions || []) || []),
+      ...((additionalBulkActions || []) as any), //TODO: fix types
+    ],
+    [tableExtensions, additionalBulkActions],
+  );
+  const customColumns = useMemo(
+    () =>
+      (tableExtensions?.flatMap((table) => table.columns) || []) as ColumnDef<
+        AwaitedReturnType<T>["items"]
+      >[],
+    [tableExtensions],
+  );
+  const customHideColumns = useMemo(
+    () => tableExtensions?.flatMap((table) => table.hideColumns || []),
+    [tableExtensions],
   );
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(

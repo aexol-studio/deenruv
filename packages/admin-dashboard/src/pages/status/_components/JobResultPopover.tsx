@@ -17,7 +17,7 @@ export function JobResultPopover({ result }: JobResultProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size={'sm'} className="bg-muted/50 flex h-8 items-center gap-2 rounded-full">
+        <Button variant="outline" size={'sm'} className="flex h-8 items-center gap-2 rounded-full bg-muted/50">
           <FileText className="size-4" />
           <span>{t('jobs.table.jobResult')}</span>
         </Button>

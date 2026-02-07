@@ -1,4 +1,4 @@
-import { cancel, intro, isCancel, outro, select, text } from "@clack/prompts";
+import { cancel, isCancel, select, text } from "@clack/prompts";
 import {
   SUPER_ADMIN_USER_IDENTIFIER,
   SUPER_ADMIN_USER_PASSWORD,
@@ -31,74 +31,46 @@ export async function gatherUserResponses(
   alreadyRanScaffold: boolean,
   packageManager: PackageManager,
 ): Promise<UserResponses> {
-  const dbType = (await select({
-    message: "Which database are you using?",
-    options: [
-      { label: "MySQL", value: "mysql" },
-      { label: "MariaDB", value: "mariadb" },
-      { label: "Postgres", value: "postgres" },
-      { label: "SQLite", value: "sqlite" },
-      { label: "SQL.js", value: "sqljs" },
-    ],
-    initialValue: "sqlite" as DbType,
-  })) as DbType;
-  checkCancel(dbType);
+  const dbType: DbType = "postgres";
 
-  const hasConnection = dbType !== "sqlite" && dbType !== "sqljs";
-  const dbHost = hasConnection
-    ? await text({
-        message: "What's the database host address?",
-        initialValue: "localhost",
-      })
-    : "";
+  const dbHost = await text({
+    message: "What's the database host address?",
+    initialValue: "localhost",
+  });
   checkCancel(dbHost);
-  const dbPort = hasConnection
-    ? await text({
-        message: "What port is the database listening on?",
-        initialValue: defaultDBPort(dbType).toString(),
-      })
-    : "";
+  const dbPort = await text({
+    message: "What port is the database listening on?",
+    initialValue: "5432",
+  });
   checkCancel(dbPort);
-  const dbName = hasConnection
-    ? await text({
-        message: "What's the name of the database?",
-        initialValue: "deenruv",
-      })
-    : "";
+  const dbName = await text({
+    message: "What's the name of the database?",
+    initialValue: "deenruv",
+  });
   checkCancel(dbName);
-  const dbSchema =
-    dbType === "postgres"
-      ? await text({
-          message: "What's the schema name we should use?",
-          initialValue: "public",
-        })
-      : "";
+  const dbSchema = await text({
+    message: "What's the schema name we should use?",
+    initialValue: "public",
+  });
   checkCancel(dbSchema);
-  const dbSSL =
-    dbType === "postgres"
-      ? await select({
-          message:
-            "Use SSL to connect to the database? (only enable if you database provider supports SSL)",
-          options: [
-            { label: "no", value: false },
-            { label: "yes", value: true },
-          ],
-          initialValue: false,
-        })
-      : false;
+  const dbSSL = await select({
+    message:
+      "Use SSL to connect to the database? (only enable if your database provider supports SSL)",
+    options: [
+      { label: "no", value: false },
+      { label: "yes", value: true },
+    ],
+    initialValue: false,
+  });
   checkCancel(dbSSL);
-  const dbUserName = hasConnection
-    ? await text({
-        message: "What's the database user name?",
-      })
-    : "";
+  const dbUserName = await text({
+    message: "What's the database user name?",
+  });
   checkCancel(dbUserName);
-  const dbPassword = hasConnection
-    ? await text({
-        message: "What's the database password?",
-        defaultValue: "",
-      })
-    : "";
+  const dbPassword = await text({
+    message: "What's the database password?",
+    defaultValue: "",
+  });
   checkCancel(dbPassword);
   const superadminIdentifier = await text({
     message: "What identifier do you want to use for the superadmin user?",
@@ -151,11 +123,12 @@ export async function gatherCiUserResponses(
   packageManager: PackageManager,
 ): Promise<UserResponses> {
   const ciAnswers = {
-    dbType: "sqlite" as const,
-    dbHost: "",
-    dbPort: "",
+    dbType: "postgres" as const,
+    dbHost: "localhost",
+    dbPort: "5432",
     dbName: "deenruv",
-    dbUserName: "",
+    dbSchema: "public",
+    dbUserName: "deenruv",
     dbPassword: "",
     populateProducts: true,
     superadminIdentifier: SUPER_ADMIN_USER_IDENTIFIER,
@@ -202,12 +175,8 @@ async function generateSources(
   const templateContext = {
     ...answers,
     useYarn: packageManager === "yarn",
-    dbType: answers.dbType === "sqlite" ? "better-sqlite3" : answers.dbType,
+    dbType: "postgres",
     name: path.basename(root),
-    isSQLite: answers.dbType === "sqlite",
-    isSQLjs: answers.dbType === "sqljs",
-    requiresConnection:
-      answers.dbType !== "sqlite" && answers.dbType !== "sqljs",
     cookieSecret: Math.random().toString(36).substr(2),
   };
 
@@ -229,20 +198,4 @@ async function generateSources(
     dockerfileSource: await createSourceFile("Dockerfile.hbs"),
     dockerComposeSource: await createSourceFile("docker-compose.hbs"),
   };
-}
-
-function defaultDBPort(dbType: DbType): number {
-  switch (dbType) {
-    case "mysql":
-    case "mariadb":
-      return 3306;
-    case "postgres":
-      return 5432;
-    case "mssql":
-      return 1433;
-    case "oracle":
-      return 1521;
-    default:
-      return 3306;
-  }
 }

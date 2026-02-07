@@ -4,7 +4,7 @@ import {
   useNavigate,
   useParams,
   useSearchParams,
-} from "react-router-dom";
+} from "react-router";
 import { ChevronLeft, EllipsisVerticalIcon, Trash2 } from "lucide-react";
 import { ModelTypes, Permission } from "@deenruv/admin-types";
 import { cn } from "@/lib";

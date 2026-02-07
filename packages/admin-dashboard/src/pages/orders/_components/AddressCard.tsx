@@ -322,7 +322,7 @@ export const AddressCard: React.FC<{
                   )}
                   {t('selectAddress.selectAddress')}
                 </DialogTitle>
-                <DialogDescription className="text-muted-foreground mt-2">
+                <DialogDescription className="mt-2 text-muted-foreground">
                   {isShipping
                     ? order?.customer?.addresses?.length
                       ? t('selectAddress.selectShippingAddress')
@@ -483,7 +483,7 @@ export const AddressCard: React.FC<{
         )
       }
     >
-      <div className="border-border bg-muted/50 rounded-lg border p-3">
+      <div className="rounded-lg border border-border bg-muted/50 p-3">
         <div className="flex items-start gap-3">
           {!currentAddress ? (
             <>
@@ -497,7 +497,7 @@ export const AddressCard: React.FC<{
                 )}
               </div>
               <div className="flex-1">
-                <p className="text-muted-foreground text-sm italic">
+                <p className="text-sm text-muted-foreground italic">
                   {t(isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress')}
                 </p>
                 {mode !== 'view' && (
@@ -513,34 +513,34 @@ export const AddressCard: React.FC<{
               <div className="flex-1">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <User className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                    <User className={`max-h-4 min-h-4 max-w-4 min-w-4 ${iconColor}`} />
                     <p className="text-sm font-medium">{currentAddress?.fullName}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <MapPin className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                    <MapPin className={`max-h-4 min-h-4 max-w-4 min-w-4 ${iconColor}`} />
                     <p className="text-sm">
                       {currentAddress.streetLine1} {currentAddress?.streetLine2}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Globe className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                    <Globe className={`max-h-4 min-h-4 max-w-4 min-w-4 ${iconColor}`} />
                     <p className="text-sm">
                       {currentAddress.city} {currentAddress.postalCode} {currentAddress.province}{' '}
                       {currentAddress.country}
                     </p>
                   </div>
-                  <div className="border-border mt-1 flex items-center justify-between border-t pt-1">
+                  <div className="mt-1 flex items-center justify-between border-t border-border pt-1">
                     <div className="flex items-center gap-2">
                       {currentAddress.company && (
                         <div className="flex items-center gap-1">
-                          <Building className="text-muted-foreground size-4" />
-                          <span className="text-muted-foreground text-sm">{currentAddress.company}</span>
+                          <Building className="size-4 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">{currentAddress.company}</span>
                         </div>
                       )}
                       {currentAddress.phoneNumber && (
                         <div className="flex items-center gap-1">
-                          <Phone className="text-muted-foreground size-4" />
-                          <span className="text-muted-foreground text-sm">
+                          <Phone className="size-4 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">
                             {t('selectAddress.phoneNumberShort', { value: currentAddress.phoneNumber })}
                           </span>
                         </div>

@@ -186,7 +186,7 @@ export const Payments: FC = () => {
       <ScrollArea className="max-h-[400px] px-6">
         <Table>
           <TableHeader>
-            <TableRow noHover className="border-border border-b">
+            <TableRow noHover className="border-b border-border">
               <TableHead className="w-[80px] py-3">{t('payments.id')}</TableHead>
               <TableHead className="py-3">{t('payments.created')}</TableHead>
               <TableHead className="py-3">{t('payments.method')}</TableHead>
@@ -208,7 +208,7 @@ export const Payments: FC = () => {
                 return (
                   <React.Fragment key={id}>
                     <TableRow noHover className="group">
-                      <TableCell className="text-muted-foreground py-3 font-mono text-xs">{id}</TableCell>
+                      <TableCell className="py-3 font-mono text-xs text-muted-foreground">{id}</TableCell>
                       <TableCell className="py-3">
                         <div className="flex items-center gap-2">
                           <Calendar className="size-4 text-teal-500 dark:text-teal-400" />
@@ -245,15 +245,15 @@ export const Payments: FC = () => {
                                 onClick={() => toggleRefundExpand(id)}
                               >
                                 {isRefundExpanded ? (
-                                  <ArrowUpCircle className="text-muted-foreground size-4" />
+                                  <ArrowUpCircle className="size-4 text-muted-foreground" />
                                 ) : (
-                                  <ArrowDownCircle className="text-muted-foreground size-4" />
+                                  <ArrowDownCircle className="size-4 text-muted-foreground" />
                                 )}
                               </Button>
                             </div>
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-sm">-</span>
+                          <span className="text-sm text-muted-foreground">-</span>
                         )}
                       </TableCell>
                       <TableCell className="flex items-center justify-center">
@@ -293,7 +293,7 @@ export const Payments: FC = () => {
                             <div className="mb-2 text-sm font-medium">{t('refunds.details', 'Refund Details')}</div>
                             <Table>
                               <TableHeader>
-                                <TableRow noHover className="border-border border-b">
+                                <TableRow noHover className="border-b border-border">
                                   <TableHead className="py-2 text-xs">{t('refunds.state', 'Status')}</TableHead>
                                   <TableHead className="py-2 text-xs">{t('refunds.amount', 'Amount')}</TableHead>
                                   <TableHead className="py-2 text-xs">{t('refunds.items', 'Items')}</TableHead>
@@ -310,7 +310,7 @@ export const Payments: FC = () => {
                                     <TableRow
                                       key={`${id}-refund-${index}`}
                                       noHover
-                                      className="border-border/50 border-b"
+                                      className="border-b border-border/50"
                                     >
                                       <TableCell className="py-2">
                                         <Badge
@@ -331,7 +331,7 @@ export const Payments: FC = () => {
                                               key={`${id}-refund-${index}-line-${lineIndex}`}
                                               className="flex items-center gap-2"
                                             >
-                                              <span className="text-muted-foreground font-mono text-xs">
+                                              <span className="font-mono text-xs text-muted-foreground">
                                                 {line.orderLineId} |
                                               </span>
                                               <span className="text-xs">×{line.quantity}</span>

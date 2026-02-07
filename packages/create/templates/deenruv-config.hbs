@@ -6,7 +6,6 @@ import {
 } from '@deenruv/core';
 import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
 import { AssetServerPlugin } from '@deenruv/asset-server-plugin';
-import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import 'dotenv/config';
 import path from 'path';
 
@@ -48,23 +47,15 @@ export const config: DeenruvConfig = {
         synchronize: false,
         migrations: [path.join(__dirname, './migrations/*.+(js|ts)')],
         logging: false,
-        database: {{#if isSQLjs}}new Uint8Array([]){{else if isSQLite}}path.join(__dirname, '../deenruv.sqlite'){{else}}process.env.DB_NAME{{/if}},
-        {{#if dbSchema}}
+        database: process.env.DB_NAME,
         schema: process.env.DB_SCHEMA,
-        {{/if}}
         {{#if dbSSL}}
         ssl: true,
         {{/if}}
-        {{#if isSQLjs}}
-        location: path.join(__dirname, 'deenruv.sqlite'),
-        autoSave: true,
-        {{/if}}
-        {{#if requiresConnection}}
         host: process.env.DB_HOST,
         port: +process.env.DB_PORT,
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
-        {{/if}}
     },
     paymentOptions: {
         paymentMethodHandlers: [dummyPaymentHandler],
@@ -96,13 +87,6 @@ export const config: DeenruvConfig = {
                 verifyEmailAddressUrl: 'http://localhost:8080/verify',
                 passwordResetUrl: 'http://localhost:8080/password-reset',
                 changeEmailAddressUrl: 'http://localhost:8080/verify-email-address-change'
-            },
-        }),
-        AdminUiPlugin.init({
-            route: 'admin',
-            port: 3002,
-            adminUiConfig: {
-                apiPort: 3000,
             },
         }),
     ],

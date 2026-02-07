@@ -1,4 +1,8 @@
-import { BASE_GROUP_ID, createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import {
+  BASE_GROUP_ID,
+  createDeenruvUIPlugin,
+  DEENRUV_UI_VERSION,
+} from "@deenruv/react-ui-devkit";
 import { BarChart, Camera, LanguagesIcon } from "lucide-react";
 import { SquareIcon } from "./assets";
 import { tables } from "./tables";
@@ -11,7 +15,7 @@ import React from "react";
 import { CustomInput, TestComponent } from "./components";
 
 export const UIPlugin = createDeenruvUIPlugin({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "First Plugin",
   pages: [{ path: "locale-test", element: <LocaleTest /> }],
   inputs: [{ id: "string-custom-field-input", component: CustomInput }],

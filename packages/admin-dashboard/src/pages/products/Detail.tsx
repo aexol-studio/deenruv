@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';

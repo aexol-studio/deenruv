@@ -33,7 +33,7 @@
     "graphql-zeus": "^7.0.0",
     "lucide-react": "^0.363.0",
     "mime-types": "^2.1.35",
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "react-i18next": "^14.0.5",
     "react-router-dom": "^6.22.1",
     "sonner": "^1.4.41"
@@ -42,13 +42,13 @@
     "@deenruv/core": "workspace:^",
     "@graphql-typed-document-node/core": "3.2.0",
     "@types/mime-types": "^2.1.4",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "rimraf": "^5.0.10",
     "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.1.0",
+    "@deenruv/core": "^1.0.0",
     "typeorm": "^0.3.20"
   }
 }

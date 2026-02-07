@@ -31,7 +31,7 @@ export const TaxSummary: React.FC = () => {
       <ScrollArea className="max-h-[350px] px-6 pb-6">
         <Table>
           <TableHeader>
-            <TableRow noHover className="border-border border-b">
+            <TableRow noHover className="border-b border-border">
               <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
               <TableHead className="py-3">{t('taxSummary.taxRate')}</TableHead>
               <TableHead className="py-3">{t('taxSummary.taxBase')}</TableHead>
@@ -51,7 +51,7 @@ export const TaxSummary: React.FC = () => {
                     </TableCell>
                     <TableCell className="py-3">
                       <div className="flex items-center gap-1">
-                        <Percent className="text-muted-foreground size-3.5" />
+                        <Percent className="size-3.5 text-muted-foreground" />
                         <span className="font-medium">{taxRate}%</span>
                       </div>
                     </TableCell>
@@ -63,7 +63,7 @@ export const TaxSummary: React.FC = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-                <TableRow noHover className="border-border bg-muted/30 border-t">
+                <TableRow noHover className="border-t border-border bg-muted/30">
                   <TableCell colSpan={3} className="py-3 text-right font-medium">
                     {t('taxSummary.taxTotal', 'Total Tax')}
                   </TableCell>
@@ -74,13 +74,13 @@ export const TaxSummary: React.FC = () => {
               </>
             ) : (
               <TableRow noHover>
-                <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
+                <TableCell colSpan={4} className="py-6 text-center text-muted-foreground">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <div className="rounded-full bg-indigo-100 p-3 dark:bg-indigo-900/30">
                       <AlertCircle className="size-6 text-indigo-500 dark:text-indigo-400" />
                     </div>
                     <p>{t('taxSummary.noTaxSummary', 'No tax information available')}</p>
-                    <p className="text-muted-foreground text-xs">
+                    <p className="text-xs text-muted-foreground">
                       {t(
                         'taxSummary.noTaxSummaryHint',
                         'Tax information will appear here when taxes are applied to the order',

@@ -39,8 +39,8 @@
     "graphql-zeus": "^5.4.2",
     "html-to-text": "^9.0.5",
     "lucide-react": "^0.363.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-i18next": "^14.0.5",
     "sonner": "^1.4.41",
     "recharts": "^2.12.7"
@@ -51,13 +51,13 @@
     "@types/express": "^4.17.21",
     "@types/facebook-nodejs-business-sdk": "^20.0.2",
     "@types/html-to-text": "^9.0.4",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "rimraf": "^5.0.10",
     "tslib": "^2.6.2",
     "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.1.0"
+    "@deenruv/core": "^1.0.0"
   }
 }

@@ -75,12 +75,12 @@ export const DeenruvDeveloperIndicator = () => {
   const [showSchema, setShowSchema] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4">
+    <div className="fixed right-4 bottom-4">
       <Drawer>
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            className="border-primary flex size-10 items-center justify-center rounded-full border-dashed text-xs"
+            className="flex size-10 items-center justify-center rounded-full border-dashed border-primary text-xs"
           >
             DDP
           </Button>
@@ -91,7 +91,7 @@ export const DeenruvDeveloperIndicator = () => {
               <DrawerTitle>DDP - Deenruv Developer Panel</DrawerTitle>
             </DrawerHeader>
             <div className="p-4 pb-0">
-              <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+              <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
                 <div className="space-y-4 md:w-1/4">
                   <div className="rounded-md border p-3">
                     <h3 className="mb-2 text-sm font-medium">Controls</h3>
@@ -100,7 +100,7 @@ export const DeenruvDeveloperIndicator = () => {
                         <Switch id="markers" checked={viewMarkers} onCheckedChange={setViewMarkers} />
                         <label
                           htmlFor="markers"
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
                           Show markers (ctrl + x)
                         </label>
@@ -110,7 +110,7 @@ export const DeenruvDeveloperIndicator = () => {
                         <Switch id="schema" checked={showSchema} onCheckedChange={setShowSchema} />
                         <label
                           htmlFor="schema"
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
                           Show GraphQL Schema
                         </label>
@@ -138,7 +138,7 @@ export const DeenruvDeveloperIndicator = () => {
                           </div>
                         ))}
                         {plugins.length === 0 && (
-                          <div className="py-4 text-center text-sm italic text-gray-500 dark:text-gray-400">
+                          <div className="py-4 text-center text-sm text-gray-500 italic dark:text-gray-400">
                             No plugins installed
                           </div>
                         )}

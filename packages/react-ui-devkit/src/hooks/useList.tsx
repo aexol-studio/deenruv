@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import {
   GenericReturn,
   PaginationInput,
@@ -116,7 +116,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
   customItemsPerPage?: ItemsPerPageType;
   options?: { skip?: boolean; noSearchParams?: boolean };
 }): {
-  Paginate: JSX.Element;
+  Paginate: React.JSX.Element;
   objects: GenericReturn<T> | undefined;
   total: number;
   setSort: (sort: string) => void;

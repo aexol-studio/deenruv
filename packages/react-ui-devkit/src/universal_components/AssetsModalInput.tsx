@@ -186,7 +186,7 @@ export function AssetsModalInput({
           <div className="w-full flex-1 overflow-y-auto  pr-1">
             {isPending ? (
               <div className="flex size-full items-center justify-center">
-                <div className="customSpinner" />
+                <div className="custom-spinner" />
               </div>
             ) : error || assets.length === 0 ? (
               <div className=" flex size-full items-center justify-center">

@@ -171,12 +171,12 @@ export const MoveEntityToChannels: React.FC<
         </DialogTitle>
       </DialogHeader>
 
-      <div className="grid h-full min-h-0  grid-cols-[1fr_auto_1fr]">
-        <div className="flex h-full min-h-0 flex-col ">
+      <div className="grid h-full min-h-0 grid-cols-[1fr_auto_1fr]">
+        <div className="flex h-full min-h-0 flex-col">
           <h1 className="p-4">{t('moveCollectionsToChannels.selected')}</h1>
 
           <Table>
-            <TableHeader className="bg-primary-foreground sticky top-0">
+            <TableHeader className="sticky top-0 bg-primary-foreground">
               {selectedTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -202,8 +202,8 @@ export const MoveEntityToChannels: React.FC<
           </Table>
         </div>
         <div className="mx-4 h-full w-px bg-stone-700"></div>
-        <div className="flex h-full min-h-0 flex-col ">
-          <div className="flex items-center  gap-2">
+        <div className="flex h-full min-h-0 flex-col">
+          <div className="flex items-center gap-2">
             <h1 className="p-4">{t('moveCollectionsToChannels.availableChannels')}</h1>
             <Input
               placeholder={t('moveCollectionsToChannels.searchByCode')}
@@ -223,7 +223,7 @@ export const MoveEntityToChannels: React.FC<
           </div>
 
           <Table>
-            <TableHeader className="bg-primary-foreground sticky top-0">
+            <TableHeader className="sticky top-0 bg-primary-foreground">
               {channelsTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

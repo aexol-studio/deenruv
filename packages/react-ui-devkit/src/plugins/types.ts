@@ -3,6 +3,8 @@ import { Notification } from "@/notifications/types.js";
 import {
   BASE_GROUP_ID,
   DetailKeys,
+  DetailLocationID,
+  DetailLocationSidebarID,
   DetailLocations,
   DetailLocationsType,
   ExternalListLocationSelector,
@@ -19,7 +21,7 @@ import { FC, SVGProps } from "react";
 export type Widget<T extends Record<string, any> = object> = {
   id: string | number;
   name: string;
-  component: JSX.Element;
+  component: React.JSX.Element;
   visible: boolean;
   size: { width: number; height: number };
   sizes: { width: number; height: number }[];
@@ -60,6 +62,68 @@ export type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> =
     /** Detail view component */
     component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
   };
+
+/**
+ * A typed extension-surface entry that plugins use to inject components
+ * into named surfaces (detail views, sidebars, etc.) with explicit ordering.
+ *
+ * This is the **recommended** API for new plugins — prefer it over the
+ * legacy `components` array.
+ *
+ * @example
+ * ```ts
+ * const plugin = createDeenruvUIPlugin({
+ *   name: 'My Plugin',
+ *   version: DEENRUV_UI_VERSION,
+ *   extensions: [
+ *     {
+ *       id: 'my-plugin-badges',
+ *       surface: 'products-detail-view',
+ *       order: 10,
+ *       component: BadgesComponent,
+ *     },
+ *   ],
+ * });
+ * ```
+ */
+export type SurfaceExtension = {
+  /**
+   * A stable, unique identifier for this extension within its plugin.
+   * Used as React key and for deterministic ordering across renders.
+   */
+  id: string;
+  /**
+   * The target surface (location) where this component will be injected.
+   * Matches detail view location IDs or sidebar location IDs
+   * (e.g. `'products-detail-view'`, `'orders-detail-view-sidebar'`).
+   */
+  surface: DetailLocationID | DetailLocationSidebarID;
+  /**
+   * Optional tab name — when provided the component is only rendered
+   * while the matching tab is active.
+   */
+  tab?: string;
+  /**
+   * Ordering hint. Lower values appear first.
+   * Extensions without an explicit order are placed after ordered ones
+   * in plugin-registration sequence.
+   * @default undefined (appended in registration order)
+   */
+  order?: number;
+  /** The React component to render at the surface. */
+  component: React.ComponentType;
+};
+
+/**
+ * A resolved extension entry stored internally by `PluginStore`.
+ * Adds origin metadata used for deterministic, stable ordering.
+ */
+export type ResolvedSurfaceExtension = SurfaceExtension & {
+  /** Name of the plugin that registered this extension. */
+  pluginName: string;
+  /** Registration sequence index (global across all plugins). */
+  registrationIndex: number;
+};
 
 export type DeenruvUIModalComponent<KEY extends keyof typeof ModalLocations> = {
   /** Used as localization */
@@ -107,6 +171,47 @@ export type NavigationAction = {
   onClick: () => void;
 };
 
+/**
+ * A manifest entry describing an available UI plugin.
+ * Used by the panel's plugin registry to declare which plugins are available
+ * and whether they are enabled by default.
+ */
+export type DeenruvUIPluginManifestItem<
+  T extends Record<string, any> = object,
+> = {
+  /** Unique identifier for the plugin (used in env var to enable/disable) */
+  id: string;
+  /** The plugin instance */
+  plugin: DeenruvUIPlugin<T>;
+  /** Whether this plugin is enabled when no env override is provided */
+  enabledByDefault: boolean;
+};
+
+/**
+ * Helper to create a manifest entry with full type inference.
+ * Validates at the type level that the entry satisfies `DeenruvUIPluginManifestItem`.
+ */
+export function defineManifestEntry<T extends Record<string, any> = object>(
+  entry: DeenruvUIPluginManifestItem<T>,
+): DeenruvUIPluginManifestItem<T> {
+  return entry;
+}
+
+/**
+ * Report returned by `PluginStore.installFromManifest()` describing what happened
+ * during installation.
+ */
+export type PluginInstallReport = {
+  /** IDs that were requested AND found in the manifest → installed */
+  installed: ReadonlyArray<string>;
+  /** IDs present in `enabledIds` but absent from the manifest */
+  unknown: ReadonlyArray<string>;
+  /** IDs that appeared more than once in the manifest (first-wins) */
+  duplicates: ReadonlyArray<string>;
+  /** Total number of manifest entries processed */
+  manifestSize: number;
+};
+
 export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
   name: string;
   version: string;
@@ -124,8 +229,24 @@ export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
   notifications?: Array<Notification<any>>;
   /** Inputs allow to override the default components from custom fields */
   inputs?: Array<PluginComponent>;
-  /** Applied on the detail views (pages) */
+  /**
+   * Applied on the detail views (pages).
+   *
+   * @deprecated Prefer the typed `extensions` array which provides stable
+   * keys, explicit ordering, and better type-safety. This field is still
+   * fully supported and will not be removed without a major version bump.
+   */
   components?: Array<DeenruvUIDetailComponent<DetailKeys>>;
+  /**
+   * Extension-surface components — the recommended way to inject UI into
+   * detail views and sidebars.
+   *
+   * Each entry targets a named surface with a stable `id`, optional `tab`
+   * filter, and optional `order` for deterministic placement.
+   *
+   * @see {@link SurfaceExtension} for the entry shape.
+   */
+  extensions?: Array<SurfaceExtension>;
   /** Applied on the modals */
   modals?: Array<DeenruvUIModalComponent<ModalLocationsKeys>>;
   /** Applied on the dashboard */

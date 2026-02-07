@@ -98,7 +98,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
       <DialogContent className="flex h-[80vh] max-w-[80vw] flex-col gap-0 overflow-hidden p-0">
         <DialogHeader className="border-b px-6 py-4">
           <div className="flex items-center gap-2">
-            <Truck className="text-primary size-5" />
+            <Truck className="size-5 text-primary" />
             <DialogTitle>{t('fulfillment.completeDialogTitle', 'Complete Order Fulfillment')}</DialogTitle>
           </div>
           <DialogDescription>
@@ -173,7 +173,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                                     </div>
                                   )}
                                 </div>
-                                <p className="text-muted-foreground text-xs">
+                                <p className="text-xs text-muted-foreground">
                                   ({t('fulfillment.onStockValue', { value: onStock })})
                                 </p>
                               </div>
@@ -184,13 +184,13 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                     })
                   ) : (
                     <TableRow noHover>
-                      <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
+                      <TableCell colSpan={4} className="py-6 text-center text-muted-foreground">
                         <div className="flex flex-col items-center justify-center gap-2">
                           <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
                             <Box className="size-6 text-blue-500 dark:text-blue-400" />
                           </div>
                           <p>{t('fulfillment.emptyState', 'No items to fulfill')}</p>
-                          <p className="text-muted-foreground text-xs">
+                          <p className="text-xs text-muted-foreground">
                             {t('fulfillment.emptyStateHint', 'Add products to the order before fulfillment')}
                           </p>
                         </div>
@@ -210,54 +210,54 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                     <div className="space-y-3">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <User className="text-muted-foreground size-4" />
-                          <p className="text-muted-foreground text-xs font-medium">{t('fullName', 'Full Name')}</p>
+                          <User className="size-4 text-muted-foreground" />
+                          <p className="text-xs font-medium text-muted-foreground">{t('fullName', 'Full Name')}</p>
                         </div>
                         <p className="text-sm font-medium">{order.shippingAddress?.fullName || '—'}</p>
                       </div>
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Building className="text-muted-foreground size-4" />
-                          <p className="text-muted-foreground text-xs font-medium">{t('company', 'Company')}</p>
+                          <Building className="size-4 text-muted-foreground" />
+                          <p className="text-xs font-medium text-muted-foreground">{t('company', 'Company')}</p>
                         </div>
                         <p className="text-sm font-medium">{order.shippingAddress?.company || '—'}</p>
                       </div>
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <MapPin className="text-muted-foreground size-4" />
-                          <p className="text-muted-foreground text-xs font-medium">{t('street1', 'Street Address')}</p>
+                          <MapPin className="size-4 text-muted-foreground" />
+                          <p className="text-xs font-medium text-muted-foreground">{t('street1', 'Street Address')}</p>
                         </div>
                         <p className="text-sm font-medium">{order.shippingAddress?.streetLine1 || '—'}</p>
                       </div>
 
                       <div className="space-y-1">
-                        <p className="text-muted-foreground text-xs font-medium">{t('street2', 'Street Address 2')}</p>
+                        <p className="text-xs font-medium text-muted-foreground">{t('street2', 'Street Address 2')}</p>
                         <p className="text-sm font-medium">{order.shippingAddress?.streetLine2 || '—'}</p>
                       </div>
                     </div>
 
                     <div className="space-y-3">
                       <div className="space-y-1">
-                        <p className="text-muted-foreground text-xs font-medium">{t('city', 'City')}</p>
+                        <p className="text-xs font-medium text-muted-foreground">{t('city', 'City')}</p>
                         <p className="text-sm font-medium">{order.shippingAddress?.city || '—'}</p>
                       </div>
 
                       <div className="space-y-1">
-                        <p className="text-muted-foreground text-xs font-medium">{t('postalCode', 'Postal Code')}</p>
+                        <p className="text-xs font-medium text-muted-foreground">{t('postalCode', 'Postal Code')}</p>
                         <p className="text-sm font-medium">{order.shippingAddress?.postalCode || '—'}</p>
                       </div>
 
                       <div className="space-y-1">
-                        <p className="text-muted-foreground text-xs font-medium">{t('country', 'Country')}</p>
+                        <p className="text-xs font-medium text-muted-foreground">{t('country', 'Country')}</p>
                         <p className="text-sm font-medium">{order.shippingAddress?.country || '—'}</p>
                       </div>
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Phone className="text-muted-foreground size-4" />
-                          <p className="text-muted-foreground text-xs font-medium">
+                          <Phone className="size-4 text-muted-foreground" />
+                          <p className="text-xs font-medium text-muted-foreground">
                             {t('phoneNumber', 'Phone Number')}
                           </p>
                         </div>
@@ -267,11 +267,11 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                   </div>
 
                   <div className="mt-4 border-t pt-4">
-                    <p className="text-muted-foreground mb-2 text-xs font-medium">
+                    <p className="mb-2 text-xs font-medium text-muted-foreground">
                       {t('fulfillment.shippingMethod', 'Shipping Method')}
                     </p>
                     {order.shippingLines.map((line) => (
-                      <div key={line.id} className="bg-muted/50 flex items-center justify-between rounded-md p-2">
+                      <div key={line.id} className="flex items-center justify-between rounded-md bg-muted/50 p-2">
                         <div className="flex items-center gap-2">
                           <Truck className="size-4 text-blue-500 dark:text-blue-400" />
                           <span className="font-medium">{line.shippingMethod.name}</span>

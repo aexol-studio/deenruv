@@ -1,4 +1,7 @@
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import {
+  createDeenruvUIPlugin,
+  DEENRUV_UI_VERSION,
+} from "@deenruv/react-ui-devkit";
 import pl from "./locales/pl";
 import en from "./locales/en";
 import { translationNS } from "./translation-ns";
@@ -7,7 +10,7 @@ import { tables } from "./tables.js";
 import { DedicatedButtons } from "./components/DedicatedButtons.js";
 
 export const FacetHarmonicaUiPlugin = createDeenruvUIPlugin({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "Facet Harmonica",
   components: [
     {

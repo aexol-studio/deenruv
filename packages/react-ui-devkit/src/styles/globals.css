@@ -1,0 +1,10 @@
+/**
+ * Minimal CSS entry point for shadcn/ui tooling in @deenruv/react-ui-devkit.
+ *
+ * This file exists solely to satisfy the `tailwind.css` path in `components.json`.
+ * The actual theme (CSS variables, @theme inline, keyframes) lives in
+ * `packages/admin-dashboard/src/root.css` which is the Tailwind v4 CSS-first
+ * source of truth for the admin panel.
+ *
+ * Do NOT add theme tokens here — they belong in root.css.
+ */

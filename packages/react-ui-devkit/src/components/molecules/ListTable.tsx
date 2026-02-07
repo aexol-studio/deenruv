@@ -216,7 +216,9 @@ export function ListTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    ref={(el) => (rowRefs.current[idx] = el)}
+                    ref={(el) => {
+                      rowRefs.current[idx] = el;
+                    }}
                   >
                     {row.getVisibleCells().map((cell) => {
                       const columnWidth = cell.column.getSize();

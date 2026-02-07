@@ -16,16 +16,17 @@ export const DetailViewMarker = ({
 }) => {
   const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
 
-  const code = `const DeenruvUIPlugin = createPlugin({
-    components: [{
-        id: "${position}",
-        tab: "${tab}",
+  const code = `const DeenruvUIPlugin = createDeenruvUIPlugin({
+    extensions: [{
+        id: "my-extension",
+        surface: "${position}",${tab ? `\n        tab: "${tab}",` : ""}
+        order: 10,
         component: YourComponent,
     }],
 });`;
 
   const highlightedCode = code.replace(
-    /(id: ")([^"]*)(")/g,
+    /(surface: ")([^"]*)(")/g,
     `$1<span class="text-green-500 font-bold">$2</span>$3`,
   );
 
@@ -54,7 +55,7 @@ export const DetailViewMarker = ({
           {openDropdown && (
             <div className="bg-secondary absolute left-8 top-8 flex min-w-96 flex-col gap-2 rounded-md p-4 shadow-2xl">
               <p className="max-w-sm text-sm">
-                Create a new component using following code
+                Create a new component using the extensions API
               </p>
               <div className="bg-card relative rounded-md p-4">
                 <pre

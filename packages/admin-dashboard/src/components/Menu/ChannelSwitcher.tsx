@@ -36,7 +36,7 @@ export function ChannelSwitcher({ className }: { className?: string }) {
       <Select defaultValue={selectedChannel?.id} onValueChange={onChannelChange} value={selectedChannel?.id}>
         <SelectTrigger
           className={cn(
-            'flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0',
+            'flex items-center gap-2 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate',
           )}
           aria-label="Select an channel"
         >
@@ -49,7 +49,7 @@ export function ChannelSwitcher({ className }: { className?: string }) {
         <SelectContent>
           {channels.map((channel) => (
             <SelectItem key={channel.code} value={channel.id}>
-              <div className="[&_svg]:text-foreground flex items-center gap-3 [&_svg]:size-4 [&_svg]:shrink-0">
+              <div className="flex items-center gap-3 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-foreground">
                 {getChannelLabel(channel.code)}
               </div>
             </SelectItem>

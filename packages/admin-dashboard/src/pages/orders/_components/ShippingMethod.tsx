@@ -170,7 +170,7 @@ export const ShippingMethod: React.FC = () => {
                     <Truck className="size-5 text-orange-500 dark:text-orange-400" />
                     {t('selectShipmentMethod.setMethodTitle', 'Select Shipping Method')}
                   </DialogTitle>
-                  <DialogDescription className="text-muted-foreground mt-2">
+                  <DialogDescription className="mt-2 text-muted-foreground">
                     {t('selectShipmentMethod.setMethodDescription', 'Choose how this order will be delivered')}
                   </DialogDescription>
                 </DialogHeader>
@@ -178,7 +178,7 @@ export const ShippingMethod: React.FC = () => {
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center py-12">
                     <div className="size-10 animate-spin rounded-full border-4 border-orange-200 border-t-orange-500"></div>
-                    <p className="text-muted-foreground mt-4 text-sm">
+                    <p className="mt-4 text-sm text-muted-foreground">
                       {t('selectShipmentMethod.loading', 'Loading shipping methods...')}
                     </p>
                   </div>
@@ -193,7 +193,7 @@ export const ShippingMethod: React.FC = () => {
                           <p className="font-medium">
                             {t('selectShipmentMethod.noMethods', 'No shipping methods available')}
                           </p>
-                          <p className="text-muted-foreground mt-1 text-sm">
+                          <p className="mt-1 text-sm text-muted-foreground">
                             {t(
                               'selectShipmentMethod.noMethodsHint',
                               'Make sure the order has products and a shipping address',
@@ -216,7 +216,7 @@ export const ShippingMethod: React.FC = () => {
                               )}
                             >
                               {localSelectedShippingMethod === shippingMethod.id && (
-                                <div className="absolute right-2 top-2">
+                                <div className="absolute top-2 right-2">
                                   <Check className="size-4 text-green-500" />
                                 </div>
                               )}
@@ -227,15 +227,15 @@ export const ShippingMethod: React.FC = () => {
                               <Badge variant="outline" className="w-fit text-xs">
                                 {shippingMethod.code}
                               </Badge>
-                              <div className="border-border mt-2 w-full border-t pt-2">
+                              <div className="mt-2 w-full border-t border-border pt-2">
                                 <div className="flex items-center justify-between gap-2">
-                                  <span className="text-muted-foreground text-xs">Base price: </span>
+                                  <span className="text-xs text-muted-foreground">Base price: </span>
                                   <span className="text-sm font-medium">
                                     {priceFormatter(shippingMethod.price, order?.currencyCode)}
                                   </span>
                                 </div>
                                 <div className="mt-1 flex items-center justify-between gap-2">
-                                  <span className="text-muted-foreground text-xs">With tax: </span>
+                                  <span className="text-xs text-muted-foreground">With tax: </span>
                                   <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
                                     {priceFormatter(shippingMethod.priceWithTax, order?.currencyCode)}
                                   </span>
@@ -279,7 +279,7 @@ export const ShippingMethod: React.FC = () => {
         )
       }
     >
-      <div className="border-border bg-muted/50 rounded-lg border p-3">
+      <div className="rounded-lg border border-border bg-muted/50 p-3">
         <div className="flex items-start gap-3">
           {!order?.lines.length ? (
             <>
@@ -287,7 +287,7 @@ export const ShippingMethod: React.FC = () => {
                 <AlertCircle className="size-4 text-amber-500" />
               </div>
               <div className="flex-1">
-                <p className="text-muted-foreground text-sm italic">
+                <p className="text-sm text-muted-foreground italic">
                   {t('selectShipmentMethod.noSelectedTip', 'Add products to the order first')}
                 </p>
               </div>
@@ -295,7 +295,7 @@ export const ShippingMethod: React.FC = () => {
           ) : !selectedShipping ? (
             <>
               <div className="flex-1">
-                <p className="text-muted-foreground text-sm italic">
+                <p className="text-sm text-muted-foreground italic">
                   {t('selectShipmentMethod.noSelected', 'No shipping method selected')}
                 </p>
                 {mode !== 'view' && (
@@ -323,15 +323,15 @@ export const ShippingMethod: React.FC = () => {
               <Badge variant="outline" className="w-fit text-xs">
                 {selectedShipping.code}
               </Badge>
-              <div className="border-border mt-2 w-full border-t pt-2">
+              <div className="mt-2 w-full border-t border-border pt-2">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-muted-foreground text-xs">Base price: </span>
+                  <span className="text-xs text-muted-foreground">Base price: </span>
                   <span className="text-sm font-medium">
                     {priceFormatter(selectedShipping.price, order?.currencyCode)}
                   </span>
                 </div>
                 <div className="mt-1 flex items-center justify-between gap-2">
-                  <span className="text-muted-foreground text-xs">With tax: </span>
+                  <span className="text-xs text-muted-foreground">With tax: </span>
                   <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
                     {priceFormatter(selectedShipping.priceWithTax, order?.currencyCode)}
                   </span>

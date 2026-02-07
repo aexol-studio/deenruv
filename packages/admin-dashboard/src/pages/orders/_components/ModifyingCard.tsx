@@ -121,12 +121,12 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                 className="min-h-[60px] resize-y"
               />
               {!state.note?.value && (
-                <div className="absolute right-3 top-3 text-amber-500">
+                <div className="absolute top-3 right-3 text-amber-500">
                   <AlertCircle className="size-4" />
                 </div>
               )}
             </div>
-            <p className="text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               {t('noteRequired', 'A note is required to explain why these changes are being made')}
             </p>
           </div>
@@ -134,12 +134,12 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
           <Separator />
 
           <div className="space-y-3">
-            <h3 className="text-muted-foreground text-sm font-medium">
+            <h3 className="text-sm font-medium text-muted-foreground">
               {t('modificationOptions', 'Modification Options')}
             </h3>
 
             <div className="flex flex-col space-y-4">
-              <div className="border-border bg-muted/20 space-y-4 rounded-md border p-4">
+              <div className="space-y-4 rounded-md border border-border bg-muted/20 p-4">
                 <div className="flex items-center gap-2">
                   <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
                     <RefreshCw className="size-4 text-blue-500 dark:text-blue-400" />

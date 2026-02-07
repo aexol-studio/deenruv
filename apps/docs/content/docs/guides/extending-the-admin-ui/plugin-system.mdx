@@ -473,3 +473,59 @@ export const ReviewsPlugin = createDeenruvUIPlugin({
 ## Plugin View Markers
 
 Press **Ctrl+Q** in the admin panel to toggle plugin view markers. This highlights all injection points in the current view, making it easy to see where your plugin components will be rendered.
+
+## Plugin Registry & Env Toggle
+
+### How It Works
+
+The admin panel uses a **central manifest** at `apps/panel/src/plugins/registry.ts` to declare every available UI plugin. Each manifest entry has:
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | `string` | Unique identifier used in the env var |
+| `plugin` | `DeenruvUIPlugin` | The plugin instance (imported from the plugin package) |
+| `enabledByDefault` | `boolean` | Whether this plugin loads when the env var is **unset** |
+
+At build time, `apps/panel/src/plugins/enabled.ts` reads the `VITE_ADMIN_UI_PLUGINS` environment variable and resolves which plugins to activate.
+
+### `VITE_ADMIN_UI_PLUGINS` Semantics
+
+| Value | Behaviour |
+|---|---|
+| *unset* (`undefined`) | Only plugins with `enabledByDefault: true` are loaded |
+| `""` (empty string) | **No** plugins are loaded |
+| `"all"` or `"*"` | **Every** plugin in the manifest is loaded |
+| CSV list (e.g. `"dashboard-widgets,badges"`) | Only the listed IDs are loaded |
+
+Unknown IDs (typos, removed plugins) trigger a console warning listing the available IDs.
+
+```bash
+# Examples
+VITE_ADMIN_UI_PLUGINS="dashboard-widgets,badges" pnpm start:admin-ui
+VITE_ADMIN_UI_PLUGINS="all" pnpm start:admin-ui
+VITE_ADMIN_UI_PLUGINS="" pnpm start:admin-ui   # no plugins
+```
+
+### Adding a Plugin to the Manifest
+
+1. Install the plugin package in `apps/panel/package.json`.
+2. Import its UI plugin export at the top of `apps/panel/src/plugins/registry.ts`.
+3. Add an entry to the `pluginManifest` array with a unique `id`.
+
+```ts title="apps/panel/src/plugins/registry.ts"
+import { BadgesUiPlugin } from '@deenruv/product-badges-plugin/plugin-ui';
+
+export const pluginManifest = [
+  // ...existing entries
+  { id: 'badges', plugin: BadgesUiPlugin, enabledByDefault: false },
+];
+```
+
+### Coexistence with Server-Side Plugin Registration
+
+The manifest in `registry.ts` controls only the **admin UI** side. Server-side plugins are registered separately in your `DeenruvConfig.plugins` array. A typical setup has both:
+
+- **Server plugin** → `DeenruvConfig.plugins` (handles GraphQL extensions, services, etc.)
+- **UI plugin** → `pluginManifest` in `registry.ts` (handles admin panel UI extensions)
+
+Both sides are independent — you can have a server plugin without a UI plugin and vice versa.

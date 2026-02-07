@@ -1,5 +1,5 @@
 import React from "react";
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
 import { GooglePage } from "./pages/GooglePage.js";
 import { FacebookPage } from "./pages/FacebookPage.js";
 import { GlobeIcon } from "lucide-react";
@@ -8,7 +8,7 @@ import en from "./locales/en";
 import { translationNS } from "./translation-ns.js";
 
 export const MerchantPluginUI = createDeenruvUIPlugin<{}>({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "MerchantPluginUI",
   translations: { ns: translationNS, data: { en, pl } },
   pages: [

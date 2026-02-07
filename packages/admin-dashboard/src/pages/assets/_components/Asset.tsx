@@ -135,18 +135,18 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div
-          className="bg-background group relative h-52 w-40 overflow-hidden rounded-lg border transition-all hover:shadow-md"
+          className="group relative h-52 w-40 overflow-hidden rounded-lg border bg-background transition-all hover:shadow-md"
           onClick={() => getAsset()}
         >
           <div className="absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/5" />
 
-          <div className="absolute right-2 top-2 z-10">
+          <div className="absolute top-2 right-2 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="bg-background/80 size-8 rounded-full p-0 opacity-0 shadow-sm backdrop-blur-sm group-hover:opacity-100"
+                  className="size-8 rounded-full bg-background/80 p-0 opacity-0 shadow-sm backdrop-blur-sm group-hover:opacity-100"
                 >
                   <MoreHorizontal size={16} />
                   <span className="sr-only">Open menu</span>
@@ -190,7 +190,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
                     getAsset();
                     onDelete();
                   }}
-                  className="text-destructive gap-2"
+                  className="gap-2 text-destructive"
                 >
                   <Trash size={14} />
                   <span>{t('common:delete', 'Delete')}</span>
@@ -199,7 +199,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
             </DropdownMenu>
           </div>
 
-          <div className="bg-muted/30 aspect-square">
+          <div className="aspect-square bg-muted/30">
             {isLoading && <Skeleton className="size-full" />}
             <img
               src={`${asset.preview}?preset=tile`}
@@ -215,7 +215,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
             <TooltipTrigger className="block w-full truncate p-3 text-left text-sm font-medium" title={asset.name}>
               {asset.name}
             </TooltipTrigger>
-            <TooltipContent className="bg-popover text-popover-foreground z-50 rounded-md border px-3 py-1.5 text-sm shadow-md">
+            <TooltipContent className="z-50 rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md">
               {asset.name}
             </TooltipContent>
           </Tooltip>
@@ -249,7 +249,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
                 }}
               />
 
-              <div className="border-border pointer-events-none absolute inset-0 rounded-lg border" />
+              <div className="pointer-events-none absolute inset-0 rounded-lg border border-border" />
 
               <img
                 src={assetDetails?.source ? `${assetDetails.source}?preset=medium` : asset.preview}
@@ -260,7 +260,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
           </TabsContent>
 
           <TabsContent value="details" className="mt-4">
-            <div className="grid h-[492px] gap-6  md:grid-cols-2">
+            <div className="grid h-[492px] gap-6 md:grid-cols-2">
               <div className="overflow-hidden rounded-lg border">
                 <Table>
                   <TableBody>

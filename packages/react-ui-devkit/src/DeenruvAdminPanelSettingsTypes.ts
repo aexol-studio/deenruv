@@ -1,6 +1,7 @@
 import { LanguageCode } from "@deenruv/admin-types";
+import React from "react";
 
-type Logo = string | JSX.Element;
+type Logo = string | React.JSX.Element;
 export type DeenruvAdminPanelSettings = {
   api: { uri: string; channelTokenName?: string; authTokenName?: string };
   ui?: {

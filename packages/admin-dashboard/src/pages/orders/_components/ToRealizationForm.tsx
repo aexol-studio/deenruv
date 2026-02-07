@@ -74,7 +74,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
   };
 
   return (
-    <div className="flex max-h-[60vh] w-auto  min-w-[60vw] max-w-[95vw] flex-col gap-2 overflow-y-auto pr-1">
+    <div className="flex max-h-[60vh] w-auto max-w-[95vw] min-w-[60vw] flex-col gap-2 overflow-y-auto pr-1">
       <div className="flex gap-4">
         <div className="flex w-[280px] flex-col gap-4">
           <div>
@@ -121,7 +121,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
           <div>
             <Label>{t('changeStatus.color')}</Label>
             <Select name="color" value={color} onValueChange={(e) => setColor(e)}>
-              <SelectTrigger className=" w-[280px] ">
+              <SelectTrigger className="w-[280px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -138,12 +138,12 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
           <div>
             <Label>{t('changeStatus.info')}</Label>
             <Textarea
-              className="h-[60px] w-[280px]  resize-none"
+              className="h-[60px] w-[280px] resize-none"
               maxLength={64}
               value={note}
               onChange={(e) => setNote(e.currentTarget.value)}
             />
-            <Label className="text-muted-foreground text-xs">
+            <Label className="text-xs text-muted-foreground">
               {t('changeStatus.charLeft', { value: 64 - note.length })}
             </Label>
           </div>

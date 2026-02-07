@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { I18nextProvider } from 'react-i18next';
-import { useEffect } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 import i18n from './i18.js';
@@ -53,7 +53,7 @@ const getName = (key: string) => {
 const DeenruvPaths = Object.entries(Pages).flatMap(([key, Component]) => {
   const name = getName(key);
   const path = getRoute(name, key);
-  const paths: { path: string; element: JSX.Element }[] = [];
+  const paths: { path: string; element: React.ReactElement }[] = [];
   if (path) paths.push({ path, element: <Component /> });
   const route = Routes[name as keyof typeof Routes];
   if (key.includes('DetailPage') && typeof route === 'object' && 'new' in route) {

@@ -108,7 +108,7 @@ export function WidgetsStoreProvider({
   children,
   ...props
 }: WidgetsStoreProviderProps) {
-  const storeRef = useRef<WidgetsStoreType>();
+  const storeRef = useRef<WidgetsStoreType>(undefined);
   if (!storeRef.current) {
     storeRef.current = createWidgetsStore(props);
   }

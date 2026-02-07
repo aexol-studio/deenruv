@@ -15,7 +15,7 @@ export const RefundCard: React.FC<RefundCardProps> = ({ priceDifference, refundR
   const [activeTab, setActiveTab] = useState<'details' | 'note'>('details');
 
   return (
-    <div className="border-border bg-muted/20 space-y-4 rounded-md border p-4">
+    <div className="space-y-4 rounded-md border border-border bg-muted/20 p-4">
       <div className="flex items-center gap-6">
         <div
           className={cn(
@@ -48,23 +48,23 @@ export const RefundCard: React.FC<RefundCardProps> = ({ priceDifference, refundR
         <div className="grid gap-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.method')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.method')}</p>
               <p className="font-medium">{currentPayment?.method}</p>
             </div>
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.id')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.id')}</p>
               <p className="font-medium">{currentPayment?.transactionId}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.amount')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.amount')}</p>
               <p className="font-medium">{priceFormatter(currentPayment?.amount ?? 0, modifiedOrder?.currencyCode)}</p>
             </div>
 
             <div>
-              <p className="text-muted-foreground text-sm">{t('refund.refund')}</p>
+              <p className="text-sm text-muted-foreground">{t('refund.refund')}</p>
               <p className="font-medium">{priceFormatter(priceDifference * -1, modifiedOrder?.currencyCode)}</p>
             </div>
           </div>

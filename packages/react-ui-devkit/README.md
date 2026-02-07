@@ -16,7 +16,7 @@ The official UI plugin development kit for Deenruv Admin Panel. Build type-safe 
 - **i18n** — Built-in translation system with per-plugin namespaces
 - **Notifications** — Polling-based notification system with configurable placements
 - **Dashboard Widgets** — Resizable, configurable dashboard widgets
-- **Tailwind Config** — Shared Deenruv theme with dark mode support
+- **Tailwind v4 CSS-First Theme** — Design tokens defined via `@theme inline` in CSS
 
 ## Installation
 
@@ -209,7 +209,9 @@ Press **Ctrl+Q** in the admin panel to toggle plugin view markers. This highligh
 
 ### `useGFFLP`
 
-Type-safe form state management driven by GraphQL `ModelTypes`. Creates form fields for specific properties of a GraphQL type with built-in validation.
+Type-safe form state management driven by GraphQL `ModelTypes`. Creates form fields for specific properties of a GraphQL type with built-in validation, dot-path nested updates, and `customFields` merge semantics.
+
+> **Note:** A deprecated alias `useGLFFP` is exported for backward compatibility and will be removed in a future major version. Always use `useGFFLP` in new code.
 
 ```ts
 import { useGFFLP } from '@deenruv/react-ui-devkit';
@@ -245,7 +247,7 @@ const allValid = checkIfAllFieldsAreValid();
 | `setState` | `(value) => void` | Set all fields at once |
 | `checkIfAllFieldsAreValid` | `() => boolean` | Run all validators and return validity |
 | `haveValidFields` | `boolean` | Whether all validated fields currently have valid values |
-| `clearErrors` | `() => void` | Clear all validation errors |
+| `clearErrors` | `() => void` | Clear all validation errors (sets `validatedValue` for consistency) |
 | `clearAllForm` | `() => void` | Reset form to initial values |
 
 ### `useFFLP`
@@ -636,23 +638,20 @@ Routes.products.to(id)    // /admin-ui/products/{id}
 //    zones, stockLocations, customerGroups, productVariants, assets
 ```
 
-## Tailwind Configuration
+## Tailwind v4 CSS-First Configuration
 
-Export the shared Deenruv Tailwind config for your plugin:
+Deenruv uses Tailwind CSS v4 with CSS-first configuration. The theme, design tokens, and content
+sources are defined in `@deenruv/admin-dashboard`'s `root.css` using `@theme inline` directives.
 
-```ts
-// tailwind.config.ts
-import { TailwindConfig } from '@deenruv/react-ui-devkit';
+**No JS/TS Tailwind config file is needed.** Plugins that consume `@deenruv/admin-dashboard/dist/index.css`
+automatically inherit the full theme (colors, radii, animations, dark mode).
 
-export default TailwindConfig;
+If your plugin introduces new Tailwind classes not already scanned, add a `@source` directive
+in your app's CSS entry point:
+
+```css
+@source "../../node_modules/@deenruv/my-plugin/dist/**/*.js";
 ```
-
-The config includes:
-
-- Dark mode support (class-based)
-- Deenruv color palette and design tokens
-- Content paths for the devkit components
-- `tailwindcss-animate` plugin
 
 ## Notifications
 

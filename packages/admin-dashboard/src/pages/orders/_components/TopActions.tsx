@@ -35,7 +35,7 @@ import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/a
 
 import { ChevronLeft, EllipsisVerticalIcon, Info } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
 import { addFulfillmentToOrderResultSelector } from '@/graphql/draft_order';
@@ -273,7 +273,7 @@ export const TopActions: React.FC = () => {
 
   if (!order) return null;
   return (
-    <div className="flex items-center gap-4 ">
+    <div className="flex items-center gap-4">
       {currentPossibilities && (
         <ManualOrderChangeModal
           open={manualChange.state}
@@ -303,7 +303,7 @@ export const TopActions: React.FC = () => {
         <ChevronLeft className="size-4" />
         <span className="sr-only">{t('create.back')}</span>
       </Button>
-      <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
+      <h1 className="flex-1 shrink-0 text-xl font-semibold tracking-tight whitespace-nowrap sm:grow-0">
         {t('create.orderId', { value: order?.id })}
       </h1>
       <OrderStateBadge state={order?.state} />
@@ -412,7 +412,7 @@ export const TopActions: React.FC = () => {
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="w-full justify-start px-4 py-2  text-red-400 hover:text-red-400 dark:hover:text-red-400"
+                    className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:hover:text-red-400"
                   >
                     {t('deleteDraft.button')}
                   </Button>

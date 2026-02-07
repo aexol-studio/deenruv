@@ -2,7 +2,7 @@ import { Permission } from '@deenruv/admin-types';
 import { capitalizeFirstLetter, cn, Routes, Separator, useServer, useTranslation } from '@deenruv/react-ui-devkit';
 import { Puzzle } from 'lucide-react';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 interface NavigationFooterProps {
   isCollapsed: boolean;
@@ -14,7 +14,7 @@ export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed 
   const isPermittedToExtensions = userPermissions.includes(Permission.ReadSettings);
 
   return (
-    <div className="bg-secondary flex w-full select-none flex-col gap-2 py-2 text-xs shadow-2xl">
+    <div className="flex w-full flex-col gap-2 bg-secondary py-2 text-xs shadow-2xl select-none">
       {isPermittedToExtensions && !isCollapsed && (
         <>
           <div>
@@ -23,7 +23,7 @@ export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed 
                 className={cn(
                   'relative flex items-center justify-center rounded-md px-4 capitalize',
                   location.pathname === Routes.extensions &&
-                    'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold opacity-100',
+                    'bg-muted font-semibold opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
                 )}
               >
                 <Puzzle className="mr-2 size-4" />

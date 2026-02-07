@@ -1,4 +1,4 @@
-import { createDeenruvUIPlugin } from "@deenruv/react-ui-devkit";
+import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
 import pl from "./locales/pl";
 import en from "./locales/en";
 import { translationNS } from "./translation-ns";
@@ -8,7 +8,7 @@ import { ReplicateProductSidebar } from "./pages/ReplicateProductSidebar.js";
 import { ReplicatePage } from "./pages/ReplicatePage.js";
 
 export const ReplicateSimpleBGUiPlugin = createDeenruvUIPlugin({
-  version: "1.0.0",
+  version: DEENRUV_UI_VERSION,
   name: "Replicate Simple BG Plugin",
   pages: [{ element: <ReplicatePage />, path: "simple-bg-model" }],
   components: [

@@ -34,7 +34,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useDebounce } from 'use-debounce';
 
 interface ContentsProps {
@@ -163,7 +163,7 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
     <>
       {Search}
       <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
-        <TableHeader className="bg-primary-foreground sticky top-0">
+        <TableHeader className="sticky top-0 bg-primary-foreground">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
