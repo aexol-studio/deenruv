@@ -1,5 +1,10 @@
 import fs from "fs-extra";
+import { createRequire } from "module";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const require = createRequire(import.meta.url);
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 // import { addStream } from './add-stream';
 
