@@ -20,7 +20,8 @@
     "watch": "tspc --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "docs": "tsx generate-docs.ts"
+    "docs": "tsx generate-docs.ts",
+    "postversion": "node generate-version.mjs"
   },
   "bugs": {
     "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
