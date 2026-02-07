@@ -1,3 +1,4 @@
+/* global process */
 import { createMDX } from "fumadocs-mdx/next";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
