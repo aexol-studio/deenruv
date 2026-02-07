@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { i18n } from "@/lib/i18n";
+import { getMetadataBase } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,7 @@ const { provider } = defineI18nUI(i18n, {
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://deenruv.com"),
+  metadataBase: getMetadataBase(),
   title: {
     default: "Deenruv - Open Source Headless E-commerce",
     template: "%s | Deenruv",

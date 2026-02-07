@@ -1,0 +1,46 @@
+name: Docs Quality
+
+on:
+  pull_request:
+    paths:
+      - 'apps/docs/**'
+      - '.github/workflows/docs-quality.yml'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/docs/**'
+      - '.github/workflows/docs-quality.yml'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+
+jobs:
+  docs-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint docs
+        run: pnpm --filter @deenruv/docs lint
+
+      - name: Validate docs links
+        run: pnpm --filter @deenruv/docs validate-links
+
+      - name: Build docs
+        run: pnpm --filter @deenruv/docs build

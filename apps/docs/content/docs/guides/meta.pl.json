@@ -1,0 +1,12 @@
+{
+  "title": "Poradniki",
+  "pages": [
+    "getting-started",
+    "core-concepts",
+    "developer-guide",
+    "how-to",
+    "extending-the-admin-ui",
+    "storefront",
+    "deployment"
+  ]
+}
