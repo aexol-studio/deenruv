@@ -138,7 +138,7 @@ export class AuthGuard implements CanActivate {
               // For a duplicate error, this means that concurrent requests have resulted in attempting to
               // assign the Customer to the channel more than once. In this case we can safely ignore the
               // error as the Customer was successfully assigned in the earlier call.
-              // See https://github.com/deenruv-ecommerce/deenruv/issues/834
+              // See https://github.com/aexol-studio/deenruv/issues/834
             } else {
               throw e;
             }

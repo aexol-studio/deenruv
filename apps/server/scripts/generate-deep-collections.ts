@@ -13,7 +13,7 @@ generateDeepCollections()
   .catch(() => process.exit(1));
 
 // Used for testing scenarios where there are many channels
-// such as https://github.com/deenruv-ecommerce/deenruv/issues/2233
+// such as https://github.com/aexol-studio/deenruv/issues/2233
 async function generateDeepCollections() {
   const { app } = await bootstrapWorker(devConfig);
   const requestContextService = app.get(RequestContextService);

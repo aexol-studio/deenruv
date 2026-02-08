@@ -39,7 +39,7 @@ const schema = gql`
 `;
 
 /**
- * Test plugin for https://github.com/deenruv-ecommerce/deenruv/issues/1664
+ * Test plugin for https://github.com/aexol-studio/deenruv/issues/1664
  *
  * Test query:
  * ```graphql

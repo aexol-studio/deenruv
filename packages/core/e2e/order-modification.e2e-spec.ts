@@ -1523,7 +1523,7 @@ describe("Order modification", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1753
+  // https://github.com/aexol-studio/deenruv/issues/1753
   describe("refunds for multiple payments", () => {
     let orderId2: string;
     let orderLineId: string;
@@ -1705,7 +1705,7 @@ describe("Order modification", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/688 - 4th point
+  // https://github.com/aexol-studio/deenruv/issues/688 - 4th point
   it("correct additional payment when discounts applied", async () => {
     await adminClient.query<
       Codegen.CreatePromotionMutation,
@@ -1781,7 +1781,7 @@ describe("Order modification", () => {
     expect(modifyOrder.totalWithTax).toBe(originalTotalWithTax + surcharge);
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/872
+  // https://github.com/aexol-studio/deenruv/issues/872
   describe("correct price calculations when prices include tax", () => {
     async function modifyOrderLineQuantity(
       order: TestOrderWithPaymentsFragment,
@@ -1896,7 +1896,7 @@ describe("Order modification", () => {
   });
 
   describe("refund handling when promotions are active on order", () => {
-    // https://github.com/deenruv-ecommerce/deenruv/issues/890
+    // https://github.com/aexol-studio/deenruv/issues/890
     it("refunds correct amount when order-level promotion applied", async () => {
       await adminClient.query<
         Codegen.CreatePromotionMutation,
@@ -1973,7 +1973,7 @@ describe("Order modification", () => {
       );
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1865
+    // https://github.com/aexol-studio/deenruv/issues/1865
     describe("issue 1865", () => {
       const promoDiscount = 5000;
       let promoId: string;
@@ -2117,7 +2117,7 @@ describe("Order modification", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1197
+  // https://github.com/aexol-studio/deenruv/issues/1197
   describe("refund on shipping when change made to shippingAddress", () => {
     let order: OrderWithModificationsFragment;
     beforeAll(async () => {
@@ -2165,7 +2165,7 @@ describe("Order modification", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1210
+  // https://github.com/aexol-studio/deenruv/issues/1210
   describe("updating stock levels", () => {
     async function getVariant(id: "T_1" | "T_2" | "T_3") {
       const { product } = await adminClient.query<

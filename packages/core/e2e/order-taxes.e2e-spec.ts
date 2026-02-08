@@ -226,7 +226,7 @@ describe("Order taxes", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1216
+    // https://github.com/aexol-studio/deenruv/issues/1216
     it("re-calculates OrderLine prices when shippingAddress causes activeTaxZone change", async () => {
       const { taxRates } =
         await adminClient.query<Codegen.GetTaxRateListQuery>(GET_TAX_RATE_LIST);
@@ -279,7 +279,7 @@ describe("Order taxes", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1216
+    // https://github.com/aexol-studio/deenruv/issues/1216
     it("re-calculates OrderLine prices when billingAddress causes activeTaxZone change", async () => {
       await shopClient.query<
         CodegenShop.SetBillingAddressMutation,

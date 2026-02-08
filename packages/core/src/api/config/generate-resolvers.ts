@@ -280,7 +280,7 @@ function generateCustomFieldRelationResolvers(
       // customFields field is `JSON`. This type will simply return the full object, which
       // will cause a leak of private data unless we force a `null` return value in the case
       // that there are no public fields.
-      // See https://github.com/deenruv-ecommerce/deenruv/issues/3049
+      // See https://github.com/aexol-studio/deenruv/issues/3049
       shopResolvers[entityName] = { customFields: () => null };
     }
   }

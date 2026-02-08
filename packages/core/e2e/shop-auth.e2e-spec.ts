@@ -677,7 +677,7 @@ describe("Shop auth & accounts", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1659
+  // https://github.com/aexol-studio/deenruv/issues/1659
   describe("password reset before verification", () => {
     const password = "password";
     const emailAddress = "test3@test.com";

@@ -30,7 +30,7 @@ let entityHydrator: EntityHydrator;
  * because the removal had not yet been persisted by the time the `applyPriceAdjustments()`
  * step was run (during which this checker will run).
  *
- * See https://github.com/deenruv-ecommerce/deenruv/issues/2548
+ * See https://github.com/aexol-studio/deenruv/issues/2548
  */
 export const hydratingShippingEligibilityChecker =
   new ShippingEligibilityChecker({

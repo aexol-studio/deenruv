@@ -325,7 +325,7 @@ describe("Order process", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/963
+    // https://github.com/aexol-studio/deenruv/issues/963
     it("allows addPaymentToOrder from a custom state", async () => {
       await shopClient.query<
         CodegenShop.SetShippingMethodMutation,

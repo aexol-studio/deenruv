@@ -57,7 +57,7 @@ describe("Plugins", () => {
     expect(configService.defaultLanguageCode).toBe(LanguageCode.zh);
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/2906
+  // https://github.com/aexol-studio/deenruv/issues/2906
   it("handles plugins that return new config object references", async () => {
     const configService = server.app.get(ConfigService);
     expect(configService.customFields.Customer).toEqual([

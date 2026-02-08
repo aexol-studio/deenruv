@@ -475,7 +475,7 @@ describe("Role resolver", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1874
+  // https://github.com/aexol-studio/deenruv/issues/1874
   describe("role escalation", () => {
     let defaultChannel: Codegen.GetChannelsQuery["channels"][number];
     let secondChannel: Codegen.GetChannelsQuery["channels"][number];

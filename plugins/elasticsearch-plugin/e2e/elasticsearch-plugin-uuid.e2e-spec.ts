@@ -25,7 +25,7 @@ import { GetCollectionListQuery } from "./graphql/generated-e2e-elasticsearch-pl
 
 const { elasticsearchHost, elasticsearchPort } = require("./constants");
 
-// https://github.com/deenruv-ecommerce/deenruv/issues/494
+// https://github.com/aexol-studio/deenruv/issues/494
 describe("Elasticsearch plugin with UuidIdStrategy", () => {
   const { server, adminClient, shopClient } = createTestEnvironment(
     mergeConfig(testConfig(), {

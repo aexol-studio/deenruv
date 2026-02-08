@@ -225,7 +225,7 @@ describe("populate() function", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1445
+  // https://github.com/aexol-studio/deenruv/issues/1445
   describe("clashing option names", () => {
     let app: INestApplication;
 

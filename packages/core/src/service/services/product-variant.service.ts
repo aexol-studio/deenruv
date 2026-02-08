@@ -1236,7 +1236,7 @@ export class ProductVariantService {
     optionIds: ID[] = [],
   ) {
     // this could be done with fewer queries but depending on the data, node will crash
-    // https://github.com/deenruv-ecommerce/deenruv/issues/328
+    // https://github.com/aexol-studio/deenruv/issues/328
     const optionGroups = (
       await this.connection.getEntityOrThrow(ctx, Product, productId, {
         channelId: ctx.channelId,

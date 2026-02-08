@@ -121,7 +121,7 @@ describe("Custom MoneyStrategy", () => {
     expect(CustomMoneyStrategy.transformerFromSpy).toHaveBeenCalledTimes(2);
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/838
+  // https://github.com/aexol-studio/deenruv/issues/838
   it("can handle totals over 21 million", async () => {
     await shopClient.asAnonymousUser();
     const { addItemToOrder } = await shopClient.query<
@@ -137,7 +137,7 @@ describe("Custom MoneyStrategy", () => {
     expect(addItemToOrder.lines[0].linePriceWithTax).toBe(2_399_999_760);
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1835
+  // https://github.com/aexol-studio/deenruv/issues/1835
   // 31 * 1.2 = 37.2
   // Math.round(37.2 * 10) =372
   it("tax calculation rounds at the unit level", async () => {

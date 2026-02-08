@@ -3,7 +3,7 @@ import { SelectQueryBuilder } from "typeorm";
 import { Logger } from "../config/logger/deenruv-logger";
 
 /**
- * This is a work-around for this issue: https://github.com/deenruv-ecommerce/deenruv/issues/1664
+ * This is a work-around for this issue: https://github.com/aexol-studio/deenruv/issues/1664
  *
  * Explanation:
  * When calling `FindOptionsUtils.joinEagerRelations()`, there appears to be a bug in TypeORM whereby

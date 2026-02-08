@@ -169,7 +169,7 @@ export function DeenruvPlugin(
     // created a new Module in the ApiModule, and if those resolvers depend on any providers,
     // the must be exported. See the function {@link createDynamicGraphQlModulesForPlugins}
     // for the implementation.
-    // However, we must omit any global providers (https://github.com/deenruv-ecommerce/deenruv/issues/837)
+    // However, we must omit any global providers (https://github.com/aexol-studio/deenruv/issues/837)
     const nestGlobalProviderTokens = [
       APP_INTERCEPTOR,
       APP_FILTER,

@@ -396,7 +396,7 @@ function arrangeCliGreetingsInColumns(
 
 /**
  * Fix race condition when modifying DB
- * See: https://github.com/deenruv-ecommerce/deenruv/issues/152
+ * See: https://github.com/aexol-studio/deenruv/issues/152
  */
 function disableSynchronize(
   userConfig: Readonly<RuntimeDeenruvConfig>,

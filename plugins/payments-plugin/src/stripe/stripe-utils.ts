@@ -9,7 +9,7 @@ import { CurrencyCode, Order } from "@deenruv/core";
  * > For example, to charge ¥500, provide an amount value of 500.
  *
  * Therefore, for a fractionless currency like JPY, we need to divide the amount by 100 (since Deenruv always
- * stores money amounts multiplied by 100). See https://github.com/deenruv-ecommerce/deenruv/issues/1630
+ * stores money amounts multiplied by 100). See https://github.com/aexol-studio/deenruv/issues/1630
  */
 export function getAmountInStripeMinorUnits(order: Order): number {
   return currencyHasFractionPart(order.currencyCode)

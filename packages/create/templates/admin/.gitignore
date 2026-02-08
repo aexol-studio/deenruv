@@ -1,3 +1,6 @@
+# This file is a legacy fallback. The actual template is gitignore.template.
+# npm rewrites .gitignore to .npmignore during publish, so the non-dot
+# variant is used as the primary source by scaffoldAdminPanel().
 node_modules
 dist
 .env.local

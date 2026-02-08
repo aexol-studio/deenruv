@@ -84,7 +84,7 @@ export const stripePaymentMethodHandler = new PaymentMethodHandler({
     args,
   ): Promise<CreateRefundResult> {
     // TODO: Consider passing the "reason" property once this feature request is addressed:
-    // https://github.com/deenruv-ecommerce/deenruv/issues/893
+    // https://github.com/aexol-studio/deenruv/issues/893
     try {
       const refund = await stripeService.createRefund(
         ctx,

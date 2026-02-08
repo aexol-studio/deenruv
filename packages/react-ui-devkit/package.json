@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
+    "url": "git+https://github.com/aexol-studio/deenruv.git"
   },
   "scripts": {
     "build": "rimraf dist && node generate-version.mjs && tspc --build",
@@ -24,7 +24,7 @@
     "postversion": "node generate-version.mjs"
   },
   "bugs": {
-    "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
+    "url": "https://github.com/aexol-studio/deenruv/issues"
   },
   "dependencies": {
     "@deenruv/admin-types": "workspace:*",

@@ -273,6 +273,9 @@ export async function createDeenruvApp(
   try {
     await scaffoldAdminPanel(adminRoot, appName, assetPath);
   } catch (e) {
+    console.error(
+      pc.red(`Admin scaffold error: ${e instanceof Error ? e.message : String(e)}`),
+    );
     outro(pc.red(`Failed to scaffold admin panel. Please try again.`));
     process.exit(1);
   }
@@ -486,7 +489,6 @@ async function scaffoldAdminPanel(
     { src: "tsconfig.json", dest: "tsconfig.json" },
     { src: "tsconfig.app.json", dest: "tsconfig.app.json" },
     { src: "tsconfig.node.json", dest: "tsconfig.node.json" },
-    { src: ".gitignore", dest: ".gitignore" },
     { src: "src/main.tsx", dest: "src/main.tsx" },
     { src: "src/App.tsx", dest: "src/App.tsx" },
     { src: "src/App.css", dest: "src/App.css" },
@@ -497,6 +499,30 @@ async function scaffoldAdminPanel(
     await fs.copyFile(
       path.join(adminAssetDir, file.src),
       path.join(adminRoot, file.dest),
+    );
+  }
+
+  // Copy .gitignore with fallback chain to handle npm's dotfile rewriting.
+  // npm renames .gitignore → .npmignore in published packages, so we use
+  // a non-dot filename as the primary source.
+  const gitignoreDest = path.join(adminRoot, ".gitignore");
+  const gitignoreCandidates = [
+    "gitignore.template",
+    ".gitignore",
+    ".npmignore",
+  ];
+  let gitignoreCopied = false;
+  for (const candidate of gitignoreCandidates) {
+    const candidatePath = path.join(adminAssetDir, candidate);
+    if (await fs.pathExists(candidatePath)) {
+      await fs.copyFile(candidatePath, gitignoreDest);
+      gitignoreCopied = true;
+      break;
+    }
+  }
+  if (!gitignoreCopied) {
+    throw new Error(
+      `Could not find admin .gitignore template. Searched for: ${gitignoreCandidates.join(", ")} in ${adminAssetDir}`,
     );
   }
 

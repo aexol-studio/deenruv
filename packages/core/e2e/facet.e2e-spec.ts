@@ -850,7 +850,7 @@ describe("Facet resolver", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/715
+  // https://github.com/aexol-studio/deenruv/issues/715
   describe("code conflicts", () => {
     function createFacetWithCode(code: string) {
       return adminClient.query<
@@ -868,7 +868,7 @@ describe("Facet resolver", () => {
       });
     }
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/831
+    // https://github.com/aexol-studio/deenruv/issues/831
     it("updateFacet with unchanged code", async () => {
       const { createFacet } = await createFacetWithCode("some-new-facet");
       const result = await adminClient.query<

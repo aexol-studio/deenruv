@@ -247,7 +247,7 @@ function buildWhereCondition(
 
 /**
  * Converts a JS Date object to a string format recognized by all DB engines.
- * See https://github.com/deenruv-ecommerce/deenruv/issues/251
+ * See https://github.com/aexol-studio/deenruv/issues/251
  */
 function convertDate(input: Date | string | number): string | number {
   if (input instanceof Date) {

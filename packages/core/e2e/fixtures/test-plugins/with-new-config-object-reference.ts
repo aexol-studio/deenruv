@@ -2,7 +2,7 @@ import { Query, Resolver } from "@nestjs/graphql";
 import { DeenruvPlugin } from "@deenruv/core";
 
 /**
- * https://github.com/deenruv-ecommerce/deenruv/issues/2906
+ * https://github.com/aexol-studio/deenruv/issues/2906
  */
 @DeenruvPlugin({
   configuration: (config) => {

@@ -389,7 +389,7 @@ describe("Shop orders", () => {
         });
       });
 
-      // https://github.com/deenruv-ecommerce/deenruv/issues/1670
+      // https://github.com/aexol-studio/deenruv/issues/1670
       it("adding a second item after adjusting custom field adds new OrderLine", async () => {
         const { addItemToOrder: add1 } =
           await shopClient.query<AddItemToOrder.Mutation>(
@@ -791,7 +791,7 @@ describe("Shop orders", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2702
+    // https://github.com/aexol-studio/deenruv/issues/2702
     it("stockOnHand check works with multiple order lines with different custom fields", async () => {
       const variantId = "T_27";
       const { updateProductVariants } = await adminClient.query<
@@ -2110,7 +2110,7 @@ describe("Shop orders", () => {
     });
 
     /**
-     * See https://github.com/deenruv-ecommerce/deenruv/issues/263
+     * See https://github.com/aexol-studio/deenruv/issues/263
      */
     it("does not merge when logging in to a different account (issue #263)", async () => {
       await shopClient.query<
@@ -2154,7 +2154,7 @@ describe("Shop orders", () => {
       expect(activeOrder!.lines[1].productVariant.id).toBe("T_2");
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/754
+    // https://github.com/aexol-studio/deenruv/issues/754
     it("handles merging when an existing order has OrderLines", async () => {
       async function setShippingOnActiveOrder() {
         await shopClient.query<
@@ -2539,7 +2539,7 @@ describe("Shop orders", () => {
       );
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1567
+    // https://github.com/aexol-studio/deenruv/issues/1567
     it("allows transitioning to Cancelled with deleted variant", async () => {
       const { cancelOrder } = await adminClient.query<
         Codegen.CancelOrderMutation,
@@ -2556,7 +2556,7 @@ describe("Shop orders", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1195
+  // https://github.com/aexol-studio/deenruv/issues/1195
   describe("shipping method invalidation", () => {
     let GBShippingMethodId: string;
     let ATShippingMethodId: string;
@@ -2701,7 +2701,7 @@ describe("Shop orders", () => {
       expect(result.activeOrder?.shippingLines).toEqual([]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1441
+    // https://github.com/aexol-studio/deenruv/issues/1441
     it("shipping methods are re-evaluated when all OrderLines are removed", async () => {
       const { createShippingMethod } = await adminClient.query<
         CreateShippingMethod.Mutation,
@@ -2825,7 +2825,7 @@ describe("Shop orders", () => {
       expect(activeOrder.billingAddress).toEqual(billingAddress);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2548
+    // https://github.com/aexol-studio/deenruv/issues/2548
     it("hydrating Order in the ShippingEligibilityChecker does not break order modification", async () => {
       // First we'll create a ShippingMethod that uses the hydrating checker
       await adminClient.query(CreateShippingMethodDocument, {

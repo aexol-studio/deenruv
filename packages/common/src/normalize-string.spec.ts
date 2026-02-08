@@ -32,7 +32,7 @@ describe("normalizeString()", () => {
     expect(normalizeString("-_.")).toBe("-_.");
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/679
+  // https://github.com/aexol-studio/deenruv/issues/679
   it("replaces single quotation marks", () => {
     expect(normalizeString("Capture d’écran")).toBe("capture decran");
     expect(normalizeString("Capture d‘écran")).toBe("capture decran");

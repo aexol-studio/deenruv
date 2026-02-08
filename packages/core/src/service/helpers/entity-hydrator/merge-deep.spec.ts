@@ -5,7 +5,7 @@ import { Order, Sale } from "../../../entity";
 import { mergeDeep } from "./merge-deep";
 
 describe("mergeDeep()", () => {
-  // https://github.com/deenruv-ecommerce/deenruv/issues/2864
+  // https://github.com/aexol-studio/deenruv/issues/2864
   it("should sync the order of sub relations", () => {
     const prefetched = new Order({
       lines: [

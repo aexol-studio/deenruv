@@ -270,7 +270,7 @@ describe("Product resolver", () => {
       expect(product.slug).toBe("curvy-monitor");
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/820
+    // https://github.com/aexol-studio/deenruv/issues/820
     it("by slug with multiple assets", async () => {
       const { product: product1 } = await adminClient.query<
         Codegen.GetProductSimpleQuery,
@@ -297,7 +297,7 @@ describe("Product resolver", () => {
       expect(product.assets.map((a) => a.id)).toEqual(["T_1", "T_2", "T_3"]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/538
+    // https://github.com/aexol-studio/deenruv/issues/538
     it("falls back to default language slug", async () => {
       const { product } = await adminClient.query<
         Codegen.GetProductSimpleQuery,
@@ -1673,7 +1673,7 @@ describe("Product resolver", () => {
         expect(updatedVariant.price).toBe(432);
       });
 
-      // https://github.com/deenruv-ecommerce/deenruv/issues/1101
+      // https://github.com/aexol-studio/deenruv/issues/1101
       it("after update, the updatedAt should be modified", async () => {
         // Pause for a second to ensure the updatedAt date is more than 1s
         // later than the createdAt date, since sqlite does not seem to store
@@ -1998,7 +1998,7 @@ describe("Product resolver", () => {
         )!;
       });
 
-      /** Testing https://github.com/deenruv-ecommerce/deenruv/issues/412 **/
+      /** Testing https://github.com/aexol-studio/deenruv/issues/412 **/
       it("createProductVariants ignores deleted variants when checking for existing combinations", async () => {
         const { createProductVariants } = await adminClient.query<
           Codegen.CreateProductVariantsMutation,
@@ -2025,7 +2025,7 @@ describe("Product resolver", () => {
         ).toEqual(deletedVariant.options.map((o) => o.code).sort());
       });
 
-      // https://github.com/deenruv-ecommerce/deenruv/issues/980
+      // https://github.com/aexol-studio/deenruv/issues/980
       it("creating variants in a non-default language", async () => {
         const { createProduct } = await adminClient.query<
           Codegen.CreateProductMutation,
@@ -2076,7 +2076,7 @@ describe("Product resolver", () => {
         expect(product?.variants.length).toBe(1);
       });
 
-      // https://github.com/deenruv-ecommerce/deenruv/issues/1631
+      // https://github.com/aexol-studio/deenruv/issues/1631
       describe("changing the Channel default language", () => {
         let productId: string;
 
@@ -2258,7 +2258,7 @@ describe("Product resolver", () => {
       expect(product).toBe(null);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1096
+    // https://github.com/aexol-studio/deenruv/issues/1096
     it("variants of deleted product are also deleted", async () => {
       for (const variant of productToDelete.variants) {
         const { productVariant } = await adminClient.query<
@@ -2329,7 +2329,7 @@ describe("Product resolver", () => {
       ),
     );
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/558
+    // https://github.com/aexol-studio/deenruv/issues/558
     it("slug of a deleted product can be re-used", async () => {
       const result = await adminClient.query<
         Codegen.CreateProductMutation,
@@ -2349,7 +2349,7 @@ describe("Product resolver", () => {
       expect(result.createProduct.slug).toBe(productToDelete.slug);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1505
+    // https://github.com/aexol-studio/deenruv/issues/1505
     it("attempting to re-use deleted slug twice is not allowed", async () => {
       const result = await adminClient.query<
         Codegen.CreateProductMutation,
@@ -2371,7 +2371,7 @@ describe("Product resolver", () => {
       expect(result.createProduct.slug).toBe("laptop-2");
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/800
+    // https://github.com/aexol-studio/deenruv/issues/800
     it("product can be fetched by slug of a deleted product", async () => {
       const { product } = await adminClient.query<
         Codegen.GetProductSimpleQuery,

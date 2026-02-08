@@ -731,7 +731,7 @@ export class IndexerController {
 
   /**
    * Prevent postgres errors from too-long indices
-   * https://github.com/deenruv-ecommerce/deenruv/issues/745
+   * https://github.com/aexol-studio/deenruv/issues/745
    */
   private constrainDescription(description: string): string {
     const { type } = this.connection.rawConnection.options;

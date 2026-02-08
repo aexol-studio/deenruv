@@ -739,7 +739,7 @@ export class CollectionService implements OnModuleInit {
    * If applyToChangedVariantsOnly (default: true) is true, then apply collection job will process only changed variants
    * If applyToChangedVariantsOnly (default: true) is false, then apply collection job will process all variants
    * This param is used when we update collection and collection filters are changed to update all
-   * variants (because other attributes of collection can be changed https://github.com/deenruv-ecommerce/deenruv/issues/1015)
+   * variants (because other attributes of collection can be changed https://github.com/aexol-studio/deenruv/issues/1015)
    */
   private async applyCollectionFiltersInternal(
     collection: Collection,

@@ -264,7 +264,7 @@ describe("ChannelAware Products and ProductVariants", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2716
+    // https://github.com/aexol-studio/deenruv/issues/2716
     it("querying an Order with a variant that was since removed from the channel", async () => {
       await adminClient.query(AssignProductsToChannelDocument, {
         input: {
@@ -712,7 +712,7 @@ describe("ChannelAware Products and ProductVariants", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2391
+    // https://github.com/aexol-studio/deenruv/issues/2391
     it("does not duplicate an existing price", async () => {
       await adminClient.query(UpdateChannelDocument, {
         input: {

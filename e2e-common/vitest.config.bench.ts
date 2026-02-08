@@ -31,7 +31,7 @@ export default defineConfig({
     swc.vite({
       jsc: {
         transform: {
-          // See https://github.com/deenruv-ecommerce/deenruv/issues/2099
+          // See https://github.com/aexol-studio/deenruv/issues/2099
           useDefineForClassFields: false,
         },
       },

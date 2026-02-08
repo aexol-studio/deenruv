@@ -216,7 +216,7 @@ describe("EmailPlugin", () => {
     /**
      * Intended to test the ability for Handlebars to interpolate
      * getters on the Order entity prototype.
-     * See https://github.com/deenruv-ecommerce/deenruv/issues/259
+     * See https://github.com/aexol-studio/deenruv/issues/259
      */
     it("interpolates body with property from entity", async () => {
       const handler = new EmailEventListener("test")
@@ -301,7 +301,7 @@ describe("EmailPlugin", () => {
       );
     });
 
-    // Test fix for https://github.com/deenruv-ecommerce/deenruv/issues/363
+    // Test fix for https://github.com/aexol-studio/deenruv/issues/363
     it('does not escape HTML chars when interpolating "from"', async () => {
       const handler = new EmailEventListener("test")
         .on(MockEvent)

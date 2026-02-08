@@ -367,7 +367,7 @@ describe("Authorization & permissions", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/730
+    // https://github.com/aexol-studio/deenruv/issues/730
     it("protects against deep query data leakage", async () => {
       await adminClient.asSuperAdmin();
       const { createCustomerGroup } = await adminClient.query<

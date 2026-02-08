@@ -1079,7 +1079,7 @@ export interface SystemOptions {
 /**
  * @description
  * All possible configuration options are defined by the
- * [`DeenruvConfig`](https://github.com/deenruv-ecommerce/deenruv/blob/master/server/src/config/deenruv-config.ts) interface.
+ * [`DeenruvConfig`](https://github.com/aexol-studio/deenruv/blob/master/server/src/config/deenruv-config.ts) interface.
  *
  * @docsCategory configuration
  * */

@@ -46,7 +46,7 @@ describe("Entity prefix edge-cases", () => {
     await server.destroy();
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/1569
+  // https://github.com/aexol-studio/deenruv/issues/1569
   it("customers list filter by postalCode", async () => {
     const result = await adminClient.query<
       GetCustomerListQuery,

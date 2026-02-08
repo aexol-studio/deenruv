@@ -1946,7 +1946,7 @@ describe("Orders resolver", () => {
       ]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/873
+    // https://github.com/aexol-studio/deenruv/issues/873
     it("can add another refund if the first one fails", async () => {
       const orderResult = await createTestOrder(
         adminClient,
@@ -2002,7 +2002,7 @@ describe("Orders resolver", () => {
       expect(refund2.total).toBe(order.totalWithTax);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2302
+    // https://github.com/aexol-studio/deenruv/issues/2302
     it("passes correct amount to createRefund function after cancellation", async () => {
       const orderResult = await createTestOrder(
         adminClient,
@@ -2517,7 +2517,7 @@ describe("Orders resolver", () => {
       ).toBe(productInOrder!.variants[0].priceWithTax + order!.shippingWithTax);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/847
+    // https://github.com/aexol-studio/deenruv/issues/847
     it("manual call to settlePayment works with multiple payments", async () => {
       const result = await createTestOrder(
         adminClient,
@@ -2574,7 +2574,7 @@ describe("Orders resolver", () => {
     });
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/2505
+  // https://github.com/aexol-studio/deenruv/issues/2505
   describe("updating order customer", () => {
     let orderId: string;
     let customerId: string;
@@ -2672,7 +2672,7 @@ describe("Orders resolver", () => {
   });
 
   describe("issues", () => {
-    // https://github.com/deenruv-ecommerce/deenruv/issues/639
+    // https://github.com/aexol-studio/deenruv/issues/639
     it("returns fulfillments for Order with no lines", async () => {
       await shopClient.asAnonymousUser();
       // Apply a coupon code just to create an active order with no OrderLines
@@ -2696,7 +2696,7 @@ describe("Orders resolver", () => {
       expect(order?.fulfillments).toEqual([]);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/603
+    // https://github.com/aexol-studio/deenruv/issues/603
     it("orders correctly resolves quantities and OrderItems", async () => {
       await shopClient.asAnonymousUser();
       const { addItemToOrder } = await shopClient.query<
@@ -2723,7 +2723,7 @@ describe("Orders resolver", () => {
       expect(orders.items[0].lines[0].quantity).toBe(2);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/716
+    // https://github.com/aexol-studio/deenruv/issues/716
     it("get an Order with a deleted ShippingMethod", async () => {
       const { createShippingMethod: shippingMethod } = await adminClient.query<
         Codegen.CreateShippingMethodMutation,
@@ -2807,7 +2807,7 @@ describe("Orders resolver", () => {
       });
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/868
+    // https://github.com/aexol-studio/deenruv/issues/868
     it("allows multiple refunds of same OrderLine", async () => {
       await shopClient.asUserWithCredentials(
         customers[0].emailAddress,
@@ -2856,7 +2856,7 @@ describe("Orders resolver", () => {
       refundGuard.assertSuccess(refund2);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1125
+    // https://github.com/aexol-studio/deenruv/issues/1125
     it("resolves deleted Product of OrderLine ProductVariants", async () => {
       await shopClient.asUserWithCredentials(
         customers[0].emailAddress,
@@ -2900,7 +2900,7 @@ describe("Orders resolver", () => {
       ).toBe("gaming-pc");
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/1508
+    // https://github.com/aexol-studio/deenruv/issues/1508
     it("resolves price of deleted ProductVariant of OrderLine", async () => {
       const { activeCustomer } = await shopClient.query<
         CodegenShop.GetActiveCustomerWithOrdersProductPriceQuery,
@@ -2918,7 +2918,7 @@ describe("Orders resolver", () => {
       ).toBe(108720);
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2204
+    // https://github.com/aexol-studio/deenruv/issues/2204
     it("creates correct history entries and results in correct state when manually adding payment to order", async () => {
       await shopClient.asUserWithCredentials(
         customers[0].emailAddress,
@@ -2972,7 +2972,7 @@ describe("Orders resolver", () => {
       expect(order!.state).toBe("PaymentSettled");
     });
 
-    // https://github.com/deenruv-ecommerce/deenruv/issues/2191
+    // https://github.com/aexol-studio/deenruv/issues/2191
     it("correctly transitions order & fulfillment on partial fulfillment being shipped", async () => {
       await shopClient.asUserWithCredentials(
         customers[0].emailAddress,

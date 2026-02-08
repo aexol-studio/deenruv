@@ -46,7 +46,7 @@ class FillBufferResolver {
 
 /**
  * Plugin to create a lot of buffered jobs to test help investigate and fix
- * issue https://github.com/deenruv-ecommerce/deenruv/issues/1433
+ * issue https://github.com/aexol-studio/deenruv/issues/1433
  */
 @DeenruvPlugin({
   imports: [PluginCommonModule],

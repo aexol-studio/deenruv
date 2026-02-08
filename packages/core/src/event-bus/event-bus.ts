@@ -325,8 +325,8 @@ export class EventBus implements OnModuleDestroy {
    *
    * For more context on these two issues, see:
    *
-   * * https://github.com/deenruv-ecommerce/deenruv/issues/520
-   * * https://github.com/deenruv-ecommerce/deenruv/issues/1107
+   * * https://github.com/aexol-studio/deenruv/issues/520
+   * * https://github.com/aexol-studio/deenruv/issues/1107
    */
   private async awaitActiveTransactions<T extends DeenruvEvent>(
     event: T,

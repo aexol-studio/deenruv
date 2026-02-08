@@ -22,7 +22,7 @@
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
+    "url": "git+https://github.com/aexol-studio/deenruv.git"
   },
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
@@ -32,7 +32,7 @@
     "ci": "npm run build"
   },
   "bugs": {
-    "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
+    "url": "https://github.com/aexol-studio/deenruv/issues"
   },
   "peerDependencies": {
     "typeorm": "^0.3.20",

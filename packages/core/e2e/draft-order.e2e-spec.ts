@@ -383,7 +383,7 @@ describe("Draft Orders resolver", () => {
     );
   });
 
-  // https://github.com/deenruv-ecommerce/deenruv/issues/2105
+  // https://github.com/aexol-studio/deenruv/issues/2105
   it("sets order as placed when payment is settled", async () => {
     TestOrderPlacedStrategy.spy.mockClear();
     expect(TestOrderPlacedStrategy.spy.mock.calls.length).toBe(0);

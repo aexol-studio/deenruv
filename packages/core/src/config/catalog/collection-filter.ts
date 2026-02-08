@@ -27,7 +27,7 @@ export interface CollectionFilterConfig<
  * [`QueryBuilder`](https://typeorm.io/#/select-query-builder) object to which clauses may be added.
  *
  * Creating a CollectionFilter is considered an advanced Deenruv topic. For more insight into how
- * they work, study the [default collection filters](https://github.com/deenruv-ecommerce/deenruv/blob/master/packages/core/src/config/catalog/default-collection-filters.ts)
+ * they work, study the [default collection filters](https://github.com/aexol-studio/deenruv/blob/master/packages/core/src/config/catalog/default-collection-filters.ts)
  *
  * Here's a simple example of a custom CollectionFilter:
  *
