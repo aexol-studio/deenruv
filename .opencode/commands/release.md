@@ -26,6 +26,12 @@ Normalize the argument to lowercase. If it is not one of `major`, `minor`, or `p
 - **Never use `--legacy-peer-deps`.**
 - **Require a clean git tree** before the version bump step — abort if there are uncommitted changes at that point.
 
+## Changelog Contract
+
+- The release **must** update the root `CHANGELOG.md` with entries generated from commits since the previous tag.
+- The docs changelog page (`apps/docs/content/docs/guides/getting-started/changelog.mdx`) **must** be synced from the root changelog so the two stay identical.
+- The release **MUST abort** if, after generation and sync, either file does not contain the `{nextVersion}` heading near the top. This is verified in Step 4e below.
+
 ## Pre-release: clean the working tree
 
 Before starting the numbered steps, ensure the working tree is clean:
@@ -111,9 +117,19 @@ Before the numbered release steps, run a stabilization loop that ensures the cod
       ```
 
    d. Stage the changelog and docs files:
-      ```bash
-       git add CHANGELOG.md apps/docs/content/docs/guides/getting-started/changelog.mdx apps/docs/content/docs/guides/getting-started/changelog.pl.mdx
-      ```
+       ```bash
+        git add CHANGELOG.md apps/docs/content/docs/guides/getting-started/changelog.mdx apps/docs/content/docs/guides/getting-started/changelog.pl.mdx
+       ```
+
+   e. **Verify changelog contains the new version** (see *Changelog Contract*). Run:
+       ```bash
+       head -n 30 CHANGELOG.md
+       head -n 40 apps/docs/content/docs/guides/getting-started/changelog.mdx
+       rg -n "^## <small>{nextVersion} \(" CHANGELOG.md
+       rg -n "^## <small>{nextVersion} \(" apps/docs/content/docs/guides/getting-started/changelog.mdx
+       ```
+       Both `rg` commands must produce at least one match. If either returns no match, **abort the release immediately** with:
+       > ❌ Release aborted: `{nextVersion}` heading not found in CHANGELOG.md and/or docs changelog after generation. Fix the changelog scripts and re-run.
 
 5. Bump version across all workspace packages using the resolved bump type:
    ```bash
