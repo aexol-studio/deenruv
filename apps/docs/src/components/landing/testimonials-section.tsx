@@ -4,8 +4,33 @@ import { useState, useEffect } from "react";
 import { TrendingUp, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import { t, type Lang } from "./translations";
 import { usePageVisible } from "./use-page-visible";
+import { TESTIMONIAL_FAVICONS } from "./testimonial-favicons";
 
 const STAT_ICONS = [TrendingUp, Globe];
+
+function CompanyAvatar({ company }: { company: string }) {
+  const [imgError, setImgError] = useState(false);
+  const faviconSrc = TESTIMONIAL_FAVICONS[company];
+
+  if (faviconSrc && !imgError) {
+    return (
+      <div className="h-12 w-12 rounded-xl bg-zinc-800 flex items-center justify-center overflow-hidden">
+        <img
+          src={faviconSrc}
+          alt={company}
+          className="h-8 w-8 object-contain"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+      {company[0].toUpperCase()}
+    </div>
+  );
+}
 
 export function TestimonialsSection({ lang = "en" }: { lang?: Lang }) {
   const [active, setActive] = useState(0);
@@ -52,9 +77,7 @@ export function TestimonialsSection({ lang = "en" }: { lang?: Lang }) {
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 lg:p-12">
             {/* Company */}
             <div className="flex items-center gap-4 mb-8">
-              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
-                {study.company[0].toUpperCase()}
-              </div>
+              <CompanyAvatar company={study.company} />
               <div>
                 <div className="font-semibold text-white text-lg">
                   {study.company}

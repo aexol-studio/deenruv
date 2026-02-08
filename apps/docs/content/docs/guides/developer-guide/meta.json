@@ -9,8 +9,6 @@
     "events",
     "plugins",
     "strategies-configurable-operations",
-    "worker-job-queue",
-    "---Integrations---",
-    "mcp-docs-server"
+    "worker-job-queue"
   ]
 }

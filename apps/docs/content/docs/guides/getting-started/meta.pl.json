@@ -1,4 +1,4 @@
 {
   "title": "Pierwsze kroki",
-  "pages": ["installation", "graphql-intro", "try-the-api"]
+  "pages": ["installation", "mcp-docs-server", "graphql-intro", "try-the-api", "changelog"]
 }

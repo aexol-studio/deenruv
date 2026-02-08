@@ -16,6 +16,7 @@ export function FooterSection({ lang = "en" }: { lang?: Lang }) {
   const text = t("footer", lang);
   const linkPrefix = `/${lang}`;
   const year = new Date().getFullYear();
+  const version = process.env.NEXT_PUBLIC_DEENRUV_VERSION;
 
   const footerLinks = {
     [text.platform]: [
@@ -23,7 +24,7 @@ export function FooterSection({ lang = "en" }: { lang?: Lang }) {
       { label: text.documentation, href: `${linkPrefix}/docs` },
       {
         label: text.changelog,
-        href: "https://github.com/aexol-studio/deenruv/releases",
+        href: `${linkPrefix}/docs/guides/getting-started/changelog`,
       },
     ],
     [text.resources]: [
@@ -58,6 +59,11 @@ export function FooterSection({ lang = "en" }: { lang?: Lang }) {
             <Link href={linkPrefix} className="flex items-center gap-2.5 mb-4">
               <img src="/logo-filled.svg" alt="Deenruv" className="h-9 w-9" />
               <span className="text-lg font-semibold text-white">Deenruv</span>
+              {version && (
+                <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
+                  v{version}
+                </span>
+              )}
             </Link>
             <p className="text-sm text-zinc-400 mb-6 max-w-xs">
               {text.description}

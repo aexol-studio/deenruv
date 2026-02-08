@@ -338,7 +338,7 @@ export const translations = {
         {
           company: "magicznyrynek.pl",
           industry: "TCG & Board Games",
-          statValue: "+4344%",
+          statValue: "+142%",
           statLabel: "Revenue Growth",
           quote:
             "After migrating to Deenruv, we saw immediate improvements in performance and developer velocity. Managing thousands of MTG and Pokémon card listings became effortless.",
@@ -364,7 +364,7 @@ export const translations = {
         {
           company: "magicznyrynek.pl",
           industry: "Karty kolekcjonerskie i gry",
-          statValue: "+4344%",
+          statValue: "+142%",
           statLabel: "Wzrost przychodów",
           quote:
             "Po migracji na Deenruv od razu zauważyliśmy poprawę wydajności i szybkości pracy zespołu. Zarządzanie tysiącami kart MTG i Pokémon stało się bezproblemowe.",

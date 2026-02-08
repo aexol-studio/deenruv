@@ -90,52 +90,75 @@ Before the numbered release steps, run a stabilization loop that ensures the cod
 
 3. Verify clean git tree — run `git status --porcelain` and abort if there is any output.
 
-4. Bump version across all workspace packages using the resolved bump type:
+4. **Pre-bump changelog update** — generate the changelog from commits **before** the version bump so the changelog entry captures work done since the last release.
+
+   a. Resolve the previous tag and compute the next version:
+      ```bash
+      PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
+      ```
+      Read the current version from root `package.json`, then compute the next version by applying `{bumpType}` to it (e.g., `1.0.6` + `patch` → `1.0.7`). Store this as **`{nextVersion}`**.
+
+   b. Run the changelog update script:
+      ```bash
+      pnpm changelog:update -- --next-version {nextVersion} --from-tag $PREV_TAG
+      ```
+
+   c. Sync changelog into docs:
+      ```bash
+      pnpm changelog:sync-docs
+      ```
+
+   d. Stage the changelog and docs files:
+      ```bash
+       git add CHANGELOG.md apps/docs/content/docs/guides/getting-started/changelog.mdx apps/docs/content/docs/guides/getting-started/changelog.pl.mdx
+      ```
+
+5. Bump version across all workspace packages using the resolved bump type:
    ```bash
    pnpm -r exec pnpm version {bumpType}
    ```
    `{bumpType}` is resolved from the optional argument (default `patch`) — see **Argument handling** above.
 
-5. Read the new version from the root `package.json` `"version"` field.
+6. Read the new version from the root `package.json` `"version"` field (should match `{nextVersion}` from step 4).
 
-6. Generate changelog:
+7. Generate legacy changelog (kept for compatibility):
    ```bash
    pnpm generate-changelog
    ```
 
-7. Stage changelog and version files:
+8. Stage changelog and version files:
    ```bash
    git add -A
    ```
 
-8. **Infer a release summary** before committing. Run:
+9. **Infer a release summary** before committing. Run:
    ```bash
    git log $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD --oneline
    ```
    Use the output, the list of changed files (`git diff --stat HEAD~1`), and the generated changelog to write a concise bullet-point summary of what changed in this release (e.g., key dependency upgrades, new features, notable fixes). Do **not** prompt the user for this — infer it yourself.
 
-9. Commit all changes with a rich message. **Execute** the following `git commit` command (substitute `{version}` and `{auto-inferred bullet points}` with real values from steps 5 and 8):
+10. Commit all changes with a rich message. **Execute** the following `git commit` command (substitute `{version}` and `{auto-inferred bullet points}` with real values from steps 6 and 9):
 
-   ```bash
-   git commit \
-     -m "chore(release): v{version}" \
-     -m "- bump workspace versions to {version}" \
-     -m "- refresh changelog for {version}" \
-     -m "- tag release v{version}" \
-     -m "Summary:" \
-     -m "{auto-inferred bullet point 1}" \
-     -m "{auto-inferred bullet point 2}" \
-     -m "{...more bullets as needed}"
-   ```
+    ```bash
+    git commit \
+      -m "chore(release): v{version}" \
+      -m "- bump workspace versions to {version}" \
+      -m "- refresh changelog for {version}" \
+      -m "- tag release v{version}" \
+      -m "Summary:" \
+      -m "{auto-inferred bullet point 1}" \
+      -m "{auto-inferred bullet point 2}" \
+      -m "{...more bullets as needed}"
+    ```
 
-   Each `-m` flag appends a paragraph to the commit body. Replace the `{auto-inferred bullet point …}` placeholders with the actual summary bullets inferred in step 8 (one `-m` per bullet).
+    Each `-m` flag appends a paragraph to the commit body. Replace the `{auto-inferred bullet point …}` placeholders with the actual summary bullets inferred in step 9 (one `-m` per bullet).
 
-10. Push the commit:
+11. Push the commit:
     ```bash
     git push
     ```
 
-11. Create and push the tag:
+12. Create and push the tag:
     ```bash
     git tag v{version}
     git push origin v{version}
