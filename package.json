@@ -1,6 +1,6 @@
 {
   "name": "deenruv",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Open-source headless commerce framework built with TypeScript, NestJS, and GraphQL.",
   "homepage": "https://deenruv.com/",
   "repository": {
