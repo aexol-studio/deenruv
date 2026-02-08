@@ -1,0 +1,102 @@
+---
+title: 'Modernizacja formularzy'
+description: 'Roadmapa migracji formularzy react-ui-devkit z useGFFLP na React Hook Form przez adapter useDeenruvForm'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Ta strona opisuje trwajaca migracje zarzadzania stanem formularzy w `@deenruv/react-ui-devkit` i `@deenruv/admin-dashboard` z wlasnego hooka `useGFFLP` na adapter oparty o React Hook Form (RHF) — `useDeenruvForm`.
+
+<Callout type="info">
+To migracja fazowa. Istniejacy kod uzywajacy `useGFFLP` dziala bez zmian przez caly okres przejsciowy.
+</Callout>
+
+## Dlaczego
+
+`useGFFLP` to wlasny hook formularzy stworzony przed dojrzaloscia React Hook Form. Dziala, ale wprowadza tarcie:
+
+- Wlasne API walidacji zamiast standardowych schematow Zod
+- Reczne wywolania `setField` / `setState` zamiast podejscia uncontrolled z RHF
+- Brak DevTools, brak `formState.isDirty` / `isSubmitting` z pudelka
+- Deweloperzy pluginow musza uczyc sie API specyficznego dla Deenruv
+
+## Architektura docelowa
+
+```
+react-hook-form
+       |
+  useDeenruvForm()       -- adapter: laczy RHF z ModelTypes + customFields
+       |
+   +---+---+
+   |       |
+FormField  useFormContext()
+   |
+zodResolver(schema)       -- walidacja Zod ze wsparciem i18n
+```
+
+`useDeenruvForm` to cienka warstwa nad `useForm` z `react-hook-form`. Adapter:
+
+- Przyjmuje schemat Zod i opcjonalne `defaultValues`
+- Zwraca standardowy obiekt `UseFormReturn`
+- Integruje sie z typami `ModelTypes` z `@deenruv/admin-types`
+- Wspolpracuje z komponentami shadcn/ui `<Form>` i `<FormField>` juz obecnymi w codebase
+
+## Fazy migracji
+
+| Faza | Zakres | Status |
+|------|--------|--------|
+| 0 — Infrastruktura | Adapter `useDeenruvForm`, wrapper `<DeenruvForm>`, helpery Zod | Planowane |
+| 1 — Pilot | 3-4 proste dialogi w admin-dashboard | Planowane |
+| 2 — Zlozzone formularze | Adresy, zamowienia, warianty produktow | Planowane |
+| 3 — Komponenty SDK | `DetailView`, `EntityCustomFields` | Planowane |
+| 4 — Deprecation | `useGFFLP` deprecated, migration guide, usuniecie | Planowane |
+
+## Dla deweloperow pluginow
+
+### Co sie zmienia
+
+Jesli Twoj plugin uzywa `useGFFLP` bezposrednio, bedziesz musial zmigrowac na `useDeenruvForm`. Mapowanie API jest proste:
+
+```ts
+// Przed
+const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+  'CreateProductInput', 'name', 'slug',
+)({ name: { validate: (v) => v ? undefined : ['Required'] } });
+
+// Po
+const form = useDeenruvForm({
+  schema: z.object({
+    name: z.string().min(1, t('validation.required')),
+    slug: z.string(),
+  }),
+});
+```
+
+### Co pozostaje bez zmian
+
+- API propsow komponentu `DetailView` nie zmienia sie
+- API propsow komponentu `EntityCustomFields` nie zmienia sie
+- `useGFFLP` dziala przez caly okres przejsciowy (minimum 2 minor releases po ogloszeniu deprecation)
+
+### Harmonogram
+
+`useGFFLP` nie zostanie usuniety przed uplywem co najmniej 2 minor releases po dodaniu ostrzezenia o deprecation. Deweloperzy pluginow otrzymaja czytelne ostrzezenia w konsoli oraz przewodnik migracyjny.
+
+## Jak realizujemy migracje
+
+Podejscie oparte o wzorzec **strangler fig**:
+
+1. Nowy `useDeenruvForm` dziala obok starego `useGFFLP`
+2. Kazdy formularz migrowany w izolowanym PR z wlasnymi testami
+3. Brak "big bang" — formularz po formularzu
+4. Po migracji wszystkich wewnetrznych uzyc — deprecation warning
+5. Po 2 minor releases — usuniecie starego kodu
+
+Kazda faza jest niezalezna. Jesli faza N powoduje problemy — revert PR-ow tej fazy bez wplywu na pozostale.
+
+## Wewnetrzna roadmapa
+
+Pelny plan implementacji z taskami na poziomie PR, kryteriami akceptacji i analiza ryzyka:
+
+- `tasks/subtasks/form-state-dx-modernization/ROADMAP.md`
+- `tasks/subtasks/form-state-dx-modernization/PR-PLAN.md`

@@ -8,6 +8,7 @@
     "error-handling",
     "events",
     "plugins",
+    "react-ui-devkit-form-roadmap",
     "strategies-configurable-operations",
     "worker-job-queue"
   ]

@@ -394,3 +394,5 @@ __admin-ui/
 .direnv
 .envrc
 .helix
+
+tasks

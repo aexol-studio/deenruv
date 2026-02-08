@@ -1,0 +1,90 @@
+---
+title: 'Form State Modernization'
+description: 'Roadmap for migrating react-ui-devkit forms from useGFFLP to React Hook Form via useDeenruvForm adapter'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+This page describes the ongoing migration of form state management in `@deenruv/react-ui-devkit` and `@deenruv/admin-dashboard` from the custom `useGFFLP` hook to a React Hook Form (RHF) based adapter called `useDeenruvForm`.
+
+<Callout type="info">
+This is a phased migration. Existing code using `useGFFLP` continues to work without changes during the transition period.
+</Callout>
+
+## Why
+
+`useGFFLP` is a custom form hook that predates React Hook Form's maturity. It works, but introduces friction:
+
+- Custom validation API instead of ecosystem-standard Zod schemas
+- Manual `setField` / `setState` calls instead of RHF's uncontrolled approach
+- No DevTools, no `formState.isDirty` / `isSubmitting` out of the box
+- Plugin developers need to learn a Deenruv-specific API
+
+## Target architecture
+
+```
+react-hook-form
+       |
+  useDeenruvForm()       -- adapter: connects RHF with ModelTypes + customFields
+       |
+   +---+---+
+   |       |
+FormField  useFormContext()
+   |
+zodResolver(schema)       -- Zod validation with i18n support
+```
+
+`useDeenruvForm` is a thin wrapper around `useForm` from `react-hook-form`. It:
+
+- Accepts a Zod schema and optional `defaultValues`
+- Returns a standard `UseFormReturn` object
+- Integrates with `@deenruv/admin-types` ModelTypes for type inference
+- Works with shadcn/ui `<Form>` and `<FormField>` components already present in the codebase
+
+## Migration phases
+
+| Phase | Scope | Status |
+|-------|-------|--------|
+| 0 — Infrastructure | `useDeenruvForm` adapter, `<DeenruvForm>` wrapper, Zod helpers | Planned |
+| 1 — Pilot | 3-4 simple dialogs in admin-dashboard | Planned |
+| 2 — Complex forms | Address forms, order forms, product variants | Planned |
+| 3 — SDK components | `DetailView`, `EntityCustomFields` | Planned |
+| 4 — Deprecation | `useGFFLP` deprecated, migration guide, eventual removal | Planned |
+
+## For plugin developers
+
+### What changes
+
+If your plugin uses `useGFFLP` directly, you will need to migrate to `useDeenruvForm` eventually. The API mapping is straightforward:
+
+```ts
+// Before
+const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+  'CreateProductInput', 'name', 'slug',
+)({ name: { validate: (v) => v ? undefined : ['Required'] } });
+
+// After
+const form = useDeenruvForm({
+  schema: z.object({
+    name: z.string().min(1, t('validation.required')),
+    slug: z.string(),
+  }),
+});
+```
+
+### What stays the same
+
+- `DetailView` component props API does not change
+- `EntityCustomFields` component props API does not change
+- `useGFFLP` continues to work during the transition period (minimum 2 minor releases after deprecation notice)
+
+### Timeline
+
+`useGFFLP` will not be removed until at least 2 minor version releases after the deprecation warning is added. Plugin developers will have clear console warnings and a migration guide.
+
+## Internal roadmap
+
+The full implementation plan with PR-level tasks, acceptance criteria, and risk analysis lives in:
+
+- `tasks/subtasks/form-state-dx-modernization/ROADMAP.md`
+- `tasks/subtasks/form-state-dx-modernization/PR-PLAN.md`

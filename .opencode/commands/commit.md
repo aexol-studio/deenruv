@@ -20,6 +20,8 @@ Before the numbered commit steps, run a stabilization loop that ensures the code
 
 **Lint errors are always blocking.** All lint violations — including pre-existing or unrelated errors — MUST be resolved before committing. Never ignore, skip, or bypass lint failures.
 
+> **Common CI lint case:** Files in `apps/docs/scripts/*.{cjs,mjs}` frequently fail with `no-undef` (`process`, `Buffer`, `require`, `__dirname`) and `@typescript-eslint/no-require-imports`. These are still blocking — fix them by adding a targeted ESLint override (e.g., `env: { node: true }` + rule disable for those script globs), not by ignoring the errors.
+
 1. **Build all packages:**
    ```bash
    pnpm run build:dev
