@@ -226,7 +226,7 @@ export const translations = {
         {
           title: "Code",
           description:
-            "Get started in minutes with our CLI. Scaffold projects, generate types, and build with full IntelliSense support.",
+            "One command scaffolds a full Deenruv server and React admin panel. Configure your database, populate sample data, and start building — all from the CLI.",
         },
         {
           title: "Configure",
@@ -257,7 +257,7 @@ export const translations = {
         {
           title: "Koduj",
           description:
-            "Zacznij w kilka minut z naszym CLI. Tw\u00F3rz projekty, generuj typy i buduj z pe\u0142nym wsparciem IntelliSense.",
+            "Jedna komenda tworzy pe\u0142ny serwer Deenruv i panel admina w React. Skonfiguruj baz\u0119 danych, za\u0142aduj przyk\u0142adowe produkty i zacznij budowa\u0107 \u2014 wszystko z poziomu CLI.",
         },
         {
           title: "Konfiguruj",

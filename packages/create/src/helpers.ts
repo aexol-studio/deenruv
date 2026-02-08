@@ -302,6 +302,7 @@ export function getDependencies(
   const devDependencies = [
     `@deenruv/cli${deenruvPkgVersion}`,
     "concurrently",
+    "ts-node@^10.9.2",
     `typescript@${TYPESCRIPT_VERSION}`,
   ];
   return { dependencies, devDependencies };

@@ -331,11 +331,13 @@ export async function createDeenruvApp(
 
   const populateSpinner = spinner();
   populateSpinner.start(`Initializing your new Deenruv server`);
-  // register ts-node so that the config file can be loaded
-
-  require(path.join(root, "node_modules/ts-node")).register();
 
   try {
+    // register ts-node so that the config file can be loaded
+    const tsNodeRegisterPath = require.resolve("ts-node/register", {
+      paths: [root],
+    });
+    require(tsNodeRegisterPath);
     const { populate } = await import(
       path.join(root, "node_modules/@deenruv/core/cli/populate")
     );

@@ -72,7 +72,7 @@ export function JsonLd({ lang }: { lang: Lang }) {
               name: "Jak zainstalowac Deenruv?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Mozesz zainstalowac Deenruv za pomoca npx: npx create-deenruv-app@latest. Szczegoly znajdziesz w dokumentacji.",
+                text: "Mozesz zainstalowac Deenruv za pomoca npx: npx @deenruv/create my-store. Szczegoly znajdziesz w dokumentacji.",
               },
             },
           ]
@@ -98,7 +98,7 @@ export function JsonLd({ lang }: { lang: Lang }) {
               name: "How do I install Deenruv?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "You can install Deenruv using npx: npx create-deenruv-app@latest. See the documentation for detailed instructions.",
+                text: "You can install Deenruv using npx: npx @deenruv/create my-store. See the documentation for detailed instructions.",
               },
             },
           ],
