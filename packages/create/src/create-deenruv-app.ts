@@ -274,7 +274,9 @@ export async function createDeenruvApp(
     await scaffoldAdminPanel(adminRoot, appName, assetPath);
   } catch (e) {
     console.error(
-      pc.red(`Admin scaffold error: ${e instanceof Error ? e.message : String(e)}`),
+      pc.red(
+        `Admin scaffold error: ${e instanceof Error ? e.message : String(e)}`,
+      ),
     );
     outro(pc.red(`Failed to scaffold admin panel. Please try again.`));
     process.exit(1);
