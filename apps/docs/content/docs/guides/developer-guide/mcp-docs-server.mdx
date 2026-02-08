@@ -1,0 +1,108 @@
+---
+title: 'MCP Docs Server'
+description: 'Access Deenruv documentation programmatically via the Model Context Protocol (MCP) — integrate with OpenCode, Claude, and other AI coding tools'
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+
+Deenruv exposes its documentation as a read-only **MCP (Model Context Protocol)** server at `https://deenruv.com/mcp`. This lets AI coding assistants search and read the docs directly — no copy-pasting required.
+
+## What is MCP?
+
+The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard that lets AI tools connect to external data sources. By adding the Deenruv MCP server to your editor, your AI assistant can look up API docs, guides, and plugin references on the fly.
+
+## Available Tools
+
+The MCP server provides these read-only tools:
+
+| Tool | Description |
+|------|-------------|
+| `docs_list_pages` | List all documentation pages with titles, descriptions, and URLs |
+| `docs_get_page` | Get the full content of a page by its slug |
+| `docs_search` | Search pages by matching a query against titles and descriptions |
+| `docs_get_llms_txt` | Get the llms.txt index (summary of all pages) |
+| `docs_get_llms_full` | Get the full text of all pages concatenated |
+| `docs_list_sections` | List top-level sections and the pages within each |
+
+## OpenCode Configuration
+
+Add the Deenruv docs server to your OpenCode configuration:
+
+<Tabs items={['Global config', 'Project config']}>
+<Tab value="Global config">
+Edit `~/.config/opencode/config.jsonc`:
+
+```jsonc
+{
+  "mcp": {
+    "deenruv-docs": {
+      "type": "remote",
+      "url": "https://deenruv.com/mcp",
+      "enabled": true
+    }
+  }
+}
+```
+</Tab>
+<Tab value="Project config">
+Edit `opencode.jsonc` in your project root:
+
+```jsonc
+{
+  "mcp": {
+    "deenruv-docs": {
+      "type": "remote",
+      "url": "https://deenruv.com/mcp",
+      "enabled": true
+    }
+  }
+}
+```
+</Tab>
+</Tabs>
+
+After saving, restart OpenCode. The tools will appear with a `deenruv-docs_` prefix.
+
+## Usage Examples
+
+Once configured, you can ask your AI assistant to use the Deenruv docs tools directly:
+
+```
+Use deenruv-docs tools to find how to create a plugin
+```
+
+```
+Search the Deenruv docs for payment integration
+```
+
+```
+Get the full content of the worker-job-queue docs page
+```
+
+The AI will call the appropriate MCP tool under the hood and include the relevant documentation in its response.
+
+## Technical Details
+
+<Callout type="info">
+The MCP server is **read-only** — it only exposes documentation content and cannot modify anything.
+</Callout>
+
+- **Transport**: Streamable HTTP (MCP spec `2025-06-18`) with optional SSE
+- **Endpoint**: `POST https://deenruv.com/mcp` (JSON-RPC 2.0)
+- **Rate limit**: 60 requests per minute per IP
+- **No authentication required** — the server only serves public documentation
+
+### Manual Testing
+
+You can verify the endpoint works by sending a JSON-RPC request directly:
+
+```bash
+curl -X POST https://deenruv.com/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/list"
+  }'
+```
