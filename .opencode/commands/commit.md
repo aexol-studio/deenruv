@@ -1,5 +1,5 @@
 ---
-description: "Run commit flow: install, build, lint, test, stage, and commit with auto-inferred message"
+description: "Run commit flow: install, build, lint, test, stage, commit with auto-inferred message, and push"
 ---
 
 Execute the commit flow for the Deenruv monorepo. Follow these steps **exactly in order**, stopping immediately on any failure.
@@ -10,13 +10,15 @@ Execute the commit flow for the Deenruv monorepo. Follow these steps **exactly i
 
 - **Stop on first failure.** If any step exits non-zero, abort and report which step failed.
 - **Never use `--legacy-peer-deps`.**
-- **No version bump, changelog generation, tag creation, or push.** This is a commit-only workflow.
+- **No version bump, changelog generation, or tag creation.** This is a commit-and-push workflow, not a release workflow.
 
 ## Pre-commit stabilization: build & lint-fix loop
 
 Before the numbered commit steps, run a stabilization loop that ensures the codebase builds cleanly and passes lint. This catches generated-file drift and formatting issues before committing.
 
 **Maximum attempts: 5.** If lint still fails after 5 iterations, abort with a clear error message listing the remaining lint violations.
+
+**Lint errors are always blocking.** All lint violations — including pre-existing or unrelated errors — MUST be resolved before committing. Never ignore, skip, or bypass lint failures.
 
 1. **Build all packages:**
    ```bash
@@ -93,4 +95,9 @@ Before the numbered commit steps, run a stabilization loop that ensures the code
    git log -1 --format="%H%n%n%B"
    ```
 
-Report each step's result as you go. On success, print the **commit hash** and the **auto-inferred commit summary**.
+8. Push the commit:
+   ```bash
+   git push
+   ```
+
+Report each step's result as you go. On success, print the **commit hash**, the **auto-inferred commit summary**, and the **push status**.

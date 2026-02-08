@@ -35,4 +35,16 @@ export default defineConfig([
       "react/react-in-jsx-scope": "off",
     },
   },
+  // Node utility scripts — add Node globals so `process`, `Buffer`, etc. resolve
+  {
+    files: ["scripts/**/*.{mjs,cjs,ts}"],
+    languageOptions: { globals: globals.node },
+  },
+  // CJS scripts — allow `require()` calls
+  {
+    files: ["scripts/**/*.cjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ]);

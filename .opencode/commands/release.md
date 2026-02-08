@@ -47,6 +47,8 @@ Before the numbered release steps, run a stabilization loop that ensures the cod
 
 **Maximum attempts: 5.** If lint still fails after 5 iterations, abort the release with a clear error message listing the remaining lint violations.
 
+**Lint errors are always blocking.** All lint violations — including pre-existing or unrelated errors — MUST be resolved before releasing. Never ignore, skip, or bypass lint failures.
+
 1. **Build all packages:**
    ```bash
    pnpm run build:dev
