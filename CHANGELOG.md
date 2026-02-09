@@ -1,3 +1,9 @@
+## <small>1.0.8 (2026-02-09)</small>
+
+#### Changes
+
+-   **core** Prepare workspace and admin dashboard improvements before release ([b45bce6](https://github.com/aexol-studio/deenruv/commit/b45bce6a1))
+
 ## <small>1.0.7 (2026-02-09)</small>
 
 #### Features
