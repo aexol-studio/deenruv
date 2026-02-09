@@ -139,7 +139,8 @@
       "graphql": "~16.9.0",
       "lucide-react": "^0.563.0",
       "@types/react": "^19.0.0",
-      "@types/react-dom": "^19.0.0"
+      "@types/react-dom": "^19.0.0",
+      "i18next": "^25.8.4"
     }
   }
 }
