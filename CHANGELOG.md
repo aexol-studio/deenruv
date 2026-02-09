@@ -1,3 +1,9 @@
+## <small>1.0.9 (2026-02-09)</small>
+
+#### Changes
+
+-   **core** Prepare workspace before release ([08b582c](https://github.com/aexol-studio/deenruv/commit/08b582c42))
+
 ## <small>1.0.8 (2026-02-09)</small>
 
 #### Changes
