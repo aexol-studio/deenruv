@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import {
   CF,
@@ -15,6 +15,7 @@ import {
   setInArrayBy,
   EntityChannelManager,
   Routes,
+  normalizeString,
 } from '@deenruv/react-ui-devkit';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
@@ -38,56 +39,99 @@ export const CollectionsDetailView = () => {
     'customFields',
   );
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
+
+  // --- Slug auto-generation ---
+  // Track whether the user has manually edited the slug for the current language.
+  // Using a ref avoids extra re-renders; keyed per-language so switching tabs resets.
+  const slugManuallyEditedRef = useRef<Record<string, boolean>>({});
+
+  // Reset manual-edit flag when switching to a language whose slug is still empty
+  // (so auto-gen kicks in for new translations).
+  useEffect(() => {
+    if (!contentLng) return;
+    const current = slugManuallyEditedRef.current[contentLng];
+    if (current === undefined) {
+      slugManuallyEditedRef.current[contentLng] = false;
+    }
+  }, [contentLng]);
 
   useEffect(() => {
     (async () => {
       const resp = await fetchEntity();
       if (!resp) return;
 
-      setField('translations', resp.translations);
-      setField(
+      base.setField('translations', resp.translations);
+      base.setField(
         'assetIds',
         resp.assets.map((a) => a.id),
       );
-      setField('featuredAssetId', resp.featuredAsset?.id);
-      setField('isPrivate', resp.isPrivate);
-      setField('inheritFilters', resp.inheritFilters);
-      setField(
+      base.setField('featuredAssetId', resp.featuredAsset?.id);
+      base.setField('isPrivate', resp.isPrivate);
+      base.setField('inheritFilters', resp.inheritFilters);
+      base.setField(
         'filters',
         resp.filters.map((f) => ({ code: f.code, arguments: f.args })),
       );
     })();
   }, [contentLng, selectedChannel?.id]);
 
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
+  const translations = base.watch('translations') || [];
+  const currentTranslationValue = translations.find((v: any) => v.languageCode === contentLng);
 
   const handleAddAsset = useCallback(
     (newId: string | undefined | null) => {
       if (!newId) return;
-      const currentIds = state.assetIds?.value || [];
-      setField('assetIds', [...currentIds, newId]);
+      const currentIds = base.watch('assetIds') || [];
+      base.setField('assetIds', [...currentIds, newId]);
     },
-    [state.assetIds?.value, setField],
+    [base, base.setField],
   );
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
-      if (!currentTranslationValue) return;
-      setField(
+      // On create the translations array is initially empty, so build a
+      // fallback translation object so the field update is never lost.
+      const baseTranslation = currentTranslationValue ?? {
+        languageCode: contentLng,
+        name: '',
+        slug: '',
+        description: '',
+      };
+
+      const updatedTranslation: Record<string, unknown> = {
+        ...baseTranslation,
+        [field]: e,
+        languageCode: contentLng,
+      };
+
+      // Auto-generate slug when name changes
+      if (field === 'name') {
+        const isCreate = id === undefined;
+        const existingSlug = baseTranslation.slug;
+        const slugWasManuallyEdited = slugManuallyEditedRef.current[contentLng ?? ''];
+
+        // Auto-fill slug when:
+        // 1. Create mode: always, unless user manually edited slug
+        // 2. Edit mode: only if the existing slug is empty/missing
+        if (!slugWasManuallyEdited && (isCreate || !existingSlug)) {
+          updatedTranslation.slug = normalizeString(e, '-');
+        }
+      }
+
+      base.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== contentLng, {
-          ...currentTranslationValue,
-          [field]: e,
-          languageCode: contentLng,
-        }),
+        setInArrayBy(translations, (t: any) => t.languageCode === contentLng, updatedTranslation),
       );
     },
-    [contentLng, translations],
+    [contentLng, translations, currentTranslationValue, id],
   );
+
+  const handleSlugManualEdit = useCallback(() => {
+    if (contentLng) {
+      slugManuallyEditedRef.current[contentLng] = true;
+    }
+  }, [contentLng]);
 
   return (
     <main>
@@ -98,24 +142,27 @@ export const CollectionsDetailView = () => {
               <div className="flex basis-full md:basis-1/3">
                 <Input
                   label={t('details.basic.name')}
-                  value={currentTranslationValue?.name ?? undefined}
+                  value={currentTranslationValue?.name ?? ''}
                   onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={state.translations?.errors}
+                  errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
                   required
                 />
               </div>
               <div className="flex basis-full md:basis-1/3">
                 <Input
                   label={t('details.basic.slug')}
-                  value={currentTranslationValue?.slug ?? undefined}
-                  onChange={(e) => setTranslationField('slug', e.target.value)}
+                  value={currentTranslationValue?.slug ?? ''}
+                  onChange={(e) => {
+                    handleSlugManualEdit();
+                    setTranslationField('slug', e.target.value);
+                  }}
                   required
                 />
               </div>
               <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/3">
                 <Switch
-                  checked={state.isPrivate?.value ?? undefined}
-                  onCheckedChange={(e) => setField('isPrivate', e)}
+                  checked={base.watch('isPrivate') ?? false}
+                  onCheckedChange={(e) => base.setField('isPrivate', e)}
                 />
                 <Label>{t('details.basic.isPrivate')}</Label>
               </div>
@@ -123,7 +170,7 @@ export const CollectionsDetailView = () => {
             <div className="flex basis-full flex-col">
               <Label className="mb-2">{t('details.basic.description')}</Label>
               <RichTextEditor
-                content={currentTranslationValue?.description ?? undefined}
+                content={currentTranslationValue?.description ?? ''}
                 onContentChanged={(e) => setTranslationField('description', e)}
               />
             </div>
@@ -131,10 +178,10 @@ export const CollectionsDetailView = () => {
         </CustomCard>
         <AssetsCard
           onAddAsset={handleAddAsset}
-          featuredAssetId={state.featuredAssetId?.value ?? undefined}
-          assetsIds={state.assetIds?.value ?? undefined}
-          onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
-          onAssetsChange={(ids) => setField('assetIds', ids)}
+          featuredAssetId={base.watch('featuredAssetId') ?? undefined}
+          assetsIds={base.watch('assetIds') ?? undefined}
+          onFeaturedAssetChange={(id) => base.setField('featuredAssetId', id)}
+          onAssetsChange={(ids) => base.setField('assetIds', ids)}
         />
         <EntityChannelManager
           entity="collection"
@@ -143,19 +190,19 @@ export const CollectionsDetailView = () => {
           onRemoveSuccess={() => navigate(Routes.collections.list)}
         />
         <FiltersCard
-          currentFiltersValue={state.filters?.value ?? undefined}
-          onFiltersValueChange={(filters) => setField('filters', filters ?? [])}
-          inheritValue={state.inheritFilters?.value ?? undefined}
-          onInheritChange={(e) => setField('inheritFilters', e)}
-          errors={state.filters?.errors}
+          currentFiltersValue={base.watch('filters') ?? undefined}
+          onFiltersValueChange={(filters) => base.setField('filters', filters ?? [])}
+          inheritValue={base.watch('inheritFilters') ?? false}
+          onInheritChange={(e) => base.setField('inheritFilters', e)}
+          errors={base.formState.errors?.filters?.message ? [base.formState.errors.filters.message as string] : undefined}
         />
         <EntityCustomFields
           entityName="collection"
           id={id}
           hideButton
           onChange={(customFields, translations) => {
-            setField('customFields', customFields);
-            if (translations) setField('translations', translations as any);
+            base.setField('customFields', customFields);
+            if (translations) base.setField('translations', translations as any);
           }}
           initialValues={
             entity && 'customFields' in entity

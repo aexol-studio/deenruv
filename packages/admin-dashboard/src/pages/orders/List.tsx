@@ -15,6 +15,7 @@ import {
   useServer,
 } from '@deenruv/react-ui-devkit';
 import { useCallback } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
@@ -55,7 +56,9 @@ export const OrdersListPage = () => {
   const { t } = useTranslation('table');
   const { t: tCommon } = useTranslation('common');
   const navigate = useNavigate();
-  const orderStates = useServer((state) => state.serverConfig?.orderProcess.map((p) => p.name) ?? []);
+  const orderStates = useServer(
+    useShallow((state) => state.serverConfig?.orderProcess.map((p) => p.name) ?? []),
+  );
 
   const getMethodName = useCallback(
     (code: string | undefined) =>

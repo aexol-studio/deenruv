@@ -153,7 +153,7 @@ function MyComponent() {
 | Access server configuration | `useServer` |
 | Store plugin-specific settings | Plugin `config` property |
 | Temporary UI state | React `useState` or `useReducer` |
-| Form state | `useGFFLP` or `useFFLP` |
+| Form state | `useDeenruvForm` with Zod schema |
 | List/pagination state | `useList` |
 
 ### Plugin Config for Custom Settings
@@ -234,10 +234,16 @@ function ProductPage() {
     { initialVariables: { id: productId } },
   );
 
-  // Form state with useGFFLP
-  const { state, setField } = useGFFLP('Product', 'name', 'slug')({
-    name: { initialValue: data?.product.name ?? '' },
-    slug: { initialValue: data?.product.slug ?? '' },
+  // Form state with useDeenruvForm
+  const form = useDeenruvForm({
+    schema: z.object({
+      name: z.string().min(1, 'Required'),
+      slug: z.string(),
+    }),
+    defaultValues: {
+      name: data?.product.name ?? '',
+      slug: data?.product.slug ?? '',
+    },
   });
 }
 ```

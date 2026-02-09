@@ -220,86 +220,123 @@ tables: [
 ### Podstawowe użycie
 
 ```tsx
-import { DetailView, useGFFLP, apiClient, useTranslation } from '@deenruv/react-ui-devkit';
+import {
+  DetailView, useDeenruvForm, z,
+  DeenruvForm,
+  FormField, FormItem, FormLabel, FormControl, FormMessage,
+  Input, Button, Switch, PageBlock, RichTextEditor, useTranslation, apiClient,
+} from '@deenruv/react-ui-devkit';
+
+const productSchema = z.object({
+  name: z.string().min(1, 'Wymagane'),
+  slug: z.string(),
+  description: z.string(),
+  enabled: z.boolean(),
+});
+
+type ProductFormValues = z.infer<typeof productSchema>;
 
 export function ProductDetailPage() {
   const { id } = useParams();
   const { t } = useTranslation('catalog');
 
-  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
-    'UpdateProductInput',
-    'name',
-    'slug',
-    'description',
-    'enabled',
-  )({
-    name: {
-      initialValue: '',
-      validate: (v) => (!v ? ['Required'] : undefined),
-    },
-    slug: { initialValue: '' },
-    description: { initialValue: '' },
-    enabled: { initialValue: true },
+  const form = useDeenruvForm({
+    schema: productSchema,
+    defaultValues: { name: '', slug: '', description: '', enabled: true },
   });
 
-  return (
-    <DetailView
-      title={state.name?.value || t('product.new')}
-      locationId="products-detail-view"
-      tabs={[
+  const handleSave = async (data: ProductFormValues) => {
+    await apiClient('mutation')({
+      updateProduct: [
         {
-          id: 'product',
-          label: t('tabs.product'),
-          content: (
-            <div className="space-y-4">
+          input: {
+            id,
+            enabled: data.enabled,
+            translations: [{
+              languageCode: LanguageCode.en,
+              name: data.name,
+              slug: data.slug,
+              description: data.description,
+            }],
+          },
+        },
+        { id: true },
+      ],
+    });
+  };
+
+  return (
+    <DeenruvForm form={form} onSubmit={handleSave}>
+      <DetailView
+        title={form.watch('name') || t('product.new')}
+        locationId="products-detail-view"
+        tabs={[
+          {
+            id: 'product',
+            label: t('tabs.product'),
+            content: (
               <PageBlock title={t('product.basicInfo')}>
-                <Input
-                  label={t('product.name')}
-                  value={state.name?.value ?? ''}
-                  onChange={(e) => setField('name', e.target.value)}
-                  error={state.name?.errors?.[0]}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('product.name')}</FormLabel>
+                      <FormControl><Input {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Input
-                  label={t('product.slug')}
-                  value={state.slug?.value ?? ''}
-                  onChange={(e) => setField('slug', e.target.value)}
+                <FormField
+                  control={form.control}
+                  name="slug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('product.slug')}</FormLabel>
+                      <FormControl><Input {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <RichTextEditor
-                  value={state.description?.value ?? ''}
-                  onChange={(v) => setField('description', v)}
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('product.description')}</FormLabel>
+                      <FormControl>
+                        <RichTextEditor value={field.value} onChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </PageBlock>
-            </div>
-          ),
-        },
-        {
-          id: 'variants',
-          label: t('tabs.variants'),
-          content: <VariantsTab productId={id} />,
-        },
-      ]}
-      sidebar={
-        <div className="space-y-4">
-          <CustomCard>
-            <CustomCardHeader title={t('product.status')} />
-            <Switch
-              checked={state.enabled?.value ?? true}
-              onCheckedChange={(v) => setField('enabled', v)}
-            />
-          </CustomCard>
-        </div>
-      }
-      actions={
-        <Button
-          onClick={async () => {
-            if (!checkIfAllFieldsAreValid()) return;
-            await saveProduct();
-          }}
-        >
-          {t('common.save')}
-        </Button>
-      }
-    />
+            ),
+          },
+          {
+            id: 'variants',
+            label: t('tabs.variants'),
+            content: <VariantsTab productId={id} />,
+          },
+        ]}
+        sidebar={
+          <FormField
+            control={form.control}
+            name="enabled"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('product.enabled')}</FormLabel>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        }
+        actions={<Button type="submit">{t('common.save')}</Button>}
+      />
+    </DeenruvForm>
   );
 }
 ```

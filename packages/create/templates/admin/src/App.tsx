@@ -9,7 +9,7 @@ const settings: DeenruvAdminPanelSettings = {
     name: "Deenruv Admin",
   },
   api: {
-    uri: import.meta.env.VITE_ADMIN_HOST_URL || "http://localhost:3000",
+    uri: import.meta.env.VITE_ADMIN_HOST_URL || "http://localhost:6100",
     authTokenName: "deenruv-auth-token",
     channelTokenName: "deenruv-token",
   },

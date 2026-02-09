@@ -10,7 +10,8 @@ import {
   DialogFooter,
   apiClient,
   useSettings,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   EntityCustomFields,
   useTranslation,
   CF,
@@ -27,6 +28,14 @@ interface AddFacetValueDialogProps {
   setOpen: (open: boolean) => void;
 }
 
+const facetValueSchema = z.object({
+  name: z.string().min(1),
+  code: z.string().min(1),
+  customFields: z.record(z.string(), z.unknown()).optional().default({}),
+});
+
+type FacetValueFormValues = z.infer<typeof facetValueSchema>;
+
 export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   facetId,
   onFacetValueChange,
@@ -36,24 +45,18 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
 }) => {
   const editMode = useMemo(() => !!facetValueId, [facetValueId]);
   const { t } = useTranslation('facets');
-  const { translationsLanguage: languageCode } = useSettings(({ translationsLanguage }) => ({ translationsLanguage }));
-  const { state, setField } = useGFFLP(
-    'FacetValue',
-    'name',
-    'code',
-    'customFields',
-  )({
-    name: {
-      validate: (v) => {
-        if (!v || v === '') return [t('requiredError')];
-      },
-    },
-    code: {
-      validate: (v) => {
-        if (!v || v === '') return [t('requiredError')];
-      },
+  const languageCode = useSettings((p) => p.translationsLanguage);
+  const form = useDeenruvForm({
+    schema: facetValueSchema,
+    defaultValues: {
+      name: '',
+      code: '',
+      customFields: {},
     },
   });
+  const nameValue = form.watch('name');
+  const codeValue = form.watch('code');
+  const customFieldsValue = form.watch('customFields');
 
   const fetchFacetValue = useCallback(
     () =>
@@ -64,13 +67,13 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           { items: { code: true, translations: { languageCode: true, name: true } } },
         ],
       }).then((resp) => {
-        setField('code', resp.facetValues.items[0].code);
-        setField(
+        form.setField('code', resp.facetValues.items[0].code);
+        form.setField(
           'name',
           resp.facetValues.items[0].translations.find((t) => t.languageCode === languageCode)?.name || '',
         );
         if ('customFields' in resp.facetValues.items[0])
-          setField('customFields', resp.facetValues.items[0].customFields as CF);
+          form.setField('customFields', resp.facetValues.items[0].customFields as CF);
       }),
     [facetValueId, t, languageCode],
   );
@@ -80,21 +83,16 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   }, [fetchFacetValue, facetValueId]);
 
   useEffect(() => {
-    if (editMode || !state.name?.value) return;
-    const facetCode = state.name?.value.toLowerCase().replace(/\s+/g, '-');
-    if (facetCode) setField('code', facetCode);
-  }, [state, editMode, setField]);
-
-  useEffect(() => {
-    console.log('ST', state);
-  }, [state]);
+    if (editMode || !nameValue) return;
+    const facetCode = nameValue.toLowerCase().replace(/\s+/g, '-');
+    if (facetCode) form.setField('code', facetCode);
+  }, [nameValue, editMode, form.setField]);
 
   const resetValues = useCallback(() => {
     onFacetValueChange();
     setOpen(false);
-    setField('name', '');
-    setField('code', '');
-  }, [onFacetValueChange, setField]);
+    form.reset({ name: '', code: '', customFields: {} });
+  }, [onFacetValueChange, form]);
 
   const saveFacetValue = useCallback(
     () =>
@@ -104,9 +102,11 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
             input: [
               {
                 facetId,
-                code: state.code!.value,
-                translations: [{ languageCode, name: state.name?.value }],
-                ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
+                code: codeValue,
+                translations: [{ languageCode, name: nameValue }],
+                ...(customFieldsValue && Object.keys(customFieldsValue).length > 0
+                  ? { customFields: customFieldsValue }
+                  : {}),
               },
             ],
           },
@@ -118,7 +118,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           resetValues();
         })
         .catch((err) => toast.message(t('addValueModal.error') + ': ' + err)),
-    [state, languageCode, facetId, resetValues, t],
+    [nameValue, codeValue, customFieldsValue, languageCode, facetId, resetValues, t],
   );
 
   const updateFacetValue = useCallback(() => {
@@ -129,9 +129,11 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           input: [
             {
               id: facetValueId,
-              code: state.code!.value,
-              translations: [{ languageCode, name: state.name?.value }],
-              ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
+              code: codeValue,
+              translations: [{ languageCode, name: nameValue }],
+              ...(customFieldsValue && Object.keys(customFieldsValue).length > 0
+                ? { customFields: customFieldsValue }
+                : {}),
             },
           ],
         },
@@ -143,7 +145,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
         resetValues();
       })
       .catch((err) => toast.message(t('addValueModal.error') + ': ' + err));
-  }, [state, languageCode, facetId, resetValues, t]);
+  }, [nameValue, codeValue, customFieldsValue, languageCode, facetValueId, resetValues, t]);
 
   return (
     <Dialog open={open} onOpenChange={resetValues}>
@@ -163,23 +165,23 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
         <div className="flex flex-col gap-3">
           <div>
             <Label>{t('addValueModal.nameLabel')}</Label>
-            <Input className="mt-1" value={state.name?.value} onChange={(e) => setField('name', e.target.value)} />
+            <Input className="mt-1" value={nameValue} onChange={(e) => form.setField('name', e.target.value)} />
           </div>
           <div>
             <Label>{t('addValueModal.codeLabel')}</Label>
-            <Input className="mt-1" value={state.code?.value} onChange={(e) => setField('code', e.target.value)} />
+            <Input className="mt-1" value={codeValue} onChange={(e) => form.setField('code', e.target.value)} />
           </div>
           <EntityCustomFields
             entityName="facetValue"
             id={facetValueId}
             hideButton
             initialValues={
-              state && 'customFields' in state
-                ? { customFields: state.customFields?.validatedValue as any }
+              customFieldsValue
+                ? { customFields: customFieldsValue as any }
                 : { customFields: {} }
             }
             onChange={(cf) => {
-              setField('customFields', cf);
+              form.setField('customFields', cf);
             }}
             additionalData={{}}
           />

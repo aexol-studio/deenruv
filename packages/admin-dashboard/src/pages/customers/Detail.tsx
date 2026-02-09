@@ -63,13 +63,13 @@ export const CustomersDetailPage = () => {
             },
             onSubmitted: (data) => {
               const sharedInput = {
-                emailAddress: data.emailAddress?.validatedValue,
-                firstName: data.firstName?.validatedValue,
-                lastName: data.lastName?.validatedValue,
-                phoneNumber: data.phoneNumber?.validatedValue,
-                title: data.title?.validatedValue,
-                ...('customFields' in data && data.customFields?.validatedValue
-                  ? { customFields: data.customFields.validatedValue }
+                emailAddress: data.emailAddress as string | undefined,
+                firstName: data.firstName as string | undefined,
+                lastName: data.lastName as string | undefined,
+                phoneNumber: data.phoneNumber as string | undefined,
+                title: data.title as string | undefined,
+                ...('customFields' in data && data.customFields
+                  ? { customFields: data.customFields }
                   : {}),
               };
               if (!sharedInput.emailAddress || !sharedInput.firstName || !sharedInput.lastName) return;

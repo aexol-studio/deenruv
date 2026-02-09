@@ -20,8 +20,8 @@ export interface InputProps extends Omit<
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, onChange, value, ...props }, ref) => {
-    const hasErrors = props.errors && props.errors.length > 0;
+  ({ className, type, onChange, value, startAdornment, endAdornment, adornmentPlain, wrapperClassName, errors, label, ...inputProps }, ref) => {
+    const hasErrors = errors && errors.length > 0;
     const inputClassName = cn(
       "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
       "focus:outline-none focus:ring-0 focus:border-input",
@@ -98,26 +98,26 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         setInternalValue(formattedValue);
       }
 
-      if (props.onBlur) {
-        props.onBlur(e);
+      if (inputProps.onBlur) {
+        inputProps.onBlur(e);
       }
     };
 
-    if (props.label || props.startAdornment || props.endAdornment) {
+    if (label || startAdornment || endAdornment) {
       return (
-        <div className={cn("grid w-full gap-1.5", props.wrapperClassName)}>
-          {props.label && (
-            <Label htmlFor={props.id || props.name}>{props.label}</Label>
+        <div className={cn("grid w-full gap-1.5", wrapperClassName)}>
+          {label && (
+            <Label htmlFor={inputProps.id || inputProps.name}>{label}</Label>
           )}
           <div className="flex items-center">
-            {props.startAdornment && (
+            {startAdornment && (
               <div
                 className={cn(
                   "-mr-2 flex h-full items-center rounded-l-md border border-solid border-input bg-muted pl-2 pr-2",
-                  props.adornmentPlain && "bg-background z-10 border-r-0",
+                  adornmentPlain && "bg-background z-10 border-r-0",
                 )}
               >
-                {props.startAdornment}
+                {startAdornment}
               </div>
             )}
             <input
@@ -128,16 +128,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               data-invalid={hasErrors || undefined}
               value={type === "currency" ? internalValue : value}
               onChange={type === "currency" ? handleCurrencyChange : onChange}
-              onBlur={type === "currency" ? handleCurrencyBlur : props.onBlur}
-              {...props}
+              onBlur={type === "currency" ? handleCurrencyBlur : inputProps.onBlur}
+              {...inputProps}
             />
-            {props.endAdornment && (
+            {endAdornment && (
               <div className="-ml-2 flex h-full items-center rounded-r-md border border-solid border-input bg-muted px-2">
-                {props.endAdornment}
+                {endAdornment}
               </div>
             )}
           </div>
-          <ErrorMessage errors={props.errors} />
+          <ErrorMessage errors={errors} />
         </div>
       );
     }
@@ -151,8 +151,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         data-invalid={hasErrors || undefined}
         value={type === "currency" ? internalValue : value}
         onChange={type === "currency" ? handleCurrencyChange : onChange}
-        onBlur={type === "currency" ? handleCurrencyBlur : props.onBlur}
-        {...props}
+        onBlur={type === "currency" ? handleCurrencyBlur : inputProps.onBlur}
+        {...inputProps}
       />
     );
   },

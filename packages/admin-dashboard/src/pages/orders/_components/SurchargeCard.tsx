@@ -7,7 +7,8 @@ import {
   Checkbox,
   Input,
   Label,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   useOrder,
   CustomCard,
 } from '@deenruv/react-ui-devkit';
@@ -15,53 +16,41 @@ import type React from 'react';
 import { useCallback, useState } from 'react';
 import { PlusCircle, DollarSign, Tag, FileText, Percent, Receipt, Loader2 } from 'lucide-react';
 
+const surchargeSchema = z.object({
+  description: z.string().min(1),
+  sku: z.string().min(1),
+  price: z.number().positive(),
+  priceIncludesTax: z.boolean().default(false),
+  taxDescription: z.string().default(''),
+  taxRate: z.number().default(0),
+});
+
 export const SurchargeCard: React.FC<{}> = () => {
   const { t } = useTranslation('orders');
   const { setModifyOrderInput, modifyOrderInput, setModifiedOrder, modifiedOrder } = useOrder();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { state, setField } = useGFFLP(
-    'SurchargeInput',
-    'description',
-    'price',
-    'priceIncludesTax',
-    'sku',
-    'taxDescription',
-    'taxRate',
-  )({
-    description: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('surcharge.validation.descriptionRequired', 'Description is required')];
-      },
-    },
-    sku: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('surcharge.validation.skuRequired', 'SKU is required')];
-      },
-    },
-    price: {
-      initialValue: 0,
-      validate: (v) => {
-        if (v === undefined || v === null) return [t('surcharge.validation.priceRequired', 'Price is required')];
-        if (v <= 0) return [t('surcharge.validation.pricePositive', 'Price must be greater than zero')];
-      },
-    },
-    priceIncludesTax: {
-      initialValue: false,
-    },
-    taxDescription: {
-      initialValue: '',
-    },
-    taxRate: {
-      initialValue: 0,
+  const form = useDeenruvForm({
+    schema: surchargeSchema,
+    defaultValues: {
+      description: '',
+      sku: '',
+      price: 0,
+      priceIncludesTax: false,
+      taxDescription: '',
+      taxRate: 0,
     },
   });
+  const description = form.watch('description');
+  const sku = form.watch('sku');
+  const price = form.watch('price');
+  const priceIncludesTax = form.watch('priceIncludesTax');
+  const taxDescription = form.watch('taxDescription');
+  const taxRate = form.watch('taxRate');
 
   const handleAddSurcharge = useCallback(async () => {
     // Validate all fields
-    if (!state.description?.value || !state.sku?.value || !state.price?.value || state.price?.value <= 0) {
+    if (!description || !sku || !price || price <= 0) {
       return;
     }
 
@@ -69,17 +58,16 @@ export const SurchargeCard: React.FC<{}> = () => {
 
     try {
       const orderWithSurcharge = Object.assign({}, modifyOrderInput);
-      const { description, price, priceIncludesTax, sku, taxDescription, taxRate } = state;
 
       const surchargesArray = modifyOrderInput?.surcharges || [];
 
       surchargesArray.push({
-        description: description?.value || '',
-        price: price?.value,
-        priceIncludesTax: priceIncludesTax?.value || false,
-        sku: sku?.value,
-        taxDescription: taxDescription?.value,
-        taxRate: taxRate?.value,
+        description: description || '',
+        price,
+        priceIncludesTax: priceIncludesTax || false,
+        sku,
+        taxDescription,
+        taxRate,
       });
 
       orderWithSurcharge.surcharges = surchargesArray;
@@ -90,32 +78,30 @@ export const SurchargeCard: React.FC<{}> = () => {
           surcharges: [
             ...modifiedOrder.surcharges,
             {
-              description: description?.value || '',
-              price:
-                taxRate?.value && priceIncludesTax?.value ? price?.value / (1 + taxRate.value / 100) : price?.value,
-              sku: sku?.value,
+              description: description || '',
+              price: taxRate && priceIncludesTax ? price / (1 + taxRate / 100) : price,
+              sku,
               createdAt: new Date().toDateString(),
-              priceWithTax:
-                taxRate?.value && !priceIncludesTax?.value
-                  ? +price?.value * (+taxRate?.value / 100) + +price?.value
-                  : +price?.value,
-              taxRate: taxRate?.value || 0,
+              priceWithTax: taxRate && !priceIncludesTax ? +price * (+taxRate / 100) + +price : +price,
+              taxRate: taxRate || 0,
             },
           ],
         });
       setModifyOrderInput(orderWithSurcharge);
 
       // Reset form fields
-      setField('description', '');
-      setField('sku', '');
-      setField('price', 0);
-      setField('priceIncludesTax', false);
-      setField('taxDescription', '');
-      setField('taxRate', 0);
+      form.reset({
+        description: '',
+        sku: '',
+        price: 0,
+        priceIncludesTax: false,
+        taxDescription: '',
+        taxRate: 0,
+      });
     } finally {
       setIsSubmitting(false);
     }
-  }, [state, modifiedOrder, modifyOrderInput, setModifiedOrder, setModifyOrderInput, setField]);
+  }, [description, sku, price, priceIncludesTax, taxDescription, taxRate, modifiedOrder, modifyOrderInput, setModifiedOrder, setModifyOrderInput, form]);
 
   return (
     <CustomCard
@@ -128,10 +114,10 @@ export const SurchargeCard: React.FC<{}> = () => {
           onClick={handleAddSurcharge}
           disabled={
             isSubmitting ||
-            !state.description?.value ||
-            !state.sku?.value ||
-            !state.price?.value ||
-            state.price?.value <= 0
+            !description ||
+            !sku ||
+            !price ||
+            price <= 0
           }
           className="ml-auto gap-2"
         >
@@ -162,10 +148,10 @@ export const SurchargeCard: React.FC<{}> = () => {
                 <Input
                   id="surcharge-description"
                   placeholder={t('surcharge.placeholders.description', 'Enter surcharge description')}
-                  value={state.description?.value || ''}
-                  onChange={(e) => setField('description', e.target.value)}
+                  value={description || ''}
+                  onChange={(e) => form.setField('description', e.target.value)}
                   className="pl-9"
-                  errors={state.description?.errors}
+                  errors={form.formState.errors.description?.message ? [form.formState.errors.description.message] : undefined}
                 />
                 <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <FileText className="size-4" />
@@ -181,10 +167,10 @@ export const SurchargeCard: React.FC<{}> = () => {
                 <Input
                   id="surcharge-sku"
                   placeholder={t('surcharge.placeholders.sku', 'Enter SKU code')}
-                  value={state.sku?.value || ''}
-                  onChange={(e) => setField('sku', e.target.value)}
+                  value={sku || ''}
+                  onChange={(e) => form.setField('sku', e.target.value)}
                   className="pl-9"
-                  errors={state.sku?.errors}
+                  errors={form.formState.errors.sku?.message ? [form.formState.errors.sku.message] : undefined}
                 />
                 <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <Tag className="size-4" />
@@ -204,10 +190,10 @@ export const SurchargeCard: React.FC<{}> = () => {
                   step="0.01"
                   min="0"
                   placeholder={t('surcharge.placeholders.price', 'Enter price')}
-                  value={state.price?.value || ''}
-                  onChange={(e) => setField('price', +e.target.value)}
+                  value={price || ''}
+                  onChange={(e) => form.setField('price', +e.target.value)}
                   className="pl-9"
-                  errors={state.price?.errors}
+                  errors={form.formState.errors.price?.message ? [form.formState.errors.price.message] : undefined}
                 />
                 <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <DollarSign className="size-4" />
@@ -226,8 +212,8 @@ export const SurchargeCard: React.FC<{}> = () => {
                   step="0.01"
                   min="0"
                   placeholder={t('surcharge.placeholders.taxRate', 'Enter tax rate')}
-                  value={state.taxRate?.value || 0}
-                  onChange={(e) => setField('taxRate', +e.target.value)}
+                  value={taxRate || 0}
+                  onChange={(e) => form.setField('taxRate', +e.target.value)}
                   className="pl-9"
                 />
                 <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
@@ -243,8 +229,8 @@ export const SurchargeCard: React.FC<{}> = () => {
                 <Input
                   id="surcharge-tax-description"
                   placeholder={t('surcharge.placeholders.taxDescription', 'Enter tax description')}
-                  value={state.taxDescription?.value || ''}
-                  onChange={(e) => setField('taxDescription', e.target.value)}
+                  value={taxDescription || ''}
+                  onChange={(e) => form.setField('taxDescription', e.target.value)}
                   className="pl-9"
                 />
                 <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
@@ -254,13 +240,13 @@ export const SurchargeCard: React.FC<{}> = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="surcharge-tax-included" className="text-sm font-medium">
-                {t('surcharge.labels.includesTax', { value: state.taxRate?.value })}
+                {t('surcharge.labels.includesTax', { value: taxRate })}
               </Label>
               <div className="flex items-center gap-2 pt-2">
                 <Checkbox
                   id="surcharge-tax-included"
-                  checked={state.priceIncludesTax?.value || false}
-                  onCheckedChange={(e) => setField('priceIncludesTax', Boolean(e))}
+                  checked={priceIncludesTax || false}
+                  onCheckedChange={(e) => form.setField('priceIncludesTax', Boolean(e))}
                 />
                 <Label htmlFor="surcharge-tax-included" className="cursor-pointer text-sm">
                   {t('surcharge.placeholders.taxIncluded', 'Tax is included in the price')}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createContext, useContext } from "react";
 import { DeletionResult, ModelTypes, ValueTypes } from "@deenruv/admin-types";
 
@@ -12,7 +12,7 @@ import { apiClient } from "@/zeus_client/deenruvAPICall";
 import { toast } from "sonner";
 import { useNavigate, useSearchParams } from "react-router";
 import { GraphQLError } from "graphql";
-import type { EntityType, PropsType, StoreContextType } from "./types";
+import type { EntityType, FormType, PropsType, StoreContextType } from "./types";
 import { useRouteGuard } from "@/hooks";
 import { useServer } from "@/state/server.js";
 import { customFieldsForQuery } from "@/zeus_client/customFieldsForQuery.js";
@@ -39,38 +39,16 @@ export const DetailViewStoreContext = createContext<
     keyof ModelTypes,
     keyof ModelTypes[keyof ModelTypes]
   >
->({
-  loading: false,
-  entity: null,
-  error: "",
-  tab: "",
-  tabs: [],
-  form: {
-    base: {
-      state: {},
-      setField: () => {},
-      checkIfAllFieldsAreValid: () => true,
-      clearErrors: () => {},
-      haveValidFields: true,
-      setState: () => {},
-      clearAllForm: () => {},
-    },
-    onSubmitted: () => Promise.resolve({}),
-    onDeleted: () => Promise.resolve({}),
-  },
-  actionHandler: () => {},
-  fetchEntity: async () => null,
-  setEntity: () => {},
-  setSidebar: () => {},
-  setActiveTab: () => {},
-  getMarker: () => null,
-  hasUnsavedChanges: false,
-  setAdditionalData: () => null,
-  additionalData: {},
-  addToQueue: () => {},
-  markAsDirty: () => {},
-  setLoading: () => null,
-});
+>(
+  // Default value is never used — useDetailView() throws when missing Provider.
+  // Using null + non-null assertion to avoid polluting with placeholder objects.
+  null as unknown as StoreContextType<
+    DetailKeys,
+    ExternalDetailLocationSelector[DetailKeys],
+    keyof ModelTypes,
+    keyof ModelTypes[keyof ModelTypes]
+  >,
+);
 
 export const DetailViewStoreProvider = <
   T extends DetailKeys,
@@ -133,14 +111,49 @@ export const DetailViewStoreProvider = <
     if (id !== undefined) fetchEntity();
   }, [tab, id]);
 
+  // Track the latest entity & markedAsDirty in refs so the watch callback
+  // (which must remain stable) always sees current values without being
+  // a dependency that restarts the subscription.
+  const entityRef = useRef(entity);
+  entityRef.current = entity;
+  const markedAsDirtyRef = useRef(markedAsDirty);
+  markedAsDirtyRef.current = markedAsDirty;
+
+  // Recompute unsaved-changes whenever the form values change via RHF's
+  // `watch()` subscription — this does NOT cause provider re-renders on
+  // every keystroke because `setHasUnsavedChanges` bails out when the
+  // boolean value is unchanged (React state identity check).
   useEffect(() => {
-    const _hasUnsavedChanges = checkUnsavedChanges(form.base.state, entity);
+    const compute = () => {
+      if (markedAsDirtyRef.current) {
+        setHasUnsavedChanges(true);
+        return;
+      }
+      const formValues = form.base.getValues();
+      setHasUnsavedChanges(checkUnsavedChanges(formValues, entityRef.current));
+    };
+
+    // Initial computation
+    compute();
+
+    // Subscribe to all form value changes — watch() returns an unsubscribe fn
+    const subscription = form.base.watch(() => {
+      compute();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form.base]);
+
+  // Re-run when entity or markedAsDirty change (refs are updated above,
+  // but we still need to trigger a recompute for these external changes).
+  useEffect(() => {
     if (markedAsDirty) {
       setHasUnsavedChanges(true);
-    } else {
-      setHasUnsavedChanges(_hasUnsavedChanges);
+      return;
     }
-  }, [form.base.state, entity, markedAsDirty]);
+    const formValues = form.base.getValues();
+    setHasUnsavedChanges(checkUnsavedChanges(formValues, entity));
+  }, [entity, markedAsDirty]);
 
   const handleSuccess = useCallback(
     (resp: Record<string, unknown>) => {
@@ -181,12 +194,13 @@ export const DetailViewStoreProvider = <
       Object.entries(queue).forEach(([key, { callback }]) => {
         callback().then(() => removeFromQueue(key));
       });
+      const formValues = base?.getValues() as Record<string, unknown>;
       if (type === "submit")
-        onSubmitted?.(base?.state, additionalData)
+        onSubmitted?.(formValues, additionalData)
           ?.then(handleSuccess)
           .catch(handleError);
       if (type === "delete")
-        onDeleted?.(base?.state, additionalData)
+        onDeleted?.(formValues, additionalData)
           ?.then(handleSuccess)
           .catch(handleError);
       Object.keys(queue).forEach(removeFromQueue);
@@ -196,8 +210,11 @@ export const DetailViewStoreProvider = <
 
   const setSidebar = useCallback((sidebar: React.ReactNode) => {
     if (typeof sidebar === "undefined") {
-      const tabWithSidebar = tabs.find((t) => (t as any).sidebar);
-      _setSidebar(tabWithSidebar ? (tabWithSidebar as any).sidebar : sidebar);
+      const tabWithSidebar = tabs.find(
+        (t): t is typeof t & { sidebar: React.ReactNode } =>
+          "sidebar" in t && t.sidebar !== undefined,
+      );
+      _setSidebar(tabWithSidebar ? tabWithSidebar.sidebar : sidebar);
     } else if (sidebar === null) {
       _setSidebar(null);
     } else {
@@ -284,6 +301,23 @@ export function useDetailView<
   if (!ctx)
     throw new Error("Missing DetailViewStoreContext.Provider in the tree");
 
-  //@ts-expect-error can't avoid this error...
-  return ctx;
+  return ctx as unknown as StoreContextType<T, E, F, FK>;
+}
+
+/**
+ * Like `useDetailView`, but returns `null` when there is no
+ * `DetailViewStoreProvider` in the component tree instead of throwing.
+ *
+ * Useful in components (e.g. list pages) that may or may not be rendered
+ * inside a detail-view context.
+ */
+export function useOptionalDetailView<
+  T extends DetailKeys,
+  E extends ExternalDetailLocationSelector[T],
+  F extends keyof ModelTypes,
+  FK extends keyof ModelTypes[F],
+>(): StoreContextType<T, E, F, FK> | null {
+  const ctx = useContext(DetailViewStoreContext);
+  if (!ctx) return null;
+  return ctx as unknown as StoreContextType<T, E, F, FK>;
 }

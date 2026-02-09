@@ -28,11 +28,11 @@ export type ImageTransformMode = "crop" | "resize";
  * the built-in "tiny" preset generates a 50px x 50px cropped preview, which can be accessed
  * by appending the string `preset=tiny` to the asset url:
  *
- * `http://localhost:3000/assets/some-asset.jpg?preset=tiny`
+ * `http://localhost:6100/assets/some-asset.jpg?preset=tiny`
  *
  * is equivalent to:
  *
- * `http://localhost:3000/assets/some-asset.jpg?w=50&h=50&mode=crop`
+ * `http://localhost:6100/assets/some-asset.jpg?w=50&h=50&mode=crop`
  *
  * @docsCategory core plugins/AssetServerPlugin
  */

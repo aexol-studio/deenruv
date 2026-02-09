@@ -35,6 +35,7 @@ import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/a
 
 import { ChevronLeft, EllipsisVerticalIcon, Info } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
@@ -54,7 +55,7 @@ export const TopActions: React.FC = () => {
     cancelOrder: _cancelOrder,
     cancelAndRefundOrder,
   } = useOrder();
-  const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
+  const orderProcess = useServer(useShallow((p) => p.serverConfig?.orderProcess || []));
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
   const { getDetailViewActions } = usePluginStore();

@@ -20,9 +20,7 @@ export const TaxCategoryDetailView = () => {
   const { id, form, entity, fetchEntity } = useDetailView('taxCategories-detail-view', ...TAX_CATEGORY_FORM_KEYS);
   const { t } = useTranslation('taxCategories');
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   useEffect(() => {
     (async () => {
@@ -30,8 +28,8 @@ export const TaxCategoryDetailView = () => {
 
       if (!res) return;
 
-      setField('name', res.name);
-      setField('isDefault', res['isDefault']);
+      base.setField('name', res.name);
+      base.setField('isDefault', res['isDefault']);
     })();
   }, [contentLng]);
 
@@ -43,16 +41,16 @@ export const TaxCategoryDetailView = () => {
             <div className="flex basis-full md:basis-1/2">
               <Input
                 label={t('details.basic.name')}
-                value={state.name?.value}
+                value={base.watch('name')}
                 required
                 onChange={(e) => {
-                  setField('name', e.target.value);
+                  base.setField('name', e.target.value);
                 }}
-                errors={state.name?.errors}
+                errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
               />
             </div>
             <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/2">
-              <Switch checked={state.isDefault?.value ?? undefined} onCheckedChange={(e) => setField('isDefault', e)} />
+              <Switch checked={base.watch('isDefault') ?? undefined} onCheckedChange={(e) => base.setField('isDefault', e)} />
               <Label>{t('details.basic.isDefault')}</Label>
             </div>
           </div>
@@ -63,7 +61,7 @@ export const TaxCategoryDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }

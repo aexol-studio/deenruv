@@ -43,9 +43,9 @@ pnpm start                # Launch server + admin panel
 Then open:
 | | |
 |---|---|
-| Admin Panel | [localhost:3001/admin-ui](http://localhost:3001/admin-ui/) |
-| Admin GraphQL API | [localhost:3000/admin-api](http://localhost:3000/admin-api) |
-| Shop GraphQL API | [localhost:3000/shop-api](http://localhost:3000/shop-api) |
+| Admin Panel | [localhost:6101/admin-ui](http://localhost:6101/admin-ui/) |
+| Admin GraphQL API | [localhost:6100/admin-api](http://localhost:6100/admin-api) |
+| Shop GraphQL API | [localhost:6100/shop-api](http://localhost:6100/shop-api) |
 | **Login** | `superadmin` / `superadmin` |
 
 ## Plugin Ecosystem

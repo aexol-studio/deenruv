@@ -27,7 +27,7 @@ const config = {
     BullMQJobQueuePlugin.init({
       connection: {
         host: 'localhost',
-        port: 6379,
+        port: 60379,
       },
       workerOptions: {
         concurrency: 10,
@@ -41,7 +41,7 @@ const config = {
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `connection` | `ConnectionOptions` | `127.0.0.1:6379` | Redis connection options |
+| `connection` | `ConnectionOptions` | `127.0.0.1:60379` | Redis connection options |
 | `queueOptions` | `QueueOptions` | - | BullMQ Queue instance options |
 | `workerOptions` | `WorkerOptions` | `{ concurrency: 3 }` | BullMQ Worker instance options |
 | `setRetries` | `fn(queueName, job) => number` | - | Override retry count per queue/job |

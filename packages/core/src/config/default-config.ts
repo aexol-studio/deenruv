@@ -68,7 +68,7 @@ export const defaultConfig: RuntimeDeenruvConfig = {
   logger: new DefaultLogger(),
   apiOptions: {
     hostname: "",
-    port: 3000,
+    port: 6100,
     adminApiPath: "admin-api",
     adminApiPlayground: false,
     adminApiDebug: false,

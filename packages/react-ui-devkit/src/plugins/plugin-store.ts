@@ -22,6 +22,12 @@ type I18Next = {
 
 export type DeenruvPluginStored = DeenruvUIPlugin & {
   status: "active" | "inactive";
+  /** Human-readable description of the plugin */
+  description?: string;
+  /** Plugin author name */
+  author?: string;
+  /** Plugin category for filtering */
+  category?: string;
 };
 
 export class PluginStore {
@@ -62,6 +68,10 @@ export class PluginStore {
     return Array.from(this.pluginMap.values()).filter(
       (plugin) => plugin.status === "active",
     );
+  }
+
+  getAllPlugins(): DeenruvPluginStored[] {
+    return Array.from(this.pluginMap.values());
   }
 
   changePluginStatus(name: string, status: "active" | "inactive") {
@@ -237,6 +247,33 @@ export class PluginStore {
       toInstall.map((entry) => entry.plugin),
       i18next,
     );
+
+    // Propagate manifest metadata onto stored plugins
+    for (const entry of deduped) {
+      const stored = this.pluginMap.get(entry.plugin.name);
+      if (stored) {
+        this.pluginMap.set(entry.plugin.name, {
+          ...stored,
+          status: enabledIds.has(entry.id) ? "active" : "inactive",
+          description: entry.description ?? stored.description,
+          author: entry.author ?? stored.author,
+          category: entry.category ?? stored.category,
+        });
+      }
+    }
+
+    // Also register disabled plugins so they appear in getAllPlugins()
+    for (const entry of deduped) {
+      if (!enabledIds.has(entry.id) && !this.pluginMap.has(entry.plugin.name)) {
+        this.pluginMap.set(entry.plugin.name, {
+          ...entry.plugin,
+          status: "inactive",
+          description: entry.description,
+          author: entry.author,
+          category: entry.category,
+        });
+      }
+    }
 
     return {
       installed,

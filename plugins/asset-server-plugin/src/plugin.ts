@@ -66,7 +66,7 @@ async function getFileType(buffer: Buffer) {
  *
  * Asset preview images can be transformed (resized & cropped) on the fly by appending query parameters to the url:
  *
- * `http://localhost:3000/assets/some-asset.jpg?w=500&h=300&mode=resize`
+ * `http://localhost:6100/assets/some-asset.jpg?w=500&h=300&mode=resize`
  *
  * The above URL will return `some-asset.jpg`, resized to fit in the bounds of a 500px x 300px rectangle.
  *
@@ -86,13 +86,13 @@ async function getFileType(buffer: Buffer) {
  * For example, let's say there is a very wide landscape image which we want to crop to be square. The main subject is a house to the far left of the
  * image. The following query would crop it to a square with the house centered:
  *
- * `http://localhost:3000/assets/landscape.jpg?w=150&h=150&mode=crop&fpx=0.2&fpy=0.7`
+ * `http://localhost:6100/assets/landscape.jpg?w=150&h=150&mode=crop&fpx=0.2&fpy=0.7`
  *
  * ### Format
  *
  * Since v1.7.0, the image format can be specified by adding the `format` query parameter:
  *
- * `http://localhost:3000/assets/some-asset.jpg?format=webp`
+ * `http://localhost:6100/assets/some-asset.jpg?format=webp`
  *
  * This means that, no matter the format of your original asset files, you can use more modern formats in your storefront if the browser
  * supports them. Supported values for `format` are:
@@ -108,7 +108,7 @@ async function getFileType(buffer: Buffer) {
  *
  * Since v2.2.0, the image quality can be specified by adding the `q` query parameter:
  *
- * `http://localhost:3000/assets/some-asset.jpg?q=75`
+ * `http://localhost:6100/assets/some-asset.jpg?q=75`
  *
  * This applies to the `jpg`, `webp` and `avif` formats. The default quality value for `jpg` and `webp` is 80, and for `avif` is 50.
  *
@@ -132,11 +132,11 @@ async function getFileType(buffer: Buffer) {
  *
  * means that a request to:
  *
- * `http://localhost:3000/assets/some-asset.jpg?preset=my-preset`
+ * `http://localhost:6100/assets/some-asset.jpg?preset=my-preset`
  *
  * is equivalent to:
  *
- * `http://localhost:3000/assets/some-asset.jpg?w=85&h=85&mode=crop`
+ * `http://localhost:6100/assets/some-asset.jpg?w=85&h=85&mode=crop`
  *
  * The AssetServerPlugin comes pre-configured with the following presets:
  *

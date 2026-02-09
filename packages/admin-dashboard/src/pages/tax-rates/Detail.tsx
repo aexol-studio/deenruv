@@ -5,24 +5,13 @@ import {
   useValidators,
   DetailView,
   createDeenruvForm,
-  GFFLPFormField,
   getMutation,
   useMutation,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { TaxRateDetailView } from '@/pages/tax-rates/_components/TaxRateDetailView.js';
-import { ModelTypes } from '@deenruv/admin-types';
 
-type CreateTaxRateInput = ModelTypes['CreateTaxRateInput'];
-type FormDataType = Partial<{
-  name: GFFLPFormField<CreateTaxRateInput['name']>;
-  categoryId: GFFLPFormField<CreateTaxRateInput['categoryId']>;
-  customerGroupId: GFFLPFormField<CreateTaxRateInput['customerGroupId']>;
-  enabled: GFFLPFormField<CreateTaxRateInput['enabled']>;
-  value: GFFLPFormField<CreateTaxRateInput['value']>;
-  zoneId: GFFLPFormField<CreateTaxRateInput['zoneId']>;
-  customFields: GFFLPFormField<CreateTaxRateInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreateTaxRateMutation = getMutation('createTaxRate');
 const EditTaxRateMutation = getMutation('updateTaxRate');
@@ -38,18 +27,18 @@ export const TaxRatesDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.name?.validatedValue) {
+      if (!data.name) {
         throw new Error('Name is required.');
       }
 
       const inputData = {
-        name: data.name!.validatedValue!,
-        enabled: data.enabled!.value!,
-        categoryId: data.categoryId!.validatedValue!,
-        value: data.value?.validatedValue || data.value?.initialValue,
-        zoneId: data.zoneId!.validatedValue!,
-        customerGroupId: data.customerGroupId?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        name: data.name as string,
+        enabled: (data.enabled ?? true) as boolean,
+        categoryId: data.categoryId as string,
+        value: data.value as number,
+        zoneId: data.zoneId as string,
+        customerGroupId: data.customerGroupId as string | undefined,
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

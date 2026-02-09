@@ -10,7 +10,7 @@ Pierwszą rzeczą, którą musisz zrobić, jest połączenie swojej aplikacji sk
 
 <Callout type="info">
 Możesz eksplorować Shop API, otwierając GraphQL Playground w przeglądarce pod adresem
-[`http://localhost:3000/shop-api`](http://localhost:3000/shop-api), gdy Twój serwer Deenruv
+[`http://localhost:6100/shop-api`](http://localhost:6100/shop-api), gdy Twój serwer Deenruv
 działa lokalnie.
 </Callout>
 
@@ -113,7 +113,7 @@ Powiedzmy, że masz kanał z tokenem `uk-channel` i chcesz wykonać żądanie do
 
 ```ts title="src/client.ts"
 export function query(document: string, variables: Record<string, any> = {}) {
-    return fetch('https://localhost:3000/shop-api', {
+    return fetch('https://localhost:6100/shop-api', {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
@@ -143,7 +143,7 @@ Nazwa nagłówka `deenruv-token` jest domyślna, ale można ją zmienić za pomo
 Jeśli masz tłumaczenia swoich produktów, kolekcji, faset itp., możesz określić język żądania, ustawiając parametr `languageCode` w query stringu żądania. Wartość powinna być jednym z kodów ISO 639-1 zdefiniowanych przez enum `LanguageCode`.
 
 ```
-POST http://localhost:3000/shop-api?languageCode=de
+POST http://localhost:6100/shop-api?languageCode=de
 ```
 
 ## Generowanie kodu
@@ -479,7 +479,7 @@ import {
 // przechowujemy token w localStorage pod tym kluczem.
 const AUTH_TOKEN_KEY = 'auth_token';
 
-const API_URL = 'http://localhost:3000/shop-api';
+const API_URL = 'http://localhost:6100/shop-api';
 
 // Jeśli mamy token sesji, dodajemy go do wychodzącego żądania
 const requestMiddleware: RequestMiddleware = async request => {

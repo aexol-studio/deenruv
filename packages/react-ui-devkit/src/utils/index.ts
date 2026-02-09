@@ -12,3 +12,5 @@ export * from "./dashCaseToCamelCase.js";
 export * from "./order_state.js";
 export * from "./getGraphqlError.js";
 export * from "./formatFileSize.js";
+export * from "./setInArrayBy.js";
+export { normalizeString } from "@deenruv/common/src/normalize-string";

@@ -20,7 +20,8 @@ import {
   useOrder,
   cn,
   CustomCard,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   useTranslation,
   useMutation,
 } from '@deenruv/react-ui-devkit';
@@ -72,68 +73,47 @@ export const AddressCard: React.FC<{
   const [selectedAddress, setSelectedAddress] = useState<DefaultAddress | undefined>(undefined);
   const isShipping = type === 'shipping';
 
-  const { state, setState } = useGFFLP(
-    'CreateAddressInput',
-    'city',
-    'company',
-    'countryCode',
-    'postalCode',
-    'fullName',
-    'phoneNumber',
-    'postalCode',
-    'streetLine1',
-    'streetLine2',
-    'province',
-    'customFields',
-  )({
-    fullName: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('selectAddress.nameRequired')];
-      },
+  const addressSchema = z.object({
+    city: z.string().min(1, t('selectAddress.cityRequired')),
+    company: z.string().default(''),
+    countryCode: z.string().min(1, t('selectAddress.countryRequired')),
+    postalCode: z.string().min(1, t('selectAddress.postalCodeRequired')),
+    fullName: z.string().min(1, t('selectAddress.nameRequired')),
+    phoneNumber: z.string().min(1, t('selectAddress.phoneNumberRequired')),
+    streetLine1: z.string().min(1, t('selectAddress.streetRequired')),
+    streetLine2: z.string().default(''),
+    province: z.string().default(''),
+    customFields: z.record(z.string(), z.any()).default({}),
+  });
+  const form = useDeenruvForm({
+    schema: addressSchema,
+    defaultValues: {
+      fullName: '',
+      company: '',
+      streetLine1: '',
+      streetLine2: '',
+      postalCode: '',
+      countryCode: '',
+      phoneNumber: '',
+      city: '',
+      province: '',
+      customFields: {},
     },
-    company: { initialValue: '' },
-    streetLine1: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('selectAddress.streetRequired')];
-      },
-    },
-    streetLine2: { initialValue: '' },
-    postalCode: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('selectAddress.postalCodeRequired')];
-      },
-    },
-    countryCode: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('selectAddress.countryRequired')];
-      },
-    },
-    phoneNumber: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('selectAddress.phoneNumberRequired')];
-      },
-    },
-    city: {
-      initialValue: '',
-      validate: (v) => {
-        if (!v || v === '') return [t('selectAddress.cityRequired')];
-      },
-    },
-    province: { initialValue: '' },
-    customFields: { initialValue: {} },
   });
 
   useEffect(() => {
     if (selectedAddress) {
-      setState({
-        ...selectedAddress,
+      form.reset({
+        ...form.getValues(),
+        fullName: selectedAddress.fullName ?? '',
+        company: selectedAddress.company ?? '',
+        streetLine1: selectedAddress.streetLine1 ?? '',
+        streetLine2: selectedAddress.streetLine2 ?? '',
+        city: selectedAddress.city ?? '',
+        postalCode: selectedAddress.postalCode ?? '',
+        province: selectedAddress.province ?? '',
+        phoneNumber: selectedAddress.phoneNumber ?? '',
         countryCode: selectedAddress.country?.code || '',
-        streetLine1: selectedAddress.streetLine1 || '',
       });
     }
   }, [selectedAddress]);
@@ -142,17 +122,20 @@ export const AddressCard: React.FC<{
     if (!order?.customer?.id) return;
     if (!!order?.customer?.addresses?.length && tab === 'select' && !selectedAddress) return;
 
+    const values = form.getValues();
     const input = {
-      fullName: state.fullName?.validatedValue,
-      company: state.company?.validatedValue,
-      streetLine1: state.streetLine1?.validatedValue || '',
-      streetLine2: state.streetLine2?.validatedValue,
-      countryCode: state.countryCode?.validatedValue || '',
-      city: state.city?.validatedValue,
-      phoneNumber: state.phoneNumber?.validatedValue,
-      postalCode: state.postalCode?.validatedValue,
-      province: state.province?.validatedValue,
-      ...('customFields' in state ? { customFields: (state.customFields as any).value } : {}),
+      fullName: values.fullName,
+      company: values.company,
+      streetLine1: values.streetLine1 || '',
+      streetLine2: values.streetLine2,
+      countryCode: values.countryCode || '',
+      city: values.city,
+      phoneNumber: values.phoneNumber,
+      postalCode: values.postalCode,
+      province: values.province,
+      ...(values.customFields && Object.keys(values.customFields).length > 0
+        ? { customFields: values.customFields }
+        : {}),
     };
 
     if (!order?.customer?.addresses?.length) {
@@ -170,7 +153,7 @@ export const AddressCard: React.FC<{
             const setAddress = type === 'shipping' ? setShippingAddress : setBillingAddress;
             setAddress({
               ...address,
-              countryCode: state.countryCode?.validatedValue || 'PL',
+              countryCode: values.countryCode || 'PL',
             });
 
             setOrder({
@@ -277,14 +260,32 @@ export const AddressCard: React.FC<{
     if (sameAddressInSaved) {
       setTab('select');
       setSelectedAddress(sameAddressInSaved);
-      setState({ countryCode: sameAddressInSaved.country?.code || '', ...sameAddressInSaved });
+      form.reset({
+        countryCode: sameAddressInSaved.country?.code || '',
+        fullName: sameAddressInSaved.fullName ?? '',
+        company: sameAddressInSaved.company ?? '',
+        streetLine1: sameAddressInSaved.streetLine1 ?? '',
+        streetLine2: sameAddressInSaved.streetLine2 ?? '',
+        city: sameAddressInSaved.city ?? '',
+        postalCode: sameAddressInSaved.postalCode ?? '',
+        province: sameAddressInSaved.province ?? '',
+        phoneNumber: sameAddressInSaved.phoneNumber ?? '',
+        customFields: {},
+      });
     } else {
       setSelectedAddress(undefined);
       if (currentAddress) {
-        setState({
-          ...currentAddress,
-          countryCode: currentAddress.countryCode || '',
+        form.reset({
+          fullName: currentAddress.fullName ?? '',
+          company: currentAddress.company ?? '',
           streetLine1: currentAddress.streetLine1 || '',
+          streetLine2: currentAddress.streetLine2 ?? '',
+          city: currentAddress.city ?? '',
+          postalCode: currentAddress.postalCode ?? '',
+          province: currentAddress.province ?? '',
+          phoneNumber: currentAddress.phoneNumber ?? '',
+          countryCode: currentAddress.countryCode || '',
+          customFields: {},
         });
       }
     }
@@ -409,7 +410,18 @@ export const AddressCard: React.FC<{
                                 className="size-8"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setState({ countryCode: address.country?.code || '', ...address });
+                                  form.reset({
+                                    countryCode: address.country?.code || '',
+                                    fullName: address.fullName ?? '',
+                                    company: address.company ?? '',
+                                    streetLine1: address.streetLine1 ?? '',
+                                    streetLine2: address.streetLine2 ?? '',
+                                    city: address.city ?? '',
+                                    postalCode: address.postalCode ?? '',
+                                    province: address.province ?? '',
+                                    phoneNumber: address.phoneNumber ?? '',
+                                    customFields: {},
+                                  });
                                   setTab('create');
                                 }}
                               >
@@ -430,26 +442,50 @@ export const AddressCard: React.FC<{
                       <ScrollArea className="pr-4">
                         <AddressForm
                           initialValues={{
-                            country: { code: state.countryCode!.validatedValue },
-                            streetLine1: state.streetLine1!.validatedValue,
-                            streetLine2: state.streetLine2!.validatedValue,
-                            city: state.city!.validatedValue,
-                            company: state.company!.validatedValue,
-                            fullName: state.fullName!.validatedValue,
-                            phoneNumber: state.phoneNumber!.validatedValue,
-                            postalCode: state.postalCode!.validatedValue,
-                            province: state.province?.validatedValue,
-                            ...(state.customFields?.validatedValue
-                              ? { customFields: state.customFields?.validatedValue }
+                            country: { code: form.getValues('countryCode') },
+                            streetLine1: form.getValues('streetLine1'),
+                            streetLine2: form.getValues('streetLine2'),
+                            city: form.getValues('city'),
+                            company: form.getValues('company'),
+                            fullName: form.getValues('fullName'),
+                            phoneNumber: form.getValues('phoneNumber'),
+                            postalCode: form.getValues('postalCode'),
+                            province: form.getValues('province'),
+                            ...(form.getValues('customFields') && Object.keys(form.getValues('customFields') ?? {}).length > 0
+                              ? { customFields: form.getValues('customFields') }
                               : {}),
                           }}
-                          onInputChange={setState}
+                          onInputChange={(input) => form.reset({
+                            ...form.getValues(),
+                            fullName: input.fullName ?? '',
+                            company: input.company ?? '',
+                            streetLine1: input.streetLine1 ?? '',
+                            streetLine2: input.streetLine2 ?? '',
+                            city: input.city ?? '',
+                            postalCode: input.postalCode ?? '',
+                            province: input.province ?? '',
+                            phoneNumber: input.phoneNumber ?? '',
+                            countryCode: input.countryCode ?? '',
+                            ...(input.customFields ? { customFields: input.customFields as Record<string, unknown> } : {}),
+                          })}
                         />
                       </ScrollArea>
                     </TabsContent>
                   </>
                 ) : (
-                  <AddressForm onInputChange={setState} />
+                  <AddressForm onInputChange={(input) => form.reset({
+                    ...form.getValues(),
+                    fullName: input.fullName ?? '',
+                    company: input.company ?? '',
+                    streetLine1: input.streetLine1 ?? '',
+                    streetLine2: input.streetLine2 ?? '',
+                    city: input.city ?? '',
+                    postalCode: input.postalCode ?? '',
+                    province: input.province ?? '',
+                    phoneNumber: input.phoneNumber ?? '',
+                    countryCode: input.countryCode ?? '',
+                    ...(input.customFields ? { customFields: input.customFields as Record<string, unknown> } : {}),
+                  })} />
                 )}
               </Tabs>
               <div className="mt-4 flex justify-end gap-2">

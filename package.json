@@ -41,12 +41,12 @@
     "docs:start": "pnpm --filter @deenruv/docs start",
     "codegen": "tsx scripts/codegen/generate-graphql-types.ts",
     "version": "pnpm check-imports && pnpm check-angular-versions && pnpm build && pnpm check-core-type-defs && pnpm generate-changelog && git add CHANGELOG* && git add */version.ts",
-    "start:server": "pnpm -filter=@deenruv/server run start",
-    "start:admin-ui": "pnpm -filter=@deenruv/panel run dev",
+    "start:server": "pnpm --filter=server run start",
+    "start:admin-ui": "concurrently \"pnpm --filter=@deenruv/react-ui-devkit run watch\" \"pnpm --filter=@deenruv/admin-dashboard run watch\" \"pnpm --filter=panel run dev\" --names \"ui-devkit,dashboard,panel\" --prefix-colors \"blue,green,yellow\"",
     "start": "concurrently -n server,admin-ui -c green,blue \"pnpm -filter=server run start\" \"pnpm -filter=panel run dev\"",
     "server-docker-up": "docker compose up -d",
     "server-docker-down": "docker compose down -v",
-    "server-populate": "pnpm -filter=@deenruv/server populate",
+    "server-populate": "pnpm --filter=server run populate",
     "build": "pnpm -r --workspace-concurrency=1 run build",
     "build:dev": "pnpm -r run build",
     "watch:plugin:deenruv-examples-plugin": "pnpm -filter=@deenruv/deenruv-examples-plugin run watch",
@@ -136,7 +136,7 @@
   "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264",
   "pnpm": {
     "overrides": {
-      "lucide-react": "^0.475.0",
+      "lucide-react": "^0.563.0",
       "@types/react": "^19.0.0",
       "@types/react-dom": "^19.0.0"
     }

@@ -45,7 +45,7 @@ EmailPlugin.init({
 });
 ```
 
-In dev mode, emails are saved as HTML files and a web-based mailbox UI is available at the configured route (e.g. `http://localhost:3000/mailbox`).
+In dev mode, emails are saved as HTML files and a web-based mailbox UI is available at the configured route (e.g. `http://localhost:6100/mailbox`).
 
 **Options:**
 

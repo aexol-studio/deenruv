@@ -17,7 +17,7 @@ import {
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { SortSelect } from "@/components/templates/DetailList/useDetailListHook/SortSelect.js";
 import { useSettings } from "@/state/settings.js";
-import { useDetailView } from "../../DetailView/useDetailView.js";
+import { useOptionalDetailView } from "../../DetailView/useDetailView.js";
 
 type FIELD = keyof ModelTypes[ListType[keyof ListType]];
 type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
@@ -57,10 +57,10 @@ export const useDetailListHook = <
   changeFilterField: (index: number, field: FIELD) => void;
   loading: boolean;
 } => {
-  const { additionalData, setAdditionalData } = useDetailView();
-  const { translationsLanguage } = useSettings(({ translationsLanguage }) => ({
-    translationsLanguage,
-  }));
+  const detailView = useOptionalDetailView();
+  const additionalData = detailView?.additionalData;
+  const setAdditionalData = detailView?.setAdditionalData;
+  const translationsLanguage = useSettings((p) => p.translationsLanguage);
   const [searchParams, setSearchParams] = useCustomSearchParams({
     fakeURLParams,
   });
@@ -231,7 +231,7 @@ export const useDetailListHook = <
         setObjects(items);
         setTotal(totalItems);
       });
-      setAdditionalData({ ...additionalData, refetchList: false });
+      setAdditionalData?.({ ...additionalData, refetchList: false });
     }
   }, [additionalData, translationsLanguage, searchParams]);
 

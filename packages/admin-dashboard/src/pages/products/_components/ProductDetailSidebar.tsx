@@ -1,5 +1,5 @@
 import { EntityChannelManager, Routes, useDetailView } from '@deenruv/react-ui-devkit';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import { SettingsCard } from './SettingsCard';
 
@@ -19,29 +19,35 @@ const PRODUCT_FORM_KEYS = [
 export const ProductDetailSidebar: React.FC<{ marker?: ReactNode }> = ({ marker }) => {
   const { form, entity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
   const navigate = useNavigate();
-  const {
-    base: { state, setField },
-  } = form;
+  const { base } = form;
+  // Guard: only set creation-mode defaults once to avoid rerender churn.
+  const creationDefaultsApplied = useRef(false);
 
   useEffect(() => {
     if (!entity) {
-      setField('facetValueIds', []);
-      setField('enabled', true);
+      if (!creationDefaultsApplied.current) {
+        creationDefaultsApplied.current = true;
+        base.setField('facetValueIds', []);
+        base.setField('enabled', true);
+      }
       return;
     }
-    setField(
+    // When entity arrives, reset the guard so a subsequent unmount/remount
+    // of the sidebar (e.g. tab switch) can reinitialise if needed.
+    creationDefaultsApplied.current = false;
+    base.setField(
       'facetValueIds',
       entity.facetValues.map((f) => f.id),
     );
-    setField('enabled', entity.enabled);
+    base.setField('enabled', entity.enabled);
   }, [entity]);
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <SettingsCard enabledValue={state.enabled?.value ?? undefined} onEnabledChange={(e) => setField('enabled', e)} />
+      <SettingsCard enabledValue={base.watch('enabled') ?? undefined} onEnabledChange={(e) => base.setField('enabled', e)} />
       <FacetValuesCard
-        facetValuesIds={state.facetValueIds?.value ?? undefined}
-        onChange={(e) => setField('facetValueIds', e)}
+        facetValuesIds={base.watch('facetValueIds') ?? undefined}
+        onChange={(e) => base.setField('facetValueIds', e)}
       />
       {!!entity?.channels?.length && (
         <EntityChannelManager

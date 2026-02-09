@@ -4,22 +4,13 @@ import {
   useTranslation,
   DetailView,
   createDeenruvForm,
-  GFFLPFormField,
   getMutation,
   useMutation,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { ShippingMethodDetailView } from '@/pages/shipping-methods/_components/ShippingMethodDetailView.js';
 
-type CreateShippingMethodInput = ModelTypes['CreateShippingMethodInput'];
-type FormDataType = Partial<{
-  code: GFFLPFormField<CreateShippingMethodInput['code']>;
-  calculator: GFFLPFormField<CreateShippingMethodInput['calculator']>;
-  translations: GFFLPFormField<CreateShippingMethodInput['translations']>;
-  fulfillmentHandler: GFFLPFormField<CreateShippingMethodInput['fulfillmentHandler']>;
-  checker: GFFLPFormField<CreateShippingMethodInput['checker']>;
-  customFields: GFFLPFormField<CreateShippingMethodInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreateShippingMethodMutation = getMutation('createShippingMethod');
 const EditShippingMethodMutation = getMutation('updateShippingMethod');
@@ -34,17 +25,18 @@ export const ShippingMethodsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.code?.validatedValue) {
+      if (!data.code) {
         throw new Error('Name is required.');
       }
 
+      const checker = data.checker as ModelTypes['CreateShippingMethodInput']['checker'];
       const inputData = {
-        code: data.code?.validatedValue,
-        calculator: data.calculator?.validatedValue,
-        fulfillmentHandler: data.fulfillmentHandler?.validatedValue,
-        translations: data.translations!.validatedValue!,
-        checker: data.checker?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        code: data.code as string,
+        calculator: data.calculator as ModelTypes['CreateShippingMethodInput']['calculator'],
+        fulfillmentHandler: data.fulfillmentHandler as string,
+        translations: data.translations as ModelTypes['CreateShippingMethodInput']['translations'],
+        checker,
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {
@@ -52,7 +44,7 @@ export const ShippingMethodsDetailPage = () => {
           input: {
             id,
             ...inputData,
-            checker: data.checker?.validatedValue?.code !== '' ? data.checker?.validatedValue : undefined,
+            checker: checker?.code !== '' ? checker : undefined,
           },
         });
       } else {
@@ -105,7 +97,6 @@ export const ShippingMethodsDetailPage = () => {
                   const hasCode = !!v?.code;
                   const hasInvalidArguments = v?.arguments.filter((a) => !a.value || a.value === 'false').length; // args have 'false' value by default
                   const errors = [];
-                  console.log(v?.arguments);
                   if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
                   if (hasInvalidArguments) errors.push(t('validation.checkerArgsRequired'));
                   return errors;
@@ -118,9 +109,9 @@ export const ShippingMethodsDetailPage = () => {
               },
               translations: {
                 validate: (v) => {
-                  const { name } = v[0];
-
-                  if (!name) return [t('validation.nameRequired')];
+                  if (!Array.isArray(v) || v.length === 0) return [t('validation.nameRequired')];
+                  const hasName = v.some((entry: Record<string, unknown>) => entry && entry.name);
+                  if (!hasName) return [t('validation.nameRequired')];
                 },
               },
             },

@@ -30,5 +30,5 @@
       }
     ]
   },
-  "exclude": ["dist", "node_modules", "docs", "generate-docs.ts"]
+  "exclude": ["dist", "node_modules", "docs", "generate-docs.ts", "**/*.spec.ts"]
 }

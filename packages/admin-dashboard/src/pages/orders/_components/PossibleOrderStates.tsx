@@ -1,5 +1,6 @@
 import type React from 'react';
 import { useMemo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import {
   ScrollArea,
   Dialog,
@@ -26,7 +27,7 @@ export const PossibleOrderStates: React.FC<{
 }> = ({ orderState }) => {
   const { t } = useTranslation('orders');
   const { t: tCommon } = useTranslation('common');
-  const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
+  const orderProcess = useServer(useShallow((p) => p.serverConfig?.orderProcess || []));
   const statesAfterCancelled = useMemo(() => {
     const cancelledIndex = orderProcess.findIndex((s) => s.name === 'Cancelled');
     if (cancelledIndex === -1) return null;

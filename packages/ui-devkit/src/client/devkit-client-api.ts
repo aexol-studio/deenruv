@@ -9,7 +9,7 @@ import {
 import { Observable } from "rxjs";
 import { take } from "rxjs/operators";
 
-let targetOrigin = "http://localhost:3000";
+let targetOrigin = "http://localhost:6100";
 
 /**
  * @description

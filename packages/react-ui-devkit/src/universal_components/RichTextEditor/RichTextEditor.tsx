@@ -10,7 +10,20 @@ import { cn } from "@/lib/utils.js";
 import React from "react";
 import { ErrorMessage } from "@/components/molecules";
 
-const extensions = [StarterKit, Document, Paragraph, Text, Heading];
+// Configure StarterKit to disable built-in extensions we override explicitly,
+// avoiding tiptap "duplicate extension" warnings.
+const extensions = [
+  StarterKit.configure({
+    document: false,
+    paragraph: false,
+    text: false,
+    heading: false,
+  }),
+  Document,
+  Paragraph,
+  Text,
+  Heading,
+];
 
 interface RichTextEditorProps {
   content: string | undefined;

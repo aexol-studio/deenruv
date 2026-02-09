@@ -6,21 +6,12 @@ import {
   createDeenruvForm,
   getMutation,
   useMutation,
-  GFFLPFormField,
 } from '@deenruv/react-ui-devkit';
 import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';
 import { ModelTypes } from '@deenruv/admin-types';
 
 type CreateCollectionInput = ModelTypes['CreateCollectionInput'];
-type FormDataType = Partial<{
-  assetIds: GFFLPFormField<CreateCollectionInput['assetIds']>;
-  featuredAssetId: GFFLPFormField<CreateCollectionInput['featuredAssetId']>;
-  filters: GFFLPFormField<CreateCollectionInput['filters']>;
-  inheritFilters: GFFLPFormField<CreateCollectionInput['inheritFilters']>;
-  isPrivate: GFFLPFormField<CreateCollectionInput['isPrivate']>;
-  parentId: GFFLPFormField<CreateCollectionInput['parentId']>;
-  translations: GFFLPFormField<CreateCollectionInput['translations']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreateCollectionMutation = getMutation('createCollection');
 const EditCollectionMutation = getMutation('updateCollection');
@@ -35,13 +26,14 @@ export const CollectionsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
+      const translations = data.translations as CreateCollectionInput['translations'];
       const inputData = {
-        assetIds: data.assetIds?.validatedValue,
-        featuredAssetId: data.featuredAssetId?.validatedValue,
-        isPrivate: data.isPrivate?.validatedValue,
-        inheritFilters: data.inheritFilters?.validatedValue,
-        filters: data.filters!.validatedValue!,
-        translations: data.translations!.validatedValue!.map((t) => ({
+        assetIds: data.assetIds as CreateCollectionInput['assetIds'],
+        featuredAssetId: data.featuredAssetId as CreateCollectionInput['featuredAssetId'],
+        isPrivate: data.isPrivate as CreateCollectionInput['isPrivate'],
+        inheritFilters: data.inheritFilters as CreateCollectionInput['inheritFilters'],
+        filters: data.filters as CreateCollectionInput['filters'],
+        translations: translations!.map((t) => ({
           description: t.description || '',
           name: t.name || '',
           languageCode: t.languageCode,

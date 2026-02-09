@@ -6,7 +6,6 @@ import {
   createDeenruvForm,
   getMutation,
   useMutation,
-  GFFLPFormField,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
@@ -17,13 +16,7 @@ import { RoleDetailView } from '@/pages/roles/_components/RoleDetailView.js';
 //   description: '',
 // };
 
-type CreateRoleInput = ModelTypes['CreateRoleInput'];
-type FormDataType = Partial<{
-  code: GFFLPFormField<CreateRoleInput['code']>;
-  channelIds: GFFLPFormField<CreateRoleInput['channelIds']>;
-  description: GFFLPFormField<CreateRoleInput['description']>;
-  permissions: GFFLPFormField<CreateRoleInput['permissions']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreateRoleMutation = getMutation('createRole');
 const EditRoleMutation = getMutation('updateRole');
@@ -39,15 +32,15 @@ export const RolesDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.code?.validatedValue) {
+      if (!data.code) {
         throw new Error('Name is required.');
       }
 
       const inputData = {
-        code: data.code.validatedValue,
-        channelIds: data.channelIds?.validatedValue,
-        description: data.description?.validatedValue,
-        permissions: data.permissions?.validatedValue,
+        code: data.code as string,
+        channelIds: data.channelIds as ModelTypes['CreateRoleInput']['channelIds'],
+        description: data.description as string | undefined,
+        permissions: data.permissions as ModelTypes['CreateRoleInput']['permissions'],
       };
 
       if (id) {

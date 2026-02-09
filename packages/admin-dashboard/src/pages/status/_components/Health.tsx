@@ -8,6 +8,7 @@ import {
   Skeleton,
   useServer,
 } from '@deenruv/react-ui-devkit';
+import { useShallow } from 'zustand/react/shallow';
 import { RefreshCw, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 
 const getStatusBadge = (status: string) => {
@@ -43,7 +44,7 @@ const getStatusBadge = (status: string) => {
 };
 export const Health = () => {
   const { t } = useTranslation('system');
-  const { data, lastUpdated, loading } = useServer((state) => state.status);
+  const { data, lastUpdated, loading } = useServer(useShallow((state) => state.status));
   const fetchStatus = useServer((state) => state.fetchStatus);
 
   return (

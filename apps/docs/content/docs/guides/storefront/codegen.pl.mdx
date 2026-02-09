@@ -31,7 +31,7 @@ npm install
 
 Podczas kroku `init` zostaniesz poproszony o wybranie różnych opcji konfiguracji generowania kodu.
 
--   Where is your schema?: Użyj `http://localhost:3000/shop-api` (chyba że skonfigurowałeś inny URL GraphQL API)
+-   Where is your schema?: Użyj `http://localhost:6100/shop-api` (chyba że skonfigurowałeś inny URL GraphQL API)
 -   Where are your operations and fragments?: Użyj odpowiedniego wzorca glob dla swojego projektu. Na przykład `src/**/*.{ts,tsx}`.
 -   Wybierz `codegen.ts` jako nazwę pliku konfiguracyjnego.
 
@@ -44,7 +44,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
     overwrite: true,
-    schema: 'http://localhost:3000/shop-api',
+    schema: 'http://localhost:6100/shop-api',
     documents: 'src/**/*.graphql.ts',
     generates: {
         'src/gql/': {
@@ -113,7 +113,7 @@ export default function App() {
     queryKey: ['products'],
     queryFn: async () =>
       request(
-        'http://localhost:3000/shop-api',
+        'http://localhost:6100/shop-api',
         GET_PRODUCTS,
         {
         // Zmienne również będą poprawnie typowane

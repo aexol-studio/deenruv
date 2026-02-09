@@ -57,7 +57,6 @@ export const CollectionsListPage = () => {
               <div style={{ paddingLeft: `${row.depth * 2}rem` }}>
                 <ListBadge
                   {...{
-                    paddingLeft: `${row.depth * 2}rem`,
                     onClick: row.getToggleExpandedHandler(),
                     style: { cursor: 'pointer' },
                   }}

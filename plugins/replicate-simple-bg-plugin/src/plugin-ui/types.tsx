@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Resolver } from "react-hook-form";
 
 export const formSchema = z.object({
-  file: z.union([z.instanceof(File), z.null()]),
+  file: z.union([z.file(), z.null()]),
   room_type_enum: z.string().min(1),
   room_style_enum: z.string().min(1),
   prompt: z.string().optional().nullable(),
@@ -12,8 +12,8 @@ export const formSchema = z.object({
 export type FormValues = z.infer<typeof formSchema>;
 
 export const useReplicateForm = () => {
-  // zodResolver type constraint mismatches due to zod v3/v4 compat layer;
-  // cast through unknown to bridge the incompatible ZodType definitions.
+  // With zod@4 + @hookform/resolvers@5, zodResolver expects the native
+  // Zod 4 ZodType. Cast through unknown to satisfy both overload variants.
   const resolver = (
     zodResolver as unknown as (
       schema: typeof formSchema,

@@ -13,6 +13,7 @@ import {
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 type Props = {
   line: OrderDetailType['lines'][number];
@@ -23,7 +24,7 @@ type Props = {
 export const OrderLineCustomFields = ({ line, order, mode }: Props) => {
   const { setModifiedOrder } = useOrder(({ setModifiedOrder }) => ({ setModifiedOrder }));
   const orderLineCustomFields = useServer(
-    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+    useShallow((p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || []),
   );
   const { t } = useTranslation('common');
   const [open, setOpen] = useState(false);

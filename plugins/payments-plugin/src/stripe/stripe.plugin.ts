@@ -156,7 +156,7 @@ import { StripePluginOptions } from "./types";
  * under "Test in a local environment".
  * 3. The Stripe CLI command will look like
  *    ```shell
- *    stripe listen --forward-to localhost:3000/payments/stripe
+ *    stripe listen --forward-to localhost:6100/payments/stripe
  *    ```
  * 4. The Stripe CLI will create a webhook signing secret you can then use in your config of the StripePlugin.
  *

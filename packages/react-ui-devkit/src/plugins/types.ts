@@ -185,6 +185,23 @@ export type DeenruvUIPluginManifestItem<
   plugin: DeenruvUIPlugin<T>;
   /** Whether this plugin is enabled when no env override is provided */
   enabledByDefault: boolean;
+  /** Human-readable description of the plugin */
+  description?: string;
+  /** Plugin author name */
+  author?: string;
+  /** Plugin category for filtering */
+  category?:
+    | "visualization"
+    | "forms"
+    | "security"
+    | "integration"
+    | "ui"
+    | "data"
+    | "communication"
+    | "shipping"
+    | "payments"
+    | "marketing"
+    | "tools";
 };
 
 /**

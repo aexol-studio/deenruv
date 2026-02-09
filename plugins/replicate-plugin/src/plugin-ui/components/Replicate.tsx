@@ -33,7 +33,7 @@ import {
   copyToClipboard,
   exportToCsv,
 } from "./ReplicateUtilities.js";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 import React from "react";
 
 type Formvalues = {

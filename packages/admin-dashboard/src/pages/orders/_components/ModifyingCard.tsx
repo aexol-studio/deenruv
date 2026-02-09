@@ -19,7 +19,8 @@ import {
   Separator,
   DryRunOptions,
   ChangesRegistry,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
@@ -33,12 +34,28 @@ interface ModifyingCardProps {
   changes: ChangesRegistry | undefined;
 }
 
+const modifyOrderSchema = z.object({
+  note: z.string().default(''),
+  options: z.object({
+    recalculateShipping: z.boolean().default(false),
+    freezePromotions: z.boolean().default(false),
+  }).default({ recalculateShipping: false, freezePromotions: false }),
+});
+
 export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, onOptionsChange, changes }) => {
   const { t } = useTranslation('orders');
   const { modifiedOrder, setModifyOrderInput, modifyOrder, modifyOrderInput } = useOrder();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { state, setField } = useGFFLP('ModifyOrderInput')({});
+  const form = useDeenruvForm({
+    schema: modifyOrderSchema,
+    defaultValues: {
+      note: '',
+      options: { recalculateShipping: false, freezePromotions: false },
+    },
+  });
+  const note = form.watch('note');
+  const options = form.watch('options');
   const [noteAdded, setNoteAdded] = useState(false);
   const [sendRefund, setSendRefund] = useState(false);
   const [refundReason, setRefundReason] = useState('');
@@ -56,14 +73,14 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
     if (priceDifference < 0) setSendRefund(true);
   }, [priceDifference]);
 
-  useEffect(() => setNoteAdded(!!state.note?.value), [state.note?.value]);
+  useEffect(() => setNoteAdded(!!note), [note]);
 
   useEffect(() => {
-    if (modifiedOrder && state.note?.value) {
+    if (modifiedOrder && note) {
       setModifyOrderInput({
         ...modifyOrderInput,
-        note: state.note?.value,
-        options: state.options?.value,
+        note,
+        options,
         refund:
           sendRefund && currentPayment?.transactionId
             ? {
@@ -74,7 +91,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
             : undefined,
       });
     }
-  }, [state, modifiedOrder]);
+  }, [note, options, modifiedOrder]);
 
   const acceptModifiedChanges = async () => {
     if (!noteAdded) return;
@@ -116,11 +133,11 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
               <Textarea
                 id="note"
                 placeholder={t('notePlaceholder', 'Enter a note explaining the reason for these modifications...')}
-                value={state.note?.value ?? ''}
-                onChange={(e) => setField('note', e.target.value)}
+                value={note ?? ''}
+                onChange={(e) => form.setField('note', e.target.value)}
                 className="min-h-[60px] resize-y"
               />
-              {!state.note?.value && (
+              {!note && (
                 <div className="absolute top-3 right-3 text-amber-500">
                   <AlertCircle className="size-4" />
                 </div>
@@ -151,13 +168,13 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="recalculateShipping"
-                      checked={state.options?.value?.recalculateShipping ?? false}
+                      checked={options?.recalculateShipping ?? false}
                       onCheckedChange={(e) => {
                         const optionsObj = {
-                          freezePromotions: state?.options?.value?.freezePromotions || false,
+                          freezePromotions: options?.freezePromotions || false,
                           recalculateShipping: !!e,
                         };
-                        setField('options', optionsObj);
+                        form.setField('options', optionsObj);
                         onOptionsChange(optionsObj);
                       }}
                     />
@@ -173,13 +190,13 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="freezePromotions"
-                      checked={state.options?.value?.freezePromotions ?? false}
+                      checked={options?.freezePromotions ?? false}
                       onCheckedChange={(e) => {
                         const optionsObj = {
                           freezePromotions: !!e,
-                          recalculateShipping: state?.options?.value?.recalculateShipping || false,
+                          recalculateShipping: options?.recalculateShipping || false,
                         };
-                        setField('options', optionsObj);
+                        form.setField('options', optionsObj);
                         onOptionsChange(optionsObj);
                       }}
                     />

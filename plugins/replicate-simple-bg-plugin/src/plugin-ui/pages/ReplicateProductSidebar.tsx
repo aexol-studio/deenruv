@@ -39,9 +39,7 @@ export const ReplicateProductSidebar: React.FC = () => {
     id: productId,
     entity,
     markAsDirty,
-    form: {
-      base: { state, setField },
-    },
+    form: { base },
   } = useDetailView("products-detail-view");
   const [form, setForm] = useState<{
     roomType?: string;
@@ -145,8 +143,9 @@ export const ReplicateProductSidebar: React.FC = () => {
     });
     if (!asset || !entity) return;
     const newAsset = asset.getPredictionAsset;
-    if (state.assetIds?.value) {
-      setField("assetIds", [...state.assetIds.value, newAsset.id]);
+    const currentAssetIds = base.getValues('assetIds');
+    if (currentAssetIds) {
+      base.setField("assetIds", [...currentAssetIds, newAsset.id]);
     }
     markAsDirty();
     setIsDialogVisible(false);

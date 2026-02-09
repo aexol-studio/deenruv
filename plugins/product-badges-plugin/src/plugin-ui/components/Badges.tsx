@@ -16,7 +16,7 @@ import {
   useMutation,
   useSettings,
 } from "@deenruv/react-ui-devkit";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { BadgesModal } from "./BadgesModal";
 import { translationNS } from "../translation-ns";
 import { ProductBadgesQuery } from "../graphql/queries";

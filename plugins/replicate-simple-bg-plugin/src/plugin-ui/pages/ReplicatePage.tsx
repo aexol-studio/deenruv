@@ -39,7 +39,7 @@ import {
 import { $ } from "@deenruv/admin-types";
 
 import { Loader2 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { RoomStyleSelect } from "../components/RoomStyleSelect.js";
 import { RoomTypeSelect } from "../components/RoomTypeSelect.js";

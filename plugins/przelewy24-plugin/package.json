@@ -22,7 +22,7 @@
     "watch": "tsc --watch",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
+    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --td --es && zeus http://localhost:6100/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:6100/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
     "@aexol/przelewy24-sdk": "^0.1.6",

@@ -12,7 +12,7 @@ the cart, checkout, manage customer accounts, and more.
 
 <Callout type="info">
 You can explore the Shop API by opening the GraphQL Playground in your browser at
-[`http://localhost:3000/shop-api`](http://localhost:3000/shop-api) when your Deenruv
+[`http://localhost:6100/shop-api`](http://localhost:6100/shop-api) when your Deenruv
 server is running locally.
 </Callout>
 
@@ -119,7 +119,7 @@ products in that channel. You would set the `deenruv-token` header to `uk-channe
 
 ```ts title="src/client.ts"
 export function query(document: string, variables: Record<string, any> = {}) {
-    return fetch('https://localhost:3000/shop-api', {
+    return fetch('https://localhost:6100/shop-api', {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
@@ -149,7 +149,7 @@ The header name `deenruv-token` is the default, but can be changed using the `ap
 If you have translations of your products, collections, facets etc, you can specify the language for the request by setting the `languageCode` query string on the request. The value should be one of the ISO 639-1 codes defined by the `LanguageCode` enum.
 
 ```
-POST http://localhost:3000/shop-api?languageCode=de
+POST http://localhost:6100/shop-api?languageCode=de
 ```
 
 ## Code generation
@@ -488,7 +488,7 @@ import {
 // in localStorage using this key.
 const AUTH_TOKEN_KEY = 'auth_token';
 
-const API_URL = 'http://localhost:3000/shop-api';
+const API_URL = 'http://localhost:6100/shop-api';
 
 // If we have a session token, add it to the outgoing request
 const requestMiddleware: RequestMiddleware = async request => {

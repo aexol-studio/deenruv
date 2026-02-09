@@ -17,6 +17,7 @@ import {
   LogLevel,
   TypeORMHealthCheckStrategy,
 } from "@deenruv/core";
+import { DashboardWidgetsPlugin } from "@deenruv/dashboard-widgets-plugin";
 import { InpostPlugin } from "@deenruv/inpost-plugin";
 import { BullMQJobQueuePlugin } from "@deenruv/job-queue-plugin/package/bullmq";
 import {
@@ -233,7 +234,7 @@ export class MerchantExportStrategy implements DefaultStrategy<
 
 export const IS_DEV = process.env.APP_ENV === "LOCAL";
 export const HOST =
-  process.env.APP_ENV === "LOCAL" ? "http://localhost:3000" : "";
+  process.env.APP_ENV === "LOCAL" ? "http://localhost:6100" : "";
 
 export const devConfig: DeenruvConfig = {
   systemOptions: {
@@ -275,7 +276,7 @@ export const devConfig: DeenruvConfig = {
     migrations: [path.join(__dirname, "migrations/*.ts")],
     type: "postgres",
     host: process.env.DB_HOST || "localhost",
-    port: Number(process.env.DB_PORT) || 5432,
+    port: Number(process.env.DB_PORT) || 60432,
     username: process.env.DB_USERNAME || "deenruv",
     password: process.env.DB_PASSWORD || "deenruv",
     database: process.env.DB_NAME || "deenruv",
@@ -296,11 +297,12 @@ export const devConfig: DeenruvConfig = {
         host_url: HOST,
       }),
     }),
+    DashboardWidgetsPlugin.init({}),
     InpostPlugin.init({}),
     // Przelewy24Plugin.init({}),
     AdminUiPlugin.init({
       route: "admin",
-      port: 5001,
+      port: 6103,
       app: customAdminUi({ devMode: true, recompile: true }),
     }),
     AssetServerPlugin.init({
@@ -318,7 +320,7 @@ export const devConfig: DeenruvConfig = {
           signatureVersion: "v4",
           forcePathStyle: true,
           region: "local",
-          endpoint: "http://localhost:9000",
+          endpoint: "http://localhost:60900",
         },
       }),
     }),
@@ -329,7 +331,7 @@ export const devConfig: DeenruvConfig = {
         ...(!IS_DEV && { password: process.env.REDIS_PASSWORD }),
         maxRetriesPerRequest: null,
         connectTimeout: 5000,
-        port: 6379,
+        port: 60379,
       },
       workerOptions: {
         concurrency: 10,

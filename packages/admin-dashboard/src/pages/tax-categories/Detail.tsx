@@ -66,14 +66,14 @@ export const TaxCategoriesDetailPage = () => {
               },
             },
             onSubmitted: (data) => {
-              if (!data.name?.validatedValue) {
+              if (!data.name) {
                 throw new Error('Name is required.');
               }
 
               const inputData = {
-                name: data.name.validatedValue,
-                isDefault: data.isDefault?.validatedValue,
-                ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+                name: data.name as string,
+                isDefault: data.isDefault as boolean | undefined,
+                ...(data.customFields ? { customFields: data.customFields } : {}),
               };
 
               return id

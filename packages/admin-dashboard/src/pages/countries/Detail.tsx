@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import {
   useValidators,
   DetailView,
-  GFFLPFormField,
   createDeenruvForm,
   getMutation,
   useMutation,
@@ -18,12 +17,7 @@ const EditCountryMutation = getMutation('updateCountry');
 const DeleteCountryMutation = getMutation('deleteCountry');
 
 type CreateCountryInput = ModelTypes['CreateCountryInput'];
-type FormDataType = Partial<{
-  code: GFFLPFormField<CreateCountryInput['code']>;
-  enabled: GFFLPFormField<CreateCountryInput['enabled']>;
-  translations: GFFLPFormField<CreateCountryInput['translations']>;
-  customFields: GFFLPFormField<CreateCountryInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 export const CountriesDetailPage = () => {
   const { id } = useParams();
@@ -35,15 +29,15 @@ export const CountriesDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.code?.validatedValue) {
+      if (!data.code) {
         throw new Error('Code is required.');
       }
 
       const inputData = {
-        code: data.code.validatedValue,
-        enabled: data.enabled?.validatedValue || data.enabled?.initialValue,
-        translations: data.translations?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        code: data.code as CreateCountryInput['code'],
+        enabled: data.enabled as CreateCountryInput['enabled'],
+        translations: data.translations as CreateCountryInput['translations'],
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

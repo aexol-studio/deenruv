@@ -42,6 +42,7 @@ import {
 import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit } from 'lucide-react';
 
 import { useCallback, useMemo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 import { toast } from 'sonner';
 import type { OnPriceQuantityChangeApproveInput } from './OrderLineActionModal/types.js';
@@ -56,7 +57,7 @@ type ProductVariantCustomFields = any;
 export const ProductsCard: React.FC = () => {
   const { t } = useTranslation('orders');
   const orderLineCustomFields = useServer(
-    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+    useShallow((p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || []),
   );
 
   const { mode, order, setOrder, setModifiedOrder, modifiedOrder, fetchOrder } = useOrder();

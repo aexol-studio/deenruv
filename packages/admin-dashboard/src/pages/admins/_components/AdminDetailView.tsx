@@ -24,9 +24,7 @@ const ADMIN_FORM_KEYS = [
 export const AdminDetailView = () => {
   const { form, entity, fetchEntity, id } = useDetailView('admins-detail-view', ...ADMIN_FORM_KEYS);
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
   const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('admins');
 
@@ -36,11 +34,11 @@ export const AdminDetailView = () => {
 
       if (!res) return;
 
-      setField('firstName', res.firstName);
-      setField('lastName', res.lastName);
-      setField('emailAddress', res.emailAddress);
-      setField('password', '');
-      setField(
+      base.setField('firstName', res.firstName);
+      base.setField('lastName', res.lastName);
+      base.setField('emailAddress', res.emailAddress);
+      base.setField('password', '');
+      base.setField(
         'roleIds',
         res.user.roles.map((r) => r.id),
       );
@@ -55,33 +53,33 @@ export const AdminDetailView = () => {
             <Input
               wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
               label={t('details.basic.firstName')}
-              value={state.firstName?.value ?? undefined}
-              onChange={(e) => setField('firstName', e.target.value)}
-              errors={state.firstName?.errors}
+              value={base.watch('firstName') ?? undefined}
+              onChange={(e) => base.setField('firstName', e.target.value)}
+              errors={base.formState.errors?.firstName?.message ? [base.formState.errors.firstName.message as string] : undefined}
               required
             />
             <Input
               wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
               label={t('details.basic.lastName')}
-              value={state.lastName?.value ?? undefined}
-              onChange={(e) => setField('lastName', e.target.value)}
-              errors={state.lastName?.errors}
+              value={base.watch('lastName') ?? undefined}
+              onChange={(e) => base.setField('lastName', e.target.value)}
+              errors={base.formState.errors?.lastName?.message ? [base.formState.errors.lastName.message as string] : undefined}
               required
             />
             <Input
               wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
               label={t('details.basic.emailAddress')}
-              value={state.emailAddress?.value ?? undefined}
-              onChange={(e) => setField('emailAddress', e.target.value)}
-              errors={state.emailAddress?.errors}
+              value={base.watch('emailAddress') ?? undefined}
+              onChange={(e) => base.setField('emailAddress', e.target.value)}
+              errors={base.formState.errors?.emailAddress?.message ? [base.formState.errors.emailAddress.message as string] : undefined}
               required
             />
             <Input
               wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
               label={t('details.basic.password')}
-              value={state.password?.value ?? undefined}
-              onChange={(e) => setField('password', e.target.value)}
-              errors={state.password?.errors}
+              value={base.watch('password') ?? undefined}
+              onChange={(e) => base.setField('password', e.target.value)}
+              errors={base.formState.errors?.password?.message ? [base.formState.errors.password.message as string] : undefined}
               required={!editMode}
             />
           </div>
@@ -92,16 +90,16 @@ export const AdminDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
           }
         />
         <RolesCard
-          adminRoleIds={state.roleIds?.value ?? undefined}
-          onRolesChange={(e) => setField('roleIds', e)}
-          errors={state.roleIds?.errors}
+          adminRoleIds={base.watch('roleIds') ?? undefined}
+          onRolesChange={(e) => base.setField('roleIds', e)}
+          errors={base.formState.errors?.roleIds?.message ? [base.formState.errors.roleIds.message as string] : undefined}
         />
       </div>
     </main>

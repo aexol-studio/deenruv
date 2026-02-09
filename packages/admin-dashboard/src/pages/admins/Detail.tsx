@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import {
   DetailView,
   createDeenruvForm,
-  GFFLPFormField,
   getMutation,
   useMutation,
   useValidators,
@@ -13,14 +12,7 @@ import { AdminDetailView } from '@/pages/admins/_components/AdminDetailView.js';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
 
 type CreateAdminInput = ModelTypes['CreateAdministratorInput'];
-type FormDataType = Partial<{
-  emailAddress: GFFLPFormField<CreateAdminInput['emailAddress']>;
-  firstName: GFFLPFormField<CreateAdminInput['firstName']>;
-  lastName: GFFLPFormField<CreateAdminInput['lastName']>;
-  password: GFFLPFormField<CreateAdminInput['password']>;
-  roleIds: GFFLPFormField<CreateAdminInput['roleIds']>;
-  customFields: GFFLPFormField<CreateAdminInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreateAdminMutation = getMutation('createAdministrator');
 const EditAdminMutation = getMutation('updateAdministrator');
@@ -37,17 +29,17 @@ export const AdminsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.emailAddress?.validatedValue) {
+      if (!data.emailAddress) {
         throw new Error('Name is required.');
       }
 
       const inputData = {
-        emailAddress: data.emailAddress?.validatedValue,
-        firstName: data.firstName?.validatedValue,
-        lastName: data.lastName?.validatedValue,
-        password: data.password?.validatedValue ? data.password?.validatedValue : undefined,
-        roleIds: data.roleIds?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        emailAddress: data.emailAddress as CreateAdminInput['emailAddress'],
+        firstName: data.firstName as CreateAdminInput['firstName'],
+        lastName: data.lastName as CreateAdminInput['lastName'],
+        password: data.password ? (data.password as CreateAdminInput['password']) : undefined,
+        roleIds: data.roleIds as CreateAdminInput['roleIds'],
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

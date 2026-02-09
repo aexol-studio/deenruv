@@ -5,19 +5,21 @@ import { useEffect } from 'react';
 
 export const PromotionDetailSidebar = () => {
   const { id, form } = useDetailView('promotions-detail-view', 'CreatePromotionInput', 'enabled');
-  const {
-    base: { state, setField },
-  } = form;
+  const { base } = form;
 
-  const { data } = id ? useQuery(PromotionQuery, { initialVariables: { id } }) : { data: undefined };
+  // Always call useQuery unconditionally to preserve hook order.
+  // Pass a placeholder id when none exists; the result will simply be ignored.
+  const { data } = useQuery(PromotionQuery, { initialVariables: { id: id ?? '' } });
 
   useEffect(() => {
-    if (data) setField('enabled', data.promotion!.enabled);
-  }, [data]);
+    if (id && data?.promotion) {
+      base.setField('enabled', data.promotion.enabled);
+    }
+  }, [data, id]);
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <EnabledCard enabledValue={state.enabled?.value} onEnabledChange={(e) => setField('enabled', e)} />
+      <EnabledCard enabledValue={base.watch('enabled')} onEnabledChange={(e) => base.setField('enabled', e)} />
     </div>
   );
 };

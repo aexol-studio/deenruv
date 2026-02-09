@@ -14,8 +14,9 @@ import {
   useSettings,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
+import { useShallow } from 'zustand/react/shallow';
 import { Check } from 'lucide-react';
-import { US, PL, CZ, DE, EU } from 'country-flag-icons/react/3x2';
+import { US, PL, CZ, DE, EU } from './flag-icons';
 const uiLanguages = [LanguageCode.en, LanguageCode.pl];
 
 const langFlagDict: Partial<Record<LanguageCode, React.ComponentType>> = {
@@ -28,13 +29,15 @@ const langFlagDict: Partial<Record<LanguageCode, React.ComponentType>> = {
 
 export const LanguagesDropdown = () => {
   const { t } = useTranslation('common');
-  const { contentLng, setContentLng, setUiLng, uiLng, selectedChannel } = useSettings((p) => ({
-    uiLng: p.language,
-    setUiLng: p.setLanguage,
-    contentLng: p.translationsLanguage,
-    setContentLng: p.setTranslationsLanguage,
-    selectedChannel: p.selectedChannel,
-  }));
+  const { contentLng, setContentLng, setUiLng, uiLng, selectedChannel } = useSettings(
+    useShallow((p) => ({
+      uiLng: p.language,
+      setUiLng: p.setLanguage,
+      contentLng: p.translationsLanguage,
+      setContentLng: p.setTranslationsLanguage,
+      selectedChannel: p.selectedChannel,
+    })),
+  );
 
   const Flag = langFlagDict[contentLng] || EU;
 

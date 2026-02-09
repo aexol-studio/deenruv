@@ -413,8 +413,8 @@ export async function createDeenruvApp(
     pc.gray("$ ") + pc.blue(pc.bold(`cd ${name}`)),
     pc.gray("$ ") + pc.blue(pc.bold(`${startCommand}`)),
     `\n`,
-    pc.dim(`Server API: http://localhost:3000/admin-api`),
-    pc.dim(`Admin UI:   http://localhost:3001/admin-ui`),
+    pc.dim(`Server API: http://localhost:6100/admin-api`),
+    pc.dim(`Admin UI:   http://localhost:6101/admin-ui`),
   ];
   note(nextSteps.join("\n"));
   outro(`Happy hacking!`);
@@ -536,7 +536,7 @@ async function scaffoldAdminPanel(
     "# Local environment overrides (not committed to git).",
     "# See src/vite-env.d.ts for available variables.",
     "",
-    "VITE_ADMIN_HOST_URL=http://localhost:3000",
+    "VITE_ADMIN_HOST_URL=http://localhost:6100",
     "",
   ].join("\n");
   await fs.writeFile(path.join(adminRoot, ".env.local"), envLocalContent);

@@ -25,20 +25,18 @@ export const CustomerDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { form, entity, id, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   const handleFetchEntity = useCallback(async () => {
     const res = await fetchEntity();
 
     if (!res) return;
-    setField('title', res.title);
-    setField('phoneNumber', res.phoneNumber);
-    setField('firstName', res.firstName);
-    setField('lastName', res.lastName);
-    setField('emailAddress', res.emailAddress);
-    if ('customFields' in res) setField('customFields', res.customFields as CF);
+    base.setField('title', res.title);
+    base.setField('phoneNumber', res.phoneNumber);
+    base.setField('firstName', res.firstName);
+    base.setField('lastName', res.lastName);
+    base.setField('emailAddress', res.emailAddress);
+    if ('customFields' in res) base.setField('customFields', res.customFields as CF);
     setAddresses(res.addresses);
   }, []);
 
@@ -51,7 +49,7 @@ export const CustomerDetailView = () => {
   return (
     <main className="min-h-96">
       <div className="flex flex-col gap-3">
-        <PersonalDataCard setField={setField} state={state} />
+        <PersonalDataCard setField={base.setField} state={base} />
         <DetailViewMarker position={'customers-detail-view'} />
         <EntityCustomFields
           entityName="customer"
@@ -62,7 +60,7 @@ export const CustomerDetailView = () => {
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
           }
           onChange={(cf) => {
-            setField('customFields', cf);
+            base.setField('customFields', cf);
           }}
         />
         {id && <AddressesCard addresses={addresses} customerId={id} onActionCompleted={handleFetchEntity} />}

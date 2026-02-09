@@ -16,7 +16,7 @@ This plugin demonstrates many capabilities of the Deenruv plugin system:
 
 ## Usage
 
-Start the Deenruv server and then in the Shop API (http://localhost:3000/shop-api) try the following mutation:
+Start the Deenruv server and then in the Shop API (http://localhost:6100/shop-api) try the following mutation:
 
 ```SDL
 mutation {
@@ -34,6 +34,6 @@ mutation {
 }
 ```
 
-You should then be able to log into the Admin UI (http://localhost:3000/admin) and see the new "Product Reviews" menu item on the left. Clicking this takes you to a brand new extension module listing all product reviews. You can approve the review that was just submitted.
+You should then be able to log into the Admin UI (http://localhost:6100/admin) and see the new "Product Reviews" menu item on the left. Clicking this takes you to a brand new extension module listing all product reviews. You can approve the review that was just submitted.
 
-When viewing the Tablet product (http://localhost:3000/admin/catalog/inventory/2) you'll now see the review rating and count which make use of the custom UI controls defined in the ui extension.
+When viewing the Tablet product (http://localhost:6100/admin/catalog/inventory/2) you'll now see the review rating and count which make use of the custom UI controls defined in the ui extension.

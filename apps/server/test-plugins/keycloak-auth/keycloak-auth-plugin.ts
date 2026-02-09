@@ -13,7 +13,7 @@ import { KeycloakAuthenticationStrategy } from "./keycloak-authentication-strate
  * and a client named "deenruv".
  *
  * Add the plugin to the DeenruvConfig and set the Admin UI `loginUrl` option to
- * "http://localhost:3000/keycloak-login".
+ * "http://localhost:6100/keycloak-login".
  *
  * Video demo of this: https://youtu.be/Tj4kwjNd2nM
  */

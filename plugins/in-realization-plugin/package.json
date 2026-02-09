@@ -17,7 +17,7 @@
     "watch": "tsc --build --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
+    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --td && zeus http://localhost:6100/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.804.0",
@@ -35,7 +35,7 @@
     "mime-types": "^2.1.35",
     "react": "^19.0.0",
     "react-i18next": "^14.0.5",
-    "react-router-dom": "^6.22.1",
+    "react-router": "^7.13.0",
     "sonner": "^1.4.41"
   },
   "devDependencies": {

@@ -11,8 +11,8 @@ export class AdminUIController {
               <head>
                 <title>Deenruv - Admin UI</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <script type="module" crossorigin src="http://localhost:9000/assets/assets/index.js"></script>
-                <link rel="stylesheet" crossorigin href="http://localhost:9000/assets/assets/index.css">
+                <script type="module" crossorigin src="http://localhost:60900/assets/assets/index.js"></script>
+                <link rel="stylesheet" crossorigin href="http://localhost:60900/assets/assets/index.css">
               </head>
                 <body>
                     <div id="root"></div>

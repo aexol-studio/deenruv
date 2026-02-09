@@ -40,25 +40,23 @@ export const ChannelDetailView = () => {
     'customFields',
   );
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   useEffect(() => {
     (async () => {
       const resp = await fetchEntity();
       if (!resp) return;
 
-      setField('code', resp.code);
-      setField('availableCurrencyCodes', resp.availableCurrencyCodes);
-      setField('availableLanguageCodes', resp.availableLanguageCodes);
-      setField('token', resp.token);
-      setField('defaultCurrencyCode', resp.defaultCurrencyCode);
-      setField('defaultLanguageCode', resp.defaultLanguageCode);
-      setField('defaultShippingZoneId', resp.defaultShippingZone?.id || '');
-      setField('defaultTaxZoneId', resp.defaultTaxZone?.id || '');
-      setField('sellerId', resp.seller?.id);
-      setField('pricesIncludeTax', resp.pricesIncludeTax);
+      base.setField('code', resp.code);
+      base.setField('availableCurrencyCodes', resp.availableCurrencyCodes);
+      base.setField('availableLanguageCodes', resp.availableLanguageCodes);
+      base.setField('token', resp.token);
+      base.setField('defaultCurrencyCode', resp.defaultCurrencyCode);
+      base.setField('defaultLanguageCode', resp.defaultLanguageCode);
+      base.setField('defaultShippingZoneId', resp.defaultShippingZone?.id || '');
+      base.setField('defaultTaxZoneId', resp.defaultTaxZone?.id || '');
+      base.setField('sellerId', resp.seller?.id);
+      base.setField('pricesIncludeTax', resp.pricesIncludeTax);
     })();
   }, []);
 
@@ -84,6 +82,9 @@ export const ChannelDetailView = () => {
     return currencyArray.map((l) => ({ label: l, value: l }));
   }, []);
 
+  const availableLanguageCodes = base.watch('availableLanguageCodes');
+  const availableCurrencyCodes = base.watch('availableCurrencyCodes');
+
   return (
     <main>
       <div className="flex flex-col gap-3">
@@ -93,18 +94,18 @@ export const ChannelDetailView = () => {
               <div className="flex basis-full md:basis-1/2">
                 <Input
                   label={t('details.basic.code')}
-                  value={state.code?.value ?? undefined}
-                  onChange={(e) => setField('code', e.target.value)}
-                  errors={state.code?.errors}
+                  value={base.watch('code') ?? undefined}
+                  onChange={(e) => base.setField('code', e.target.value)}
+                  errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
                   required
                 />
               </div>
               <div className="flex basis-full md:basis-1/2">
                 <Input
                   label={t('details.basic.token')}
-                  value={state.token?.value ?? undefined}
-                  onChange={(e) => setField('token', e.target.value)}
-                  errors={state.token?.errors}
+                  value={base.watch('token') ?? undefined}
+                  onChange={(e) => base.setField('token', e.target.value)}
+                  errors={base.formState.errors?.token?.message ? [base.formState.errors.token.message as string] : undefined}
                   required
                 />
               </div>
@@ -113,8 +114,8 @@ export const ChannelDetailView = () => {
               <div className="flex basis-full md:basis-1/3">
                 <SimpleSelect
                   label={t('details.basic.seller')}
-                  value={state?.sellerId?.value ?? undefined}
-                  onValueChange={(e) => setField('sellerId', e)}
+                  value={base.watch('sellerId') ?? undefined}
+                  onValueChange={(e) => base.setField('sellerId', e)}
                   options={sellersOptions}
                 />
               </div>
@@ -122,10 +123,10 @@ export const ChannelDetailView = () => {
                 <Label className="mb-2">{t('details.basic.languages')}</Label>
                 <MultipleSelector
                   options={languageOptions}
-                  value={state?.availableLanguageCodes?.value?.map((l) => ({ label: l, value: l }))}
+                  value={availableLanguageCodes?.map((l: string) => ({ label: l, value: l }))}
                   placeholder={t('details.basic.languagePlaceholder')}
                   onChange={(options) => {
-                    setField(
+                    base.setField(
                       'availableLanguageCodes',
                       options.map((o) => o.value as LanguageCode),
                     );
@@ -137,10 +138,10 @@ export const ChannelDetailView = () => {
                 <Label className="mb-2">{t('details.basic.currencies')}</Label>
                 <MultipleSelector
                   options={currencyOptions}
-                  value={state?.availableCurrencyCodes?.value?.map((c) => ({ label: c, value: c }))}
+                  value={availableCurrencyCodes?.map((c: string) => ({ label: c, value: c }))}
                   placeholder={t('details.basic.currencyPlaceholder')}
                   onChange={(options) => {
-                    setField(
+                    base.setField(
                       'availableCurrencyCodes',
                       options.map((o) => o.value as CurrencyCode),
                     );
@@ -156,7 +157,7 @@ export const ChannelDetailView = () => {
           entityName="channel"
           id={id}
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
@@ -164,18 +165,18 @@ export const ChannelDetailView = () => {
           hideButton
         />
         <DefaultsCard
-          availableLanguages={state.availableLanguageCodes?.value ?? undefined}
-          availableCurrencies={state.availableCurrencyCodes?.value ?? undefined}
-          onFieldChange={setField}
-          defaultLanguage={state.defaultLanguageCode?.value ?? undefined}
-          defaultCurrency={state.defaultCurrencyCode?.value ?? undefined}
-          defaultTaxZone={state.defaultTaxZoneId?.value ?? undefined}
-          defaultShippingZone={state.defaultShippingZoneId?.value ?? undefined}
-          includeTax={state.pricesIncludeTax?.value ?? undefined}
-          onIncludeTaxChange={(e) => setField('pricesIncludeTax', e)}
-          defaultLanguageErrors={state.defaultLanguageCode?.errors}
-          defaultShippingZoneErrors={state.defaultShippingZoneId?.errors}
-          defaultTaxZoneErrors={state.defaultTaxZoneId?.errors}
+          availableLanguages={availableLanguageCodes ?? undefined}
+          availableCurrencies={availableCurrencyCodes ?? undefined}
+          onFieldChange={base.setField}
+          defaultLanguage={base.watch('defaultLanguageCode') ?? undefined}
+          defaultCurrency={base.watch('defaultCurrencyCode') ?? undefined}
+          defaultTaxZone={base.watch('defaultTaxZoneId') ?? undefined}
+          defaultShippingZone={base.watch('defaultShippingZoneId') ?? undefined}
+          includeTax={base.watch('pricesIncludeTax') ?? undefined}
+          onIncludeTaxChange={(e) => base.setField('pricesIncludeTax', e)}
+          defaultLanguageErrors={base.formState.errors?.defaultLanguageCode?.message ? [base.formState.errors.defaultLanguageCode.message as string] : undefined}
+          defaultShippingZoneErrors={base.formState.errors?.defaultShippingZoneId?.message ? [base.formState.errors.defaultShippingZoneId.message as string] : undefined}
+          defaultTaxZoneErrors={base.formState.errors?.defaultTaxZoneId?.message ? [base.formState.errors.defaultTaxZoneId.message as string] : undefined}
         />
       </div>
     </main>

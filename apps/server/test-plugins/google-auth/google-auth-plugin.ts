@@ -21,7 +21,7 @@ export type GoogleAuthPluginOptions = {
  *
  * Then add this plugin to the dev config.
  *
- * The "storefront" is a simple html file which is served on http://localhost:3000/google-login,
+ * The "storefront" is a simple html file which is served on http://localhost:6100/google-login,
  * but to get it to work with the Google login button you'll need to resolve it to some
  * public-looking url such as `http://google-login-test.com` by modifying your OS
  * hosts file.

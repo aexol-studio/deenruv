@@ -17,9 +17,7 @@ export const SELLER_FORM_KEYS = ['CreateSellerInput', 'name', 'customFields'] as
 export const SellerDetailView = () => {
   const { form, fetchEntity, entity, id } = useDetailView('sellers-detail-view', ...SELLER_FORM_KEYS);
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   const { t } = useTranslation('sellers');
 
@@ -29,7 +27,7 @@ export const SellerDetailView = () => {
 
       if (!res) return;
 
-      setField('name', res.name);
+      base.setField('name', res.name);
     })();
   }, []);
 
@@ -44,9 +42,9 @@ export const SellerDetailView = () => {
                 <Input
                   className="w-1/2"
                   label={t('details.basic.name')}
-                  value={state.name?.value}
-                  onChange={(e) => setField('name', e.target.value)}
-                  errors={state.name?.errors}
+                  value={base.watch('name')}
+                  onChange={(e) => base.setField('name', e.target.value)}
+                  errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
                   required
                 />
               </div>
@@ -59,7 +57,7 @@ export const SellerDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }

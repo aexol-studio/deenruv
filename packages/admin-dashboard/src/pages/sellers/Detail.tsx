@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import {
   useValidators,
   getMutation,
-  GFFLPFormField,
   useMutation,
   DetailView,
   createDeenruvForm,
@@ -16,10 +15,7 @@ const EditSellerMutation = getMutation('updateSeller');
 const DeleteSellerMutation = getMutation('deleteSeller');
 
 type CreateSellerInput = ModelTypes['CreateSellerInput'];
-type FormDataType = Partial<{
-  name: GFFLPFormField<CreateSellerInput['name']>;
-  customFields: GFFLPFormField<CreateSellerInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 export const SellersDetailPage = () => {
   const { id } = useParams();
@@ -30,12 +26,12 @@ export const SellersDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.name?.validatedValue) {
+      if (!data.name) {
         throw new Error('Name is required.');
       }
       const inputData = {
-        name: data.name.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        name: data.name as CreateSellerInput['name'],
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

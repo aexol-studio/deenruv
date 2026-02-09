@@ -48,10 +48,9 @@ export const useValidators = () => {
         | null
         | undefined,
     ) => {
-      if (!v) return [t("validation.nameRequired")];
-      const { name } = v[0];
-
-      if (!name) return [t("validation.nameRequired")];
+      if (!v || v.length === 0) return [t("validation.nameRequired")];
+      const hasName = v.some((entry) => entry && entry.name);
+      if (!hasName) return [t("validation.nameRequired")];
     },
   };
 

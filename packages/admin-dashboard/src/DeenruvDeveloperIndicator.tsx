@@ -70,7 +70,7 @@ import { useState } from 'react';
 // };
 
 export const DeenruvDeveloperIndicator = () => {
-  const { graphQLSchema } = useServer(({ graphQLSchema }) => ({ graphQLSchema }));
+  const graphQLSchema = useServer((s) => s.graphQLSchema);
   const { plugins, viewMarkers, setViewMarkers } = usePluginStore();
   const [showSchema, setShowSchema] = useState(false);
 

@@ -1,7 +1,8 @@
-import type { useFFLP } from "@/hooks";
+import type { UseDeenruvFormReturn } from "@/hooks/useDeenruvForm.js";
 import { DeenruvTabs } from "@/plugins/types.js";
 import type { DetailKeys, ExternalDetailLocationSelector } from "@/types";
 import type { ModelTypes } from "@deenruv/admin-types";
+import type { FieldValues } from "react-hook-form";
 import { Dispatch, SetStateAction } from "react";
 
 export type FormKey = keyof ModelTypes;
@@ -16,16 +17,16 @@ export type PropsType<
 export type AdditionalData = Record<string, unknown> | undefined;
 
 export interface FormType<
-  F extends keyof ModelTypes,
-  FK extends keyof ModelTypes[F],
+  F extends keyof ModelTypes = keyof ModelTypes,
+  FK extends keyof ModelTypes[F] = keyof ModelTypes[F],
 > {
-  base: ReturnType<typeof useFFLP<Pick<ModelTypes[F], FK>>>;
+  base: UseDeenruvFormReturn<FieldValues>;
   onSubmitted: (
-    data: ModelTypes[FormKey],
+    data: Record<string, unknown>,
     additionalData: AdditionalData,
   ) => Promise<Record<string, unknown>> | undefined;
   onDeleted?: (
-    data: ModelTypes[FormKey],
+    data: Record<string, unknown>,
     additionalData: AdditionalData,
   ) => Promise<Record<string, unknown>> | undefined;
 }

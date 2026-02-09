@@ -5,7 +5,6 @@ import {
   useValidators,
   DetailView,
   createDeenruvForm,
-  GFFLPFormField,
   useMutation,
   getMutation,
   useTranslation,
@@ -13,15 +12,7 @@ import {
 import { ModelTypes } from '@deenruv/admin-types';
 import { PaymentMethodDetailView } from '@/pages/payment-methods/_components/PaymentMethodDetailView.js';
 
-type CreatePaymentMethodInput = ModelTypes['CreatePaymentMethodInput'];
-type FormDataType = Partial<{
-  code: GFFLPFormField<CreatePaymentMethodInput['code']>;
-  enabled: GFFLPFormField<CreatePaymentMethodInput['enabled']>;
-  translations: GFFLPFormField<CreatePaymentMethodInput['translations']>;
-  handler: GFFLPFormField<CreatePaymentMethodInput['handler']>;
-  checker: GFFLPFormField<CreatePaymentMethodInput['checker']>;
-  customFields: GFFLPFormField<CreatePaymentMethodInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreatePaymentMethodMutation = getMutation('createPaymentMethod');
 const EditPaymentMethodMutation = getMutation('updatePaymentMethod');
@@ -37,16 +28,17 @@ export const PaymentMethodsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.code?.validatedValue) {
+      if (!data.code) {
         throw new Error('Name is required.');
       }
 
+      const checker = data.checker as ModelTypes['CreatePaymentMethodInput']['checker'];
       const inputData = {
-        code: data.code?.validatedValue,
-        handler: data.handler?.validatedValue,
-        enabled: data.enabled?.validatedValue || data.enabled?.initialValue,
-        translations: data.translations?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        code: data.code as string,
+        handler: data.handler as ModelTypes['CreatePaymentMethodInput']['handler'],
+        enabled: (data.enabled ?? false) as boolean,
+        translations: data.translations as ModelTypes['CreatePaymentMethodInput']['translations'],
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {
@@ -54,7 +46,7 @@ export const PaymentMethodsDetailPage = () => {
           input: {
             id,
             ...inputData,
-            checker: data.checker?.validatedValue?.code !== '' ? data.checker?.validatedValue : undefined,
+            checker: checker?.code !== '' ? checker : undefined,
           },
         });
       } else {

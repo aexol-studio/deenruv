@@ -40,56 +40,56 @@ export const PromotionQuery = typedGql('query', { scalars })({
 export const PromotionDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { form, entity, fetchEntity, id } = useDetailView('promotions-detail-view', ...PROMOTION_FORM_KEYS);
-  const {
-    base: { setField, state },
-  } = form;
-  // const { data } = useQuery(ConditionsQuery);
-
-  // const availableConditions = useMemo(() => {
-  //   return data?.promotionConditions.filter((c) => !state.conditions?.value?.some((v) => v.code === c.code)) || [];
-  // }, [data, state.conditions?.value]);
+  const { base } = form;
 
   useEffect(() => {
     (async () => {
       const res = await fetchEntity();
       if (!res) return;
 
-      setField('translations', res.translations);
-      setField('endsAt', res.endsAt);
-      setField('startsAt', res.startsAt);
-      setField('couponCode', res.couponCode);
-      setField('usageLimit', res.usageLimit);
-      setField('perCustomerUsageLimit', res.perCustomerUsageLimit);
-      setField(
+      base.setField('translations', res.translations);
+      base.setField('endsAt', res.endsAt);
+      base.setField('startsAt', res.startsAt);
+      base.setField('couponCode', res.couponCode);
+      base.setField('usageLimit', res.usageLimit);
+      base.setField('perCustomerUsageLimit', res.perCustomerUsageLimit);
+      base.setField(
         'conditions',
         res.conditions.map((c) => ({ code: c.code, arguments: c.args })),
       );
-      setField(
+      base.setField(
         'actions',
         res.actions.map((a) => ({ code: a.code, arguments: a.args })),
       );
     })();
   }, [contentLng]);
 
-  const translations = useMemo(() => state?.translations?.value || [], [state?.translations?.value]);
+  const translations = useMemo(() => base.watch('translations') || [], [base.watch('translations')]);
 
   const currentTranslationValue = useMemo(
-    () => translations.find((v) => v.languageCode === contentLng),
+    () => translations.find((v: any) => v.languageCode === contentLng),
     [translations, contentLng],
   );
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
-      setField(
+      const baseTranslation = currentTranslationValue ?? {
+        languageCode: contentLng,
+        name: '',
+        description: '',
+      };
+
+      base.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== contentLng, {
+        setInArrayBy(translations, (t: any) => t.languageCode === contentLng, {
+          ...baseTranslation,
           [field]: e,
           languageCode: contentLng,
         }),
       );
     },
 
-    [contentLng, translations],
+    [contentLng, translations, currentTranslationValue],
   );
 
   return (
@@ -98,15 +98,15 @@ export const PromotionDetailView = () => {
         <BasicFieldsCard
           currentTranslationValue={currentTranslationValue ?? undefined}
           onChange={setTranslationField}
-          errors={state.translations?.errors}
+          errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
         />
         <OptionsCard
-          endsAt={state.endsAt?.value}
-          startsAt={state.startsAt?.value}
-          couponCode={state.couponCode?.value ?? undefined}
-          usageLimit={state.usageLimit?.value ?? undefined}
-          perCustomerUsageLimit={state.perCustomerUsageLimit?.value ?? undefined}
-          setField={setField}
+          endsAt={base.watch('endsAt')}
+          startsAt={base.watch('startsAt')}
+          couponCode={base.watch('couponCode') ?? undefined}
+          usageLimit={base.watch('usageLimit') ?? undefined}
+          perCustomerUsageLimit={base.watch('perCustomerUsageLimit') ?? undefined}
+          setField={base.setField}
         />
         <DetailViewMarker position={'promotions-detail-view'} />
         <EntityCustomFields
@@ -114,8 +114,8 @@ export const PromotionDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields, translations) => {
-            setField('customFields', customFields);
-            if (translations) setField('translations', translations as any);
+            base.setField('customFields', customFields);
+            if (translations) base.setField('translations', translations as any);
           }}
           initialValues={
             entity && 'customFields' in entity
@@ -123,8 +123,8 @@ export const PromotionDetailView = () => {
               : { customFields: {} }
           }
         />
-        <ConditionsCard value={state.conditions?.value} onChange={setField} errors={state.conditions?.errors} />
-        <ActionsCard value={state.actions?.value} onChange={setField} errors={state.actions?.errors} />
+        <ConditionsCard value={base.watch('conditions')} onChange={base.setField} errors={base.formState.errors?.conditions?.message ? [base.formState.errors.conditions.message as string] : undefined} />
+        <ActionsCard value={base.watch('actions')} onChange={base.setField} errors={base.formState.errors?.actions?.message ? [base.formState.errors.actions.message as string] : undefined} />
       </form>
     </div>
   );

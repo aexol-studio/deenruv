@@ -18,7 +18,7 @@ plugins: [
   RedisSessionCachePlugin.init({
     redisOptions: {
       host: 'localhost',
-      port: 6379,
+      port: 60379,
     },
     // Optional: custom namespace prefix for Redis keys
     namespace: 'deenruv-session-cache',

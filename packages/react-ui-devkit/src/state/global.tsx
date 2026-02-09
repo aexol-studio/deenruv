@@ -16,7 +16,7 @@ const createGlobalStore = (initProps?: Partial<DeenruvAdminPanelSettings>) => {
     appVersion: "0.0.1",
     branding: { name: "Deenruv" },
     api: {
-      uri: "http://localhost:3000",
+      uri: "http://localhost:6100",
       channelTokenName: "deenruv-token",
       authTokenName: "deenruv-auth-token",
     },

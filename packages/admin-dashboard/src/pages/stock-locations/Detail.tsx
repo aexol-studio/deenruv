@@ -1,15 +1,10 @@
 import { useParams } from 'react-router';
-import { useValidators, DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
+import { useValidators, DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { StockLocationDetailView } from './_components/StockLocationDetailView';
-import { typedGql, scalars, $, ModelTypes, Permission } from '@deenruv/admin-types';
+import { typedGql, scalars, $, Permission } from '@deenruv/admin-types';
 import { useCallback } from 'react';
 
-type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
-type FormDataType = Partial<{
-  name: GFFLPFormField<CreateStockLocationInput['name']>;
-  description: GFFLPFormField<CreateStockLocationInput['description']>;
-  customFields: GFFLPFormField<CreateStockLocationInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 const CreateStockLocationMutation = typedGql('mutation', { scalars })({
   createStockLocation: [
@@ -47,14 +42,14 @@ export const StockLocationsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.name?.validatedValue) {
+      if (!data.name) {
         throw new Error('Name is required.');
       }
 
       const inputData = {
-        name: data.name.validatedValue,
-        description: data.description?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        name: data.name as string,
+        description: data.description as string | undefined,
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

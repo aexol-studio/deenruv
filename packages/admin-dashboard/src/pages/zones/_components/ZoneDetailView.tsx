@@ -22,9 +22,7 @@ export const ZoneDetailView = () => {
     ...STOCK_LOCATION_FORM_KEYS,
   );
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('zones');
@@ -43,8 +41,8 @@ export const ZoneDetailView = () => {
 
       if (!res) return;
 
-      setField('name', res.name);
-      setField(
+      base.setField('name', res.name);
+      base.setField(
         'memberIds',
         res.members.map((m) => m.id),
       );
@@ -53,7 +51,7 @@ export const ZoneDetailView = () => {
 
   const handleChange = useCallback(
     (options: Option[]) => {
-      setField(
+      base.setField(
         'memberIds',
         options.map((o) => o.value),
       );
@@ -76,8 +74,10 @@ export const ZoneDetailView = () => {
         setMembersIdsToRemove(toRemove);
       }
     },
-    [editMode, setField, entity],
+    [editMode, base.setField, entity],
   );
+
+  const memberIds = base.watch('memberIds');
 
   return (
     <main className="my-4 min-h-96">
@@ -87,9 +87,9 @@ export const ZoneDetailView = () => {
             <div className="flex basis-full md:basis-1/2">
               <Input
                 label={t('details.basic.name')}
-                value={state.name?.value}
-                onChange={(e) => setField('name', e.target.value)}
-                errors={state.name?.errors}
+                value={base.watch('name')}
+                onChange={(e) => base.setField('name', e.target.value)}
+                errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
                 required
               />
             </div>
@@ -97,7 +97,7 @@ export const ZoneDetailView = () => {
               <Label className="mb-2">{t('details.basic.members')}</Label>
               <MultipleSelector
                 options={countriesOptions}
-                value={state?.memberIds?.value?.map((id) => ({
+                value={memberIds?.map((id: string) => ({
                   label: countriesOptions?.find((o) => o.value === id)?.label || id,
                   value: id,
                 }))}
@@ -114,7 +114,7 @@ export const ZoneDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }

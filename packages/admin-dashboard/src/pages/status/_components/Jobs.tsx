@@ -212,9 +212,7 @@ export const Jobs = () => {
         accessorKey: 'jobData',
         header: () => <TableLabel>{t('jobs.table.jobData')}</TableLabel>,
         cell: ({ row }) => {
-          return JsonPopup({
-            data: row.original.data,
-          });
+          return <JsonPopup data={row.original.data} />;
         },
       },
       {
@@ -229,9 +227,7 @@ export const Jobs = () => {
         accessorKey: 'jobResult',
         header: () => <TableLabel>{t('jobs.table.jobResult')}</TableLabel>,
         cell: ({ row }) => {
-          return JobResultPopover({
-            result: row.original.result,
-          });
+          return <JobResultPopover result={row.original.result} />;
         },
       },
       {

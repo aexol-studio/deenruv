@@ -153,7 +153,7 @@ function MyComponent() {
 | Dostęp do konfiguracji serwera | `useServer` |
 | Przechowywanie ustawień specyficznych dla pluginu | Właściwość `config` pluginu |
 | Tymczasowy stan UI | React `useState` lub `useReducer` |
-| Stan formularza | `useGFFLP` lub `useFFLP` |
+| Stan formularza | `useDeenruvForm` ze schematem Zod |
 | Stan listy/paginacji | `useList` |
 
 ### Konfiguracja pluginu dla niestandardowych ustawień
@@ -234,10 +234,16 @@ function ProductPage() {
     { initialVariables: { id: productId } },
   );
 
-  // Stan formularza z useGFFLP
-  const { state, setField } = useGFFLP('Product', 'name', 'slug')({
-    name: { initialValue: data?.product.name ?? '' },
-    slug: { initialValue: data?.product.slug ?? '' },
+  // Stan formularza z useDeenruvForm
+  const form = useDeenruvForm({
+    schema: z.object({
+      name: z.string().min(1, 'Wymagane'),
+      slug: z.string(),
+    }),
+    defaultValues: {
+      name: data?.product.name ?? '',
+      slug: data?.product.slug ?? '',
+    },
   });
 }
 ```

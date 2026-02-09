@@ -1,7 +1,7 @@
 import { getAppConfig } from '../../app.config';
 
 /**
- * Returns the location of the server, e.g. "http://localhost:3000"
+ * Returns the location of the server, e.g. "http://localhost:6100"
  */
 export function getServerLocation(): string {
     const { apiHost, apiPort, adminApiPath, tokenMethod } = getAppConfig();

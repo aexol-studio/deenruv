@@ -1,5 +1,3 @@
-'use client';
-
 import { useMemo, useState } from 'react';
 import {
   Badge,
@@ -18,6 +16,7 @@ import {
   DropdownMenuTrigger,
   Input,
   PageBlock,
+  Separator,
   Switch,
   Tooltip,
   TooltipContent,
@@ -32,8 +31,6 @@ import {
   ChevronDown,
   Code2,
   Cog,
-  Download,
-  ExternalLink,
   FileCode,
   Filter,
   Grid3X3,
@@ -46,10 +43,8 @@ import {
   Search,
   Settings,
   Table,
-  Trash2,
   X,
 } from 'lucide-react';
-import { Separator } from '@radix-ui/react-dropdown-menu';
 
 const getCategoryIcon = (category: string) => {
   switch (category) {
@@ -87,7 +82,7 @@ const getStatusBadge = (status: string) => {
   }
 };
 export const Extensions = () => {
-  const { plugins: _plugins, changePluginStatus } = usePluginStore();
+  const { allPlugins: _plugins, changePluginStatus } = usePluginStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -97,9 +92,9 @@ export const Extensions = () => {
     () =>
       _plugins.map((plugin) => ({
         ...plugin,
-        description: 'No description provided',
-        category: 'unknown',
-        author: 'Unknown',
+        description: plugin.description || 'No description provided',
+        category: plugin.category || 'unknown',
+        author: plugin.author || 'Deenruv',
       })),
     [_plugins],
   );
@@ -115,7 +110,8 @@ export const Extensions = () => {
   });
 
   const totalPlugins = plugins.length;
-  const activePlugins = plugins.filter((p) => p).length;
+  const activePlugins = plugins.filter((p) => p.status === 'active').length;
+  const inactivePlugins = plugins.length - activePlugins;
   const totalWidgets = plugins.reduce((sum, plugin) => sum + (plugin.widgets?.length || 0), 0);
   const totalComponents = plugins.reduce((sum, plugin) => sum + (plugin.components?.length || 0), 0);
 
@@ -130,10 +126,6 @@ export const Extensions = () => {
               <h1 className="text-3xl font-bold tracking-tight">Extensions Dashboard</h1>
               <p className="mt-1 text-muted-foreground">Manage and monitor your installed plugins</p>
             </div>
-            <Button>
-              <Download className="mr-2 size-4" />
-              Install New Extension
-            </Button>
           </div>
         </div>
 
@@ -146,7 +138,7 @@ export const Extensions = () => {
             <CardContent>
               <div className="text-2xl font-bold">{totalPlugins}</div>
               <p className="text-xs text-muted-foreground">
-                {activePlugins} active, {totalPlugins - activePlugins} inactive
+                {activePlugins} active, {inactivePlugins} inactive
               </p>
             </CardContent>
           </Card>
@@ -241,10 +233,6 @@ export const Extensions = () => {
                 >
                   Inactive
                   {statusFilter === 'inactive' && <Check className="size-4" />}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('beta')} className="flex items-center justify-between">
-                  Beta
-                  {statusFilter === 'beta' && <Check className="size-4" />}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -361,19 +349,19 @@ export const Extensions = () => {
                   <Separator className="my-3" />
                   <div className="grid grid-cols-4 gap-2 text-center text-sm">
                     <div>
-                      <div className="font-medium">{plugin.tables?.length}</div>
+                      <div className="font-medium">{plugin.tables?.length || 0}</div>
                       <div className="text-xs text-muted-foreground">Tables</div>
                     </div>
                     <div>
-                      <div className="font-medium">{plugin.tabs?.length}</div>
+                      <div className="font-medium">{plugin.tabs?.length || 0}</div>
                       <div className="text-xs text-muted-foreground">Tabs</div>
                     </div>
                     <div>
-                      <div className="font-medium">{plugin.components?.length}</div>
+                      <div className="font-medium">{plugin.components?.length || 0}</div>
                       <div className="text-xs text-muted-foreground">Components</div>
                     </div>
                     <div>
-                      <div className="font-medium">{plugin.widgets?.length}</div>
+                      <div className="font-medium">{plugin.widgets?.length || 0}</div>
                       <div className="text-xs text-muted-foreground">Widgets</div>
                     </div>
                   </div>
@@ -396,11 +384,7 @@ export const Extensions = () => {
                       onCheckedChange={(checked) => {
                         changePluginStatus(plugin.name, checked ? 'active' : 'inactive');
                       }}
-                      className="h-6 w-11"
-                    >
-                      <span className="sr-only">Toggle plugin status</span>
-                      <span className="absolute top-0 left-0 size-6 rounded-full bg-primary transition-transform duration-200 ease-in-out" />
-                    </Switch>
+                    />
                   </div>
                 </CardFooter>
               </Card>
@@ -441,11 +425,7 @@ export const Extensions = () => {
                       onCheckedChange={(checked) => {
                         changePluginStatus(plugin.name, checked ? 'active' : 'inactive');
                       }}
-                      className="h-6 w-11"
-                    >
-                      <span className="sr-only">Toggle plugin status</span>
-                      <span className="absolute top-0 left-0 size-6 rounded-full bg-primary transition-transform duration-200 ease-in-out" />
-                    </Switch>
+                    />
                   </div>
                 </div>
                 {index < filteredPlugins.length - 1 && <Separator />}

@@ -37,7 +37,7 @@ import { formatDistanceToNow } from "date-fns";
 import { pl } from "date-fns/locale/pl";
 import { ArrowRight, Hash, RefreshCw } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router";
 
 type LatestOrdersProps = object;
 

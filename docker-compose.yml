@@ -9,19 +9,17 @@ services:
             POSTGRES_PASSWORD: deenruv
             POSTGRES_DB: deenruv
         ports:
-            - 5432:5432
+            - 60432:5432
         expose:
             - 5432
         volumes:
             - ./initdb:/docker-entrypoint-initdb.d
     deenruv-redis:
-        image: bitnami/redis:7.2
+        image: redis:7.2
         hostname: deenruv-redis
         container_name: deenruv-redis
-        environment:
-            ALLOW_EMPTY_PASSWORD: yes
         ports:
-            - 6379:6379
+            - 60379:6379
         expose:
             - 6379
     deenruv-minio:
@@ -29,8 +27,8 @@ services:
         hostname: deenruv-minio
         container_name: deenruv-minio
         ports:
-            - 9000:9000
-            - 9090:9090
+            - 60900:9000
+            - 60901:9090
         expose:
             - 9000
             - 9090

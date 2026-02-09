@@ -36,10 +36,10 @@ import {
   UpdateTranslationsReviewMutation,
   TranslateReviewsQuery,
 } from "../graphql";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import { ArrowLeft, Calendar, Mail, Star, User } from "lucide-react";
 import { LanguageCode, ReviewState } from "../zeus";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { OrderInfo, ProductInfo } from "../components";
 import { TRANSLATION_NAMESPACE } from "../constants";
 import { useTranslation } from "react-i18next";

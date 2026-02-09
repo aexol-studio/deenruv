@@ -52,29 +52,33 @@ export const FacetsDetailView = () => {
     'facets-detail-view',
     ...STOCK_LOCATION_FORM_KEYS,
   );
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
   const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation(['common', 'facets']);
   const [facetValueIdInModal, setFacetValueIdInModal] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const { translationsLanguage: currentTranslationLng } = useSettings();
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const translations = base.watch('translations') || [];
+  const currentTranslationValue = translations.find((v: any) => v.languageCode === currentTranslationLng);
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
-      setField(
+      const baseTranslation = currentTranslationValue ?? {
+        languageCode: currentTranslationLng,
+        name: '',
+      };
+
+      base.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t: any) => t.languageCode === currentTranslationLng, {
+          ...baseTranslation,
           [field]: e,
           languageCode: currentTranslationLng,
         }),
       );
     },
 
-    [currentTranslationLng, translations],
+    [currentTranslationLng, translations, currentTranslationValue],
   );
 
   const fetchFacetValues = useCallback(
@@ -103,16 +107,16 @@ export const FacetsDetailView = () => {
     (async () => {
       const res = await fetchEntity();
       if (!res) return;
-      setField('translations', res.translations);
-      setField('code', res.code);
-      setField('isPrivate', res.isPrivate);
-      if ('customFields' in res) setField('customFields', res.customFields as CF);
+      base.setField('translations', res.translations);
+      base.setField('code', res.code);
+      base.setField('isPrivate', res.isPrivate);
+      if ('customFields' in res) base.setField('customFields', res.customFields as CF);
     })();
   }, []);
 
   useEffect(() => {
     if (!editMode && currentTranslationValue?.name) {
-      setField('code', currentTranslationValue.name.toLowerCase().replace(/\s+/g, '-'));
+      base.setField('code', currentTranslationValue.name.toLowerCase().replace(/\s+/g, '-'));
     }
   }, [currentTranslationValue?.name, editMode]);
 
@@ -124,26 +128,26 @@ export const FacetsDetailView = () => {
             <div className="basis-full md:basis-1/2 xl:basis-1/3">
               <Input
                 label={t('facets:table.name')}
-                value={currentTranslationValue?.name ?? undefined}
+                value={currentTranslationValue?.name ?? ''}
                 onChange={(e) => setTranslationField('name', e.target.value)}
-                errors={state.translations?.errors}
+                errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
                 required
               />
             </div>
             <div className="basis-full md:basis-1/2 xl:basis-1/3">
               <Input
                 label={t('facets:table.code')}
-                value={state.code?.value}
-                onChange={(e) => setField('code', e.target.value)}
-                errors={state.code?.errors}
+                value={base.watch('code') ?? ''}
+                onChange={(e) => base.setField('code', e.target.value)}
+                errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
                 required
               />
             </div>
             <div className="basis-full md:basis-1/2 xl:basis-1/3">
               <Label>{t('facets:table.isPrivate')}</Label>
               <div className="mt-2 flex gap-3">
-                <Switch checked={state.isPrivate?.value} onCheckedChange={(e) => setField('isPrivate', e)} />
-                <p>{state.isPrivate?.value ? t('facets:table.isPrivate') : t('facets:table.public')}</p>
+                <Switch checked={base.watch('isPrivate') ?? false} onCheckedChange={(e) => base.setField('isPrivate', e)} />
+                <p>{base.watch('isPrivate') ? t('facets:table.isPrivate') : t('facets:table.public')}</p>
               </div>
             </div>
           </div>
@@ -154,8 +158,8 @@ export const FacetsDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields, translations) => {
-            setField('customFields', customFields);
-            if (translations) setField('translations', translations);
+            base.setField('customFields', customFields);
+            if (translations) base.setField('translations', translations);
           }}
           initialValues={
             entity && 'customFields' in entity

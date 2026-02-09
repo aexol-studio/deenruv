@@ -5,7 +5,8 @@ import { Save, AlertCircle } from "lucide-react";
 import React from "react";
 import { CardIcons } from "@/consts/icons.js";
 import { CustomFieldsComponent } from "@/custom_fields/CustomFieldsComponent.js";
-import { useGFFLP, setInArrayBy } from "@/hooks/useGFFLP.js";
+import { useDeenruvForm, z } from "@/hooks/useDeenruvForm.js";
+import { setInArrayBy } from "@/utils/setInArrayBy.js";
 import { useServer } from "@/state/server.js";
 import { useSettings } from "@/state/settings.js";
 import { CustomCard } from "@/universal_components/CustomCard.js";
@@ -131,10 +132,6 @@ const entityDictionary: Partial<
   },
 };
 
-const typeWithCommonCustomFields: keyof Pick<
-  ModelTypes,
-  "UpdateProductOptionInput"
-> = "UpdateProductOptionInput";
 export function EntityCustomFields<T extends ViableEntity>({
   id,
   entityName,
@@ -169,15 +166,18 @@ export function EntityCustomFields<T extends ViableEntity>({
     [entityCustomFields],
   );
 
-  const { state, setField } = useGFFLP(
-    typeWithCommonCustomFields,
-    "customFields",
-    "translations",
-  )({
-    customFields: {
-      initialValue: {},
+  const entityCustomFieldsSchema = z.object({
+    customFields: z.record(z.string(), z.unknown()).default({}),
+    translations: z.array(z.any()).optional(),
+  });
+  const form = useDeenruvForm({
+    schema: entityCustomFieldsSchema,
+    defaultValues: {
+      customFields: {},
+      translations: undefined,
     },
   });
+  const formValues = form.watch();
 
   const readOnlyFieldsDict = useMemo(
     () =>
@@ -240,16 +240,17 @@ export function EntityCustomFields<T extends ViableEntity>({
         toast.error(t("toasts.error.fetch"));
         return;
       }
-      setField("customFields", response?.customFields);
-      setField("translations", response?.translations);
+      form.setField("customFields", response?.customFields);
+      form.setField("translations", response?.translations);
     } catch (err) {
       toast.error(getGraphqlError(err) || t("toasts.error.fetch"));
     }
   };
 
   const updateEntity = async () => {
+    const currentValues = form.getValues();
     const preparedCustomFields = Object.entries(
-      (state.customFields?.validatedValue || {}) as Record<string, any>,
+      (currentValues.customFields || {}) as Record<string, any>,
     ).reduce((acc, [key, val]) => {
       if (readOnlyFieldsDict[key]) return acc;
 
@@ -269,7 +270,7 @@ export function EntityCustomFields<T extends ViableEntity>({
       if (mutation) {
         await mutation(
           preparedCustomFields,
-          state?.translations?.validatedValue || [],
+          currentValues.translations || [],
         );
       } else {
         const mutationName = entityDictionary[entityName]?.["mutationName"];
@@ -283,7 +284,7 @@ export function EntityCustomFields<T extends ViableEntity>({
               input: {
                 id,
                 customFields: preparedCustomFields,
-                translations: state?.translations?.validatedValue,
+                translations: currentValues.translations,
               },
             },
             { id: true },
@@ -312,8 +313,8 @@ export function EntityCustomFields<T extends ViableEntity>({
     try {
       setLoading(true);
       if (initialValues) {
-        setField("customFields", initialValues.customFields);
-        setField("translations", initialValues.translations);
+        form.setField("customFields", initialValues.customFields);
+        form.setField("translations", initialValues.translations);
         setInitialized(true);
       } else {
         fetchEntity().then(() => setInitialized(true));
@@ -324,9 +325,9 @@ export function EntityCustomFields<T extends ViableEntity>({
   }, [initialValues, entityCustomFields, isInitialized]);
 
   if (!entityCustomFields?.length) return null;
-  const translations = state?.translations?.value || [];
+  const translations = formValues.translations || [];
   const currentTranslationValue = translations?.find(
-    (v) => v.languageCode === currentLanguage,
+    (v: { languageCode: LanguageCode }) => v.languageCode === currentLanguage,
   );
 
   const getEntityDisplayName = () => {
@@ -344,7 +345,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   ) : entityCustomFields?.length ? (
     <CustomFieldsComponent
       additionalData={additionalData}
-      value={state.customFields?.value}
+      value={formValues.customFields}
       translation={currentTranslationValue}
       customFields={entityCustomFields}
       disabled={disabled}
@@ -353,38 +354,39 @@ export function EntityCustomFields<T extends ViableEntity>({
           field.type === "localeText" || field.type === "localeString";
         if (translatable && currentLanguage) {
           const customFieldsTranslations = setInArrayBy(
-            translations,
-            (t) => t.languageCode !== currentLanguage,
+            translations as Array<{ customFields?: CF; languageCode: LanguageCode }>,
+            (tr) => tr.languageCode !== currentLanguage,
             {
               customFields: {
-                ...translations.find((t) => t.languageCode === currentLanguage)
-                  ?.customFields,
+                ...(translations as Array<{ customFields?: CF; languageCode: LanguageCode }>).find(
+                  (tr) => tr.languageCode === currentLanguage,
+                )?.customFields,
                 [field.name]: data,
               },
               languageCode: currentLanguage,
             },
           );
           const newCustomFields = Object.entries(
-            state.customFields?.value || {},
+            formValues.customFields || {},
           ).reduce((acc, [key, val]) => {
             if (readOnlyFieldsDict[key] || translatableFieldsDict[key])
               return acc;
             if (relationFields?.includes(key)) {
               const newKey = key + (Array.isArray(val) ? "Ids" : "Id");
               acc[newKey] = Array.isArray(val)
-                ? val?.map((el) => el.id)
+                ? val?.map((el: any) => el.id)
                 : (val as any)?.id || null;
             } else acc[key] = val;
             return acc;
           }, {} as CF);
           onChange?.(newCustomFields, customFieldsTranslations);
-          setField("translations", customFieldsTranslations);
+          form.setField("translations", customFieldsTranslations);
           return;
         }
 
         if (!translatable) {
           const newCustomFields = Object.entries({
-            ...state.customFields?.value,
+            ...formValues.customFields,
             [field.name]: data,
           }).reduce((acc, [key, val]) => {
             if (readOnlyFieldsDict[key] || translatableFieldsDict[key])
@@ -392,14 +394,14 @@ export function EntityCustomFields<T extends ViableEntity>({
             if (relationFields?.includes(key)) {
               const newKey = key + (Array.isArray(val) ? "Ids" : "Id");
               acc[newKey] = Array.isArray(val)
-                ? val?.map((el) => el.id)
+                ? val?.map((el: any) => el.id)
                 : (val as any)?.id || null;
             } else acc[key] = val;
             return acc;
           }, {} as CF);
-          onChange?.(newCustomFields, state.translations?.value || []);
-          setField("customFields", {
-            ...state.customFields?.value,
+          onChange?.(newCustomFields, formValues.translations || []);
+          form.setField("customFields", {
+            ...formValues.customFields,
             [field.name]: data,
           });
           return;

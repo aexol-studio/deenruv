@@ -105,7 +105,7 @@ export const CollectionProductVariantsDrawer: React.FC<CollectionProductVariants
               {filter && handleFilterValue(firstFilterKey)}
             </div>
 
-            <DrawerClose>
+            <DrawerClose asChild>
               <Button>{t('drawer.close')}</Button>
             </DrawerClose>
           </DrawerHeader>

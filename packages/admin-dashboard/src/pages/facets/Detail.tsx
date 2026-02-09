@@ -2,7 +2,6 @@ import { useParams } from 'react-router';
 import {
   useValidators,
   DetailView,
-  GFFLPFormField,
   createDeenruvForm,
   getMutation,
   useMutation,
@@ -16,14 +15,7 @@ const CreateFacetMutation = getMutation('createFacet');
 const EditFacetMutation = getMutation('updateFacet');
 const DeleteFacetMutation = getMutation('deleteFacet');
 
-type CreateFacetInput = ModelTypes['CreateFacetInput'];
-type FormDataType = Partial<{
-  code: GFFLPFormField<CreateFacetInput['code']>;
-  isPrivate: GFFLPFormField<CreateFacetInput['isPrivate']>;
-  translations: GFFLPFormField<CreateFacetInput['translations']>;
-  values: GFFLPFormField<CreateFacetInput['values']>;
-  customFields: GFFLPFormField<CreateFacetInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 export const FacetsDetailPage = () => {
   const { id } = useParams();
@@ -35,16 +27,16 @@ export const FacetsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
-      if (!data.code?.validatedValue) {
+      if (!data.code) {
         throw new Error('Code is required.');
       }
 
       const inputData = {
-        code: data.code.validatedValue,
-        isPrivate: data.isPrivate?.value || data.isPrivate?.initialValue,
-        translations: data.translations?.validatedValue,
-        values: data.values?.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        code: data.code as string,
+        isPrivate: data.isPrivate as boolean | undefined,
+        translations: data.translations as ModelTypes['CreateFacetInput']['translations'],
+        values: data.values as ModelTypes['CreateFacetInput']['values'],
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

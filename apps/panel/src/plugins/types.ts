@@ -35,4 +35,10 @@ export type DeenruvUIPluginManifestItem = {
   plugin: DeenruvUIPlugin;
   /** Whether this plugin is enabled when no env override is provided */
   enabledByDefault: boolean;
+  /** Human-readable description of the plugin */
+  description?: string;
+  /** Plugin author name */
+  author?: string;
+  /** Plugin category for filtering */
+  category?: string;
 };

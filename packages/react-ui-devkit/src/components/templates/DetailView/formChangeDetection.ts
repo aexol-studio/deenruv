@@ -1,5 +1,4 @@
 import { EntityType } from "@/components/templates/DetailView/types";
-import { GFFLPFormField } from "@/hooks";
 import { deepSortArray } from "@/utils";
 
 // Some fields between entity and form state differs and need to be normalized in order to compare
@@ -104,15 +103,13 @@ const normalizeEntityValues = (entityValues: EntityType) => {
 };
 
 export const checkUnsavedChanges = (
-  formStateValues: Record<string, GFFLPFormField<any> | undefined>,
+  formStateValues: Record<string, unknown>,
   entityValues: EntityType | null,
 ): boolean => {
   if (entityValues === null) {
     for (const key in formStateValues) {
-      if (
-        formStateValues[key]?.value !== null &&
-        formStateValues[key]?.value !== ""
-      ) {
+      const val = formStateValues[key];
+      if (val !== null && val !== undefined && val !== "") {
         return true;
       }
     }
@@ -126,7 +123,7 @@ export const checkUnsavedChanges = (
       return true;
     }
 
-    const formValue = formStateValues[key]?.value;
+    const formValue = formStateValues[key];
     const entityValue = normalizedEntityValues[key as keyof EntityType];
 
     if (Array.isArray(formValue) && Array.isArray(entityValue)) {

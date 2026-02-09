@@ -16,6 +16,7 @@ import {
   useNotifications,
   useTranslation,
   capitalizeFirstLetter,
+  Skeleton,
 } from '@deenruv/react-ui-devkit';
 import {
   BarChart,
@@ -332,7 +333,36 @@ export function Navigation({ isCollapsed }: NavProps) {
 
   const defaultAccordionOpenValue = ['shop-group', 'assortment-group'];
 
-  if (!loaded) return null;
+  if (!loaded) {
+    return (
+      <div className="relative overflow-y-auto">
+        <div className="flex h-[calc(100%-70px)] flex-col gap-4 pb-2 lg:h-[calc(100%-80px)]">
+          {/* Skeleton nav groups */}
+          {Array.from({ length: 3 }).map((_, groupIdx) => (
+            <div key={groupIdx} className="flex flex-col gap-1 px-2">
+              {!isCollapsed && (
+                <div className="px-4 py-2">
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              )}
+              {Array.from({ length: groupIdx === 0 ? 4 : groupIdx === 1 ? 5 : 3 }).map((_, linkIdx) => (
+                <div
+                  key={linkIdx}
+                  className={cn(
+                    'flex items-center rounded-md px-4 py-2',
+                    isCollapsed && 'justify-center px-0',
+                  )}
+                >
+                  <Skeleton className={cn('size-4 shrink-0', isCollapsed && 'size-6')} />
+                  {!isCollapsed && <Skeleton className="ml-2 h-4 w-24" />}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="relative overflow-y-auto">
       <div
@@ -346,86 +376,84 @@ export function Navigation({ isCollapsed }: NavProps) {
           value={isCollapsed ? permittedNavigationGroups.map((g) => g.id) : undefined}
         >
           {permittedNavigationGroups.map((group) => (
-            <AccordionItem value={group.id}>
-              <React.Fragment key={group.id}>
-                {!isCollapsed && (
-                  <AccordionTrigger className={cn('flex items-center justify-between pr-3 hover:no-underline')}>
-                    <div className="flex items-center gap-2 px-6">
-                      <h4 className="text-xs font-bold uppercase hover:underline">{group.label}</h4>
-                      {getNavigationNotification(group.id)}
-                      {viewMarkers ? (
-                        <p className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
-                          {group.id}
-                        </p>
-                      ) : null}
-                    </div>
-                  </AccordionTrigger>
-                )}
-                <AccordionContent className={cn(isCollapsed ? 'py-2' : 'pb-4')}>
-                  <nav
-                    id={group.id}
-                    className="grid gap-1 px-2 text-muted-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
-                  >
-                    {group.links.map((link, index) => {
-                      const notifications = getNavigationNotification(link.id);
-                      return (
-                        <React.Fragment key={link.id}>
-                          {isCollapsed ? (
-                            <Tooltip key={index} delayDuration={0}>
-                              <TooltipTrigger asChild>
-                                <div>
-                                  <NavLink to={link.href} viewTransition>
-                                    <div
-                                      className={cn(
-                                        buttonVariants({ variant: 'navigation-link', size: 'icon' }),
-                                        'h-9 w-9',
-                                        location.pathname === link.href &&
-                                          'bg-muted opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
-                                      )}
-                                    >
-                                      <link.icon className="size-6" />
-                                      <span className="sr-only">{link.title}</span>
-                                    </div>
-                                  </NavLink>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent side="right" className="relative flex items-center gap-4">
-                                {viewMarkers ? (
-                                  <div className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
-                                    {link.id}
+            <AccordionItem key={group.id} value={group.id}>
+              {!isCollapsed && (
+                <AccordionTrigger className={cn('flex items-center justify-between pr-3 hover:no-underline')}>
+                  <div className="flex items-center gap-2 px-6">
+                    <h4 className="text-xs font-bold uppercase hover:underline">{group.label}</h4>
+                    {getNavigationNotification(group.id)}
+                    {viewMarkers ? (
+                      <p className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
+                        {group.id}
+                      </p>
+                    ) : null}
+                  </div>
+                </AccordionTrigger>
+              )}
+              <AccordionContent className={cn(isCollapsed ? 'py-2' : 'pb-4')}>
+                <nav
+                  id={group.id}
+                  className="grid gap-1 px-2 text-muted-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+                >
+                  {group.links.map((link, index) => {
+                    const notifications = getNavigationNotification(link.id);
+                    return (
+                      <React.Fragment key={link.id}>
+                        {isCollapsed ? (
+                          <Tooltip key={index} delayDuration={0}>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <NavLink to={link.href} viewTransition>
+                                  <div
+                                    className={cn(
+                                      buttonVariants({ variant: 'navigation-link', size: 'icon' }),
+                                      'h-9 w-9',
+                                      location.pathname === link.href &&
+                                        'bg-muted opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
+                                    )}
+                                  >
+                                    <link.icon className="size-6" />
+                                    <span className="sr-only">{link.title}</span>
                                   </div>
-                                ) : null}
-                                {capitalizeFirstLetter(link.title)}
-                                {notifications}
-                              </TooltipContent>
-                            </Tooltip>
-                          ) : (
-                            <NavLink to={link.href} viewTransition>
-                              <div
-                                id={link.id}
-                                className={cn(
-                                  'relative flex items-center justify-start rounded-md px-4 py-2 capitalize',
-                                  location.pathname === link.href &&
-                                    'bg-muted font-semibold opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
-                                )}
-                              >
-                                {viewMarkers ? (
-                                  <div className="absolute top-1/2 right-2 -translate-y-1/2 text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
-                                    {link.id}
-                                  </div>
-                                ) : null}
-                                <link.icon className="mr-2 size-4" />
-                                {capitalizeFirstLetter(link.title)}
-                                {notifications}
+                                </NavLink>
                               </div>
-                            </NavLink>
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-                  </nav>
-                </AccordionContent>
-              </React.Fragment>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="relative flex items-center gap-4">
+                              {viewMarkers ? (
+                                <div className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
+                                  {link.id}
+                                </div>
+                              ) : null}
+                              {capitalizeFirstLetter(link.title)}
+                              {notifications}
+                            </TooltipContent>
+                          </Tooltip>
+                        ) : (
+                          <NavLink to={link.href} viewTransition>
+                            <div
+                              id={link.id}
+                              className={cn(
+                                'relative flex items-center justify-start rounded-md px-4 py-2 capitalize',
+                                location.pathname === link.href &&
+                                  'bg-muted font-semibold opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
+                              )}
+                            >
+                              {viewMarkers ? (
+                                <div className="absolute top-1/2 right-2 -translate-y-1/2 text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
+                                  {link.id}
+                                </div>
+                              ) : null}
+                              <link.icon className="mr-2 size-4" />
+                              {capitalizeFirstLetter(link.title)}
+                              {notifications}
+                            </div>
+                          </NavLink>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </nav>
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

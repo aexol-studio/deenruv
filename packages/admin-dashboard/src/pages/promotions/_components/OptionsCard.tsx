@@ -44,20 +44,20 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
           <Input
             label={t('options.couponCode')}
             placeholder={t('options.couponCode')}
-            value={couponCode}
+            value={couponCode ?? ''}
             onChange={(e) => setField('couponCode', e.target.value)}
           />
           <Input
             label={t('options.usageLimit')}
             placeholder={t('options.usageLimit')}
-            value={usageLimit}
+            value={usageLimit ?? ''}
             type="number"
             onChange={(e) => setField('usageLimit', +e.target.value)}
           />
           <Input
             label={t('options.perCustomerUsageLimit')}
             placeholder={t('options.perCustomerUsageLimit')}
-            value={perCustomerUsageLimit}
+            value={perCustomerUsageLimit ?? ''}
             type="number"
             onChange={(e) => setField('perCustomerUsageLimit', +e.target.value)}
           />

@@ -23,13 +23,14 @@ import {
   priceFormatter,
   ArgumentFieldsComponent,
   CustomCard,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import type { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem.js';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Package, Truck, MapPin, User, Building, Phone, Box, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 interface Props {
@@ -38,26 +39,42 @@ interface Props {
   onSubmitted: (data: ResolverInputTypes['FulfillOrderInput']) => Promise<void>;
 }
 
+const fulfillOrderSchema = z.object({
+  lines: z.array(z.object({
+    orderLineId: z.string(),
+    quantity: z.number(),
+    customFields: z.record(z.string(), z.unknown()).optional(),
+  })).default([]),
+  handler: z.object({
+    code: z.string().optional(),
+    arguments: z.array(z.object({
+      name: z.string(),
+      value: z.string(),
+    })).optional(),
+  }).default({ code: undefined, arguments: [] }),
+});
+
 export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled }) => {
   const { t } = useTranslation('orders');
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const neededFulfillmentHandlers = order?.shippingLines?.map((line) => line.shippingMethod.fulfillmentHandlerCode);
 
-  const filteredFulfillmentHandlers = useServer((p) => {
-    return p.fulfillmentHandlers.filter((handler) => neededFulfillmentHandlers.includes(handler?.code));
-  });
+  const fulfillmentHandlers = useServer((p) => p.fulfillmentHandlers);
+  const filteredFulfillmentHandlers = useMemo(
+    () => fulfillmentHandlers.filter((handler) => neededFulfillmentHandlers.includes(handler?.code)),
+    [fulfillmentHandlers, neededFulfillmentHandlers],
+  );
 
-  const { state, setField } = useGFFLP('FulfillOrderInput')({
-    lines: {
-      initialValue: order.lines.map((line) => ({
+  const form = useDeenruvForm({
+    schema: fulfillOrderSchema,
+    defaultValues: {
+      lines: order.lines.map((line) => ({
         orderLineId: line.id,
         quantity: line.quantity || 1,
         customFields: {},
       })),
-    },
-    handler: {
-      initialValue: {
+      handler: {
         code: filteredFulfillmentHandlers[0]?.code,
         arguments: filteredFulfillmentHandlers[0]?.args.map((arg) => ({
           name: arg.name,
@@ -66,19 +83,21 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
       },
     },
   });
+  const linesValue = form.watch('lines');
+  const handlerValue = form.watch('handler');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!state.lines?.value || !state.handler?.value) return;
+    if (!linesValue || !handlerValue) return;
 
-    const lines = state.lines?.value.map((line) => ({
+    const lines = linesValue.map((line) => ({
       orderLineId: line.orderLineId,
       quantity: line.quantity,
     }));
 
     setIsSubmitting(true);
     try {
-      await onSubmitted({ lines, handler: state.handler?.value });
+      await onSubmitted({ lines, handler: handlerValue as ResolverInputTypes['ConfigurableOperationInput'] });
       setOpen(false);
     } catch (error) {
       console.error(error);
@@ -132,7 +151,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                         (acc, stock) => acc + stock.stockOnHand,
                         0,
                       );
-                      const stateLine = state.lines?.value?.find((l) => l.orderLineId === line.id);
+                      const stateLine = linesValue?.find((l) => l.orderLineId === line.id);
                       const isLowStock = onStock < line.quantity;
 
                       return (
@@ -145,15 +164,14 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                                     type="number"
                                     className="w-20"
                                     value={stateLine?.quantity}
-                                    onChange={(e) => {
-                                      const value = state.lines?.value;
-                                      if (!value) return;
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                      const value = linesValue ? [...linesValue] : [];
                                       const index = value.findIndex((v) => v.orderLineId === line.id);
                                       if (index === -1) return;
                                       if (Number.parseInt(e.target.value) < 1) return;
                                       if (Number.parseInt(e.target.value) <= line.quantity) {
-                                        value[index].quantity = Number.parseInt(e.target.value);
-                                        setField('lines', value);
+                                        value[index] = { ...value[index], quantity: Number.parseInt(e.target.value) };
+                                        form.setField('lines', value);
                                       }
                                     }}
                                     endAdornment={<span className="text-sm">/ {line.quantity}</span>}
@@ -306,19 +324,20 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                   <ArgumentFieldsComponent
                     actions={filteredFulfillmentHandlers}
                     args={
-                      state.handler?.value.arguments?.length
-                        ? state.handler.value.arguments
-                        : state.handler?.initialValue?.arguments?.length
-                          ? state.handler.initialValue.arguments
-                          : []
+                      handlerValue?.arguments?.length
+                        ? handlerValue.arguments
+                        : filteredFulfillmentHandlers[0]?.args.map((arg) => ({
+                            name: arg.name,
+                            value: JSON.stringify(arg.defaultValue ?? ''),
+                          })) || []
                     }
-                    setArg={(argument, data) => {
-                      const newArgs = state.handler?.value.arguments.map((arg) => {
+                    setArg={(argument: { name: string }, data: { value: string }) => {
+                      const newArgs = handlerValue?.arguments?.map((arg: { name: string; value: string }) => {
                         if (arg.name === argument.name) return { ...arg, value: data.value };
                         return arg;
                       });
-                      if (!state.handler?.value.code || !newArgs) return;
-                      setField('handler', { code: state.handler?.value.code, arguments: newArgs });
+                      if (!handlerValue?.code || !newArgs) return;
+                      form.setField('handler', { code: handlerValue.code, arguments: newArgs });
                     }}
                   />
                 </CustomCard>

@@ -23,14 +23,12 @@ export const CountryDetailView = () => {
     'customFields',
   );
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
   const { t } = useTranslation('countries');
   const { translationsLanguage: currentTranslationLng } = useSettings();
 
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const translations = base.watch('translations') || [];
+  const currentTranslationValue = translations.find((v: any) => v.languageCode === currentTranslationLng);
 
   useEffect(() => {
     (async () => {
@@ -38,24 +36,30 @@ export const CountryDetailView = () => {
 
       if (!resp) return;
 
-      setField('code', resp.code);
-      setField('translations', resp.translations);
-      setField('enabled', resp.enabled);
+      base.setField('code', resp.code);
+      base.setField('translations', resp.translations);
+      base.setField('enabled', resp.enabled);
     })();
   }, []);
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
-      setField(
+      const baseTranslation = currentTranslationValue ?? {
+        languageCode: currentTranslationLng,
+        name: '',
+      };
+
+      base.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t: any) => t.languageCode === currentTranslationLng, {
+          ...baseTranslation,
           [field]: e,
           languageCode: currentTranslationLng,
         }),
       );
     },
 
-    [currentTranslationLng, translations],
+    [currentTranslationLng, translations, currentTranslationValue],
   );
 
   return (
@@ -68,21 +72,21 @@ export const CountryDetailView = () => {
                 label={t('details.basic.name')}
                 value={currentTranslationValue?.name ?? undefined}
                 onChange={(e) => setTranslationField('name', e.target.value)}
-                errors={state.translations?.errors}
+                errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
                 required
               />
             </div>
             <div className="flex basis-full md:basis-1/3">
               <Input
                 label={t('details.basic.code')}
-                value={state.code?.value}
-                onChange={(e) => setField('code', e.target.value)}
-                errors={state.code?.errors}
+                value={base.watch('code')}
+                onChange={(e) => base.setField('code', e.target.value)}
+                errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
                 required
               />
             </div>
             <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/3">
-              <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
+              <Switch checked={base.watch('enabled')} onCheckedChange={(e) => base.setField('enabled', e)} />
               <Label>{t('details.basic.enabled')}</Label>
             </div>
           </div>

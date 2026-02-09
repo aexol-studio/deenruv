@@ -1,3 +1,4 @@
+import React, { Fragment } from "react";
 import { createStore } from "zustand";
 import {
   Notification,
@@ -42,9 +43,11 @@ export const createNotificationsStore = <T,>(
             ),
           }))
           .filter((notification) => notification.placement)
-          .map((notification) =>
-            notification.placement?.component(notification.data),
-          );
+          .map((notification) => (
+            <Fragment key={notification.id}>
+              {notification.placement?.component(notification.data)}
+            </Fragment>
+          ));
       },
       getMainNotification: (ids: string[]) => {
         return [];

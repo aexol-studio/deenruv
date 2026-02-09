@@ -77,11 +77,13 @@ export const Lines: React.FC<LinesProps> = ({ onLinesChange }) => {
               </TableRow>
             ))
           ) : (
-            <TableCell colSpan={8}>
-              <div className="mt-4 flex items-center justify-center">
-                <span>{t('details.lines.noItems')}</span>
-              </div>
-            </TableCell>
+            <TableRow noHover>
+              <TableCell colSpan={3}>
+                <div className="mt-4 flex items-center justify-center">
+                  <span>{t('details.lines.noItems')}</span>
+                </div>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

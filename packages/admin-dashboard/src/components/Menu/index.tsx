@@ -31,6 +31,7 @@ import {
   createDialog,
   buildURL,
 } from '@deenruv/react-ui-devkit';
+import { useShallow } from 'zustand/react/shallow';
 
 import {
   GripVertical,
@@ -91,13 +92,15 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
   const { topNavigationActionsMenu, topNavigationComponents } = usePluginStore();
-  const { logOut, theme, setTheme } = useSettings((p) => ({
-    logOut: p.logOut,
-    theme: p.theme,
-    setTheme: p.setTheme,
-    language: p.language,
-    setLanguage: p.setLanguage,
-  }));
+  const { logOut, theme, setTheme } = useSettings(
+    useShallow((p) => ({
+      logOut: p.logOut,
+      theme: p.theme,
+      setTheme: p.setTheme,
+      language: p.language,
+      setLanguage: p.setLanguage,
+    })),
+  );
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);

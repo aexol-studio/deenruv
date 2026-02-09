@@ -24,6 +24,7 @@ import {
   formatDate,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
+import { useShallow } from 'zustand/react/shallow';
 
 type Notification = {
   name: string;
@@ -44,7 +45,7 @@ export const Notifications = () => {
   const cyclingNotifications = useNotifications(({ notifications }) => notifications);
   const getMainNotification = useNotifications(({ getMainNotification }) => getMainNotification);
   const jobQueues = useServer(({ jobQueues }) => jobQueues);
-  const status = useServer(({ status }) => status);
+  const status = useServer(useShallow(({ status }) => status));
 
   const { t } = useTranslation('common');
   const [notifications, setNotifications] = useState<Array<Notification>>([]);

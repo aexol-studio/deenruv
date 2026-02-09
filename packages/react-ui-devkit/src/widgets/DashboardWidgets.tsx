@@ -32,6 +32,7 @@ import { Grip, Menu, Trash } from "lucide-react";
 import { CSS } from "@dnd-kit/utilities";
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import { useWidgetsStore } from "./widgets-context";
+import { useShallow } from "zustand/react/shallow";
 import { LanguageCode } from "@deenruv/admin-types";
 import { DeenruvUIPlugin, Widget } from "@/plugins/types.js";
 import { WidgetsEmptyState } from "@/widgets/WidgetsEmptyState.js";
@@ -179,14 +180,15 @@ const WidgetItem: React.FC<
 
 export const DashboardWidgets = () => {
   const [, setActiveID] = React.useState<string | number | null>(null);
-  const { widgets, reorderWidgets, actions } = useWidgetsStore((state) => ({
-    widgets: state.widgets,
-    reorderWidgets: state.reorderWidgets,
-    actions: {
-      removeWidget: state.removeWidget,
-      resizeWidget: state.resizeWidget,
-    },
-  }));
+  const { widgets, reorderWidgets, removeWidget, resizeWidget } =
+    useWidgetsStore(
+      useShallow((state) => ({
+        widgets: state.widgets,
+        reorderWidgets: state.reorderWidgets,
+        removeWidget: state.removeWidget,
+        resizeWidget: state.resizeWidget,
+      })),
+    );
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -223,7 +225,7 @@ export const DashboardWidgets = () => {
         >
           {widgets?.map(({ component, ...widget }) =>
             widget.visible ? (
-              <WidgetItemProvider key={widget.id} widget={widget} {...actions}>
+              <WidgetItemProvider key={widget.id} widget={widget} removeWidget={removeWidget} resizeWidget={resizeWidget}>
                 <WidgetItem widget={widget}>{component}</WidgetItem>
               </WidgetItemProvider>
             ) : null,

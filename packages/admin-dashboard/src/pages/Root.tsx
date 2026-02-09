@@ -23,6 +23,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { Menu } from '@/components';
 import { GlobalSearch } from '@/components/GlobalSearch.js';
+import { ContentAreaSkeleton } from '@/components/ContentAreaSkeleton.js';
 import { DeenruvDeveloperIndicator } from '@/DeenruvDeveloperIndicator.js';
 import { CurrencyCode, LanguageCode, Permission } from '@deenruv/admin-types';
 
@@ -275,7 +276,6 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
     };
     fetchGraphQLSchema().then(async (schema) => {
       window.__DEENRUV_SCHEMA__ = schema;
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       await init();
     });
   }, []);
@@ -283,19 +283,15 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   return (
     <>
       <div className="flex max-h-screen w-full max-w-full overflow-hidden bg-background text-foreground">
-        {loaded ? (
+        <Menu>
+          {loaded ? <Outlet /> : <ContentAreaSkeleton />}
+        </Menu>
+        {loaded && (
           <>
-            <Menu>
-              <Outlet />
-            </Menu>
             <GlobalSearch />
             <CanLeaveRouteDialog />
             {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
           </>
-        ) : (
-          <div className="flex h-screen w-full items-center justify-center">
-            <span className="animate-spin">⏳</span>
-          </div>
         )}
       </div>
     </>

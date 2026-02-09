@@ -16,7 +16,7 @@
     "watch": "tsc --build --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
+    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server && zeus http://localhost:6100/admin-api ./src/plugin-ui"
   },
   "dependencies": {
     "@deenruv/common": "workspace:^",

@@ -6,7 +6,8 @@ import {
   Input,
   apiClient,
   setInArrayBy,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   CF,
   EntityCustomFields,
   useTranslation,
@@ -33,77 +34,100 @@ interface VariantProps {
 
 export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng, onActionCompleted, productId }) => {
   const { t } = useTranslation('products');
-  const { state, setField } = useGFFLP(
-    'UpdateProductVariantInput',
-    'translations',
-    'price',
-    'prices',
-    'sku',
-    'assetIds',
-    'featuredAssetId',
-    'taxCategoryId',
-    'stockLevels',
-    'stockOnHand',
-    'outOfStockThreshold',
-    'useGlobalOutOfStockThreshold',
-    'trackInventory',
-    'facetValueIds',
-    'optionIds',
-    'customFields',
-  )({});
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const variantSchema = z.object({
+    translations: z.array(z.any()).default([]),
+    price: z.any().optional(),
+    prices: z.any().optional(),
+    sku: z.any().optional(),
+    assetIds: z.array(z.string()).default([]),
+    featuredAssetId: z.string().nullable().optional(),
+    taxCategoryId: z.string().optional(),
+    stockLevels: z.array(z.any()).default([]),
+    stockOnHand: z.number().optional(),
+    outOfStockThreshold: z.number().optional(),
+    useGlobalOutOfStockThreshold: z.boolean().optional(),
+    trackInventory: z.any().optional(),
+    facetValueIds: z.array(z.string()).default([]),
+    optionIds: z.array(z.string()).default([]),
+    customFields: z.record(z.string(), z.unknown()).default({}),
+  });
+  const form = useDeenruvForm({
+    schema: variantSchema,
+    defaultValues: {
+      translations: [],
+      price: undefined,
+      prices: undefined,
+      sku: undefined,
+      assetIds: [],
+      featuredAssetId: undefined,
+      taxCategoryId: undefined,
+      stockLevels: [],
+      stockOnHand: undefined,
+      outOfStockThreshold: undefined,
+      useGlobalOutOfStockThreshold: undefined,
+      trackInventory: undefined,
+      facetValueIds: [],
+      optionIds: [],
+      customFields: {},
+    },
+  });
+  const formValues = form.watch();
+  const translations = formValues.translations || [];
+  const currentTranslationValue = translations.find((v: { languageCode: LanguageCode }) => v.languageCode === currentTranslationLng);
 
   useEffect(() => {
     if (!variant) return;
 
-    setField('sku', variant.sku);
-    setField('price', variant.price);
-    setField('prices', variant.prices);
-    setField('translations', variant.translations);
-    setField(
+    form.setField('sku', variant.sku);
+    form.setField('price', variant.price);
+    form.setField('prices', variant.prices);
+    form.setField('translations', variant.translations);
+    form.setField(
       'assetIds',
       variant.assets.map((a) => a.id),
     );
-    setField('featuredAssetId', variant.featuredAsset?.id);
-    setField('taxCategoryId', variant.taxCategory.id);
-    setField(
+    form.setField('featuredAssetId', variant.featuredAsset?.id);
+    form.setField('taxCategoryId', variant.taxCategory.id);
+    form.setField(
       'stockLevels',
       variant.stockLevels.map((sL) => ({ stockLocationId: sL.stockLocationId, stockOnHand: sL.stockOnHand })),
     );
-    setField('stockOnHand', variant.stockOnHand);
-    setField('outOfStockThreshold', variant.outOfStockThreshold);
-    setField('useGlobalOutOfStockThreshold', variant.useGlobalOutOfStockThreshold);
-    setField('trackInventory', variant.trackInventory);
-    setField(
+    form.setField('stockOnHand', variant.stockOnHand);
+    form.setField('outOfStockThreshold', variant.outOfStockThreshold);
+    form.setField('useGlobalOutOfStockThreshold', variant.useGlobalOutOfStockThreshold);
+    form.setField('trackInventory', variant.trackInventory);
+    form.setField(
       'facetValueIds',
       variant.facetValues.map((f) => f.id),
     );
   }, [variant]);
 
   const createVariant = useCallback(() => {
-    if (productId && state.sku?.validatedValue && state.translations?.validatedValue)
+    const values = form.getValues();
+    if (productId && values.sku && values.translations)
       return apiClient('mutation')({
         createProductVariants: [
           {
             input: [
               {
                 productId,
-                translations: state.translations?.validatedValue,
-                // price: +state.price?.validatedValue,
-                prices: state.prices?.validatedValue,
-                sku: state.sku?.validatedValue,
-                assetIds: state.assetIds?.validatedValue,
-                featuredAssetId: state.featuredAssetId?.validatedValue,
-                outOfStockThreshold: state.outOfStockThreshold?.validatedValue,
-                stockOnHand: state.stockOnHand?.validatedValue,
-                trackInventory: state.trackInventory?.validatedValue,
-                taxCategoryId: state.taxCategoryId?.validatedValue,
-                useGlobalOutOfStockThreshold: state.useGlobalOutOfStockThreshold?.validatedValue,
-                stockLevels: state.stockLevels?.validatedValue,
-                facetValueIds: state.facetValueIds?.validatedValue,
-                optionIds: state.optionIds?.validatedValue,
-                ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
+                translations: values.translations,
+                // price: +values.price,
+                prices: values.prices,
+                sku: values.sku,
+                assetIds: values.assetIds,
+                featuredAssetId: values.featuredAssetId,
+                outOfStockThreshold: values.outOfStockThreshold,
+                stockOnHand: values.stockOnHand,
+                trackInventory: values.trackInventory,
+                taxCategoryId: values.taxCategoryId,
+                useGlobalOutOfStockThreshold: values.useGlobalOutOfStockThreshold,
+                stockLevels: values.stockLevels,
+                facetValueIds: values.facetValueIds,
+                optionIds: values.optionIds,
+                ...(values.customFields && Object.keys(values.customFields).length > 0
+                  ? { customFields: values.customFields }
+                  : {}),
               },
             ],
           },
@@ -119,30 +143,33 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
         .catch(() => {
           toast(t('toasts.createProductVariantErrorToast'));
         });
-  }, [state, productId, onActionCompleted, t]);
+  }, [form, productId, onActionCompleted, t]);
 
   const updateVariant = useCallback(() => {
     if (!variant) return;
+    const values = form.getValues();
     apiClient('mutation')({
       updateProductVariants: [
         {
           input: [
             {
               id: variant.id,
-              translations: state.translations?.validatedValue,
-              // price: +state.price?.validatedValue,
-              prices: state.prices?.validatedValue,
-              sku: state.sku?.validatedValue,
-              assetIds: state.assetIds?.validatedValue,
-              featuredAssetId: state.featuredAssetId?.validatedValue,
-              outOfStockThreshold: state.outOfStockThreshold?.validatedValue,
-              stockOnHand: state.stockOnHand?.validatedValue,
-              trackInventory: state.trackInventory?.validatedValue,
-              taxCategoryId: state.taxCategoryId?.validatedValue,
-              useGlobalOutOfStockThreshold: state.useGlobalOutOfStockThreshold?.validatedValue,
-              stockLevels: state.stockLevels?.validatedValue,
-              facetValueIds: state.facetValueIds?.validatedValue,
-              ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
+              translations: values.translations,
+              // price: +values.price,
+              prices: values.prices,
+              sku: values.sku,
+              assetIds: values.assetIds,
+              featuredAssetId: values.featuredAssetId,
+              outOfStockThreshold: values.outOfStockThreshold,
+              stockOnHand: values.stockOnHand,
+              trackInventory: values.trackInventory,
+              taxCategoryId: values.taxCategoryId,
+              useGlobalOutOfStockThreshold: values.useGlobalOutOfStockThreshold,
+              stockLevels: values.stockLevels,
+              facetValueIds: values.facetValueIds,
+              ...(values.customFields && Object.keys(values.customFields).length > 0
+                ? { customFields: values.customFields }
+                : {}),
             },
           ],
         },
@@ -156,7 +183,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
         });
       })
       .catch(() => toast.error(t('toasts.updateProductErrorToast')));
-  }, [state, variant]);
+  }, [form, variant]);
 
   const deleteVariant = useCallback(() => {
     if (!variant) return;
@@ -174,9 +201,18 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
 
   const setTranslationField = useCallback(
     (field: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setField(
+      const currentValue = translations.find(
+        (t: { languageCode: LanguageCode }) => t.languageCode === currentTranslationLng,
+      );
+      const baseTranslation = currentValue ?? {
+        languageCode: currentTranslationLng,
+        name: '',
+      };
+
+      form.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t: { languageCode: LanguageCode }) => t.languageCode === currentTranslationLng, {
+          ...baseTranslation,
           [field]: e.target.value,
           languageCode: currentTranslationLng,
         }),
@@ -189,10 +225,9 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   const handleAddAsset = (id: string | undefined | null) => {
     if (!id) return;
 
-    const newIds = state.assetIds?.value || [];
+    const newIds = formValues.assetIds || [];
     if (newIds?.includes(id)) return;
-    newIds?.push(id);
-    setField('assetIds', newIds);
+    form.setField('assetIds', [...newIds, id]);
   };
 
   return (
@@ -213,44 +248,44 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
         <div className="flex w-2/3 flex-col gap-4">
           {!!variant && (
             <StockCard
-              priceValue={state.price?.value}
-              taxRateValue={state.taxCategoryId?.value}
-              outOfStockThresholdValue={state.outOfStockThreshold?.value}
-              stockLevelsValue={state.stockLevels?.value}
-              stockOnHandValue={state.stockOnHand?.value}
-              useGlobalOutOfStockThresholdValue={state.useGlobalOutOfStockThreshold?.value}
-              onThresholdChange={(e) => setField('outOfStockThreshold', +e.target.value)}
-              onUseGlobalChange={(e) => setField('useGlobalOutOfStockThreshold', e)}
-              onTrackInventoryChange={(e) => setField('trackInventory', e)}
-              onStockOnHandChange={(e) => setField('stockOnHand', +e.target.value)}
-              onStockLocationsChange={(e) => setField('stockLevels', e)}
+              priceValue={formValues.price}
+              taxRateValue={formValues.taxCategoryId}
+              outOfStockThresholdValue={formValues.outOfStockThreshold}
+              stockLevelsValue={formValues.stockLevels}
+              stockOnHandValue={formValues.stockOnHand}
+              useGlobalOutOfStockThresholdValue={formValues.useGlobalOutOfStockThreshold}
+              onThresholdChange={(e: ChangeEvent<HTMLInputElement>) => form.setField('outOfStockThreshold', +e.target.value)}
+              onUseGlobalChange={(e: boolean) => form.setField('useGlobalOutOfStockThreshold', e)}
+              onTrackInventoryChange={(e: unknown) => form.setField('trackInventory', e)}
+              onStockOnHandChange={(e: ChangeEvent<HTMLInputElement>) => form.setField('stockOnHand', +e.target.value)}
+              onStockLocationsChange={(e: Array<{ stockLocationId: string; stockOnHand: number }>) => form.setField('stockLevels', e)}
               allStockLocations={variant?.stockLevels}
               stockAllocated={variant?.stockAllocated}
-              trackInventoryValue={state.trackInventory?.value}
+              trackInventoryValue={formValues.trackInventory}
             />
           )}
           <PriceCard
             currencyCode={variant?.currencyCode || CurrencyCode.PLN}
-            priceValue={state.prices?.value}
-            onPriceChange={(e) => setField('prices', e)}
-            taxRateValue={state.taxCategoryId?.value ?? undefined}
-            onTaxRateChange={(id) => setField('taxCategoryId', id)}
+            priceValue={formValues.prices}
+            onPriceChange={(e: unknown) => form.setField('prices', e)}
+            taxRateValue={formValues.taxCategoryId ?? undefined}
+            onTaxRateChange={(id: string) => form.setField('taxCategoryId', id)}
           />
 
           <AssetsCard
             onAddAsset={handleAddAsset}
-            featuredAssetId={state.featuredAssetId?.value}
-            assetsIds={state.assetIds?.value}
-            onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
-            onAssetsChange={(ids) => setField('assetIds', ids)}
+            featuredAssetId={formValues.featuredAssetId}
+            assetsIds={formValues.assetIds}
+            onFeaturedAssetChange={(id: string | undefined | null) => form.setField('featuredAssetId', id)}
+            onAssetsChange={(ids: string[]) => form.setField('assetIds', ids)}
           />
           <EntityCustomFields
             entityName="productVariant"
             id={variant?.id}
             hideButton
-            onChange={(customFields, translations) => {
-              setField('customFields', customFields);
-              if (translations) setField('translations', translations as any);
+            onChange={(customFields: CF, translations?: unknown) => {
+              form.setField('customFields', customFields);
+              if (translations) form.setField('translations', translations as any);
             }}
             initialValues={
               variant && 'customFields' in variant
@@ -265,8 +300,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               <Input
                 label={t('sku')}
                 placeholder={t('sku')}
-                value={state?.sku?.value ?? undefined}
-                onChange={(e) => setField('sku', e.target.value)}
+                value={formValues.sku ?? undefined}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => form.setField('sku', e.target.value)}
               />
               <Input
                 label={t('name')}
@@ -291,15 +326,15 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
           <OptionsCard
             optionGroups={variant?.options || []}
             productId={productId}
-            optionIds={state.optionIds?.value ?? undefined}
-            onChange={(e) => setField('optionIds', e)}
+            optionIds={formValues.optionIds ?? undefined}
+            onChange={(e: string[]) => form.setField('optionIds', e)}
             createMode={!variant}
           />
 
           {!!variant && (
             <FacetValuesCard
-              facetValuesIds={state.facetValueIds?.value ?? undefined}
-              onChange={(e) => setField('facetValueIds', e)}
+              facetValuesIds={formValues.facetValueIds ?? undefined}
+              onChange={(e: string[]) => form.setField('facetValueIds', e)}
             />
           )}
         </div>

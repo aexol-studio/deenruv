@@ -51,6 +51,7 @@ export const ProductsDetailPage = () => {
             config: {
               translations: {
                 validate: (v) => {
+                  if (!v || !v.length) return [t('validation.nameSlugRequired')];
                   const { name, slug } = v[0];
                   if (!name || !slug) return [t('validation.nameSlugRequired')];
                 },
@@ -59,14 +60,14 @@ export const ProductsDetailPage = () => {
             onSubmitted: (data) => {
               if (!data.translations) throw new Error('Name is required.');
               const input = {
-                translations: data.translations?.validatedValue,
-                assetIds: data.assetIds?.validatedValue,
-                featuredAssetId: data.featuredAssetId?.validatedValue,
-                facetValueIds: data.facetValueIds?.validatedValue,
-                enabled: data.enabled?.validatedValue,
-                ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+                translations: data.translations as Array<{ languageCode: string; name?: string; slug?: string; description?: string }>,
+                assetIds: data.assetIds as string[] | undefined,
+                featuredAssetId: data.featuredAssetId as string | undefined,
+                facetValueIds: data.facetValueIds as string[] | undefined,
+                enabled: data.enabled as boolean | undefined,
+                ...(data.customFields ? { customFields: data.customFields } : {}),
               };
-              return id ? update({ input: { id, ...input } }) : create({ input });
+              return id ? update({ input: { id, ...input } as any }) : create({ input: input as any });
             },
             onDeleted: () => {
               if (id) return remove({ id });

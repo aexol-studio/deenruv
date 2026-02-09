@@ -9,10 +9,11 @@ import {
   Label,
   DialogFooter,
   apiClient,
-  useGFFLP,
   setInArrayBy,
   EntityCustomFields,
   useTranslation,
+  useDeenruvForm,
+  z,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useState } from 'react';
 
@@ -25,6 +26,21 @@ interface AddOptionGroupDialogProps {
   onSuccess: () => void;
 }
 
+const addOptionGroupSchema = z.object({
+  code: z.string().default(''),
+  translations: z
+    .array(
+      z.object({
+        name: z.string(),
+        languageCode: z.string(),
+      }).passthrough(),
+    )
+    .default([]),
+  customFields: z.record(z.string(), z.unknown()).optional().default({}),
+});
+
+type AddOptionGroupFormValues = z.infer<typeof addOptionGroupSchema>;
+
 export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
   currentTranslationLng,
   productId,
@@ -32,20 +48,31 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
 }) => {
   const { t } = useTranslation('products');
   const [open, setOpen] = useState(false);
-  const { state, setField } = useGFFLP('CreateProductOptionGroupInput', 'code', 'translations', 'customFields')({});
-  const translations = state?.translations?.value || [];
+  const form = useDeenruvForm({
+    schema: addOptionGroupSchema,
+    defaultValues: {
+      code: '',
+      translations: [],
+      customFields: {},
+    },
+  });
+  const translations = form.watch('translations') || [];
   const [codeEditedManually, setCodeEditedManually] = useState(false);
 
   const createGroup = useCallback(() => {
-    if (state.code?.validatedValue && state.translations?.validatedValue)
+    const code = form.getValues('code');
+    const currentTranslations = form.getValues('translations');
+    const customFields = form.getValues('customFields');
+
+    if (code && currentTranslations)
       return apiClient('mutation')({
         createProductOptionGroup: [
           {
             input: {
-              code: state.code?.validatedValue,
+              code,
               options: [],
-              translations: state.translations.validatedValue,
-              ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
+              translations: currentTranslations as any,
+              ...(customFields && Object.keys(customFields).length > 0 ? { customFields } : {}),
             },
           },
           {
@@ -59,7 +86,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
               addOptionGroupToProduct: [
                 {
                   productId,
-                  optionGroupId: res.createProductOptionGroup.id,
+                  optionGroupId: res.createProductOptionGroup!.id,
                 },
                 {
                   id: true,
@@ -75,7 +102,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
         .catch(() => {
           toast(t('toasts.createOptionGroupErrorToast'));
         });
-  }, [state.code, state.translations, productId, onSuccess, t]);
+  }, [form, productId, onSuccess, t]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -91,18 +118,18 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
             <Label>{t('addOptionGroupDialog.name')}</Label>
             <Input
               className="mt-1"
-              value={state.translations?.value[0].name ?? undefined}
+              value={translations[0]?.name ?? undefined}
               onChange={(e) => {
-                setField(
+                form.setField(
                   'translations',
-                  setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+                  setInArrayBy(translations, (t) => t.languageCode === currentTranslationLng, {
                     name: e.target.value,
                     languageCode: currentTranslationLng,
                   }),
                 );
 
                 if (!codeEditedManually) {
-                  setField('code', e.target.value.replace(/\s+/g, '-'));
+                  form.setField('code', e.target.value.replace(/\s+/g, '-'));
                 }
               }}
             />
@@ -111,10 +138,10 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
             <Label>{t('addOptionGroupDialog.code')}</Label>
             <Input
               className="mt-1"
-              value={state.code?.value}
+              value={form.watch('code')}
               onChange={(e) => {
                 setCodeEditedManually(true);
-                setField('code', e.target.value);
+                form.setField('code', e.target.value);
               }}
             />
           </div>
@@ -123,7 +150,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
             entityName="productOptionGroup"
             hideButton
             onChange={(cf) => {
-              setField('customFields', cf);
+              form.setField('customFields', cf);
             }}
             additionalData={{}}
             withoutBorder

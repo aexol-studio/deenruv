@@ -14,7 +14,7 @@ const settings: DeenruvAdminPanelSettings = {
     },
   },
   api: {
-    uri: 'http://localhost:3000',
+    uri: 'http://localhost:6100',
     authTokenName: 'deenruv-auth-token',
     channelTokenName: 'deenruv-token',
   },

@@ -61,6 +61,9 @@ export const pluginManifest: ReadonlyArray<DeenruvUIPluginManifestItem> = [
     id: 'dashboard-widgets',
     plugin: DashboardWidgetsPlugin,
     enabledByDefault: true,
+    description: 'Dashboard widgets for orders, products, and categories charts with customizable metrics',
+    author: 'Deenruv',
+    category: 'visualization',
   },
   // ──────────────────────────────────────────────────────────
   // Uncomment the import above AND the entry below to activate:

@@ -7,7 +7,8 @@ import {
   CardTitle,
   CardContent,
   apiClient,
-  useGFFLP,
+  useDeenruvForm,
+  z,
   setInArrayBy,
   EntityCustomFields,
   useTranslation,
@@ -25,6 +26,14 @@ interface OptionValueCardProps {
   onEdited: () => void;
 }
 
+const optionValueSchema = z.object({
+  code: z.string().default(''),
+  translations: z
+    .array(z.object({ name: z.string(), languageCode: z.string() }).passthrough())
+    .default([]),
+  customFields: z.record(z.string(), z.unknown()).optional().default({}),
+});
+
 export const OptionValueCard: React.FC<OptionValueCardProps> = ({
   productOption,
   onEdited,
@@ -32,34 +41,33 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
   optionGroupId,
 }) => {
   const { t } = useTranslation('products');
-  const { state, setField } = useGFFLP('UpdateProductOptionInput', 'code', 'translations', 'customFields')({});
-  const translations = state?.translations?.value || [];
+  const form = useDeenruvForm({
+    schema: optionValueSchema,
+    defaultValues: { code: '', translations: [], customFields: {} },
+  });
+  const translations = form.watch('translations') || [];
+  const codeValue = form.watch('code');
+  const customFieldsValue = form.watch('customFields');
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
   useEffect(() => {
-    setField('code', productOption.code);
-    setField('translations', productOption.translations);
+    form.setField('code', productOption.code);
+    form.setField('translations', productOption.translations);
     if ('customFields' in productOption) {
-      setField('customFields', productOption.customFields as CF);
+      form.setField('customFields', productOption.customFields as CF);
     }
   }, [productOption]);
 
   const editOption = useCallback(() => {
     if (productOption.id) {
-      console.log('INPUT', {
-        id: productOption.id,
-        code: state.code?.validatedValue,
-        customFields: state.customFields?.validatedValue,
-        translations: state.translations?.validatedValue,
-      });
       return apiClient('mutation')({
         updateProductOption: [
           {
             input: {
               id: productOption.id,
-              code: state.code?.validatedValue,
-              customFields: state.customFields?.validatedValue,
-              translations: state.translations?.validatedValue,
+              code: codeValue,
+              customFields: customFieldsValue,
+              translations: translations as any,
             },
           },
           { id: true },
@@ -73,7 +81,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
           toast(t('toasts.updateOptionErrorToast'));
         });
     }
-  }, [state, productOption, t, onEdited]);
+  }, [codeValue, customFieldsValue, translations, productOption, t, onEdited]);
 
   return (
     <Card className="flex-grow basis-1/5">
@@ -87,9 +95,9 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
               label="name"
               value={currentTranslationValue?.name ?? undefined}
               onChange={(e) => {
-                setField(
+                form.setField(
                   'translations',
-                  setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+                  setInArrayBy(translations, (t) => t.languageCode === currentTranslationLng, {
                     name: e.target.value,
                     languageCode: currentTranslationLng,
                   }),
@@ -98,9 +106,9 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
             />
             <Input
               label="code"
-              value={state.code?.value ?? undefined}
+              value={codeValue ?? undefined}
               onChange={(e) => {
-                setField('code', e.target.value);
+                form.setField('code', e.target.value);
               }}
             />
             <EntityCustomFields
@@ -109,12 +117,12 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
               id={productOption.id}
               currentLanguage={currentTranslationLng}
               initialValues={
-                state && 'customFields' in state
-                  ? { customFields: state.customFields?.validatedValue as any }
+                customFieldsValue
+                  ? { customFields: customFieldsValue as any }
                   : { customFields: {} }
               }
               onChange={(cf) => {
-                setField('customFields', cf);
+                form.setField('customFields', cf);
               }}
               additionalData={{}}
             />

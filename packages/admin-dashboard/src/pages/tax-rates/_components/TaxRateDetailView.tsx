@@ -33,9 +33,7 @@ export const TaxRateDetailView = () => {
 
   const { form, entity, fetchEntity, id } = useDetailView('taxRates-detail-view', ...TAX_RATES_FORM_KEYS);
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   const fetchItemsForOptions = useCallback(async () => {
     const response = await apiClient('query')({
@@ -73,12 +71,12 @@ export const TaxRateDetailView = () => {
   useEffect(() => {
     console.log('ENT', entity);
     if (!entity) return;
-    setField('name', entity.name);
-    setField('enabled', entity.enabled);
-    setField('categoryId', entity.category.id);
-    setField('customerGroupId', entity.customerGroup?.id);
-    setField('zoneId', entity.zone.id);
-    setField('value', entity.value);
+    base.setField('name', entity.name);
+    base.setField('enabled', entity.enabled);
+    base.setField('categoryId', entity.category.id);
+    base.setField('customerGroupId', entity.customerGroup?.id);
+    base.setField('zoneId', entity.zone.id);
+    base.setField('value', entity.value);
   }, [entity]);
 
   return (
@@ -90,9 +88,9 @@ export const TaxRateDetailView = () => {
               <div className="flex basis-full md:basis-1/2">
                 <Input
                   label={t('details.basic.name')}
-                  value={state.name?.value ?? undefined}
-                  onChange={(e) => setField('name', e.target.value)}
-                  errors={state.name?.errors}
+                  value={base.watch('name') ?? undefined}
+                  onChange={(e) => base.setField('name', e.target.value)}
+                  errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
                   required
                 />
               </div>
@@ -100,9 +98,9 @@ export const TaxRateDetailView = () => {
                 <Input
                   type="number"
                   label={t('details.basic.value')}
-                  value={state.value?.value ?? undefined}
-                  onChange={(e) => setField('value', +e.target.value)}
-                  errors={state.value?.errors}
+                  value={base.watch('value') ?? undefined}
+                  onChange={(e) => base.setField('value', +e.target.value)}
+                  errors={base.formState.errors?.value?.message ? [base.formState.errors.value.message as string] : undefined}
                   endAdornment={'%'}
                   min={0}
                   max={100}
@@ -114,27 +112,27 @@ export const TaxRateDetailView = () => {
               <div className="flex basis-full md:basis-1/2">
                 <SimpleSelect
                   label={t('details.basic.taxCategory')}
-                  value={state.categoryId?.value ?? undefined}
-                  onValueChange={(e) => setField('categoryId', e)}
+                  value={base.watch('categoryId') ?? undefined}
+                  onValueChange={(e) => base.setField('categoryId', e)}
                   options={taxCategoriesOptions}
-                  errors={state.categoryId?.errors}
+                  errors={base.formState.errors?.categoryId?.message ? [base.formState.errors.categoryId.message as string] : undefined}
                   required
                 />
               </div>
               <div className="flex basis-full md:basis-1/2">
                 <SimpleSelect
                   label={t('details.basic.zone')}
-                  value={state.zoneId?.value ?? undefined}
-                  onValueChange={(e) => setField('zoneId', e)}
+                  value={base.watch('zoneId') ?? undefined}
+                  onValueChange={(e) => base.setField('zoneId', e)}
                   options={zonesOptions}
-                  errors={state.zoneId?.errors}
+                  errors={base.formState.errors?.zoneId?.message ? [base.formState.errors.zoneId.message as string] : undefined}
                   required
                 />
               </div>
             </div>
             <div className="flex items-end gap-4">
               <div className="mb-2 flex basis-full items-center gap-3 md:basis-1/2">
-                <Switch checked={state.enabled?.value ?? undefined} onCheckedChange={(e) => setField('enabled', e)} />
+                <Switch checked={base.watch('enabled') ?? undefined} onCheckedChange={(e) => base.setField('enabled', e)} />
                 <Label>{t('details.basic.enabled')}</Label>
               </div>
             </div>
@@ -145,7 +143,7 @@ export const TaxRateDetailView = () => {
           entityName="taxRate"
           id={id}
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }

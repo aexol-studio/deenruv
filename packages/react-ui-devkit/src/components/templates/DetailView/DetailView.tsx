@@ -27,7 +27,13 @@ import {
   DetailViewMarker,
   Separator,
 } from "@/components";
-import { GFFLPFormField, useGFFLP, useTranslation } from "@/hooks";
+import { useTranslation } from "@/hooks";
+import {
+  useDeenruvForm,
+  z,
+  type UseDeenruvFormReturn,
+} from "@/hooks/useDeenruvForm.js";
+import type { FieldValues } from "react-hook-form";
 import { useServer } from "@/state/server.js";
 import { getPermissions } from "@/utils/getPermissions.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
@@ -47,17 +53,54 @@ interface DetailViewFormProps<
     };
   };
   onSubmitted: (
-    data: Partial<{
-      [P in keyof Z]: GFFLPFormField<Z[P]>;
-    }>,
+    data: Record<string, unknown>,
     additionalData: Record<string, unknown> | undefined,
   ) => Promise<Record<string, unknown>> | undefined;
   onDeleted?: (
-    data: Partial<{
-      [P in keyof Z]: GFFLPFormField<Z[P]>;
-    }>,
+    data: Record<string, unknown>,
     additionalData: Record<string, unknown> | undefined,
   ) => Promise<Record<string, unknown>> | undefined;
+}
+
+/**
+ * Converts a legacy `createDeenruvForm` config (with `validate` callbacks and
+ * `initialValue`) into a Zod schema + defaultValues, suitable for `useDeenruvForm`.
+ *
+ * For each field in config:
+ * - If `validate` exists → `z.any().superRefine()` that calls the old validate fn
+ * - If no validate → `z.any()`
+ * - `defaultValues` extracted from `initialValue` properties
+ */
+function configToSchemaAndDefaults(config: Record<string, { validate?: (v: unknown) => string[] | void; initialValue?: unknown } | undefined>) {
+  const shape: Record<string, z.ZodType> = {};
+  const defaultValues: Record<string, unknown> = {};
+
+  for (const [key, fieldConfig] of Object.entries(config)) {
+    if (!fieldConfig) {
+      shape[key] = z.any();
+      continue;
+    }
+
+    if (fieldConfig.validate) {
+      const validateFn = fieldConfig.validate;
+      shape[key] = z.any().superRefine((val, ctx) => {
+        const errors = validateFn(val);
+        if (errors && errors.length > 0) {
+          for (const msg of errors) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: msg });
+          }
+        }
+      });
+    } else {
+      shape[key] = z.any();
+    }
+
+    if (fieldConfig.initialValue !== undefined) {
+      defaultValues[key] = fieldConfig.initialValue;
+    }
+  }
+
+  return { schema: z.object(shape), defaultValues };
 }
 
 export const createDeenruvForm = <
@@ -119,7 +162,9 @@ export const DetailView = <LOCATION extends DetailKeys>({
 }: DetailViewProps<LOCATION>) => {
   const [searchParams] = useSearchParams();
   const { getDetailViewTabs, getDetailViewActions } = usePluginStore();
-  const form = useGFFLP(main.form.key, ...main.form.keys)(main.form.config);
+  const form = useDeenruvForm(
+    configToSchemaAndDefaults(main.form.config as Record<string, { validate?: (v: unknown) => string[] | void; initialValue?: unknown } | undefined>),
+  );
 
   const tab = useMemo(
     () => searchParams.get("tab") || main.name,
@@ -234,7 +279,7 @@ const DetailTabs = ({
 
   const showEditButton = id && isPermittedToUpdate;
   const showCreateButton = !id && isPermittedToCreate;
-  const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
+  const buttonDisabled = !form.base.isFormValid || !hasUnsavedChanges;
 
   const tabsWithMarker = tabs.map((tab, idx) => (
     <TabsContent key={idx} value={tab.name}>
@@ -310,7 +355,7 @@ const DetailTabs = ({
                 <SimpleTooltip
                   content={
                     buttonDisabled
-                      ? form.base.haveValidFields
+                      ? form.base.isFormValid
                         ? t("noChangesTooltip")
                         : t("buttonDisabledTooltip")
                       : undefined

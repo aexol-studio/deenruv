@@ -59,23 +59,25 @@ export const PromotionsDetailPage = () => {
             },
             onSubmitted: (data) => {
               if (!data.translations || !data.actions || !data.conditions) throw new Error('Fill required fields.');
+              const conditions = data.conditions as Array<{ code: string; arguments: Array<{ name: string; value: string }> }>;
+              const actions = data.actions as Array<{ code: string; arguments: Array<{ name: string; value: string }> }>;
               const input = {
-                translations: data.translations?.validatedValue,
-                enabled: data.enabled?.validatedValue || false,
-                actions: data.actions?.validatedValue,
-                conditions: data.conditions?.validatedValue?.map((el) => ({
+                translations: data.translations as Array<{ languageCode: string; name: string }>,
+                enabled: (data.enabled as boolean) || false,
+                actions,
+                conditions: conditions?.map((el) => ({
                   ...el,
                   arguments: el.arguments.map((arg) => ({ ...arg, value: arg.value.toString() })),
                 })),
-                couponCode: data.couponCode?.validatedValue,
-                endsAt: data.endsAt?.validatedValue,
-                startsAt: data.startsAt?.validatedValue,
-                perCustomerUsageLimit: data.perCustomerUsageLimit?.validatedValue,
-                usageLimit: data.usageLimit?.validatedValue,
-                ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+                couponCode: data.couponCode as string | undefined,
+                endsAt: data.endsAt as string | undefined,
+                startsAt: data.startsAt as string | undefined,
+                perCustomerUsageLimit: data.perCustomerUsageLimit as number | undefined,
+                usageLimit: data.usageLimit as number | undefined,
+                ...(data.customFields ? { customFields: data.customFields } : {}),
               };
 
-              return id ? update({ input: { id, ...input } }) : create({ input });
+              return id ? update({ input: { id, ...input } as any }) : create({ input: input as any });
             },
             onDeleted: () => {
               if (id) return remove({ id });

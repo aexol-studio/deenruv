@@ -20,19 +20,18 @@ const ROLE_FORM_KEYS = ['CreateRoleInput', 'code', 'description', 'channelIds', 
 export const RoleDetailView = () => {
   const { form, fetchEntity, id } = useDetailView('roles-detail-view', ...ROLE_FORM_KEYS);
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
   const { t } = useTranslation('roles');
   const [allChannelOptions, setAllChannelOptions] = useState<Option[]>([]);
 
+  const channelIds = base.watch('channelIds');
   const currentChannelOptions = useMemo((): Option[] | undefined => {
     if (!allChannelOptions) return undefined;
     else
-      return state.channelIds?.value?.map(
-        (id) => allChannelOptions.find((o) => o.value === id) || { value: id, label: id },
+      return channelIds?.map(
+        (id: string) => allChannelOptions.find((o) => o.value === id) || { value: id, label: id },
       );
-  }, [allChannelOptions, state.channelIds?.value]);
+  }, [allChannelOptions, channelIds]);
 
   const fetchChannels = useCallback(async () => {
     const response = await apiClient('query')({
@@ -64,13 +63,13 @@ export const RoleDetailView = () => {
 
       if (!res) return;
 
-      setField('code', res.code);
-      setField('description', res.description);
-      setField(
+      base.setField('code', res.code);
+      base.setField('description', res.description);
+      base.setField(
         'channelIds',
         res.channels.map((ch) => ch.id),
       );
-      setField('permissions', res.permissions);
+      base.setField('permissions', res.permissions);
     })();
   }, []);
 
@@ -82,18 +81,18 @@ export const RoleDetailView = () => {
             <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
               <Input
                 label={t('details.basic.description')}
-                value={state.description?.value ?? undefined}
-                onChange={(e) => setField('description', e.target.value)}
-                errors={state.description?.errors}
+                value={base.watch('description') ?? undefined}
+                onChange={(e) => base.setField('description', e.target.value)}
+                errors={base.formState.errors?.description?.message ? [base.formState.errors.description.message as string] : undefined}
                 required
               />
             </div>
             <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
               <Input
                 label={t('details.basic.code')}
-                value={state.code?.value ?? undefined}
-                onChange={(e) => setField('code', e.target.value)}
-                errors={state.code?.errors}
+                value={base.watch('code') ?? undefined}
+                onChange={(e) => base.setField('code', e.target.value)}
+                errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
                 required
               />
             </div>
@@ -104,7 +103,7 @@ export const RoleDetailView = () => {
                 value={currentChannelOptions}
                 placeholder={t('details.basic.channelsPlaceholder')}
                 onChange={(channelsOptions) =>
-                  setField(
+                  base.setField(
                     'channelIds',
                     channelsOptions.map((o) => o.value),
                   )
@@ -116,9 +115,9 @@ export const RoleDetailView = () => {
         </CustomCard>
         <DetailViewMarker position={'roles-detail-view'} />
         <PermissionsCard
-          currentPermissions={state.permissions?.value ?? undefined}
-          onPermissionsChange={(e) => setField('permissions', e)}
-          errors={state.permissions?.errors}
+          currentPermissions={base.watch('permissions') ?? undefined}
+          onPermissionsChange={(e) => base.setField('permissions', e)}
+          errors={base.formState.errors?.permissions?.message ? [base.formState.errors.permissions.message as string] : undefined}
         />
       </div>
     </main>

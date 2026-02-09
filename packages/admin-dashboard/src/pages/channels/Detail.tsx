@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 
 import {
   getMutation,
-  GFFLPFormField,
   DetailView,
   createDeenruvForm,
   useMutation,
@@ -35,22 +34,7 @@ const EditChannelMutation = getMutation('updateChannel', {
 });
 const DeleteChannelMutation = getMutation('deleteChannel');
 
-type CreateChannelInput = ModelTypes['CreateChannelInput'];
-type FormDataType = Partial<{
-  code: GFFLPFormField<CreateChannelInput['code']>;
-  availableCurrencyCodes: GFFLPFormField<CreateChannelInput['availableCurrencyCodes']>;
-  availableLanguageCodes: GFFLPFormField<CreateChannelInput['availableLanguageCodes']>;
-  defaultCurrencyCode: GFFLPFormField<CreateChannelInput['defaultCurrencyCode']>;
-  defaultLanguageCode: GFFLPFormField<CreateChannelInput['defaultLanguageCode']>;
-  defaultShippingZoneId: GFFLPFormField<CreateChannelInput['defaultShippingZoneId']>;
-  defaultTaxZoneId: GFFLPFormField<CreateChannelInput['defaultTaxZoneId']>;
-  outOfStockThreshold: GFFLPFormField<CreateChannelInput['outOfStockThreshold']>;
-  pricesIncludeTax: GFFLPFormField<CreateChannelInput['pricesIncludeTax']>;
-  sellerId: GFFLPFormField<CreateChannelInput['sellerId']>;
-  token: GFFLPFormField<CreateChannelInput['token']>;
-  trackInventory: GFFLPFormField<CreateChannelInput['trackInventory']>;
-  customFields: GFFLPFormField<CreateChannelInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 export const ChannelsDetailPage = () => {
   const { id } = useParams();
@@ -65,22 +49,22 @@ export const ChannelsDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     async (data: FormDataType) => {
-      if (!data.code?.validatedValue) {
+      if (!data.code) {
         throw new Error('Code is required.');
       }
 
       const inputData = {
-        code: data.code.validatedValue,
-        availableCurrencyCodes: data.availableCurrencyCodes?.validatedValue,
-        availableLanguageCodes: data.availableLanguageCodes?.validatedValue,
-        defaultCurrencyCode: data.defaultCurrencyCode?.validatedValue,
-        defaultLanguageCode: data.defaultLanguageCode!.validatedValue!,
-        defaultShippingZoneId: data.defaultShippingZoneId!.validatedValue!,
-        defaultTaxZoneId: data.defaultTaxZoneId!.validatedValue!,
-        pricesIncludeTax: data.pricesIncludeTax!.value!,
-        sellerId: data.sellerId?.validatedValue,
-        token: data.token!.validatedValue!,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        code: data.code as string,
+        availableCurrencyCodes: data.availableCurrencyCodes as ModelTypes['CreateChannelInput']['availableCurrencyCodes'],
+        availableLanguageCodes: data.availableLanguageCodes as ModelTypes['CreateChannelInput']['availableLanguageCodes'],
+        defaultCurrencyCode: data.defaultCurrencyCode as ModelTypes['CreateChannelInput']['defaultCurrencyCode'],
+        defaultLanguageCode: data.defaultLanguageCode as string,
+        defaultShippingZoneId: data.defaultShippingZoneId as string,
+        defaultTaxZoneId: data.defaultTaxZoneId as string,
+        pricesIncludeTax: data.pricesIncludeTax as boolean,
+        sellerId: data.sellerId as ModelTypes['CreateChannelInput']['sellerId'],
+        token: data.token as string,
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {

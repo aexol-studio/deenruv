@@ -8,22 +8,15 @@ import {
   DetailView,
   getMutation,
   createDeenruvForm,
-  GFFLPFormField,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ZoneDetailView } from '@/pages/zones/_components/ZoneDetailView.js';
-import { ModelTypes } from '@deenruv/admin-types';
 
 const CreateZoneMutation = getMutation('createZone');
 const EditZoneMutation = getMutation('updateZone');
 const DeleteZoneMutation = getMutation('deleteZone');
 
-type CreateZoneInput = ModelTypes['CreateZoneInput'];
-type FormDataType = Partial<{
-  name: GFFLPFormField<CreateZoneInput['name']>;
-  memberIds: GFFLPFormField<CreateZoneInput['memberIds']>;
-  customFields: GFFLPFormField<CreateZoneInput['customFields']>;
-}>;
+type FormDataType = Record<string, unknown>;
 
 export const ZonesDetailPage = () => {
   const { id } = useParams();
@@ -69,7 +62,7 @@ export const ZonesDetailPage = () => {
 
   const onSubmitHandler = useCallback(
     (data: FormDataType, additionalData: Record<string, unknown> | undefined) => {
-      if (!data.name?.validatedValue) {
+      if (!data.name) {
         throw new Error('Name is required.');
       }
 
@@ -79,8 +72,8 @@ export const ZonesDetailPage = () => {
           : {};
 
       const inputData = {
-        name: data.name.validatedValue,
-        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
+        name: data.name as string,
+        ...(data.customFields ? { customFields: data.customFields } : {}),
       };
 
       if (id) {
@@ -89,7 +82,7 @@ export const ZonesDetailPage = () => {
           updateMembers(membersIdsToAdd, membersIdsToRemove),
         ]).then(([res]) => res);
       } else {
-        return create({ input: { ...inputData, memberIds: data.memberIds?.validatedValue } });
+        return create({ input: { ...inputData, memberIds: data.memberIds as string[] } });
       }
     },
     [id, update, create],

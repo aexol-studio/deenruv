@@ -10,9 +10,11 @@ interface BasicFieldsCardProps {
   currentTranslationValue: PartialNull<ModelTypes['Product']['translations'][0]> | undefined;
   onChange: (field: 'name' | 'slug' | 'description', value: string) => void;
   errors?: string[];
+  /** Called when the user manually types into the slug field (disables auto-gen from name). */
+  onSlugManualEdit?: () => void;
 }
 
-export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTranslationValue, onChange, errors }) => {
+export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTranslationValue, onChange, errors, onSlugManualEdit }) => {
   const { t } = useTranslation('products');
 
   return (
@@ -30,7 +32,10 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
             value={currentTranslationValue?.slug ?? ''}
             label={t('slug')}
             placeholder={t('slug')}
-            onChange={(e) => onChange('slug', e.target.value)}
+            onChange={(e) => {
+              onSlugManualEdit?.();
+              onChange('slug', e.target.value);
+            }}
           />
         </div>
         <RichTextEditor

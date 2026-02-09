@@ -33,9 +33,7 @@ const SHIPPING_METHOD_FORM_KEYS = [
 
 export const ShippingMethodDetailView = () => {
   const { form, entity, fetchEntity, id } = useDetailView('shippingMethods-detail-view', ...SHIPPING_METHOD_FORM_KEYS);
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
   const { t } = useTranslation('shippingMethods');
   const [fulfillmentHandlersOptions, setFulfillmentHandlersOptions] = useState<Option[]>();
   const { translationsLanguage: currentTranslationLng } = useSettings();
@@ -45,17 +43,17 @@ export const ShippingMethodDetailView = () => {
       const res = await fetchEntity();
       if (!res) return;
 
-      setField('code', res.code);
-      setField('translations', res.translations);
-      setField('checker', {
+      base.setField('code', res.code);
+      base.setField('translations', res.translations);
+      base.setField('checker', {
         arguments: res.checker?.args || [],
         code: res.checker?.code || '',
       });
-      setField('calculator', {
+      base.setField('calculator', {
         arguments: res.calculator?.args || [],
         code: res.calculator?.code || '',
       });
-      setField('fulfillmentHandler', res.fulfillmentHandlerCode);
+      base.setField('fulfillmentHandler', res.fulfillmentHandlerCode);
     })();
   }, []);
 
@@ -76,20 +74,28 @@ export const ShippingMethodDetailView = () => {
     fetchFulfillmentHandlers();
   }, [id, fetchFulfillmentHandlers]);
 
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const translations = base.watch('translations') || [];
+  const currentTranslationValue = translations.find((v: any) => v.languageCode === currentTranslationLng);
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
-      setField(
+      // Merge with existing translation to preserve other fields (name, description, etc.)
+      const baseTranslation = currentTranslationValue ?? {
+        languageCode: currentTranslationLng,
+        name: '',
+        description: '',
+      };
+
+      base.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t: any) => t.languageCode === currentTranslationLng, {
+          ...baseTranslation,
           [field]: e,
           languageCode: currentTranslationLng,
         }),
       );
     },
-    [currentTranslationLng, translations],
+    [currentTranslationLng, translations, currentTranslationValue],
   );
 
   return (
@@ -101,18 +107,18 @@ export const ShippingMethodDetailView = () => {
               <div className="flex basis-full md:basis-1/3">
                 <Input
                   label={t('details.basic.name')}
-                  value={currentTranslationValue?.name ?? undefined}
+                  value={currentTranslationValue?.name ?? ''}
                   onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={state.translations?.errors}
+                  errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
                   required
                 />
               </div>
               <div className="flex basis-full md:basis-1/3">
                 <Input
                   label={t('details.basic.code')}
-                  value={state.code?.value ?? undefined}
-                  onChange={(e) => setField('code', e.target.value)}
-                  errors={state.code?.errors}
+                  value={base.watch('code') ?? ''}
+                  onChange={(e) => base.setField('code', e.target.value)}
+                  errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
                   required
                 />
               </div>
@@ -120,17 +126,17 @@ export const ShippingMethodDetailView = () => {
             <div className="flex basis-full flex-col">
               <Label className="mb-2">{t('details.basic.description')}</Label>
               <RichTextEditor
-                content={currentTranslationValue?.description ?? undefined}
+                content={currentTranslationValue?.description ?? ''}
                 onContentChanged={(e) => setTranslationField('description', e)}
               />
             </div>
             <div className="flex basis-full">
               <SimpleSelect
                 label={t('details.basic.fulfillmentHandler')}
-                value={state.fulfillmentHandler?.value ?? undefined}
-                onValueChange={(e) => setField('fulfillmentHandler', e)}
+                value={base.watch('fulfillmentHandler') ?? ''}
+                onValueChange={(e) => base.setField('fulfillmentHandler', e)}
                 options={fulfillmentHandlersOptions}
-                errors={state.fulfillmentHandler?.errors}
+                errors={base.formState.errors?.fulfillmentHandler?.message ? [base.formState.errors.fulfillmentHandler.message as string] : undefined}
               />
             </div>
           </div>
@@ -141,8 +147,8 @@ export const ShippingMethodDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields, translations) => {
-            setField('customFields', customFields);
-            if (translations) setField('translations', translations as any);
+            base.setField('customFields', customFields);
+            if (translations) base.setField('translations', translations as any);
           }}
           initialValues={
             entity && 'customFields' in entity
@@ -151,16 +157,16 @@ export const ShippingMethodDetailView = () => {
           }
         />
         <CheckerCard
-          currentCheckerValue={state.checker?.value ?? undefined}
-          onCheckerValueChange={(checker) => checker && setField('checker', checker)}
-          errors={state.checker?.errors}
+          currentCheckerValue={base.watch('checker') ?? undefined}
+          onCheckerValueChange={(checker) => checker && base.setField('checker', checker)}
+          errors={base.formState.errors?.checker?.message ? [base.formState.errors.checker.message as string] : undefined}
         />
         <CalculatorCard
-          currentCalculatorValue={state.calculator?.value ?? undefined}
-          onCalculatorValueChange={(calculator) => calculator && setField('calculator', calculator)}
-          errors={state.calculator?.errors}
+          currentCalculatorValue={base.watch('calculator') ?? undefined}
+          onCalculatorValueChange={(calculator) => calculator && base.setField('calculator', calculator)}
+          errors={base.formState.errors?.calculator?.message ? [base.formState.errors.calculator.message as string] : undefined}
         />
-        <TestCard calculator={state.calculator?.value ?? undefined} checker={state.checker?.value ?? undefined} />
+        <TestCard calculator={base.watch('calculator') ?? undefined} checker={base.watch('checker') ?? undefined} />
       </div>
     </main>
   );

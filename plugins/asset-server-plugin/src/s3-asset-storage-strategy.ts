@@ -106,7 +106,7 @@ export interface S3Config {
  *         secretAccessKey: process.env.MINIO_SECRET_ACCESS_KEY,
  *       },
  *       nativeS3Configuration: {
- *         endpoint: process.env.MINIO_ENDPOINT ?? 'http://localhost:9000',
+ *         endpoint: process.env.MINIO_ENDPOINT ?? 'http://localhost:60900',
  *         forcePathStyle: true,
  *         signatureVersion: 'v4',
  *         // The `region` is required by the AWS SDK even when using MinIO,

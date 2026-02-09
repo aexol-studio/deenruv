@@ -18,9 +18,7 @@ export const CustomerGroupsDetailView = () => {
   const { t } = useTranslation('customerGroups');
   const { id, form, entity, fetchEntity } = useDetailView('customerGroups-detail-view', ...CUSTOMER_GROUPS_FORM_KEYS);
 
-  const {
-    base: { setField, state },
-  } = form;
+  const { base } = form;
 
   useEffect(() => {
     (async () => {
@@ -28,7 +26,7 @@ export const CustomerGroupsDetailView = () => {
 
       if (!res) return;
 
-      setField('name', res.name);
+      base.setField('name', res.name);
     })();
   }, [contentLng]);
 
@@ -39,9 +37,9 @@ export const CustomerGroupsDetailView = () => {
           <Input
             className="w-1/2"
             label={t('basic.name')}
-            value={state.name?.value}
-            onChange={(e) => setField('name', e.target.value)}
-            errors={state.name?.errors}
+            value={base.watch('name')}
+            onChange={(e) => base.setField('name', e.target.value)}
+            errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
             required
           />
         </CustomCard>
@@ -51,7 +49,7 @@ export const CustomerGroupsDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields) => {
-            setField('customFields', customFields);
+            base.setField('customFields', customFields);
           }}
           initialValues={
             entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }

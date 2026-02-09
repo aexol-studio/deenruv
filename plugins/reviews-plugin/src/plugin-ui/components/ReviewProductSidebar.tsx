@@ -4,7 +4,7 @@ import {
   useLazyQuery,
 } from "@deenruv/react-ui-devkit";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { GetReviewInfoForProductQuery } from "../graphql";
 import { useTranslation } from "react-i18next";
 import { TRANSLATION_NAMESPACE } from "../constants";

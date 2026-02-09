@@ -56,11 +56,11 @@ export const GlobalSettings = () => {
           onSubmitted: async (state) => {
             const res = await update({
               input: {
-                availableLanguages: state.availableLanguages?.value,
-                outOfStockThreshold: state.outOfStockThreshold?.value,
-                trackInventory: state.trackInventory?.value,
-                ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
-              },
+                availableLanguages: state.availableLanguages as string[] | undefined,
+                outOfStockThreshold: state.outOfStockThreshold as number | undefined,
+                trackInventory: state.trackInventory as boolean | undefined,
+                ...(state.customFields ? { customFields: state.customFields } : {}),
+              } as any,
             });
             if (res.updateGlobalSettings.__typename === 'GlobalSettings') {
               setAvailableLanguages(res?.updateGlobalSettings.availableLanguages || []);

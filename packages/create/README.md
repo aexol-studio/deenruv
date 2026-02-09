@@ -73,9 +73,9 @@ cd my-app
 npm run dev    # Starts server, worker, and admin panel concurrently
 ```
 
-- **Admin API:** http://localhost:3000/admin-api
-- **Shop API:** http://localhost:3000/shop-api
-- **Admin UI:** http://localhost:3001/admin-ui
+- **Admin API:** http://localhost:6100/admin-api
+- **Shop API:** http://localhost:6100/shop-api
+- **Admin UI:** http://localhost:6101/admin-ui
 
 ## Options
 

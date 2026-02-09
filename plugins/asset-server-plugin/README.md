@@ -42,7 +42,7 @@ const config = {
 Assets can be transformed on-the-fly via URL query parameters:
 
 ```
-http://localhost:3000/assets/photo.jpg?w=500&h=300&mode=resize
+http://localhost:6100/assets/photo.jpg?w=500&h=300&mode=resize
 ```
 
 **Query Parameters:**

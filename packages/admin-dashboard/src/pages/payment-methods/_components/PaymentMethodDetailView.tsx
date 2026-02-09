@@ -29,10 +29,7 @@ const PAYMENT_METHOD_FORM_KEYS = [
 
 export const PaymentMethodDetailView = () => {
   const { form, fetchEntity, entity, id } = useDetailView('paymentMethods-detail-view', ...PAYMENT_METHOD_FORM_KEYS);
-  const {
-    base: { setField, state },
-  } = form;
-  // const editMode = useMemo(() => !!id, [id]);
+  const { base } = form;
   const { t } = useTranslation('paymentMethods');
   const { translationsLanguage: currentTranslationLng } = useSettings();
 
@@ -41,35 +38,43 @@ export const PaymentMethodDetailView = () => {
       const res = await fetchEntity();
       if (!res) return;
 
-      setField('code', res.code);
-      setField('enabled', res.enabled);
-      setField('translations', res.translations);
-      setField('handler', {
+      base.setField('code', res.code);
+      base.setField('enabled', res.enabled);
+      base.setField('translations', res.translations);
+      base.setField('handler', {
         arguments: res.handler.args,
         code: res.handler.code,
       });
-      setField('checker', {
+      base.setField('checker', {
         arguments: res.checker?.args || [],
         code: res.checker?.code || '',
       });
     })();
   }, []);
 
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const translations = base.watch('translations') || [];
+  const currentTranslationValue = translations.find((v: any) => v.languageCode === currentTranslationLng);
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
-      setField(
+      // Merge with existing translation to preserve other fields (name, description, etc.)
+      const baseTranslation = currentTranslationValue ?? {
+        languageCode: currentTranslationLng,
+        name: '',
+        description: '',
+      };
+
+      base.setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t: any) => t.languageCode === currentTranslationLng, {
+          ...baseTranslation,
           [field]: e,
           languageCode: currentTranslationLng,
         }),
       );
     },
 
-    [currentTranslationLng, translations],
+    [currentTranslationLng, translations, currentTranslationValue],
   );
 
   return (
@@ -81,30 +86,30 @@ export const PaymentMethodDetailView = () => {
               <div className="flex basis-full md:basis-1/3">
                 <Input
                   label={t('details.basic.name')}
-                  value={currentTranslationValue?.name ?? undefined}
+                  value={currentTranslationValue?.name ?? ''}
                   onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={state.translations?.errors}
+                  errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
                   required
                 />
               </div>
               <div className="flex basis-full md:basis-1/3">
                 <Input
                   label={t('details.basic.code')}
-                  value={state.code?.value ?? undefined}
-                  onChange={(e) => setField('code', e.target.value)}
-                  errors={state.code?.errors}
+                  value={base.watch('code') ?? ''}
+                  onChange={(e) => base.setField('code', e.target.value)}
+                  errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
                   required
                 />
               </div>
               <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/3">
-                <Switch checked={state.enabled?.value ?? undefined} onCheckedChange={(e) => setField('enabled', e)} />
+                <Switch checked={base.watch('enabled') ?? false} onCheckedChange={(e) => base.setField('enabled', e)} />
                 <Label>{t('details.basic.enabled')}</Label>
               </div>
             </div>
             <div className="flex basis-full flex-col">
               <Label className="mb-2">{t('details.basic.description')}</Label>
               <RichTextEditor
-                content={currentTranslationValue?.description ?? undefined}
+                content={currentTranslationValue?.description ?? ''}
                 onContentChanged={(e) => setTranslationField('description', e)}
               />
             </div>
@@ -117,8 +122,8 @@ export const PaymentMethodDetailView = () => {
           id={id}
           hideButton
           onChange={(customFields, translations) => {
-            setField('customFields', customFields);
-            if (translations) setField('translations', translations);
+            base.setField('customFields', customFields);
+            if (translations) base.setField('translations', translations);
           }}
           initialValues={
             entity && 'customFields' in entity
@@ -127,11 +132,11 @@ export const PaymentMethodDetailView = () => {
           }
         />
         <OptionsCard
-          currentHandlerValue={state.handler?.value ?? undefined}
-          currentCheckerValue={state.checker?.value ?? undefined}
-          onHandlerValueChange={(handler) => setField('handler', handler)}
-          onCheckerValueChange={(checker) => setField('checker', checker)}
-          handlerErrors={state.handler?.errors}
+          currentHandlerValue={base.watch('handler') ?? undefined}
+          currentCheckerValue={base.watch('checker') ?? undefined}
+          onHandlerValueChange={(handler) => base.setField('handler', handler)}
+          onCheckerValueChange={(checker) => base.setField('checker', checker)}
+          handlerErrors={base.formState.errors?.handler?.message ? [base.formState.errors.handler.message as string] : undefined}
         />
       </div>
     </main>

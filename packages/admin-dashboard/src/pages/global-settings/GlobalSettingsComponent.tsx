@@ -23,9 +23,7 @@ export const GlobalSettingsComponent = () => {
     'trackInventory',
     'customFields',
   );
-  const {
-    base: { state, setField },
-  } = form;
+  const { base } = form;
 
   const options = useMemo(
     () => Object.values(LanguageCode).map((el) => ({ label: `${t(`languageCode.${el}`)} (${el})`, value: el })),
@@ -36,14 +34,16 @@ export const GlobalSettingsComponent = () => {
     const init = async () => {
       const data = await fetchEntity();
       if (data) {
-        setField('availableLanguages', data.availableLanguages);
-        setField('outOfStockThreshold', data.outOfStockThreshold);
-        setField('trackInventory', data.trackInventory);
-        if ('customFields' in data) setField('customFields', data.customFields as CF);
+        base.setField('availableLanguages', data.availableLanguages);
+        base.setField('outOfStockThreshold', data.outOfStockThreshold);
+        base.setField('trackInventory', data.trackInventory);
+        if ('customFields' in data) base.setField('customFields', data.customFields as CF);
       }
     };
     init();
   }, [contentLng]);
+
+  const availableLanguages = base.watch('availableLanguages');
 
   return (
     <div className="flex flex-col gap-6 p-4">
@@ -55,13 +55,13 @@ export const GlobalSettingsComponent = () => {
       >
         <MultipleSelector
           options={options}
-          value={state.availableLanguages?.value?.map((el) => ({
+          value={availableLanguages?.map((el: string) => ({
             label: t(`languageCode.${el}`),
             value: el,
           }))}
           placeholder={t('globalSettings:available-languages.placeholder')}
           onChange={(val) =>
-            setField(
+            base.setField(
               'availableLanguages',
               val.map((el) => el.value as LanguageCode),
             )
@@ -75,9 +75,9 @@ export const GlobalSettingsComponent = () => {
         color="teal"
       >
         <Input
-          value={state.outOfStockThreshold?.value ?? undefined}
+          value={base.watch('outOfStockThreshold') ?? ''}
           type="number"
-          onChange={(e) => setField('outOfStockThreshold', Number(e.target.value))}
+          onChange={(e) => base.setField('outOfStockThreshold', Number(e.target.value))}
           required
         />
       </CustomCard>
@@ -88,8 +88,8 @@ export const GlobalSettingsComponent = () => {
         color="cyan"
       >
         <Switch
-          checked={state.trackInventory?.value ?? undefined}
-          onCheckedChange={(val) => setField('trackInventory', val)}
+          checked={base.watch('trackInventory') ?? false}
+          onCheckedChange={(val) => base.setField('trackInventory', val)}
         />
       </CustomCard>
       <EntityCustomFields
@@ -100,7 +100,7 @@ export const GlobalSettingsComponent = () => {
           entity && 'customFields' in entity ? { customFields: entity.customFields as any } : { customFields: {} }
         }
         onChange={(cf) => {
-          setField('customFields', cf);
+          base.setField('customFields', cf);
         }}
         additionalData={{}}
       />

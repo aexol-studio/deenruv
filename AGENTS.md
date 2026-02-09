@@ -169,12 +169,12 @@ pnpm start                    # Start server + admin panel
 
 | Service | URL |
 |---------|-----|
-| Admin GraphQL API | http://localhost:3000/admin-api |
-| Shop GraphQL API | http://localhost:3000/shop-api |
-| React Admin Panel | http://localhost:3001/admin-ui/ |
-| Legacy Admin Panel | http://localhost:3000/admin/ |
-| Docs Dev Server | http://localhost:3001 |
-| MinIO Console | http://localhost:9090 |
+| Admin GraphQL API | http://localhost:6100/admin-api |
+| Shop GraphQL API | http://localhost:6100/shop-api |
+| React Admin Panel | http://localhost:6101/admin-ui/ |
+| Legacy Admin Panel | http://localhost:6100/admin/ |
+| Docs Dev Server | http://localhost:6102 |
+| MinIO Console | http://localhost:60901 |
 
 **Default credentials**: `superadmin` / `superadmin`
 
@@ -313,9 +313,9 @@ Managed via `docker-compose.yml`. Start with `pnpm server-docker-up`, stop with 
 
 | Service | Port(s) | Credentials |
 |---------|---------|-------------|
-| **PostgreSQL** 16.3 | 5432 | user: `deenruv`, password: `deenruv`, db: `deenruv` |
-| **Redis** 7.2 | 6379 | No password (local only) |
-| **MinIO** (S3-compatible) | 9000 (API), 9090 (console) | user: `root`, password: `password` |
+| **PostgreSQL** 16.3 | 60432 | user: `deenruv`, password: `deenruv`, db: `deenruv` |
+| **Redis** 7.2 | 60379 | No password (local only) |
+| **MinIO** (S3-compatible) | 60900 (API), 60901 (console) | user: `root`, password: `password` |
 
 ### Server Configuration
 

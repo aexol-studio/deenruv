@@ -63,6 +63,7 @@ type PluginStoreContextType = {
   topNavigationActionsMenu: DeenruvUIPlugin["topNavigationActionsMenu"];
   configs: Map<string, any>;
   plugins: DeenruvPluginStored[];
+  allPlugins: DeenruvPluginStored[];
 };
 
 const PluginStoreContext = createContext<PluginStoreContextType>({
@@ -87,6 +88,7 @@ const PluginStoreContext = createContext<PluginStoreContextType>({
   topNavigationActionsMenu: [],
   configs: new Map(),
   plugins: [],
+  allPlugins: [],
 });
 
 export function PluginProvider({
@@ -103,6 +105,9 @@ export function PluginProvider({
 }>) {
   const [_plugins, setPlugins] = useState<DeenruvPluginStored[]>(() =>
     plugins.getPluginMap(),
+  );
+  const [allPlugins, setAllPlugins] = useState<DeenruvPluginStored[]>(() =>
+    plugins.getAllPlugins(),
   );
   const [viewMarkers, setViewMarkers] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -142,6 +147,7 @@ export function PluginProvider({
     (name: string, status: "active" | "inactive") => {
       plugins.changePluginStatus(name, status);
       setPlugins(plugins.getPluginMap());
+      setAllPlugins(plugins.getAllPlugins());
     },
     [plugins],
   );
@@ -179,6 +185,7 @@ export function PluginProvider({
       topNavigationActionsMenu: plugins.topNavigationActionsMenu,
       configs: plugins.configs,
       plugins: _plugins,
+      allPlugins,
     }),
     [
       context,
@@ -194,6 +201,7 @@ export function PluginProvider({
       changePluginStatus,
       navMenuData,
       _plugins,
+      allPlugins,
       plugins,
     ],
   );

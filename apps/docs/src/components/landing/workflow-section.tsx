@@ -148,9 +148,9 @@ const TERMINAL_LINES = [
   "  │   $ cd my-store                          │",
   "  │   $ npm run dev                          │",
   "  │                                          │",
-  "  │   Admin API  http://localhost:3000/admin-api",
-  "  │   Shop API   http://localhost:3000/shop-api",
-  "  │   Admin UI   http://localhost:3001/admin-ui",
+  "  │   Admin API  http://localhost:6100/admin-api",
+  "  │   Shop API   http://localhost:6100/shop-api",
+  "  │   Admin UI   http://localhost:6101/admin-ui",
   "  │                                          │",
   "  └──────────────────────────────────────────┘",
 ];
@@ -320,7 +320,7 @@ function TerminalLine({ text, cursor }: { text: string; cursor?: boolean }) {
 const CONFIG_LINES = [
   { text: "export default defineConfig({", indent: 0 },
   { text: "apiOptions: {", indent: 1 },
-  { text: "port: 3000,", indent: 2, highlight: "number" },
+  { text: "port: 6100,", indent: 2, highlight: "number" },
   { text: 'hostname: "0.0.0.0",', indent: 2, highlight: "string" },
   { text: "},", indent: 1 },
   { text: "plugins: [", indent: 1 },

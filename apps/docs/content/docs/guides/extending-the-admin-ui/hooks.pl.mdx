@@ -8,136 +8,177 @@ import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
 
 Pakiet `@deenruv/react-ui-devkit` udostępnia zestaw dedykowanych hooków React do budowania pluginów UI panelu administracyjnego. Hooki te obsługują typowe wzorce, takie jak stan formularza, paginowane listy, tłumaczenia i zarządzanie zasobami.
 
-## `useGFFLP` — Zarządzanie stanem formularza
+## Zarządzanie formularzami
 
-Główny hook formularza. `useGFFLP` (GraphQL Form Field Layout Props) tworzy typowo-bezpieczny stan formularza sterowany przez `ModelTypes` GraphQL. Wybiera konkretne pola z typu GraphQL i zapewnia walidację, śledzenie błędów oraz zarządzanie stanem.
+Deenruv wykorzystuje **React Hook Form + Zod** do zarządzania stanem formularzy i walidacji. Devkit udostępnia trzy komplementarne API:
 
-<Callout type="info">
-Prawidłowa nazwa hooka to **`useGFFLP`** (nie `useGLFFP`). Zdeprecjonowany alias `useGLFFP` jest eksportowany dla wstecznej kompatybilności, ale zostanie usunięty w przyszłej wersji major. Zawsze używaj `useGFFLP` w nowym kodzie.
-</Callout>
+| API | Zastosowanie |
+|---|---|
+| `useDeenruvForm` | Główny hook formularza — opakowuje RHF z walidacją Zod |
+| `createFormSchema` | Wygodny helper do budowania schematów Zod |
+| `useZodValidators` | Gotowe, zlokalizowane walidatory Zod |
 
-### Podstawowe użycie
+Współpracują one z **prymitywami formularzy** (`Form`, `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormMessage`), tworząc w pełni dostępne, walidowane formularze.
+
+---
+
+### `useDeenruvForm` — Główny hook formularza
+
+Standardowy sposób tworzenia stanu formularza w pluginach panelu administracyjnego Deenruv. Opakowuje `useForm` z React Hook Form z walidacją schematu Zod, udostępniając wygodny helper `setField` oraz flagi poprawności.
+
+#### Sygnatura
 
 ```ts
-import { useGFFLP } from '@deenruv/react-ui-devkit';
+function useDeenruvForm<T extends FieldValues>(
+  options: UseDeenruvFormOptions<T>,
+): UseDeenruvFormReturn<T>;
 
-// Wybierz pola z modelu GraphQL 'Product'
-const {
-  state,
-  setField,
-  setState,
-  checkIfAllFieldsAreValid,
-  haveValidFields,
-  clearErrors,
-  clearAllForm,
-} = useGFFLP('Product', 'name', 'slug', 'description')({
-  name: {
-    initialValue: '',
-    validate: (value) => (!value ? ['Name is required'] : undefined),
-  },
-  slug: { initialValue: '' },
-  description: { initialValue: '' },
+interface UseDeenruvFormOptions<T extends FieldValues> {
+  /** Schemat Zod do walidacji — przekaż z.object({...}) lub dowolny konkretny typ Zod. */
+  schema: ZodSchema<T>;
+  defaultValues?: UseFormProps<T>['defaultValues'];
+  mode?: UseFormProps<T>['mode']; // domyślnie: 'onTouched'
+}
+```
+
+#### Podstawowe użycie
+
+```ts
+import { useDeenruvForm, z } from '@deenruv/react-ui-devkit';
+
+const schema = z.object({
+  name: z.string().min(1, 'Nazwa jest wymagana'),
+  slug: z.string().min(1, 'Slug jest wymagany'),
+  description: z.string(),
+  enabled: z.boolean(),
+});
+
+const form = useDeenruvForm({
+  schema,
+  defaultValues: { name: '', slug: '', description: '', enabled: true },
 });
 ```
 
-### Dostęp do stanu
+#### Dostęp do stanu i aktualizacja
 
 ```ts
-// Każde pole w stanie ma: value, initialValue, errors, validatedValue
-const productName = state.name?.value;
-const nameErrors = state.name?.errors;        // string[] | undefined
-const isNameValid = state.name?.validatedValue; // ustawiane po walidacji
+// Obserwuj wartość pola (reaktywnie)
+const name = form.watch('name');
+
+// Ustaw pojedyncze pole (auto-walidacja + oznaczenie jako zmienione)
+form.setField('name', 'Nowy Produkt');
+
+// Użyj pełnego API RHF
+form.setValue('slug', 'nowy-produkt');
+form.reset({ name: '', slug: '', description: '', enabled: true });
 ```
 
-### Aktualizacja pól
-
-```ts
-// Aktualizacja pojedynczego pola
-setField('name', 'My New Product');
-
-// Obsługuje notację z kropką dla zagnieżdżonych pól (np. aktualizacja obiektu nadrzędnego)
-setField('translations.name', 'Mon Produit');
-
-// Ustawienie wszystkich pól naraz (hurtowa aktualizacja z pobranej encji)
-setState({
-  name: 'Product A',
-  slug: 'product-a',
-  description: 'Świetny produkt',
-});
-```
-
-#### Zagnieżdżone (dot-path) aktualizacje — wyjaśnienie
-
-Gdy wywołujesz `setField('parent.child', value)`, hook aktualizuje obiekt wartości pola `parent` bezpośrednio:
-
-```ts
-// Przed: state.translations.value = { name: 'Old', slug: 'old-slug' }
-setField('translations.name', 'New Name');
-// Po:    state.translations.value = { name: 'New Name', slug: 'old-slug' }
-```
-
-Wartość potomna jest przechowywana jako **zwykła wartość** — nie opakowana w `{ value }`. Utrzymuje to kształt stanu spójny ze sposobem pobierania encji z API.
-
-<Callout type="warn">
-Aktualizacje dot-path pomijają walidację na poziomie pola. `errors`/`validatedValue` pola nadrzędnego są zachowane bez zmian. Jeśli potrzebujesz walidacji przy zagnieżdżonych aktualizacjach, wywołaj `checkIfAllFieldsAreValid()` po ustawieniu.
-</Callout>
-
-#### Zachowanie scalania `customFields`
-
-Klucz `customFields` ma specjalną semantykę scalania — `setField('customFields', { myField: 'x' })` scala z istniejącym obiektem `customFields` zamiast go całkowicie zastępować.
-
-### Walidacja
-
-```ts
-// Uruchom wszystkie walidatory i sprawdź, czy formularz jest poprawny
-const allValid = checkIfAllFieldsAreValid();
-
-// Sprawdź bieżącą poprawność bez uruchamiania walidatorów
-const isValid = haveValidFields;
-
-// Wyczyść wszystkie błędy walidacji
-clearErrors();
-
-// Zresetuj cały formularz do wartości początkowych
-clearAllForm();
-```
-
-### Użycie z DetailView
+#### Użycie z prymitywami formularza
 
 ```tsx
-function ProductForm({ productId }: { productId: string }) {
-  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
-    'UpdateProductInput',
-    'name',
-    'slug',
-    'description',
-    'enabled',
-  )({
-    name: {
-      initialValue: '',
-      validate: (v) => (!v ? ['Required'] : undefined),
-    },
-    slug: { initialValue: '' },
-    description: { initialValue: '' },
-    enabled: { initialValue: true },
+import {
+  useDeenruvForm, z,
+  DeenruvForm,
+  FormField, FormItem, FormLabel, FormControl, FormMessage,
+  Input, Button,
+} from '@deenruv/react-ui-devkit';
+
+const schema = z.object({
+  name: z.string().min(1, 'Nazwa jest wymagana'),
+  slug: z.string(),
+});
+
+function ProductForm() {
+  const form = useDeenruvForm({
+    schema,
+    defaultValues: { name: '', slug: '' },
   });
 
-  const handleSave = async () => {
-    if (!checkIfAllFieldsAreValid()) return;
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    await apiClient('mutation')({
+      updateProduct: [{ input: { id: productId, ...data } }, { id: true }],
+    });
+  };
+
+  return (
+    <DeenruvForm form={form} onSubmit={onSubmit}>
+      <FormField
+        control={form.control}
+        name="name"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Nazwa produktu</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="slug"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Slug</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <Button type="submit">Zapisz</Button>
+    </DeenruvForm>
+  );
+}
+```
+
+<Callout type="info">
+`DeenruvForm` opakowuje provider shadcn/ui `Form` i element `<form>`. Przekazuje cały wynik `useDeenruvForm` do kontekstu RHF, dzięki czemu `FormField`, `FormMessage` itd. działają automatycznie.
+</Callout>
+
+#### Użycie z DetailView
+
+```tsx
+import {
+  DetailView, useDeenruvForm, z,
+  DeenruvForm,
+  FormField, FormItem, FormLabel, FormControl, FormMessage,
+  Input, Button, Switch, PageBlock, RichTextEditor, useTranslation,
+} from '@deenruv/react-ui-devkit';
+
+const productSchema = z.object({
+  name: z.string().min(1, 'Wymagane'),
+  slug: z.string(),
+  description: z.string(),
+  enabled: z.boolean(),
+});
+
+type ProductFormValues = z.infer<typeof productSchema>;
+
+function ProductDetailPage() {
+  const { id } = useParams();
+  const { t } = useTranslation('catalog');
+
+  const form = useDeenruvForm({
+    schema: productSchema,
+    defaultValues: { name: '', slug: '', description: '', enabled: true },
+  });
+
+  const handleSave = async (data: ProductFormValues) => {
     await apiClient('mutation')({
       updateProduct: [
         {
           input: {
-            id: productId,
-            enabled: state.enabled?.value,
-            translations: [
-              {
-                languageCode: LanguageCode.en,
-                name: state.name?.value ?? '',
-                slug: state.slug?.value ?? '',
-                description: state.description?.value ?? '',
-              },
-            ],
+            id,
+            enabled: data.enabled,
+            translations: [{
+              languageCode: LanguageCode.en,
+              name: data.name,
+              slug: data.slug,
+              description: data.description,
+            }],
           },
         },
         { id: true },
@@ -146,95 +187,213 @@ function ProductForm({ productId }: { productId: string }) {
   };
 
   return (
-    <form>
-      <Input
-        label="Nazwa produktu"
-        value={state.name?.value ?? ''}
-        onChange={(e) => setField('name', e.target.value)}
-        errors={state.name?.errors}
+    <DeenruvForm form={form} onSubmit={handleSave}>
+      <DetailView
+        title={form.watch('name') || t('product.new')}
+        locationId="products-detail-view"
+        tabs={[
+          {
+            id: 'product',
+            label: t('tabs.product'),
+            content: (
+              <PageBlock title={t('product.basicInfo')}>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('product.name')}</FormLabel>
+                      <FormControl><Input {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="slug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('product.slug')}</FormLabel>
+                      <FormControl><Input {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('product.description')}</FormLabel>
+                      <FormControl>
+                        <RichTextEditor value={field.value} onChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </PageBlock>
+            ),
+          },
+        ]}
+        sidebar={
+          <FormField
+            control={form.control}
+            name="enabled"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('product.enabled')}</FormLabel>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        }
+        actions={<Button type="submit">{t('common.save')}</Button>}
       />
-      {/* ...więcej pól */}
-      <Button onClick={handleSave}>Save</Button>
-    </form>
+    </DeenruvForm>
   );
 }
 ```
 
-### Podpięcie błędów do komponentów Input (Dostępność)
+#### Opis zwracanych wartości
 
-Komponenty `Input`, `SimpleSelect` i inne wspierają wyświetlanie błędów oraz atrybuty dostępności automatycznie. Przekaż tablicę `errors` ze stanu hooka, aby uzyskać:
+`useDeenruvForm` zwraca wszystko z `useForm` React Hook Form, plus:
 
-- Widoczny `ErrorMessage` pod polem
-- Atrybut `aria-invalid` dla czytników ekranu
-- Atrybut `data-invalid` dla hooków CSS
-- Destrukcyjny kolor obramowania gdy pole jest niepoprawne
+| Właściwość | Typ | Opis |
+|---|---|---|
+| `setField` | `(field, value) => void` | Ustaw pole z automatyczną walidacją i oznaczeniem jako zmienione |
+| `hasErrors` | `boolean` | Czy formularz ma aktualnie jakiekolwiek błędy walidacji |
+| `isFormValid` | `boolean` | Czy formularz spełnia wszystkie reguły walidacji |
+| `control` | `Control<T>` | Kontrolka RHF — przekaż do `FormField` |
+| `watch` | `(name?) => T[K]` | Subskrybuj zmiany wartości pola |
+| `handleSubmit` | `(onValid) => (e) => void` | Handler wysłania formularza |
+| `reset` | `(values?) => void` | Zresetuj formularz do domyślnych lub podanych wartości |
+| `setValue` | `(name, value, options?) => void` | Niskopoziomowy setter pola RHF |
+| `getValues` | `() => T` | Pobierz wszystkie aktualne wartości pól |
+| `formState` | `FormState<T>` | Pełny stan formularza RHF (errors, isDirty, isSubmitting itp.) |
+
+---
+
+### `createFormSchema` — Budowniczy schematów
+
+Wygodny wrapper wokół `z.object()` dla spójnego tworzenia schematów:
+
+```ts
+import { createFormSchema } from '@deenruv/react-ui-devkit';
+import { z } from 'zod';
+
+const schema = createFormSchema({
+  name: z.string().min(1, 'Nazwa jest wymagana'),
+  code: z.string().min(1, 'Kod jest wymagany'),
+  price: z.number().min(0),
+  customFields: z.record(z.unknown()).optional(),
+});
+```
+
+To odpowiednik bezpośredniego wywołania `z.object(...)`, ale czyni intencję jasną i zapewnia standardowy wzorzec dla schematów formularzy w panelu administracyjnym.
+
+---
+
+### `useZodValidators` — Gotowe walidatory
+
+Udostępnia zlokalizowane schematy Zod dla typowych wzorców walidacji. Komunikaty błędów są automatycznie tłumaczone przy użyciu systemu tłumaczeń panelu administracyjnego.
+
+```ts
+import { useZodValidators, createFormSchema, useDeenruvForm } from '@deenruv/react-ui-devkit';
+
+function MyForm() {
+  const { requiredString, email, positiveNumber, customFields } = useZodValidators();
+
+  const schema = createFormSchema({
+    name: requiredString(),           // z.string().min(1, t('validation.required'))
+    emailAddress: email(),            // z.string().email(t('validation.invalidEmail'))
+    price: positiveNumber(),          // z.number().min(0, t('validation.mustBePositive'))
+    customFields,                     // z.record(z.unknown()).optional().default({})
+  });
+
+  const form = useDeenruvForm({
+    schema,
+    defaultValues: { name: '', emailAddress: '', price: 0, customFields: {} },
+  });
+
+  // ...
+}
+```
+
+#### Dostępne walidatory
+
+| Walidator | Zwraca | Opis |
+|---|---|---|
+| `requiredString(msg?)` | `z.ZodString` | Niepusty string, domyślnie zlokalizowany "Wymagane" |
+| `email(msg?)` | `z.ZodString` | Poprawny email, domyślnie zlokalizowany "Nieprawidłowy email" |
+| `positiveNumber(msg?)` | `z.ZodNumber` | Liczba >= 0, domyślnie zlokalizowany "Musi być dodatnia" |
+| `nonEmptyArray(msg?)` | `z.ZodArray` | Tablica z co najmniej 1 elementem |
+| `translationsWithName` | `z.ZodArray` | Tablica obiektów tłumaczeń z niepustym `name` |
+| `customFields` | `z.ZodOptional` | Permisywny record dla pól niestandardowych, domyślnie `{}` |
+
+---
+
+### `DeenruvForm` — Komponent wrappera formularza
+
+Komponent wrapper, który zapewnia kontekst formularza i obsługuje wysyłanie:
 
 ```tsx
-<Input
-  label="Email"
-  value={state.email?.value ?? ''}
-  onChange={(e) => setField('email', e.target.value)}
-  errors={state.email?.errors}  // ← podpina ErrorMessage + aria-invalid automatycznie
-/>
+import { DeenruvForm } from '@deenruv/react-ui-devkit';
 
-<SimpleSelect
-  label="Kraj"
-  value={state.country?.value ?? ''}
-  onValueChange={(v) => setField('country', v)}
-  options={countryOptions}
-  errors={state.country?.errors}  // ← podpina ErrorMessage + aria-invalid automatycznie
+<DeenruvForm form={form} onSubmit={handleSubmit} className="space-y-4">
+  {/* Komponenty FormField tutaj */}
+</DeenruvForm>
+```
+
+| Prop | Typ | Opis |
+|---|---|---|
+| `form` | `UseDeenruvFormReturn<T>` | Wartość zwracana z `useDeenruvForm` |
+| `onSubmit` | `(data: T) => void \| Promise<void>` | Wywoływany ze zwalidowanymi danymi przy wysłaniu formularza |
+| `children` | `ReactNode` | Treść formularza (komponenty FormField, przyciski itp.) |
+| `className` | `string?` | Opcjonalna klasa CSS dla elementu `<form>` |
+
+---
+
+### Prymitywy formularza
+
+Devkit reeksportuje prymitywy formularzy shadcn/ui do budowania dostępnych, walidowanych pól:
+
+| Komponent | Opis |
+|---|---|
+| `Form` | RHF `FormProvider` — zapewnia kontekst formularza dla dzieci |
+| `FormField` | Wrapper RHF `Controller` — łączy pole z formularzem |
+| `FormItem` | Kontener pola z odpowiednimi odstępami |
+| `FormLabel` | Dostępna etykieta, która zmienia kolor na czerwony przy błędach walidacji |
+| `FormControl` | Slot przekazujący `aria-invalid` i `aria-describedby` do inputa |
+| `FormDescription` | Opcjonalny tekst opisu pola |
+| `FormMessage` | Wyświetla komunikat błędu walidacji pola |
+
+#### Standardowy wzorzec
+
+```tsx
+<FormField
+  control={form.control}
+  name="fieldName"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Etykieta</FormLabel>
+      <FormControl>
+        <Input {...field} />
+      </FormControl>
+      <FormDescription>Tekst pomocniczy</FormDescription>
+      <FormMessage />
+    </FormItem>
+  )}
 />
 ```
 
 <Callout type="info">
-**Uwaga dot. dostępności:** Gdy `errors` jest niepustą tablicą, `Input` i `SimpleSelect` ustawiają `aria-invalid="true"` oraz `data-invalid` na kontrolce formularza. Komponent `ErrorMessage` renderuje się z `role="alert"`, dzięki czemu czytniki ekranu ogłaszają błędy natychmiast.
+**Dostępność:** Gdy pole ma błędy walidacji, `FormControl` ustawia `aria-invalid="true"` na inpucie i łączy go z `FormMessage` przez `aria-describedby`. Czytniki ekranu ogłaszają błędy automatycznie.
 </Callout>
 
-### Opis zwracanych wartości
-
-| Właściwość | Typ | Opis |
-|---|---|---|
-| `state` | `Partial<Record<K, GFFLPFormField<T>>>` | Bieżący stan formularza z `value`, `initialValue`, `errors`, `validatedValue` na pole |
-| `setField` | `(field, value) => void` | Aktualizacja pojedynczego pola (obsługuje notację z kropką) |
-| `setState` | `(value) => void` | Ustawienie wszystkich pól naraz (przyjmuje zwykły obiekt z wartościami pól) |
-| `checkIfAllFieldsAreValid` | `() => boolean` | Uruchom wszystkie walidatory, zwróć poprawność |
-| `haveValidFields` | `boolean` | Czy wszystkie zwalidowane pola mają poprawne wartości |
-| `clearErrors` | `() => void` | Wyczyść wszystkie błędy walidacji (ustawia `validatedValue` dla spójności) |
-| `clearAllForm` | `() => void` | Zresetuj formularz do wartości początkowych |
-
-## `useFFLP` — Niskopoziomowy hook formularza
-
-Używany wewnętrznie przez `useGFFLP`. Użyj bezpośrednio, gdy potrzebujesz stanu formularza **bez** powiązania z `ModelTypes` GraphQL:
-
-```ts
-import { useFFLP } from '@deenruv/react-ui-devkit';
-
-const { state, setField, checkIfAllFieldsAreValid } = useFFLP<{
-  email: string;
-  age: number;
-}>({
-  email: {
-    initialValue: '',
-    validate: (v) => (!v.includes('@') ? ['Invalid email'] : undefined),
-  },
-  age: { initialValue: 0 },
-});
-```
-
-## Checklista kontrybutora: Dokumentacja hooka formularza
-
-Przy aktualizacji hooka formularza (`useGFFLP`/`useFFLP`) lub jego dokumentacji:
-
-1. **Kod źródłowy:** Edytuj `packages/react-ui-devkit/src/hooks/useGFFLP.ts`
-2. **Docs (EN):** Edytuj `apps/docs/content/docs/guides/extending-the-admin-ui/hooks.mdx`
-3. **Docs (PL):** Edytuj `apps/docs/content/docs/guides/extending-the-admin-ui/hooks.pl.mdx` — odzwierciedlaj wszystkie zmiany EN
-4. **README:** Zaktualizuj `packages/react-ui-devkit/README.md` — utrzymuj tabelę referencji hooka w synchronizacji
-5. **Zwaliduj buildy:**
-   - `pnpm --filter @deenruv/react-ui-devkit build`
-   - `pnpm --filter @deenruv/admin-dashboard build`
-   - `pnpm --filter @deenruv/docs build`
-6. **Sprawdź istniejących wywołujących:** Uruchom `grep -r "useGFFLP\|useFFLP" packages/ plugins/` aby zweryfikować brak regresji
-7. **Eksporty:** Upewnij się, że `packages/react-ui-devkit/src/hooks/index.ts` reeksportuje nowe symbole
+---
 
 ## `useList` — Paginowane listy
 
@@ -389,23 +548,6 @@ Trwałe zarządzanie stanem z użyciem localStorage przeglądarki:
 import { useLocalStorage } from '@deenruv/react-ui-devkit';
 
 const [viewMode, setViewMode] = useLocalStorage('plugin-view-mode', 'grid');
-```
-
-## `useValidators`
-
-Udostępnia typowe funkcje walidacji do użycia z hookami formularzy:
-
-```ts
-import { useValidators } from '@deenruv/react-ui-devkit';
-
-const { required, email, minLength, maxLength } = useValidators();
-
-const { state } = useGFFLP('Customer', 'emailAddress')({
-  emailAddress: {
-    initialValue: '',
-    validate: email,
-  },
-});
 ```
 
 ## `useErrorHandler`

@@ -58,8 +58,18 @@ function composeRefs<T>(...refs: PossibleRef<T>[]) {
  * Accepts callback refs and RefObject(s).
  */
 function useComposedRefs<T>(...refs: PossibleRef<T>[]) {
+  // Store refs in a mutable ref to avoid recreating the callback on every render.
+  // The rest parameter `refs` creates a new array each render, which would
+  // invalidate useCallback deps and cause React 19 ref cleanup loops.
+  const refsRef = React.useRef(refs);
+  refsRef.current = refs;
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  return React.useCallback(composeRefs(...refs), refs);
+  return React.useCallback((node: T) => {
+    for (const ref of refsRef.current) {
+      setRef(ref, node);
+    }
+  }, []);
 }
 
 export { composeEventHandlers, composeRefs, useComposedRefs };
