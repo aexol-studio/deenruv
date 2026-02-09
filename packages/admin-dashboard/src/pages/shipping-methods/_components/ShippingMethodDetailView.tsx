@@ -109,7 +109,11 @@ export const ShippingMethodDetailView = () => {
                   label={t('details.basic.name')}
                   value={currentTranslationValue?.name ?? ''}
                   onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.translations?.message
+                      ? [base.formState.errors.translations.message as string]
+                      : undefined
+                  }
                   required
                 />
               </div>
@@ -118,7 +122,9 @@ export const ShippingMethodDetailView = () => {
                   label={t('details.basic.code')}
                   value={base.watch('code') ?? ''}
                   onChange={(e) => base.setField('code', e.target.value)}
-                  errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined
+                  }
                   required
                 />
               </div>
@@ -136,7 +142,11 @@ export const ShippingMethodDetailView = () => {
                 value={base.watch('fulfillmentHandler') ?? ''}
                 onValueChange={(e) => base.setField('fulfillmentHandler', e)}
                 options={fulfillmentHandlersOptions}
-                errors={base.formState.errors?.fulfillmentHandler?.message ? [base.formState.errors.fulfillmentHandler.message as string] : undefined}
+                errors={
+                  base.formState.errors?.fulfillmentHandler?.message
+                    ? [base.formState.errors.fulfillmentHandler.message as string]
+                    : undefined
+                }
               />
             </div>
           </div>
@@ -159,12 +169,18 @@ export const ShippingMethodDetailView = () => {
         <CheckerCard
           currentCheckerValue={base.watch('checker') ?? undefined}
           onCheckerValueChange={(checker) => checker && base.setField('checker', checker)}
-          errors={base.formState.errors?.checker?.message ? [base.formState.errors.checker.message as string] : undefined}
+          errors={
+            base.formState.errors?.checker?.message ? [base.formState.errors.checker.message as string] : undefined
+          }
         />
         <CalculatorCard
           currentCalculatorValue={base.watch('calculator') ?? undefined}
           onCalculatorValueChange={(calculator) => calculator && base.setField('calculator', calculator)}
-          errors={base.formState.errors?.calculator?.message ? [base.formState.errors.calculator.message as string] : undefined}
+          errors={
+            base.formState.errors?.calculator?.message
+              ? [base.formState.errors.calculator.message as string]
+              : undefined
+          }
         />
         <TestCard calculator={base.watch('calculator') ?? undefined} checker={base.watch('checker') ?? undefined} />
       </div>

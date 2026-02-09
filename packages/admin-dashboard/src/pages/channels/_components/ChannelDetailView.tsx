@@ -96,7 +96,9 @@ export const ChannelDetailView = () => {
                   label={t('details.basic.code')}
                   value={base.watch('code') ?? undefined}
                   onChange={(e) => base.setField('code', e.target.value)}
-                  errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined
+                  }
                   required
                 />
               </div>
@@ -105,7 +107,9 @@ export const ChannelDetailView = () => {
                   label={t('details.basic.token')}
                   value={base.watch('token') ?? undefined}
                   onChange={(e) => base.setField('token', e.target.value)}
-                  errors={base.formState.errors?.token?.message ? [base.formState.errors.token.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.token?.message ? [base.formState.errors.token.message as string] : undefined
+                  }
                   required
                 />
               </div>
@@ -174,9 +178,21 @@ export const ChannelDetailView = () => {
           defaultShippingZone={base.watch('defaultShippingZoneId') ?? undefined}
           includeTax={base.watch('pricesIncludeTax') ?? undefined}
           onIncludeTaxChange={(e) => base.setField('pricesIncludeTax', e)}
-          defaultLanguageErrors={base.formState.errors?.defaultLanguageCode?.message ? [base.formState.errors.defaultLanguageCode.message as string] : undefined}
-          defaultShippingZoneErrors={base.formState.errors?.defaultShippingZoneId?.message ? [base.formState.errors.defaultShippingZoneId.message as string] : undefined}
-          defaultTaxZoneErrors={base.formState.errors?.defaultTaxZoneId?.message ? [base.formState.errors.defaultTaxZoneId.message as string] : undefined}
+          defaultLanguageErrors={
+            base.formState.errors?.defaultLanguageCode?.message
+              ? [base.formState.errors.defaultLanguageCode.message as string]
+              : undefined
+          }
+          defaultShippingZoneErrors={
+            base.formState.errors?.defaultShippingZoneId?.message
+              ? [base.formState.errors.defaultShippingZoneId.message as string]
+              : undefined
+          }
+          defaultTaxZoneErrors={
+            base.formState.errors?.defaultTaxZoneId?.message
+              ? [base.formState.errors.defaultTaxZoneId.message as string]
+              : undefined
+          }
         />
       </div>
     </main>

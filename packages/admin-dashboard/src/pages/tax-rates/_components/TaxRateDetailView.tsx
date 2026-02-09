@@ -90,7 +90,9 @@ export const TaxRateDetailView = () => {
                   label={t('details.basic.name')}
                   value={base.watch('name') ?? undefined}
                   onChange={(e) => base.setField('name', e.target.value)}
-                  errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined
+                  }
                   required
                 />
               </div>
@@ -100,7 +102,9 @@ export const TaxRateDetailView = () => {
                   label={t('details.basic.value')}
                   value={base.watch('value') ?? undefined}
                   onChange={(e) => base.setField('value', +e.target.value)}
-                  errors={base.formState.errors?.value?.message ? [base.formState.errors.value.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.value?.message ? [base.formState.errors.value.message as string] : undefined
+                  }
                   endAdornment={'%'}
                   min={0}
                   max={100}
@@ -115,7 +119,11 @@ export const TaxRateDetailView = () => {
                   value={base.watch('categoryId') ?? undefined}
                   onValueChange={(e) => base.setField('categoryId', e)}
                   options={taxCategoriesOptions}
-                  errors={base.formState.errors?.categoryId?.message ? [base.formState.errors.categoryId.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.categoryId?.message
+                      ? [base.formState.errors.categoryId.message as string]
+                      : undefined
+                  }
                   required
                 />
               </div>
@@ -125,14 +133,21 @@ export const TaxRateDetailView = () => {
                   value={base.watch('zoneId') ?? undefined}
                   onValueChange={(e) => base.setField('zoneId', e)}
                   options={zonesOptions}
-                  errors={base.formState.errors?.zoneId?.message ? [base.formState.errors.zoneId.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.zoneId?.message
+                      ? [base.formState.errors.zoneId.message as string]
+                      : undefined
+                  }
                   required
                 />
               </div>
             </div>
             <div className="flex items-end gap-4">
               <div className="mb-2 flex basis-full items-center gap-3 md:basis-1/2">
-                <Switch checked={base.watch('enabled') ?? undefined} onCheckedChange={(e) => base.setField('enabled', e)} />
+                <Switch
+                  checked={base.watch('enabled') ?? undefined}
+                  onCheckedChange={(e) => base.setField('enabled', e)}
+                />
                 <Label>{t('details.basic.enabled')}</Label>
               </div>
             </div>

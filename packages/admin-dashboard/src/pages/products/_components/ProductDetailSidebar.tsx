@@ -44,7 +44,10 @@ export const ProductDetailSidebar: React.FC<{ marker?: ReactNode }> = ({ marker 
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <SettingsCard enabledValue={base.watch('enabled') ?? undefined} onEnabledChange={(e) => base.setField('enabled', e)} />
+      <SettingsCard
+        enabledValue={base.watch('enabled') ?? undefined}
+        onEnabledChange={(e) => base.setField('enabled', e)}
+      />
       <FacetValuesCard
         facetValuesIds={base.watch('facetValueIds') ?? undefined}
         onChange={(e) => base.setField('facetValueIds', e)}

@@ -451,41 +451,50 @@ export const AddressCard: React.FC<{
                             phoneNumber: form.getValues('phoneNumber'),
                             postalCode: form.getValues('postalCode'),
                             province: form.getValues('province'),
-                            ...(form.getValues('customFields') && Object.keys(form.getValues('customFields') ?? {}).length > 0
+                            ...(form.getValues('customFields') &&
+                            Object.keys(form.getValues('customFields') ?? {}).length > 0
                               ? { customFields: form.getValues('customFields') }
                               : {}),
                           }}
-                          onInputChange={(input) => form.reset({
-                            ...form.getValues(),
-                            fullName: input.fullName ?? '',
-                            company: input.company ?? '',
-                            streetLine1: input.streetLine1 ?? '',
-                            streetLine2: input.streetLine2 ?? '',
-                            city: input.city ?? '',
-                            postalCode: input.postalCode ?? '',
-                            province: input.province ?? '',
-                            phoneNumber: input.phoneNumber ?? '',
-                            countryCode: input.countryCode ?? '',
-                            ...(input.customFields ? { customFields: input.customFields as Record<string, unknown> } : {}),
-                          })}
+                          onInputChange={(input) =>
+                            form.reset({
+                              ...form.getValues(),
+                              fullName: input.fullName ?? '',
+                              company: input.company ?? '',
+                              streetLine1: input.streetLine1 ?? '',
+                              streetLine2: input.streetLine2 ?? '',
+                              city: input.city ?? '',
+                              postalCode: input.postalCode ?? '',
+                              province: input.province ?? '',
+                              phoneNumber: input.phoneNumber ?? '',
+                              countryCode: input.countryCode ?? '',
+                              ...(input.customFields
+                                ? { customFields: input.customFields as Record<string, unknown> }
+                                : {}),
+                            })
+                          }
                         />
                       </ScrollArea>
                     </TabsContent>
                   </>
                 ) : (
-                  <AddressForm onInputChange={(input) => form.reset({
-                    ...form.getValues(),
-                    fullName: input.fullName ?? '',
-                    company: input.company ?? '',
-                    streetLine1: input.streetLine1 ?? '',
-                    streetLine2: input.streetLine2 ?? '',
-                    city: input.city ?? '',
-                    postalCode: input.postalCode ?? '',
-                    province: input.province ?? '',
-                    phoneNumber: input.phoneNumber ?? '',
-                    countryCode: input.countryCode ?? '',
-                    ...(input.customFields ? { customFields: input.customFields as Record<string, unknown> } : {}),
-                  })} />
+                  <AddressForm
+                    onInputChange={(input) =>
+                      form.reset({
+                        ...form.getValues(),
+                        fullName: input.fullName ?? '',
+                        company: input.company ?? '',
+                        streetLine1: input.streetLine1 ?? '',
+                        streetLine2: input.streetLine2 ?? '',
+                        city: input.city ?? '',
+                        postalCode: input.postalCode ?? '',
+                        province: input.province ?? '',
+                        phoneNumber: input.phoneNumber ?? '',
+                        countryCode: input.countryCode ?? '',
+                        ...(input.customFields ? { customFields: input.customFields as Record<string, unknown> } : {}),
+                      })
+                    }
+                  />
                 )}
               </Tabs>
               <div className="mt-4 flex justify-end gap-2">

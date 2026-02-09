@@ -73,7 +73,9 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   });
   const formValues = form.watch();
   const translations = formValues.translations || [];
-  const currentTranslationValue = translations.find((v: { languageCode: LanguageCode }) => v.languageCode === currentTranslationLng);
+  const currentTranslationValue = translations.find(
+    (v: { languageCode: LanguageCode }) => v.languageCode === currentTranslationLng,
+  );
 
   useEffect(() => {
     if (!variant) return;
@@ -254,11 +256,15 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               stockLevelsValue={formValues.stockLevels}
               stockOnHandValue={formValues.stockOnHand}
               useGlobalOutOfStockThresholdValue={formValues.useGlobalOutOfStockThreshold}
-              onThresholdChange={(e: ChangeEvent<HTMLInputElement>) => form.setField('outOfStockThreshold', +e.target.value)}
+              onThresholdChange={(e: ChangeEvent<HTMLInputElement>) =>
+                form.setField('outOfStockThreshold', +e.target.value)
+              }
               onUseGlobalChange={(e: boolean) => form.setField('useGlobalOutOfStockThreshold', e)}
               onTrackInventoryChange={(e: unknown) => form.setField('trackInventory', e)}
               onStockOnHandChange={(e: ChangeEvent<HTMLInputElement>) => form.setField('stockOnHand', +e.target.value)}
-              onStockLocationsChange={(e: Array<{ stockLocationId: string; stockOnHand: number }>) => form.setField('stockLevels', e)}
+              onStockLocationsChange={(e: Array<{ stockLocationId: string; stockOnHand: number }>) =>
+                form.setField('stockLevels', e)
+              }
               allStockLocations={variant?.stockLevels}
               stockAllocated={variant?.stockAllocated}
               trackInventoryValue={formValues.trackInventory}

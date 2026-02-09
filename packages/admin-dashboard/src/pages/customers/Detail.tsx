@@ -68,9 +68,7 @@ export const CustomersDetailPage = () => {
                 lastName: data.lastName as string | undefined,
                 phoneNumber: data.phoneNumber as string | undefined,
                 title: data.title as string | undefined,
-                ...('customFields' in data && data.customFields
-                  ? { customFields: data.customFields }
-                  : {}),
+                ...('customFields' in data && data.customFields ? { customFields: data.customFields } : {}),
               };
               if (!sharedInput.emailAddress || !sharedInput.firstName || !sharedInput.lastName) return;
               const input = sharedInput as ExcludeUndefined<typeof sharedInput>;

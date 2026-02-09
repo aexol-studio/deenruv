@@ -206,10 +206,16 @@ export const ProductsChartWidget = () => {
               <ChartTooltip
                 wrapperStyle={{ zIndex: 1000 }}
                 cursor={false}
+                // Recharts v2/v3 have incompatible TooltipContentProps vs TooltipProps types;
+                // cast through unknown to bridge the readonly payload array mismatch.
                 content={(p) => (
                   <CustomBarChartTooltip
                     currencyCode={currencyCode ?? CurrencyCode.PLN}
-                    chartProps={p}
+                    chartProps={
+                      p as unknown as React.ComponentProps<
+                        typeof CustomBarChartTooltip
+                      >["chartProps"]
+                    }
                   />
                 )}
               />

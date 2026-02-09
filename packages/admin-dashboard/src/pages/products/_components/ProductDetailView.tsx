@@ -112,7 +112,11 @@ export const ProductDetailView = () => {
           currentTranslationValue={currentTranslationValue}
           onChange={setTranslationField}
           onSlugManualEdit={handleSlugManualEdit}
-          errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
+          errors={
+            base.formState.errors?.translations?.message
+              ? [base.formState.errors.translations.message as string]
+              : undefined
+          }
         />
         <DetailViewMarker position={'products-detail-view'} />
         <EntityCustomFields

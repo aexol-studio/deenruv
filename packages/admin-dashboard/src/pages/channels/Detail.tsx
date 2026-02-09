@@ -55,8 +55,10 @@ export const ChannelsDetailPage = () => {
 
       const inputData = {
         code: data.code as string,
-        availableCurrencyCodes: data.availableCurrencyCodes as ModelTypes['CreateChannelInput']['availableCurrencyCodes'],
-        availableLanguageCodes: data.availableLanguageCodes as ModelTypes['CreateChannelInput']['availableLanguageCodes'],
+        availableCurrencyCodes:
+          data.availableCurrencyCodes as ModelTypes['CreateChannelInput']['availableCurrencyCodes'],
+        availableLanguageCodes:
+          data.availableLanguageCodes as ModelTypes['CreateChannelInput']['availableLanguageCodes'],
         defaultCurrencyCode: data.defaultCurrencyCode as ModelTypes['CreateChannelInput']['defaultCurrencyCode'],
         defaultLanguageCode: data.defaultLanguageCode as string,
         defaultShippingZoneId: data.defaultShippingZoneId as string,

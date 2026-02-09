@@ -60,7 +60,12 @@ export const ProductsDetailPage = () => {
             onSubmitted: (data) => {
               if (!data.translations) throw new Error('Name is required.');
               const input = {
-                translations: data.translations as Array<{ languageCode: string; name?: string; slug?: string; description?: string }>,
+                translations: data.translations as Array<{
+                  languageCode: string;
+                  name?: string;
+                  slug?: string;
+                  description?: string;
+                }>,
                 assetIds: data.assetIds as string[] | undefined,
                 featuredAssetId: data.featuredAssetId as string | undefined,
                 facetValueIds: data.facetValueIds as string[] | undefined,

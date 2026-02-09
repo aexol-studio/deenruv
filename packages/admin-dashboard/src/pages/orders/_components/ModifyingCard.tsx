@@ -36,10 +36,12 @@ interface ModifyingCardProps {
 
 const modifyOrderSchema = z.object({
   note: z.string().default(''),
-  options: z.object({
-    recalculateShipping: z.boolean().default(false),
-    freezePromotions: z.boolean().default(false),
-  }).default({ recalculateShipping: false, freezePromotions: false }),
+  options: z
+    .object({
+      recalculateShipping: z.boolean().default(false),
+      freezePromotions: z.boolean().default(false),
+    })
+    .default({ recalculateShipping: false, freezePromotions: false }),
 });
 
 export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, onOptionsChange, changes }) => {

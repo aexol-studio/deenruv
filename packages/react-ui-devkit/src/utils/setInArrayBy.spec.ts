@@ -9,11 +9,10 @@ describe("setInArrayBy", () => {
       { id: 3, name: "C" },
     ];
 
-    const result = setInArrayBy(
-      items,
-      (item) => item.id === 2,
-      { id: 2, name: "Updated" },
-    );
+    const result = setInArrayBy(items, (item) => item.id === 2, {
+      id: 2,
+      name: "Updated",
+    });
 
     expect(result).toEqual([
       { id: 1, name: "A" },
@@ -28,11 +27,10 @@ describe("setInArrayBy", () => {
       { id: 2, name: "B" },
     ];
 
-    const result = setInArrayBy(
-      items,
-      (item) => item.id === 3,
-      { id: 3, name: "C" },
-    );
+    const result = setInArrayBy(items, (item) => item.id === 3, {
+      id: 3,
+      name: "C",
+    });
 
     expect(result).toEqual([
       { id: 1, name: "A" },
@@ -47,11 +45,10 @@ describe("setInArrayBy", () => {
       { id: 2, name: "B" },
     ];
 
-    const result = setInArrayBy(
-      items,
-      (item) => item.id === 1,
-      { id: 1, name: "Updated" },
-    );
+    const result = setInArrayBy(items, (item) => item.id === 1, {
+      id: 1,
+      name: "Updated",
+    });
 
     expect(result).not.toBe(items);
     // Original array should be unchanged
@@ -65,11 +62,10 @@ describe("setInArrayBy", () => {
       { id: 2, name: "C" },
     ];
 
-    const result = setInArrayBy(
-      items,
-      (item) => item.id === 1,
-      { id: 1, name: "Updated" },
-    );
+    const result = setInArrayBy(items, (item) => item.id === 1, {
+      id: 1,
+      name: "Updated",
+    });
 
     expect(result).toEqual([
       { id: 1, name: "Updated" },
@@ -81,11 +77,10 @@ describe("setInArrayBy", () => {
   it("works with an empty array", () => {
     const items: { id: number; name: string }[] = [];
 
-    const result = setInArrayBy(
-      items,
-      (item) => item.id === 1,
-      { id: 1, name: "New" },
-    );
+    const result = setInArrayBy(items, (item) => item.id === 1, {
+      id: 1,
+      name: "New",
+    });
 
     expect(result).toEqual([{ id: 1, name: "New" }]);
   });

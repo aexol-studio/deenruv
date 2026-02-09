@@ -30,10 +30,12 @@ const addOptionGroupSchema = z.object({
   code: z.string().default(''),
   translations: z
     .array(
-      z.object({
-        name: z.string(),
-        languageCode: z.string(),
-      }).passthrough(),
+      z
+        .object({
+          name: z.string(),
+          languageCode: z.string(),
+        })
+        .passthrough(),
     )
     .default([]),
   customFields: z.record(z.string(), z.unknown()).optional().default({}),

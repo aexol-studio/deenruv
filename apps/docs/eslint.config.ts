@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
+import { fixupConfigRules } from "@eslint/compat";
 import { defineConfig } from "eslint/config";
 import prettier from "eslint-plugin-prettier/recommended";
 
@@ -24,7 +25,9 @@ export default defineConfig([
   prettier,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tseslint.configs.recommended as any,
-  pluginReact.configs.flat.recommended,
+  // Wrap eslint-plugin-react with compat shims so rules that still call
+  // the removed `context.getFilename()` (ESLint 10) work correctly.
+  ...fixupConfigRules(pluginReact.configs.flat.recommended),
   {
     settings: {
       react: {

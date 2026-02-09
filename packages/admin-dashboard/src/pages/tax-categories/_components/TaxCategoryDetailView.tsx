@@ -46,11 +46,16 @@ export const TaxCategoryDetailView = () => {
                 onChange={(e) => {
                   base.setField('name', e.target.value);
                 }}
-                errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
+                errors={
+                  base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined
+                }
               />
             </div>
             <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/2">
-              <Switch checked={base.watch('isDefault') ?? undefined} onCheckedChange={(e) => base.setField('isDefault', e)} />
+              <Switch
+                checked={base.watch('isDefault') ?? undefined}
+                onCheckedChange={(e) => base.setField('isDefault', e)}
+              />
               <Label>{t('details.basic.isDefault')}</Label>
             </div>
           </div>

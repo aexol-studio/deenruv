@@ -130,7 +130,11 @@ export const FacetsDetailView = () => {
                 label={t('facets:table.name')}
                 value={currentTranslationValue?.name ?? ''}
                 onChange={(e) => setTranslationField('name', e.target.value)}
-                errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
+                errors={
+                  base.formState.errors?.translations?.message
+                    ? [base.formState.errors.translations.message as string]
+                    : undefined
+                }
                 required
               />
             </div>
@@ -139,14 +143,19 @@ export const FacetsDetailView = () => {
                 label={t('facets:table.code')}
                 value={base.watch('code') ?? ''}
                 onChange={(e) => base.setField('code', e.target.value)}
-                errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
+                errors={
+                  base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined
+                }
                 required
               />
             </div>
             <div className="basis-full md:basis-1/2 xl:basis-1/3">
               <Label>{t('facets:table.isPrivate')}</Label>
               <div className="mt-2 flex gap-3">
-                <Switch checked={base.watch('isPrivate') ?? false} onCheckedChange={(e) => base.setField('isPrivate', e)} />
+                <Switch
+                  checked={base.watch('isPrivate') ?? false}
+                  onCheckedChange={(e) => base.setField('isPrivate', e)}
+                />
                 <p>{base.watch('isPrivate') ? t('facets:table.isPrivate') : t('facets:table.public')}</p>
               </div>
             </div>

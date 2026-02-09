@@ -31,7 +31,9 @@ export const AddressesCard: React.FC<RolesCardProps> = ({ addresses, customerId,
     >
       <div className="flex gap-4">
         {addresses?.length ? (
-          addresses?.map((a) => <Address key={a.id} onActionCompleted={onActionCompleted} address={a} customerId={customerId} />)
+          addresses?.map((a) => (
+            <Address key={a.id} onActionCompleted={onActionCompleted} address={a} customerId={customerId} />
+          ))
         ) : (
           <p className="w-full text-center">{t(customerId ? 'addresses.empty' : 'addresses.createCustomerFirst')}</p>
         )}

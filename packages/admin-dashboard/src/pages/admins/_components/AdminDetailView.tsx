@@ -55,7 +55,11 @@ export const AdminDetailView = () => {
               label={t('details.basic.firstName')}
               value={base.watch('firstName') ?? undefined}
               onChange={(e) => base.setField('firstName', e.target.value)}
-              errors={base.formState.errors?.firstName?.message ? [base.formState.errors.firstName.message as string] : undefined}
+              errors={
+                base.formState.errors?.firstName?.message
+                  ? [base.formState.errors.firstName.message as string]
+                  : undefined
+              }
               required
             />
             <Input
@@ -63,7 +67,11 @@ export const AdminDetailView = () => {
               label={t('details.basic.lastName')}
               value={base.watch('lastName') ?? undefined}
               onChange={(e) => base.setField('lastName', e.target.value)}
-              errors={base.formState.errors?.lastName?.message ? [base.formState.errors.lastName.message as string] : undefined}
+              errors={
+                base.formState.errors?.lastName?.message
+                  ? [base.formState.errors.lastName.message as string]
+                  : undefined
+              }
               required
             />
             <Input
@@ -71,7 +79,11 @@ export const AdminDetailView = () => {
               label={t('details.basic.emailAddress')}
               value={base.watch('emailAddress') ?? undefined}
               onChange={(e) => base.setField('emailAddress', e.target.value)}
-              errors={base.formState.errors?.emailAddress?.message ? [base.formState.errors.emailAddress.message as string] : undefined}
+              errors={
+                base.formState.errors?.emailAddress?.message
+                  ? [base.formState.errors.emailAddress.message as string]
+                  : undefined
+              }
               required
             />
             <Input
@@ -79,7 +91,11 @@ export const AdminDetailView = () => {
               label={t('details.basic.password')}
               value={base.watch('password') ?? undefined}
               onChange={(e) => base.setField('password', e.target.value)}
-              errors={base.formState.errors?.password?.message ? [base.formState.errors.password.message as string] : undefined}
+              errors={
+                base.formState.errors?.password?.message
+                  ? [base.formState.errors.password.message as string]
+                  : undefined
+              }
               required={!editMode}
             />
           </div>
@@ -99,7 +115,9 @@ export const AdminDetailView = () => {
         <RolesCard
           adminRoleIds={base.watch('roleIds') ?? undefined}
           onRolesChange={(e) => base.setField('roleIds', e)}
-          errors={base.formState.errors?.roleIds?.message ? [base.formState.errors.roleIds.message as string] : undefined}
+          errors={
+            base.formState.errors?.roleIds?.message ? [base.formState.errors.roleIds.message as string] : undefined
+          }
         />
       </div>
     </main>

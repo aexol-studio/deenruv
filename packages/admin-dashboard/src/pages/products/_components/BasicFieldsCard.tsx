@@ -14,7 +14,12 @@ interface BasicFieldsCardProps {
   onSlugManualEdit?: () => void;
 }
 
-export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTranslationValue, onChange, errors, onSlugManualEdit }) => {
+export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({
+  currentTranslationValue,
+  onChange,
+  errors,
+  onSlugManualEdit,
+}) => {
   const { t } = useTranslation('products');
 
   return (

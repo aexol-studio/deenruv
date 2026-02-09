@@ -28,9 +28,7 @@ export const RoleDetailView = () => {
   const currentChannelOptions = useMemo((): Option[] | undefined => {
     if (!allChannelOptions) return undefined;
     else
-      return channelIds?.map(
-        (id: string) => allChannelOptions.find((o) => o.value === id) || { value: id, label: id },
-      );
+      return channelIds?.map((id: string) => allChannelOptions.find((o) => o.value === id) || { value: id, label: id });
   }, [allChannelOptions, channelIds]);
 
   const fetchChannels = useCallback(async () => {
@@ -83,7 +81,11 @@ export const RoleDetailView = () => {
                 label={t('details.basic.description')}
                 value={base.watch('description') ?? undefined}
                 onChange={(e) => base.setField('description', e.target.value)}
-                errors={base.formState.errors?.description?.message ? [base.formState.errors.description.message as string] : undefined}
+                errors={
+                  base.formState.errors?.description?.message
+                    ? [base.formState.errors.description.message as string]
+                    : undefined
+                }
                 required
               />
             </div>
@@ -92,7 +94,9 @@ export const RoleDetailView = () => {
                 label={t('details.basic.code')}
                 value={base.watch('code') ?? undefined}
                 onChange={(e) => base.setField('code', e.target.value)}
-                errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
+                errors={
+                  base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined
+                }
                 required
               />
             </div>
@@ -117,7 +121,11 @@ export const RoleDetailView = () => {
         <PermissionsCard
           currentPermissions={base.watch('permissions') ?? undefined}
           onPermissionsChange={(e) => base.setField('permissions', e)}
-          errors={base.formState.errors?.permissions?.message ? [base.formState.errors.permissions.message as string] : undefined}
+          errors={
+            base.formState.errors?.permissions?.message
+              ? [base.formState.errors.permissions.message as string]
+              : undefined
+          }
         />
       </div>
     </main>

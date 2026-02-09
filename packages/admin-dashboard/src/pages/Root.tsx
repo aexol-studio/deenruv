@@ -283,9 +283,7 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   return (
     <>
       <div className="flex max-h-screen w-full max-w-full overflow-hidden bg-background text-foreground">
-        <Menu>
-          {loaded ? <Outlet /> : <ContentAreaSkeleton />}
-        </Menu>
+        <Menu>{loaded ? <Outlet /> : <ContentAreaSkeleton />}</Menu>
         {loaded && (
           <>
             <GlobalSearch />

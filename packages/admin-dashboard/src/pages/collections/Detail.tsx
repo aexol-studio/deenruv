@@ -1,12 +1,6 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router';
-import {
-  useValidators,
-  DetailView,
-  createDeenruvForm,
-  getMutation,
-  useMutation,
-} from '@deenruv/react-ui-devkit';
+import { useValidators, DetailView, createDeenruvForm, getMutation, useMutation } from '@deenruv/react-ui-devkit';
 import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';
 import { ModelTypes } from '@deenruv/admin-types';
 

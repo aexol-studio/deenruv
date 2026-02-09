@@ -348,10 +348,7 @@ export function Navigation({ isCollapsed }: NavProps) {
               {Array.from({ length: groupIdx === 0 ? 4 : groupIdx === 1 ? 5 : 3 }).map((_, linkIdx) => (
                 <div
                   key={linkIdx}
-                  className={cn(
-                    'flex items-center rounded-md px-4 py-2',
-                    isCollapsed && 'justify-center px-0',
-                  )}
+                  className={cn('flex items-center rounded-md px-4 py-2', isCollapsed && 'justify-center px-0')}
                 >
                   <Skeleton className={cn('size-4 shrink-0', isCollapsed && 'size-6')} />
                   {!isCollapsed && <Skeleton className="ml-2 h-4 w-24" />}

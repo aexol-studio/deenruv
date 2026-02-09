@@ -72,7 +72,11 @@ export const CountryDetailView = () => {
                 label={t('details.basic.name')}
                 value={currentTranslationValue?.name ?? undefined}
                 onChange={(e) => setTranslationField('name', e.target.value)}
-                errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
+                errors={
+                  base.formState.errors?.translations?.message
+                    ? [base.formState.errors.translations.message as string]
+                    : undefined
+                }
                 required
               />
             </div>
@@ -81,7 +85,9 @@ export const CountryDetailView = () => {
                 label={t('details.basic.code')}
                 value={base.watch('code')}
                 onChange={(e) => base.setField('code', e.target.value)}
-                errors={base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined}
+                errors={
+                  base.formState.errors?.code?.message ? [base.formState.errors.code.message as string] : undefined
+                }
                 required
               />
             </div>

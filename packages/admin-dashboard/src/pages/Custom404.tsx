@@ -53,7 +53,7 @@ export const ErrorPage = () => {
                 <summary className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground">
                   Stack trace
                 </summary>
-                <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg bg-muted p-4 font-mono text-xs">
+                <pre className="mt-2 overflow-x-auto rounded-lg bg-muted p-4 font-mono text-xs whitespace-pre-wrap">
                   {errorStack}
                 </pre>
               </details>

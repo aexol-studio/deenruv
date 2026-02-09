@@ -28,9 +28,7 @@ interface OptionValueCardProps {
 
 const optionValueSchema = z.object({
   code: z.string().default(''),
-  translations: z
-    .array(z.object({ name: z.string(), languageCode: z.string() }).passthrough())
-    .default([]),
+  translations: z.array(z.object({ name: z.string(), languageCode: z.string() }).passthrough()).default([]),
   customFields: z.record(z.string(), z.unknown()).optional().default({}),
 });
 
@@ -116,11 +114,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
               withoutBorder
               id={productOption.id}
               currentLanguage={currentTranslationLng}
-              initialValues={
-                customFieldsValue
-                  ? { customFields: customFieldsValue as any }
-                  : { customFields: {} }
-              }
+              initialValues={customFieldsValue ? { customFields: customFieldsValue as any } : { customFields: {} }}
               onChange={(cf) => {
                 form.setField('customFields', cf);
               }}

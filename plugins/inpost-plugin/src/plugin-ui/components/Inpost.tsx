@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   useLazyQuery,
@@ -31,15 +31,9 @@ export const Inpost: React.FC = () => {
   const [getOrganizations] = useLazyQuery(GET_INPOST_ORGANIZATIONS);
   const { entity, form } = useDetailView("shippingMethods-detail-view");
 
-  const shippingMethodId = useMemo(
-    () => (entity ? entity.id : undefined),
-    [entity],
-  );
+  const shippingMethodId = entity ? entity.id : undefined;
 
-  const handler = useMemo(
-    () => form.base.state.fulfillmentHandler?.value,
-    [form.base.state],
-  );
+  const handler = form.base.watch("fulfillmentHandler") as string | undefined;
   const [inpostConfig, setInpostConfig] = useState<Partial<InpostConfig>>({
     host: "api-shipx-pl.easypack24.net",
   });

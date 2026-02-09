@@ -20,7 +20,22 @@ export interface InputProps extends Omit<
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, onChange, value, startAdornment, endAdornment, adornmentPlain, wrapperClassName, errors, label, ...inputProps }, ref) => {
+  (
+    {
+      className,
+      type,
+      onChange,
+      value,
+      startAdornment,
+      endAdornment,
+      adornmentPlain,
+      wrapperClassName,
+      errors,
+      label,
+      ...inputProps
+    },
+    ref,
+  ) => {
     const hasErrors = errors && errors.length > 0;
     const inputClassName = cn(
       "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
@@ -128,7 +143,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               data-invalid={hasErrors || undefined}
               value={type === "currency" ? internalValue : value}
               onChange={type === "currency" ? handleCurrencyChange : onChange}
-              onBlur={type === "currency" ? handleCurrencyBlur : inputProps.onBlur}
+              onBlur={
+                type === "currency" ? handleCurrencyBlur : inputProps.onBlur
+              }
               {...inputProps}
             />
             {endAdornment && (

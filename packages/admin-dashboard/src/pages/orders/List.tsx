@@ -56,9 +56,7 @@ export const OrdersListPage = () => {
   const { t } = useTranslation('table');
   const { t: tCommon } = useTranslation('common');
   const navigate = useNavigate();
-  const orderStates = useServer(
-    useShallow((state) => state.serverConfig?.orderProcess.map((p) => p.name) ?? []),
-  );
+  const orderStates = useServer(useShallow((state) => state.serverConfig?.orderProcess.map((p) => p.name) ?? []));
 
   const getMethodName = useCallback(
     (code: string | undefined) =>

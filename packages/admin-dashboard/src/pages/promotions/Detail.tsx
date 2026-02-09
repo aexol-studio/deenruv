@@ -59,8 +59,14 @@ export const PromotionsDetailPage = () => {
             },
             onSubmitted: (data) => {
               if (!data.translations || !data.actions || !data.conditions) throw new Error('Fill required fields.');
-              const conditions = data.conditions as Array<{ code: string; arguments: Array<{ name: string; value: string }> }>;
-              const actions = data.actions as Array<{ code: string; arguments: Array<{ name: string; value: string }> }>;
+              const conditions = data.conditions as Array<{
+                code: string;
+                arguments: Array<{ name: string; value: string }>;
+              }>;
+              const actions = data.actions as Array<{
+                code: string;
+                arguments: Array<{ name: string; value: string }>;
+              }>;
               const input = {
                 translations: data.translations as Array<{ languageCode: string; name: string }>,
                 enabled: (data.enabled as boolean) || false,

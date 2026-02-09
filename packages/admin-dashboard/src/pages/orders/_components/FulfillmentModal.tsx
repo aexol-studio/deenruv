@@ -40,18 +40,28 @@ interface Props {
 }
 
 const fulfillOrderSchema = z.object({
-  lines: z.array(z.object({
-    orderLineId: z.string(),
-    quantity: z.number(),
-    customFields: z.record(z.string(), z.unknown()).optional(),
-  })).default([]),
-  handler: z.object({
-    code: z.string().optional(),
-    arguments: z.array(z.object({
-      name: z.string(),
-      value: z.string(),
-    })).optional(),
-  }).default({ code: undefined, arguments: [] }),
+  lines: z
+    .array(
+      z.object({
+        orderLineId: z.string(),
+        quantity: z.number(),
+        customFields: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .default([]),
+  handler: z
+    .object({
+      code: z.string().optional(),
+      arguments: z
+        .array(
+          z.object({
+            name: z.string(),
+            value: z.string(),
+          }),
+        )
+        .optional(),
+    })
+    .default({ code: undefined, arguments: [] }),
 });
 
 export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled }) => {

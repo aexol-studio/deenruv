@@ -1,12 +1,6 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router';
-import {
-  useValidators,
-  getMutation,
-  useMutation,
-  DetailView,
-  createDeenruvForm,
-} from '@deenruv/react-ui-devkit';
+import { useValidators, getMutation, useMutation, DetailView, createDeenruvForm } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { SellerDetailView } from '@/pages/sellers/_components/SellerDetailView.js';
 

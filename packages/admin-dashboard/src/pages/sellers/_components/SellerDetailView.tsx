@@ -44,7 +44,9 @@ export const SellerDetailView = () => {
                   label={t('details.basic.name')}
                   value={base.watch('name')}
                   onChange={(e) => base.setField('name', e.target.value)}
-                  errors={base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.name?.message ? [base.formState.errors.name.message as string] : undefined
+                  }
                   required
                 />
               </div>

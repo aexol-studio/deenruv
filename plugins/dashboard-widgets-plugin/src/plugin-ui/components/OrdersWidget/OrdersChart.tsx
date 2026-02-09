@@ -97,6 +97,8 @@ export const OrdersChart: React.FC<ChartProps> = ({
         <ChartTooltip
           wrapperStyle={{ zIndex: 1000 }}
           cursor={false}
+          // Recharts v2/v3 have incompatible TooltipContentProps vs TooltipProps types;
+          // cast through unknown to bridge the readonly payload array mismatch.
           content={(p) => (
             <CustomTooltip
               currencyCode={currencyCode}
@@ -104,7 +106,11 @@ export const OrdersChart: React.FC<ChartProps> = ({
               prevValueStroke="#82FF9E"
               shouldShowCompare={shouldShowCompare}
               selectedAvailableProducts={selectedAvailableProducts}
-              chartProps={p}
+              chartProps={
+                p as unknown as React.ComponentProps<
+                  typeof CustomTooltip
+                >["chartProps"]
+              }
               language={language}
             />
           )}

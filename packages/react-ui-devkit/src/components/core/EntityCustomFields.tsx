@@ -268,10 +268,7 @@ export function EntityCustomFields<T extends ViableEntity>({
       setIsUpdating(true);
 
       if (mutation) {
-        await mutation(
-          preparedCustomFields,
-          currentValues.translations || [],
-        );
+        await mutation(preparedCustomFields, currentValues.translations || []);
       } else {
         const mutationName = entityDictionary[entityName]?.["mutationName"];
         if (!mutationName)
@@ -354,13 +351,20 @@ export function EntityCustomFields<T extends ViableEntity>({
           field.type === "localeText" || field.type === "localeString";
         if (translatable && currentLanguage) {
           const customFieldsTranslations = setInArrayBy(
-            translations as Array<{ customFields?: CF; languageCode: LanguageCode }>,
+            translations as Array<{
+              customFields?: CF;
+              languageCode: LanguageCode;
+            }>,
             (tr) => tr.languageCode !== currentLanguage,
             {
               customFields: {
-                ...(translations as Array<{ customFields?: CF; languageCode: LanguageCode }>).find(
-                  (tr) => tr.languageCode === currentLanguage,
-                )?.customFields,
+                ...(
+                  translations as Array<{
+                    customFields?: CF;
+                    languageCode: LanguageCode;
+                  }>
+                ).find((tr) => tr.languageCode === currentLanguage)
+                  ?.customFields,
                 [field.name]: data,
               },
               languageCode: currentLanguage,

@@ -30,8 +30,9 @@ export interface UseDeenruvFormOptions<T extends FieldValues> {
   mode?: UseFormProps<T>["mode"]; // default: 'onTouched'
 }
 
-export interface UseDeenruvFormReturn<T extends FieldValues>
-  extends UseFormReturn<T> {
+export interface UseDeenruvFormReturn<
+  T extends FieldValues,
+> extends UseFormReturn<T> {
   /** Convenience alias for setValue with auto-validate and dirty marking */
   setField: <K extends Path<T>>(field: K, value: PathValue<T, K>) => void;
   /** Whether the form currently has any validation errors */

@@ -24,7 +24,9 @@ type Props = {
 export const OrderLineCustomFields = ({ line, order, mode }: Props) => {
   const { setModifiedOrder } = useOrder(({ setModifiedOrder }) => ({ setModifiedOrder }));
   const orderLineCustomFields = useServer(
-    useShallow((p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || []),
+    useShallow(
+      (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+    ),
   );
   const { t } = useTranslation('common');
   const [open, setOpen] = useState(false);

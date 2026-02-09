@@ -143,7 +143,7 @@ export const ReplicateProductSidebar: React.FC = () => {
     });
     if (!asset || !entity) return;
     const newAsset = asset.getPredictionAsset;
-    const currentAssetIds = base.getValues('assetIds');
+    const currentAssetIds = base.getValues("assetIds");
     if (currentAssetIds) {
       base.setField("assetIds", [...currentAssetIds, newAsset.id]);
     }

@@ -98,7 +98,11 @@ export const PromotionDetailView = () => {
         <BasicFieldsCard
           currentTranslationValue={currentTranslationValue ?? undefined}
           onChange={setTranslationField}
-          errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
+          errors={
+            base.formState.errors?.translations?.message
+              ? [base.formState.errors.translations.message as string]
+              : undefined
+          }
         />
         <OptionsCard
           endsAt={base.watch('endsAt')}
@@ -123,8 +127,22 @@ export const PromotionDetailView = () => {
               : { customFields: {} }
           }
         />
-        <ConditionsCard value={base.watch('conditions')} onChange={base.setField} errors={base.formState.errors?.conditions?.message ? [base.formState.errors.conditions.message as string] : undefined} />
-        <ActionsCard value={base.watch('actions')} onChange={base.setField} errors={base.formState.errors?.actions?.message ? [base.formState.errors.actions.message as string] : undefined} />
+        <ConditionsCard
+          value={base.watch('conditions')}
+          onChange={base.setField}
+          errors={
+            base.formState.errors?.conditions?.message
+              ? [base.formState.errors.conditions.message as string]
+              : undefined
+          }
+        />
+        <ActionsCard
+          value={base.watch('actions')}
+          onChange={base.setField}
+          errors={
+            base.formState.errors?.actions?.message ? [base.formState.errors.actions.message as string] : undefined
+          }
+        />
       </form>
     </div>
   );

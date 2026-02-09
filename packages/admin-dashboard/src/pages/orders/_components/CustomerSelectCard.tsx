@@ -64,7 +64,8 @@ export const CustomerSelectCard: React.FC = () => {
   useEffect(() => setSelected(order?.customer), [order]);
 
   useEffect(() => {
-    if (tab === 'create') form.reset({ firstName: '', lastName: '', title: '', phoneNumber: '', emailAddress: '', customFields: {} });
+    if (tab === 'create')
+      form.reset({ firstName: '', lastName: '', title: '', phoneNumber: '', emailAddress: '', customFields: {} });
   }, [tab]);
 
   const validateAndSubmitIfCorrect = async () => {
@@ -190,7 +191,9 @@ export const CustomerSelectCard: React.FC = () => {
                         placeholder={t('create.selectCustomer.titlePlaceholder', 'Mr., Mrs., Dr., etc.')}
                         value={formValues.title ?? undefined}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setField('title', e.target.value)}
-                        errors={form.formState.errors.title?.message ? [form.formState.errors.title.message] : undefined}
+                        errors={
+                          form.formState.errors.title?.message ? [form.formState.errors.title.message] : undefined
+                        }
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -204,10 +207,16 @@ export const CustomerSelectCard: React.FC = () => {
                           name="firstName"
                           placeholder={t('create.selectCustomer.firstNamePlaceholder', 'Enter first name')}
                           value={formValues.firstName}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setField('firstName', e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            form.setField('firstName', e.target.value)
+                          }
                           className={cn(form.formState.errors.firstName && 'border-red-300')}
                           required
-                          errors={form.formState.errors.firstName?.message ? [form.formState.errors.firstName.message] : undefined}
+                          errors={
+                            form.formState.errors.firstName?.message
+                              ? [form.formState.errors.firstName.message]
+                              : undefined
+                          }
                         />
                       </div>
                       <div className="space-y-1">
@@ -220,10 +229,16 @@ export const CustomerSelectCard: React.FC = () => {
                           name="lastName"
                           placeholder={t('create.selectCustomer.lastNamePlaceholder', 'Enter last name')}
                           value={formValues.lastName}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setField('lastName', e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            form.setField('lastName', e.target.value)
+                          }
                           className={cn(form.formState.errors.lastName && 'border-red-300')}
                           required
-                          errors={form.formState.errors.lastName?.message ? [form.formState.errors.lastName.message] : undefined}
+                          errors={
+                            form.formState.errors.lastName?.message
+                              ? [form.formState.errors.lastName.message]
+                              : undefined
+                          }
                         />
                       </div>
                     </div>
@@ -237,10 +252,16 @@ export const CustomerSelectCard: React.FC = () => {
                         type="email"
                         placeholder={t('create.selectCustomer.emailPlaceholder', 'Enter email address')}
                         value={formValues.emailAddress}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setField('emailAddress', e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          form.setField('emailAddress', e.target.value)
+                        }
                         className={cn(form.formState.errors.emailAddress && 'border-red-300')}
                         required
-                        errors={form.formState.errors.emailAddress?.message ? [form.formState.errors.emailAddress.message] : undefined}
+                        errors={
+                          form.formState.errors.emailAddress?.message
+                            ? [form.formState.errors.emailAddress.message]
+                            : undefined
+                        }
                       />
                     </div>
                     <div className="space-y-1">
@@ -253,10 +274,16 @@ export const CustomerSelectCard: React.FC = () => {
                         name="phoneNumber"
                         placeholder={t('create.selectCustomer.phonePlaceholder', 'Enter phone number')}
                         value={formValues.phoneNumber ?? undefined}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setField('phoneNumber', e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          form.setField('phoneNumber', e.target.value)
+                        }
                         className={cn(form.formState.errors.phoneNumber && 'border-red-300')}
                         required
-                        errors={form.formState.errors.phoneNumber?.message ? [form.formState.errors.phoneNumber.message] : undefined}
+                        errors={
+                          form.formState.errors.phoneNumber?.message
+                            ? [form.formState.errors.phoneNumber.message]
+                            : undefined
+                        }
                       />
                     </div>
                     <EntityCustomFields

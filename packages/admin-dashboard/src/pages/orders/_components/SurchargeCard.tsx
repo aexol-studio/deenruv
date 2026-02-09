@@ -101,7 +101,19 @@ export const SurchargeCard: React.FC<{}> = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [description, sku, price, priceIncludesTax, taxDescription, taxRate, modifiedOrder, modifyOrderInput, setModifiedOrder, setModifyOrderInput, form]);
+  }, [
+    description,
+    sku,
+    price,
+    priceIncludesTax,
+    taxDescription,
+    taxRate,
+    modifiedOrder,
+    modifyOrderInput,
+    setModifiedOrder,
+    setModifyOrderInput,
+    form,
+  ]);
 
   return (
     <CustomCard
@@ -112,13 +124,7 @@ export const SurchargeCard: React.FC<{}> = () => {
       bottomRight={
         <Button
           onClick={handleAddSurcharge}
-          disabled={
-            isSubmitting ||
-            !description ||
-            !sku ||
-            !price ||
-            price <= 0
-          }
+          disabled={isSubmitting || !description || !sku || !price || price <= 0}
           className="ml-auto gap-2"
         >
           {isSubmitting ? (
@@ -151,7 +157,9 @@ export const SurchargeCard: React.FC<{}> = () => {
                   value={description || ''}
                   onChange={(e) => form.setField('description', e.target.value)}
                   className="pl-9"
-                  errors={form.formState.errors.description?.message ? [form.formState.errors.description.message] : undefined}
+                  errors={
+                    form.formState.errors.description?.message ? [form.formState.errors.description.message] : undefined
+                  }
                 />
                 <div className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground">
                   <FileText className="size-4" />

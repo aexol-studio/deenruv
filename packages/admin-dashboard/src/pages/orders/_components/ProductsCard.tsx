@@ -57,7 +57,9 @@ type ProductVariantCustomFields = any;
 export const ProductsCard: React.FC = () => {
   const { t } = useTranslation('orders');
   const orderLineCustomFields = useServer(
-    useShallow((p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || []),
+    useShallow(
+      (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+    ),
   );
 
   const { mode, order, setOrder, setModifiedOrder, modifiedOrder, fetchOrder } = useOrder();

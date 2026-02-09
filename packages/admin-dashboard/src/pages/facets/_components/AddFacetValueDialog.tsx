@@ -175,11 +175,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
             entityName="facetValue"
             id={facetValueId}
             hideButton
-            initialValues={
-              customFieldsValue
-                ? { customFields: customFieldsValue as any }
-                : { customFields: {} }
-            }
+            initialValues={customFieldsValue ? { customFields: customFieldsValue as any } : { customFields: {} }}
             onChange={(cf) => {
               form.setField('customFields', cf);
             }}

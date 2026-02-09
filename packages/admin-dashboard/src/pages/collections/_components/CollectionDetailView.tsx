@@ -144,7 +144,11 @@ export const CollectionsDetailView = () => {
                   label={t('details.basic.name')}
                   value={currentTranslationValue?.name ?? ''}
                   onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={base.formState.errors?.translations?.message ? [base.formState.errors.translations.message as string] : undefined}
+                  errors={
+                    base.formState.errors?.translations?.message
+                      ? [base.formState.errors.translations.message as string]
+                      : undefined
+                  }
                   required
                 />
               </div>
@@ -194,7 +198,9 @@ export const CollectionsDetailView = () => {
           onFiltersValueChange={(filters) => base.setField('filters', filters ?? [])}
           inheritValue={base.watch('inheritFilters') ?? false}
           onInheritChange={(e) => base.setField('inheritFilters', e)}
-          errors={base.formState.errors?.filters?.message ? [base.formState.errors.filters.message as string] : undefined}
+          errors={
+            base.formState.errors?.filters?.message ? [base.formState.errors.filters.message as string] : undefined
+          }
         />
         <EntityCustomFields
           entityName="collection"

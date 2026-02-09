@@ -71,7 +71,13 @@ interface DetailViewFormProps<
  * - If no validate → `z.any()`
  * - `defaultValues` extracted from `initialValue` properties
  */
-function configToSchemaAndDefaults(config: Record<string, { validate?: (v: unknown) => string[] | void; initialValue?: unknown } | undefined>) {
+function configToSchemaAndDefaults(
+  config: Record<
+    string,
+    | { validate?: (v: unknown) => string[] | void; initialValue?: unknown }
+    | undefined
+  >,
+) {
   const shape: Record<string, z.ZodType> = {};
   const defaultValues: Record<string, unknown> = {};
 
@@ -163,7 +169,13 @@ export const DetailView = <LOCATION extends DetailKeys>({
   const [searchParams] = useSearchParams();
   const { getDetailViewTabs, getDetailViewActions } = usePluginStore();
   const form = useDeenruvForm(
-    configToSchemaAndDefaults(main.form.config as Record<string, { validate?: (v: unknown) => string[] | void; initialValue?: unknown } | undefined>),
+    configToSchemaAndDefaults(
+      main.form.config as Record<
+        string,
+        | { validate?: (v: unknown) => string[] | void; initialValue?: unknown }
+        | undefined
+      >,
+    ),
   );
 
   const tab = useMemo(

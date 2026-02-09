@@ -12,7 +12,12 @@ import { apiClient } from "@/zeus_client/deenruvAPICall";
 import { toast } from "sonner";
 import { useNavigate, useSearchParams } from "react-router";
 import { GraphQLError } from "graphql";
-import type { EntityType, FormType, PropsType, StoreContextType } from "./types";
+import type {
+  EntityType,
+  FormType,
+  PropsType,
+  StoreContextType,
+} from "./types";
 import { useRouteGuard } from "@/hooks";
 import { useServer } from "@/state/server.js";
 import { customFieldsForQuery } from "@/zeus_client/customFieldsForQuery.js";

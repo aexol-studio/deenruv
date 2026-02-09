@@ -225,7 +225,12 @@ export const DashboardWidgets = () => {
         >
           {widgets?.map(({ component, ...widget }) =>
             widget.visible ? (
-              <WidgetItemProvider key={widget.id} widget={widget} removeWidget={removeWidget} resizeWidget={resizeWidget}>
+              <WidgetItemProvider
+                key={widget.id}
+                widget={widget}
+                removeWidget={removeWidget}
+                resizeWidget={resizeWidget}
+              >
                 <WidgetItem widget={widget}>{component}</WidgetItem>
               </WidgetItemProvider>
             ) : null,
