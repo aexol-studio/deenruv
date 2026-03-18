@@ -13,4 +13,4 @@ export * from "./order_state.js";
 export * from "./getGraphqlError.js";
 export * from "./formatFileSize.js";
 export * from "./setInArrayBy.js";
-export { normalizeString } from "@deenruv/common/lib/normalize-string";
+export { normalizeString } from "./normalizeString.js";
