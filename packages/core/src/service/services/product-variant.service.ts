@@ -497,6 +497,7 @@ export class ProductVariantService {
   ): Promise<number> {
     const { outOfStockThreshold, trackInventory } =
       await this.globalSettingsService.getSettings(ctx);
+    const { saleableStockStrategy } = this.configService.catalogOptions;
 
     const inventoryNotTracked =
       variant.trackInventory === GlobalFlag.FALSE ||
@@ -511,7 +512,13 @@ export class ProductVariantService {
       ? outOfStockThreshold
       : variant.outOfStockThreshold;
 
-    return stockOnHand - stockAllocated - effectiveOutOfStockThreshold;
+    return saleableStockStrategy.getSaleableStockLevel(
+      ctx,
+      variant,
+      stockOnHand,
+      stockAllocated,
+      effectiveOutOfStockThreshold,
+    );
   }
 
   private async getOutOfStockThreshold(

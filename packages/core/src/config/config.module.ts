@@ -80,6 +80,7 @@ export class ConfigModule
       productVariantPriceCalculationStrategy,
       productVariantPriceSelectionStrategy,
       productVariantPriceUpdateStrategy,
+      saleableStockStrategy,
       stockDisplayStrategy,
       stockLocationStrategy,
     } = this.configService.catalogOptions;
@@ -140,6 +141,7 @@ export class ConfigModule
       ...[entityIdStrategy].filter(notNullOrUndefined),
       productVariantPriceCalculationStrategy,
       productVariantPriceUpdateStrategy,
+      ...[saleableStockStrategy].filter(notNullOrUndefined),
       orderItemPriceCalculationStrategy,
       ...orderProcess,
       ...customFulfillmentProcess,

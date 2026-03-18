@@ -21,6 +21,7 @@ import { defaultCollectionFilters } from "./catalog/default-collection-filters";
 import { DefaultProductVariantPriceCalculationStrategy } from "./catalog/default-product-variant-price-calculation-strategy";
 import { DefaultProductVariantPriceSelectionStrategy } from "./catalog/default-product-variant-price-selection-strategy";
 import { DefaultProductVariantPriceUpdateStrategy } from "./catalog/default-product-variant-price-update-strategy";
+import { DefaultSaleableStockStrategy } from "./catalog/default-saleable-stock-strategy";
 import { DefaultStockDisplayStrategy } from "./catalog/default-stock-display-strategy";
 import { DefaultStockLocationStrategy } from "./catalog/default-stock-location-strategy";
 import { AutoIncrementIdStrategy } from "./entity/auto-increment-id-strategy";
@@ -124,6 +125,7 @@ export const defaultConfig: RuntimeDeenruvConfig = {
       new DefaultProductVariantPriceUpdateStrategy({
         syncPricesAcrossChannels: false,
       }),
+    saleableStockStrategy: new DefaultSaleableStockStrategy(),
     stockDisplayStrategy: new DefaultStockDisplayStrategy(),
     stockLocationStrategy: new DefaultStockLocationStrategy(),
   },

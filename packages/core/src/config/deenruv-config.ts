@@ -21,6 +21,7 @@ import { CollectionFilter } from "./catalog/collection-filter";
 import { ProductVariantPriceCalculationStrategy } from "./catalog/product-variant-price-calculation-strategy";
 import { ProductVariantPriceSelectionStrategy } from "./catalog/product-variant-price-selection-strategy";
 import { ProductVariantPriceUpdateStrategy } from "./catalog/product-variant-price-update-strategy";
+import { SaleableStockStrategy } from "./catalog/saleable-stock-strategy";
 import { StockDisplayStrategy } from "./catalog/stock-display-strategy";
 import { StockLocationStrategy } from "./catalog/stock-location-strategy";
 import { CustomFields } from "./custom-field/custom-field-types";
@@ -722,6 +723,15 @@ export interface CatalogOptions {
    * @since 2.2.0
    */
   productVariantPriceUpdateStrategy?: ProductVariantPriceUpdateStrategy;
+  /**
+   * @description
+   * Defines how the number of saleable units of a ProductVariant is calculated.
+   * This value is used by order/cart logic to determine whether a variant can be
+   * purchased.
+   *
+   * @default DefaultSaleableStockStrategy
+   */
+  saleableStockStrategy?: SaleableStockStrategy;
   /**
    * @description
    * Defines how the `ProductVariant.stockLevel` value is obtained. It is usually not desirable
