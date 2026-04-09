@@ -116,7 +116,7 @@ export class ProductVariantService {
             where: { deletedAt: IsNull() },
           },
         );
-        return keys.map((k) => res.find((v) => v.id === k));
+        return keys.map((k) => res.find((v) => idsAreEqual(v.id, k)));
       },
     );
   }
@@ -214,9 +214,10 @@ export class ProductVariantService {
         ]);
         return keys.map((k) => ({
           items: variants
-            .filter((v) => v.productId === k)
+            .filter((v) => idsAreEqual(v.productId, k))
             .slice(skip, skip + take),
-          totalItems: (count.find((row) => row.id === k)?.count as number) || 0,
+          totalItems:
+            (count.find((row) => idsAreEqual(row.id, k))?.count as number) || 0,
         }));
       },
     );
