@@ -20,6 +20,10 @@ WORKDIR /app
 
 # Copy installed dependencies
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=deps /app/apps/docs/package.json ./apps/docs/package.json
 
 # Copy the docs app source
 COPY apps/docs/ ./apps/docs
