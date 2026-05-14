@@ -9,14 +9,10 @@ FROM base AS deps
 WORKDIR /app
 
 # Copy only the docs app package.json (no workspace context)
-COPY apps/docs/package.json ./
-
-# Allow only the native build scripts required by docs dependencies.
-# pnpm 10+ reads this setting from pnpm-workspace.yaml (not .npmrc).
-RUN printf 'onlyBuiltDependencies:\n  - esbuild\n  - sharp\n' > pnpm-workspace.yaml
+COPY --parents package.json apps/*/package.json packages/*/package.json plugins/*/package.json pnpm-lock.yaml pnpm-workspace.yaml .
 
 # Install dependencies directly without workspace
-RUN pnpm install --ignore-workspace
+RUN pnpm install
 
 # Build stage
 FROM base AS builder
@@ -26,19 +22,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 
 # Copy the docs app source
-COPY apps/docs/ ./
-
-# Debug: show what was copied
-RUN ls -la && ls -la src/ && ls -la src/lib/ && ls -la content/ || true
+COPY apps/docs/ ./apps/docs
 
 # Generate .source directory (fumadocs-mdx codegen)
 RUN npx fumadocs-mdx
 
-# Debug: verify .source was generated
-RUN ls -la .source/ || echo ".source not found!"
-
 # Build the docs app
-RUN pnpm build
+RUN pnpm build -w apps/docs
 
 # Production stage
 FROM ${docker_io_image_prefix}/node:22-alpine AS runner
@@ -51,9 +41,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy standalone output (standalone outputs to root, not nested)
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/apps/docs/.next/standalone ./
+COPY --from=builder /app/apps/docs/.next/static ./.next/static
+COPY --from=builder /app/apps/docs/public ./public
 
 # Fix permissions for cache directory
 RUN chown -R nextjs:nodejs ./.next
