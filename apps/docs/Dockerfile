@@ -25,10 +25,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY apps/docs/ ./apps/docs
 
 # Generate .source directory (fumadocs-mdx codegen)
-RUN pnpm exec fumadocs-mdx
+RUN pnpm --dir apps/docs exec fumadocs-mdx
 
 # Build the docs app
-RUN pnpm build -w apps/docs
+RUN pnpm --dir apps/docs build
 
 # Production stage
 FROM ${docker_io_image_prefix}/node:22-alpine AS runner
