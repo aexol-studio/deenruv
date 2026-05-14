@@ -1,5 +1,5 @@
 ARG docker_io_image_prefix=docker.io/library
-FROM ${docker_io_image_prefix}/node:20-alpine AS base
+FROM ${docker_io_image_prefix}/node:22-alpine AS base
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -37,7 +37,7 @@ RUN ls -la .source/ || echo ".source not found!"
 RUN pnpm build
 
 # Production stage
-FROM ${docker_io_image_prefix}/node:20-alpine AS runner
+FROM ${docker_io_image_prefix}/node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
