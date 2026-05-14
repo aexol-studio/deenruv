@@ -11,12 +11,8 @@ WORKDIR /app
 # Copy only the docs app package.json (no workspace context)
 COPY apps/docs/package.json ./
 
-# Allow only the native build scripts required by docs dependencies.
-# pnpm 10+ reads this setting from pnpm-workspace.yaml (not .npmrc).
-RUN printf 'onlyBuiltDependencies:\n  - esbuild\n  - sharp\n' > pnpm-workspace.yaml
-
 # Install dependencies directly without workspace
-RUN pnpm install --ignore-workspace
+RUN PNPM_CONFIG_STRICT_DEP_BUILDS=false pnpm install --ignore-workspace
 
 # Build stage
 FROM base AS builder
@@ -32,7 +28,7 @@ COPY apps/docs/ ./
 RUN ls -la && ls -la src/ && ls -la src/lib/ && ls -la content/ || true
 
 # Generate .source directory (fumadocs-mdx codegen)
-RUN npx fumadocs-mdx
+RUN pnpm exec fumadocs-mdx
 
 # Debug: verify .source was generated
 RUN ls -la .source/ || echo ".source not found!"
