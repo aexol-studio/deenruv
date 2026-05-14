@@ -24,6 +24,7 @@ COPY --from=deps /app/package.json ./package.json
 COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=deps /app/apps/docs/package.json ./apps/docs/package.json
+COPY --from=deps /app/apps/docs/node_modules ./apps/docs/node_modules
 
 # Copy the docs app source
 COPY apps/docs/ ./apps/docs
