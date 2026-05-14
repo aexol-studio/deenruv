@@ -12,8 +12,8 @@ WORKDIR /app
 COPY apps/docs/package.json ./
 
 # Allow only the native build scripts required by docs dependencies.
-# pnpm 10+ blocks dependency build scripts in CI unless they are explicitly approved.
-RUN printf 'only-built-dependencies[]=esbuild\nonly-built-dependencies[]=sharp\n' > .npmrc
+# pnpm 10+ reads this setting from pnpm-workspace.yaml (not .npmrc).
+RUN printf 'onlyBuiltDependencies:\n  - esbuild\n  - sharp\n' > pnpm-workspace.yaml
 
 # Install dependencies directly without workspace
 RUN pnpm install --ignore-workspace
