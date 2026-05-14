@@ -141,6 +141,7 @@
       "@types/react": "^19.0.0",
       "@types/react-dom": "^19.0.0",
       "i18next": "^25.8.4"
-    }
+    },
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
   }
 }
