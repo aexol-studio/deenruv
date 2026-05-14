@@ -297,16 +297,17 @@ export class PromotionService {
     couponCode: string,
     customerId?: ID,
   ): Promise<JustErrorResults<ApplyCouponCodeResult> | Promotion> {
-    const promotion = await this.connection
-      .getRepository(ctx, Promotion)
-      .findOne({
-        where: {
-          couponCode,
-          enabled: true,
-          deletedAt: IsNull(),
-        },
-        relations: ["channels"],
-      });
+        const promotion = await this.connection
+            .getRepository(ctx, Promotion)
+            .findOne({
+                where: {
+                    couponCode,
+                    enabled: true,
+                    deletedAt: IsNull(),
+                    channels: { id: ctx.channelId },
+                },
+                relations: ["channels"],
+            });
     if (
       !promotion ||
       promotion.couponCode !== couponCode ||
