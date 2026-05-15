@@ -47,6 +47,31 @@ test:
 lint:
   <<: *build_artifacts
 
+publish:
+  extends: .common
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+    - if: $CI_COMMIT_TAG =~ /^[^\/]+\/v[0-9]+\.[0-9]+\.[0-9]+$/
+      exists:
+        - pnpm-workspace.yaml
+  script:
+    - export PUBLISH_SCOPE="@${PUBLISH_SCOPE:-$CI_PROJECT_NAMESPACE}"
+    - echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+    - echo '.pnpm-store' >> .gitignore
+    - pnpm --if-present build
+    - npm set registry https://registry.npmjs.org/
+    - npm config delete "@${CI_PROJECT_NAMESPACE}:registry" || true
+    - npm config delete "${PUBLISH_SCOPE}:registry" || true
+    - |
+      [ -f pnpm-workspace.yaml ] \
+        &&
+          (
+            export PKGS="$(echo "$CI_COMMIT_TAG" | sed -E 's/[/]?v[0-9]+\.[0-9]+\.[0-9]+$//g')" \
+            && pnpm --filter "${PUBLISH_SCOPE}/${PKGS:-*}" publish --access public --no-git-checks
+          ) \
+        || pnpm publish --no-git-checks --access public
+        
 deploy docker dev:
   needs: []
 
