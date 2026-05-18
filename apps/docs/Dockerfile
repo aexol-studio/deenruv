@@ -19,21 +19,19 @@ FROM base AS builder
 WORKDIR /app
 
 # Copy installed dependencies
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/package.json ./package.json
-COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
-COPY --from=deps /app/apps/docs/package.json ./apps/docs/package.json
-COPY --from=deps /app/apps/docs/node_modules ./apps/docs/node_modules
+COPY --from=deps --parents /app/node_modules /app/apps/docs/node_modules /
 
 # Copy the docs app source
 COPY apps/docs/ ./apps/docs
 
-# Generate .source directory (fumadocs-mdx codegen)
-RUN pnpm --dir apps/docs exec fumadocs-mdx
+WORKDIR /app/apps/docs
 
+# Generate .source directory (fumadocs-mdx codegen)
+RUN npx fumadocs-mdx
+
+COPY --parents package.json apps/*/package.json packages/*/package.json plugins/*/package.json pnpm-lock.yaml pnpm-workspace.yaml ../..
 # Build the docs app
-RUN pnpm --dir apps/docs build
+RUN pnpm build 
 
 # Production stage
 FROM ${docker_io_image_prefix}/node:22-alpine AS runner
