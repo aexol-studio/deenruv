@@ -12,8 +12,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
-import { useTranslation } from "react-i18next";
 import { TRANSLATION_NAMESPACE } from "../constants";
 import { toast } from "sonner";
 
@@ -42,9 +42,7 @@ export function UniversalSelectDialog<T extends string>({
   const [value, setValue] = useState<T | undefined>(
     defaultValue ? defaultValue : undefined,
   );
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   const onSubmit = () => {
     const option = options.find((o) => o.value === value);
     if (!option) {

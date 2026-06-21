@@ -465,7 +465,7 @@ const MultipleSelector = React.forwardRef<
         <div
           ref={containerRef}
           className={cn(
-            "min-h-10 rounded-md border border-input text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 max-h-[150px] overflow-auto",
+            "min-h-10 border border-input text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 max-h-[150px] overflow-auto",
             {
               "px-3 py-2": selected.length !== 0,
               "cursor-text":
@@ -497,7 +497,7 @@ const MultipleSelector = React.forwardRef<
                   {option.label}
                   <button
                     className={cn(
-                      "ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                      "ml-1 outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
                       option.color ? "bg-white opacity-50" : "",
                       (disabled || option.fixed) && "hidden",
                     )}
@@ -581,7 +581,7 @@ const MultipleSelector = React.forwardRef<
             (open && !!CreatableItem())) && (
             <CommandList
               className={cn(
-                "bg-popover text-popover-foreground animate-in  z-50 rounded-md border shadow-md outline-none",
+                "bg-popover text-popover-foreground animate-in  z-50 border shadow-md outline-none",
                 fixedDropdown ? "fixed" : "absolute top-1 w-full",
               )}
               style={

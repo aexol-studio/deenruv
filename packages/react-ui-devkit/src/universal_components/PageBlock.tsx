@@ -22,8 +22,8 @@ export const PageBlock: React.FC<PropsWithChildren<PageBlockProps>> = ({
   return (
     <div
       className={cn(
-        sidebar ? "grid grid-cols-[minmax(0,1fr)_400px] gap-4" : "w-full",
-        withoutPadding ? "" : "p-4",
+        sidebar ? "grid min-w-0 grid-cols-[minmax(0,1fr)_400px] gap-4" : "w-full min-w-0",
+        withoutPadding ? "" : "p-3 md:p-4",
         className,
       )}
     >

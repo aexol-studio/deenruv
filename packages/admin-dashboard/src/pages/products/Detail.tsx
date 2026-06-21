@@ -4,7 +4,7 @@ import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
 import { useTranslation, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
-import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
+import { $, Permission, scalars, typedGql, ValueTypes } from '@deenruv/admin-types';
 import { useMemo } from 'react';
 
 const EditProductMutation = typedGql('mutation', { scalars })({
@@ -13,6 +13,10 @@ const EditProductMutation = typedGql('mutation', { scalars })({
 
 const CreateProductMutation = typedGql('mutation', { scalars })({
   createProduct: [{ input: $('input', 'CreateProductInput!') }, { id: true }],
+});
+
+const CreateProductVariantsMutation = typedGql('mutation', { scalars })({
+  createProductVariants: [{ input: $('input', '[CreateProductVariantInput!]!') }, { id: true }],
 });
 
 const DeleteProductMutation = typedGql('mutation', { scalars })({
@@ -24,6 +28,7 @@ export const ProductsDetailPage = () => {
   const { t } = useTranslation('products');
   const [update] = useMutation(EditProductMutation);
   const [create] = useMutation(CreateProductMutation);
+  const [createVariants] = useMutation(CreateProductVariantsMutation);
   const [remove] = useMutation(DeleteProductMutation);
 
   const defaultTabs = useMemo(() => {
@@ -56,23 +61,55 @@ export const ProductsDetailPage = () => {
                   if (!name || !slug) return [t('validation.nameSlugRequired')];
                 },
               },
+              ...{
+                initialVariantSku: {
+                  validate: (v: unknown) => {
+                    if (!id && (!v || typeof v !== 'string' || !v.trim())) {
+                      return [t('validation.initialVariantSkuRequired')];
+                    }
+                  },
+                },
+                initialVariantPrice: {
+                  initialValue: 0,
+                },
+                initialVariantName: {},
+              },
             },
-            onSubmitted: (data) => {
+            onSubmitted: async (data) => {
               if (!data.translations) throw new Error('Name is required.');
+              const translations = data.translations as ValueTypes['ProductTranslationInput'][];
               const input = {
-                translations: data.translations as Array<{
-                  languageCode: string;
-                  name?: string;
-                  slug?: string;
-                  description?: string;
-                }>,
+                translations,
                 assetIds: data.assetIds as string[] | undefined,
                 featuredAssetId: data.featuredAssetId as string | undefined,
                 facetValueIds: data.facetValueIds as string[] | undefined,
                 enabled: data.enabled as boolean | undefined,
                 ...(data.customFields ? { customFields: data.customFields } : {}),
-              };
-              return id ? update({ input: { id, ...input } as any }) : create({ input: input as any });
+              } satisfies ValueTypes['CreateProductInput'];
+
+              if (id) return update({ input: { id, ...input } });
+
+              const response = await create({ input });
+              const initialVariantName =
+                typeof data.initialVariantName === 'string' ? data.initialVariantName.trim() : '';
+              const initialVariantSku = typeof data.initialVariantSku === 'string' ? data.initialVariantSku.trim() : '';
+              const initialVariantPrice = Number(data.initialVariantPrice ?? 0);
+
+              await createVariants({
+                input: [
+                  {
+                    productId: response.createProduct.id,
+                    translations: translations.map((translation) => ({
+                      languageCode: translation.languageCode,
+                      name: initialVariantName || translation.name || initialVariantSku,
+                    })),
+                    sku: initialVariantSku,
+                    price: Number.isFinite(initialVariantPrice) ? initialVariantPrice : 0,
+                  },
+                ],
+              });
+
+              return response;
             },
             onDeleted: () => {
               if (id) return remove({ id });

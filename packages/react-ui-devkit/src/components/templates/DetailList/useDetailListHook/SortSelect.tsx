@@ -37,7 +37,7 @@ export const SortSelect: React.FC<
       >
         <SelectTrigger
           className={cn(
-            "-ml-3 h-8 w-fit border-none text-xs hover:bg-accent data-[state=open]:bg-accent [&>svg:last-child]:hidden",
+            "-ml-3 h-8 w-fit border-none bg-transparent text-xs hover:bg-accent data-[state=open]:bg-accent [&>svg:last-child]:hidden",
             TABLE_LABEL_STYLES,
           )}
         >

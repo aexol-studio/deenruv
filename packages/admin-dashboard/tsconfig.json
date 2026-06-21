@@ -4,18 +4,20 @@
     "jsx": "react-jsx",
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "importHelpers": true,
     "removeComments": false,
+    "ignoreDeprecations": "6.0",
+    "rootDir": "src",
     "outDir": "dist",
     "strict": true,
     "noImplicitAny": true,
     "declaration": false,
     "sourceMap": false,
     "strictPropertyInitialization": false,
-    "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "lib": ["es2022", "es2020.intl", "dom", "dom.iterable"],
     "skipLibCheck": true, // TODO: @kamil temponary hack we can't resolve good dependecies.
     "paths": {
       "@/*": ["./src/*"]

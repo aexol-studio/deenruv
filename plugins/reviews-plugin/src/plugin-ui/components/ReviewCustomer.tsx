@@ -7,6 +7,7 @@ import {
   useDetailView,
   useLazyQuery,
   useMutation,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React from "react";
 import {
@@ -14,17 +15,14 @@ import {
   ChangeReviewStateMutation,
   ListReviewQuery,
 } from "../graphql";
-import { useTranslation } from "react-i18next";
 import { TRANSLATION_NAMESPACE } from "../constants.js";
 import { REVIEWS_ROUTES } from "../index.js";
-import { ReplaceAllIcon, ReplaceIcon } from "lucide-react";
+import { Check, ReplaceAllIcon, ReplaceIcon } from "lucide-react";
 import { ReviewState, SortOrder } from "../zeus";
 import { UniversalSelectDialog } from "./UniversalSelectDialog";
 
 export const ReviewCustomer = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   const [fetch] = useLazyQuery(ListReviewQuery);
   const [changeReviewState] = useMutation(ChangeReviewStateMutation);
   const [changeReviewsState] = useMutation(ChangeReviewsStateMutation);
@@ -103,6 +101,24 @@ export const ReviewCustomer = () => {
         },
       ]}
       additionalRowActions={[
+        {
+          label: t("list.acceptReview"),
+          icon: <Check className="w-4 h-4" />,
+          canShow: ({ row }) => row.original.state === ReviewState.PENDING,
+          onClick: async ({ row }) => {
+            try {
+              if (!row.original.id) {
+                throw new Error(t("dialog.singleStateChangeNoSelection"));
+              }
+              await changeReviewState({
+                input: { id: row.original.id, state: ReviewState.ACCEPTED },
+              });
+              return { success: t("dialog.singleAcceptSuccess") };
+            } catch {
+              return { error: t("dialog.singleAcceptError") };
+            }
+          },
+        },
         {
           label: t("list.stateChange"),
           icon: <ReplaceIcon className="w-4 h-4" />,

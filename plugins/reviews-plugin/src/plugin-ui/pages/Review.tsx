@@ -13,19 +13,9 @@ import {
   formatDate,
   Button,
   useMutation,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  Input,
-  DialogClose,
   ImageWithPreview,
   Routes,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -42,14 +32,11 @@ import { LanguageCode, ReviewState } from "../zeus";
 import { useNavigate } from "react-router";
 import { OrderInfo, ProductInfo } from "../components";
 import { TRANSLATION_NAMESPACE } from "../constants";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ReviewStateChange } from "../components/ReviewStateChange";
 
 export const Review = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   const { id } = useParams();
   const { data: config } = useQuery(GetReviewsConfigQuery);
   const [get] = useLazyQuery(GetReviewQuery);
@@ -123,9 +110,9 @@ export const Review = () => {
           translations: [...(prev.translations || []), ...newTranslations],
         };
       });
-      toast.success(t("generateAllMissingTranslationsSuccess"));
+      toast.success(t("detail.generateAllMissingTranslationsSuccess"));
     } catch (error) {
-      toast.error(t("generateAllMissingTranslationsError"));
+      toast.error(t("detail.generateAllMissingTranslationsError"));
     }
   };
 
@@ -233,7 +220,17 @@ export const Review = () => {
             </div>
             <div className="flex flex-col gap-2 items-end">
               {ReviewState.PENDING === review?.state && (
-                <ReviewStateChange onSubmit={handleChangeReviewState} />
+                <div className="flex flex-wrap justify-end gap-2">
+                  <Button
+                    variant="action"
+                    size="sm"
+                    className="text-xs"
+                    onClick={() => handleChangeReviewState(ReviewState.ACCEPTED)}
+                  >
+                    {t("detail.acceptReview")}
+                  </Button>
+                  <ReviewStateChange onSubmit={handleChangeReviewState} />
+                </div>
               )}
             </div>
           </div>
@@ -463,9 +460,7 @@ const TranslationComponent = ({
   matchingTranslation: ReviewDetail["translations"][number];
   isOriginal: boolean;
 }) => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   const [body, setBody] = useState(matchingTranslation.body);
   return (
     <div className="space-y-4">

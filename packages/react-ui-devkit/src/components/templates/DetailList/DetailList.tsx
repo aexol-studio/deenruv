@@ -502,7 +502,7 @@ export function DetailList<
             return (
               <Button
                 variant="outline"
-                className="h-6 border border-gray-500 p-0 px-3 text-gray-800 hover:border-gray-600 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
+                className="h-7 border-border/80 px-3 text-xs text-foreground hover:border-primary/30 hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring/30"
                 onClick={() => {
                   if ("edit" in route) {
                     route.edit(row.original.id, row, refetch);
@@ -728,125 +728,138 @@ export function DetailList<
             />
             <div className="page-content-h flex w-full flex-col gap-2">
               <div className="mb-1 flex w-full flex-col items-start gap-4">
-                <div className="flex w-full items-end justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    {(bulkActions.length || remove) && selectedAmount > 0 && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-8 gap-2 py-0"
-                            aria-label="Open filters"
-                          >
-                            <Group className="size-4" aria-hidden="true" />
-                            {t("Zaznaczone")} ({selectedAmount})
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          className="mr-6 w-56"
-                          align="start"
-                        >
-                          <DropdownMenuLabel className="select-none">
-                            {t("Operacje masowe")}
-                          </DropdownMenuLabel>
-
-                          <DropdownMenuSeparator />
-                          <DropdownMenuGroup>
-                            {bulkActions.map((action) => {
-                              const canShow = action?.canShow
-                                ? action.canShow()
-                                : true;
-                              if (!canShow) return null;
-                              const onClick = async () => {
-                                try {
-                                  const response = await action.onClick({
-                                    table,
-                                    data: objects,
-                                    refetch,
-                                  });
-                                  const { error, info, success } = response;
-
-                                  if (error) {
-                                    throw new Error(error);
-                                  } else if (info) {
-                                    toast.info(info);
-                                    table.toggleAllRowsSelected(false);
-                                  } else {
-                                    toast.success(success);
-                                    refetch();
-                                    table.toggleAllRowsSelected(false);
-                                  }
-                                } catch (error) {
-                                  const message =
-                                    error instanceof Error
-                                      ? error.message
-                                      : "Unknown error";
-                                  toast.error(message);
-                                }
-                              };
-                              return (
-                                <DropdownMenuItem
-                                  key={action.label}
-                                  onClick={onClick}
-                                  className="flex items-center gap-2 cursor-pointer"
+                <div className="flex w-full flex-col gap-2 border border-border/80 bg-card/95 p-2.5 lg:p-3">
+                  <div className="flex w-full flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
+                    <div className="flex min-w-0 flex-1 flex-col gap-2 md:flex-row md:items-center">
+                      <div className="min-w-0 flex-1">{Search}</div>
+                      <div className="flex flex-wrap items-center gap-2 md:justify-end">
+                        {(bulkActions.length || remove) &&
+                          selectedAmount > 0 && (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-8 gap-2 border-primary/25 bg-primary/10 px-3 py-0 text-primary hover:border-primary/40 hover:bg-primary/20 hover:text-primary"
+                                  aria-label={t("Zaznaczone")}
                                 >
-                                  {action.icon}
-                                  {action.label}
-                                </DropdownMenuItem>
-                              );
-                            })}
-                          </DropdownMenuGroup>
+                                  <Group
+                                    className="size-4"
+                                    aria-hidden="true"
+                                  />
+                                  {t("Zaznaczone")} ({selectedAmount})
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent
+                                className="mr-6 w-56"
+                                align="start"
+                              >
+                                <DropdownMenuLabel className="select-none">
+                                  {t("Operacje masowe")}
+                                </DropdownMenuLabel>
 
-                          {remove && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuGroup>
-                                <DropdownMenuItem
-                                  className="text-red-600 cursor-pointer"
-                                  disabled={!selectedAmount}
-                                  onClick={() => {
-                                    const selected = Object.entries(
-                                      table.getState().rowSelection,
-                                    )
-                                      .filter(([, value]) => value)
-                                      .map(([key]) => key);
-                                    onRemove(selected.map((id) => ({ id })));
-                                  }}
-                                >
-                                  <Trash2Icon className="mr-2 size-4" />
-                                  {t("Usuń zacznaczone")}
-                                </DropdownMenuItem>
-                              </DropdownMenuGroup>
-                            </>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                  {bulkActions.map((action) => {
+                                    const canShow = action?.canShow
+                                      ? action.canShow()
+                                      : true;
+                                    if (!canShow) return null;
+                                    const onClick = async () => {
+                                      try {
+                                        const response = await action.onClick({
+                                          table,
+                                          data: objects,
+                                          refetch,
+                                        });
+                                        const { error, info, success } =
+                                          response;
+
+                                        if (error) {
+                                          throw new Error(error);
+                                        } else if (info) {
+                                          toast.info(info);
+                                          table.toggleAllRowsSelected(false);
+                                        } else {
+                                          toast.success(success);
+                                          refetch();
+                                          table.toggleAllRowsSelected(false);
+                                        }
+                                      } catch (error) {
+                                        const message =
+                                          error instanceof Error
+                                            ? error.message
+                                            : "Unknown error";
+                                        toast.error(message);
+                                      }
+                                    };
+                                    return (
+                                      <DropdownMenuItem
+                                        key={action.label}
+                                        onClick={onClick}
+                                        className="flex cursor-pointer items-center gap-2"
+                                      >
+                                        {action.icon}
+                                        {action.label}
+                                      </DropdownMenuItem>
+                                    );
+                                  })}
+                                </DropdownMenuGroup>
+
+                                {remove && (
+                                  <>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                      <DropdownMenuItem
+                                        className="cursor-pointer text-red-600"
+                                        disabled={!selectedAmount}
+                                        onClick={() => {
+                                          const selected = Object.entries(
+                                            table.getState().rowSelection,
+                                          )
+                                            .filter(([, value]) => value)
+                                            .map(([key]) => key);
+                                          onRemove(
+                                            selected.map((id) => ({ id })),
+                                          );
+                                        }}
+                                      >
+                                        <Trash2Icon className="mr-2 size-4" />
+                                        {t("Usuń zacznaczone")}
+                                      </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                  </>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                    <ColumnView table={table} entityName={entityName} />
-                    {Search}
-                    <FiltersDialog {...filterProperties} />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-2">
-                      {route && !noCreateButton && isPermittedToCreate && (
-                        <Button
-                          className="flex items-center gap-2"
-                          onClick={() => {
-                            if ("create" in route) route.create(refetch);
-                            else
-                              navigate((route as RouteBase).new, {
-                                viewTransition: true,
-                              });
-                          }}
-                        >
-                          <PlusCircleIcon size={16} />
-                          {"createTranslation" in route
-                            ? route.createTranslation
-                            : t("create")}
-                        </Button>
-                      )}
-                      {additionalButtons}
+                        <div className="flex items-center gap-1 border border-border/60 bg-muted/30 p-1">
+                          <ColumnView table={table} entityName={entityName} />
+                          <FiltersDialog {...filterProperties} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex w-full shrink-0 items-center justify-end gap-2 xl:w-auto xl:pl-2">
+                      <div className="flex flex-wrap justify-end gap-2">
+                        {route && !noCreateButton && isPermittedToCreate && (
+                          <Button
+                            className="flex items-center gap-2"
+                            onClick={() => {
+                              if ("create" in route) route.create(refetch);
+                              else
+                                navigate((route as RouteBase).new, {
+                                  viewTransition: true,
+                                });
+                            }}
+                          >
+                            <PlusCircleIcon size={16} />
+                            {"createTranslation" in route
+                              ? route.createTranslation
+                              : t("create")}
+                          </Button>
+                        )}
+                        {additionalButtons}
+                      </div>
                     </div>
                   </div>
                 </div>

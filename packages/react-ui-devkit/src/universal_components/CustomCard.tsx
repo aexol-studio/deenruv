@@ -43,6 +43,31 @@ export type TailwindColor =
 
 export type CardVariant = "group";
 
+const borderColorClassName: Record<TailwindColor, string> = {
+  slate: "border-l-slate-500 dark:border-l-slate-300",
+  gray: "border-l-gray-500 dark:border-l-gray-300",
+  zinc: "border-l-zinc-500 dark:border-l-zinc-300",
+  neutral: "border-l-neutral-500 dark:border-l-neutral-300",
+  stone: "border-l-stone-500 dark:border-l-stone-300",
+  red: "border-l-red-500 dark:border-l-red-300",
+  orange: "border-l-orange-500 dark:border-l-orange-300",
+  amber: "border-l-amber-500 dark:border-l-amber-300",
+  yellow: "border-l-yellow-500 dark:border-l-yellow-300",
+  lime: "border-l-lime-500 dark:border-l-lime-300",
+  green: "border-l-green-500 dark:border-l-green-300",
+  emerald: "border-l-emerald-500 dark:border-l-emerald-300",
+  teal: "border-l-teal-500 dark:border-l-teal-300",
+  cyan: "border-l-cyan-500 dark:border-l-cyan-300",
+  sky: "border-l-sky-500 dark:border-l-sky-300",
+  blue: "border-l-blue-500 dark:border-l-blue-300",
+  indigo: "border-l-indigo-500 dark:border-l-indigo-300",
+  violet: "border-l-violet-500 dark:border-l-violet-300",
+  purple: "border-l-purple-500 dark:border-l-purple-300",
+  fuchsia: "border-l-fuchsia-500 dark:border-l-fuchsia-300",
+  pink: "border-l-pink-500 dark:border-l-pink-300",
+  rose: "border-l-rose-500 dark:border-l-rose-300",
+};
+
 interface OrderCardTitleProps {
   icon?: ReactNode;
   title: string;
@@ -70,9 +95,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
   variant,
 }) => {
   const textColor = "";
-  const borderColor = color
-    ? `border-l-4 border-l-${color}-500 dark:border-l-${color}-300`
-    : "";
+  const borderColor = color ? `border-l-4 ${borderColorClassName[color]}` : "";
   const baseClasses = "h-5 w-5";
   const defaultOpen = collapsed ? undefined : title;
 
@@ -87,7 +110,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
   const [pendingValue, setPendingValue] = useState(defaultOpen);
   const [collapsing, setCollapsing] = useState(false);
   const [expanding, setExpanding] = useState(false);
-  const collapseTimeout = useRef<NodeJS.Timeout | null>(null);
+  const collapseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleValueChange = (value: string | undefined) => {
     if (collapseTimeout.current) clearTimeout(collapseTimeout.current);
@@ -140,9 +163,9 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
       <AccordionItem value={title} className="h-full border-none">
         <Card
           className={cn(
-            "shadow-sm transition-colors duration-200 hover:shadow h-full",
+            "h-full transition-colors duration-200 hover:border-primary/20",
             variant === "group" &&
-              "bg-transparent border-dashed border-[2px] shadow-none",
+              "border-[1.5px] border-dashed bg-transparent shadow-none",
             borderColor,
             collapsing || expanding ? "overflow-hidden" : "overflow-visible",
           )}
@@ -151,7 +174,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
             HeaderJSX
           ) : (
             <AccordionTrigger
-              className={cn("p-0 pr-6 w-full hover:no-underline")}
+              className={cn("w-full p-0 pr-5 hover:no-underline")}
             >
               {HeaderJSX}
             </AccordionTrigger>

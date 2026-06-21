@@ -336,20 +336,17 @@ export function Navigation({ isCollapsed }: NavProps) {
   if (!loaded) {
     return (
       <div className="relative overflow-y-auto">
-        <div className="flex h-[calc(100%-70px)] flex-col gap-4 pb-2 lg:h-[calc(100%-80px)]">
+        <div className="flex h-[calc(100%-64px)] flex-col gap-3 pb-2 lg:h-[calc(100%-72px)]">
           {/* Skeleton nav groups */}
           {Array.from({ length: 3 }).map((_, groupIdx) => (
-            <div key={groupIdx} className="flex flex-col gap-1 px-2">
+            <div key={groupIdx} className="flex flex-col gap-1 px-2.5">
               {!isCollapsed && (
-                <div className="px-4 py-2">
+                <div className="px-3 py-2">
                   <Skeleton className="h-3 w-20" />
                 </div>
               )}
               {Array.from({ length: groupIdx === 0 ? 4 : groupIdx === 1 ? 5 : 3 }).map((_, linkIdx) => (
-                <div
-                  key={linkIdx}
-                  className={cn('flex items-center rounded-md px-4 py-2', isCollapsed && 'justify-center px-0')}
-                >
+                <div key={linkIdx} className={cn('flex items-center px-3 py-2', isCollapsed && 'justify-center px-0')}>
                   <Skeleton className={cn('size-4 shrink-0', isCollapsed && 'size-6')} />
                   {!isCollapsed && <Skeleton className="ml-2 h-4 w-24" />}
                 </div>
@@ -364,7 +361,7 @@ export function Navigation({ isCollapsed }: NavProps) {
     <div className="relative overflow-y-auto">
       <div
         data-collapsed={isCollapsed}
-        className="group flex h-[calc(100%-70px)] flex-col gap-4 pb-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"
+        className="group flex h-[calc(100%-64px)] flex-col gap-2 py-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-72px)]"
       >
         <Accordion
           type="multiple"
@@ -373,11 +370,13 @@ export function Navigation({ isCollapsed }: NavProps) {
           value={isCollapsed ? permittedNavigationGroups.map((g) => g.id) : undefined}
         >
           {permittedNavigationGroups.map((group) => (
-            <AccordionItem key={group.id} value={group.id}>
+            <AccordionItem key={group.id} value={group.id} className="border-none">
               {!isCollapsed && (
-                <AccordionTrigger className={cn('flex items-center justify-between pr-3 hover:no-underline')}>
-                  <div className="flex items-center gap-2 px-6">
-                    <h4 className="text-xs font-bold uppercase hover:underline">{group.label}</h4>
+                <AccordionTrigger className={cn('flex items-center justify-between px-3 py-2 hover:no-underline')}>
+                  <div className="flex items-center gap-2 px-1">
+                    <h4 className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+                      {group.label}
+                    </h4>
                     {getNavigationNotification(group.id)}
                     {viewMarkers ? (
                       <p className="text-xs font-semibold text-muted-foreground lowercase dark:text-muted-foreground">
@@ -387,10 +386,10 @@ export function Navigation({ isCollapsed }: NavProps) {
                   </div>
                 </AccordionTrigger>
               )}
-              <AccordionContent className={cn(isCollapsed ? 'py-2' : 'pb-4')}>
+              <AccordionContent className={cn(isCollapsed ? 'py-1' : 'pb-2')}>
                 <nav
                   id={group.id}
-                  className="grid gap-1 px-2 text-muted-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+                  className="grid gap-1 px-2.5 text-muted-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
                 >
                   {group.links.map((link, index) => {
                     const notifications = getNavigationNotification(link.id);
@@ -406,10 +405,10 @@ export function Navigation({ isCollapsed }: NavProps) {
                                       buttonVariants({ variant: 'navigation-link', size: 'icon' }),
                                       'h-9 w-9',
                                       location.pathname === link.href &&
-                                        'bg-muted opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
+                                        'bg-primary/10 text-primary opacity-100 hover:bg-primary/10 hover:text-primary',
                                     )}
                                   >
-                                    <link.icon className="size-6" />
+                                    <link.icon className="size-5" />
                                     <span className="sr-only">{link.title}</span>
                                   </div>
                                 </NavLink>
@@ -430,9 +429,9 @@ export function Navigation({ isCollapsed }: NavProps) {
                             <div
                               id={link.id}
                               className={cn(
-                                'relative flex items-center justify-start rounded-md px-4 py-2 capitalize',
+                                'relative flex h-9 items-center justify-start px-3 text-sm font-medium capitalize transition-colors hover:bg-muted/70 hover:text-foreground',
                                 location.pathname === link.href &&
-                                  'bg-muted font-semibold opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
+                                  'bg-primary/10 text-primary opacity-100 hover:bg-primary/10 hover:text-primary',
                               )}
                             >
                               {viewMarkers ? (
@@ -440,7 +439,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                   {link.id}
                                 </div>
                               ) : null}
-                              <link.icon className="mr-2 size-4" />
+                              <link.icon className="mr-2 size-4 shrink-0" />
                               {capitalizeFirstLetter(link.title)}
                               {notifications}
                             </div>

@@ -17,7 +17,6 @@ import {
   Input,
   PageBlock,
   Separator,
-  Switch,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -82,7 +81,7 @@ const getStatusBadge = (status: string) => {
   }
 };
 export const Extensions = () => {
-  const { allPlugins: _plugins, changePluginStatus } = usePluginStore();
+  const { allPlugins: _plugins } = usePluginStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -377,15 +376,6 @@ export const Extensions = () => {
                       <TooltipContent>View details</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-
-                  <div className="flex gap-2">
-                    <Switch
-                      checked={plugin.status === 'active'}
-                      onCheckedChange={(checked) => {
-                        changePluginStatus(plugin.name, checked ? 'active' : 'inactive');
-                      }}
-                    />
-                  </div>
                 </CardFooter>
               </Card>
             ))}
@@ -420,12 +410,6 @@ export const Extensions = () => {
                       <Settings className="mr-2 size-3" />
                       Configure
                     </Button>
-                    <Switch
-                      checked={plugin.status === 'active'}
-                      onCheckedChange={(checked) => {
-                        changePluginStatus(plugin.name, checked ? 'active' : 'inactive');
-                      }}
-                    />
                   </div>
                 </div>
                 {index < filteredPlugins.length - 1 && <Separator />}

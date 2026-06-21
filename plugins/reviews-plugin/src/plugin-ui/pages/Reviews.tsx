@@ -6,14 +6,14 @@ import {
   formatDate,
   useLazyQuery,
   useMutation,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React from "react";
 import { ListReviewQuery } from "../graphql/queries.js";
 import { ReviewState, SortOrder } from "../zeus/index.js";
 import { REVIEWS_ROUTES } from "../index.js";
 import { TRANSLATION_NAMESPACE } from "../constants.js";
-import { useTranslation } from "react-i18next";
-import { ReplaceIcon, ReplaceAllIcon } from "lucide-react";
+import { Check, ReplaceIcon, ReplaceAllIcon } from "lucide-react";
 import { UniversalSelectDialog } from "../components/UniversalSelectDialog.js";
 import {
   ChangeReviewsStateMutation,
@@ -21,9 +21,7 @@ import {
 } from "../graphql/mutations.js";
 
 export const Reviews = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   const [fetch] = useLazyQuery(ListReviewQuery);
   const [changeReviewState] = useMutation(ChangeReviewStateMutation);
   const [changeReviewsState] = useMutation(ChangeReviewsStateMutation);
@@ -106,6 +104,24 @@ export const Reviews = () => {
         },
       ]}
       additionalRowActions={[
+        {
+          label: t("list.acceptReview"),
+          icon: <Check className="w-4 h-4" />,
+          canShow: ({ row }) => row.original.state === ReviewState.PENDING,
+          onClick: async ({ row }) => {
+            try {
+              if (!row.original.id) {
+                throw new Error(t("dialog.singleStateChangeNoSelection"));
+              }
+              await changeReviewState({
+                input: { id: row.original.id, state: ReviewState.ACCEPTED },
+              });
+              return { success: t("dialog.singleAcceptSuccess") };
+            } catch {
+              return { error: t("dialog.singleAcceptError") };
+            }
+          },
+        },
         {
           label: t("list.stateChange"),
           icon: <ReplaceIcon className="w-4 h-4" />,

@@ -10,9 +10,9 @@ import {
   DialogTrigger,
   DropdownMenuItem,
   useOrder,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Undo2 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { ProductsTable } from '@/pages/orders/_components';
 import { RefundPaymentCard } from '@/pages/orders/_components/RefundPaymentCard.js';
 

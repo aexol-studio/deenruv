@@ -5,6 +5,12 @@ import {
   GraphQLTypes,
   ValueTypes,
 } from "@deenruv/admin-types";
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
+
+type MutationDocument = TypedDocumentNode<
+  Record<string, { id: string; message?: string } & Record<string, unknown>>,
+  Record<string, unknown>
+>;
 
 const genericResponseObj = { id: true };
 const genericDeleteObj = { message: true };
@@ -12,7 +18,7 @@ const genericDeleteObj = { message: true };
 export const getMutation = (
   mutationName: keyof GraphQLTypes["Mutation"],
   customResponseObj?: Record<string, Record<string, boolean>>,
-) => {
+): MutationDocument => {
   const isDeleteMutation = mutationName.startsWith("delete");
   const responseObj = customResponseObj
     ? customResponseObj
@@ -35,5 +41,5 @@ export const getMutation = (
   } as ValueTypes["Mutation"];
 
   // @ts-expect-error - Dynamic mutation object causes deep type instantiation with Zeus
-  return typedGql("mutation", { scalars })(mutationObj);
+  return typedGql("mutation", { scalars })(mutationObj) as MutationDocument;
 };

@@ -13,10 +13,10 @@ import {
   TableHeader,
   TableRow,
   useOrder,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Tag } from 'lucide-react';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface ProductsTableProps {
   refundLines: ModelTypes['OrderLineInput'][];

@@ -107,15 +107,15 @@ export const FiltersDialog = <T extends keyof ListType>({
         <Button
           variant="outline"
           size="sm"
-          className="h-8 gap-2 py-0"
-          aria-label="Open filters"
+          className="h-8 gap-2 border-transparent bg-transparent px-3 py-0 text-muted-foreground hover:border-border hover:bg-card hover:text-foreground"
+          aria-label={t("filterDialog.title")}
         >
           <ListFilter className="size-4" aria-hidden="true" />
           {t("filterDialog.title")}
           {Object.keys(filter || {}).length > 0 && (
             <Badge
               variant="secondary"
-              className="h-[1.14rem] rounded-[0.2rem] px-[0.32rem] font-mono text-[0.65rem] font-normal"
+              className="h-[1.14rem] px-[0.32rem] font-mono text-[0.65rem] font-normal"
             >
               {Object.keys(filter || {}).length}
             </Badge>
@@ -123,11 +123,10 @@ export const FiltersDialog = <T extends keyof ListType>({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        id={`-filter-dialog`}
         align="center"
         collisionPadding={16}
         className={cn(
-          "flex w-[calc(100vw-theme(spacing.12))] min-w-60vw origin-[var(--radix-popover-content-transform-origin)] flex-col p-4 sm:w-[38rem]",
+          "flex w-[calc(100vw-3rem)] min-w-[60vw] origin-[var(--radix-popover-content-transform-origin)] flex-col border-border/80 bg-card p-4 sm:w-[38rem]",
           filtersArray.length > 0 ? "gap-3.5" : "gap-2",
         )}
       >
@@ -145,13 +144,16 @@ export const FiltersDialog = <T extends keyof ListType>({
             </p>
           </div>
         )}
-        <div className="max-h-50 min-w-50vw flex flex-col gap-2  py-1 pr-1">
+        <div className="flex max-h-[12.5rem] min-w-[50vw] flex-col gap-2 py-1 pr-1">
           {filtersArray.map(([filterKey], index) => {
             const filter = filterLabels.find(
               (field) => field.name === filterKey,
             );
             return (
-              <div className="flex gap-2 items-start">
+              <div
+                key={`${filterKey}-${index}`}
+                className="flex min-w-0 items-start gap-2 border border-border/60 bg-muted/20 p-2"
+              >
                 <div className="flex items-center gap-2">
                   <div className="min-w-[4.5rem] text-center">
                     {index === 0 ? (
@@ -164,7 +166,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                         value={joinOperator}
                         onValueChange={setJoinOperator}
                         options={joinOperatorOptions}
-                        className="h-8 rounded lowercase"
+                        className="h-8 lowercase"
                       />
                     ) : (
                       <span className="text-muted-foreground text-sm">
@@ -176,11 +178,10 @@ export const FiltersDialog = <T extends keyof ListType>({
                 <Popover modal>
                   <PopoverTrigger asChild>
                     <Button
-                      id={filterKey + "trigger"}
                       variant="outline"
                       size="sm"
                       role="combobox"
-                      className="focus:ring-ring h-8 w-32 max-w-[109px] justify-between gap-2 rounded focus:outline-none focus:ring-1 focus-visible:ring-0"
+                      className="focus:ring-ring h-8 w-32 max-w-[109px] justify-between gap-2 bg-card focus:outline-none focus:ring-1 focus-visible:ring-0"
                     >
                       <span className="overflow-hidden truncate">
                         {filter?.translation
@@ -193,9 +194,8 @@ export const FiltersDialog = <T extends keyof ListType>({
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
-                    id={filterKey + "box"}
                     align="start"
-                    className="w-64 p-0"
+                    className="w-64 border-border/80 p-0"
                   >
                     <Command>
                       <CommandInput
@@ -273,7 +273,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                   variant="outline"
                   size="icon"
                   aria-label={`Remove filter ${index + 1}`}
-                  className="size-8 shrink-0 rounded"
+                  className="size-8 shrink-0 bg-card text-muted-foreground hover:text-destructive"
                   onClick={() => {
                     setFiltersArray((prev) =>
                       prev.filter(([key]) => key !== filterKey),
@@ -289,7 +289,7 @@ export const FiltersDialog = <T extends keyof ListType>({
             );
           })}
         </div>
-        <div className="flex w-full items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2">
           <SimpleTooltip
             content={
               allFiltersApplied
@@ -299,7 +299,7 @@ export const FiltersDialog = <T extends keyof ListType>({
           >
             <Button
               size="sm"
-              className="h-[1.85rem] rounded"
+              className="h-[1.85rem]"
               onClick={addFilter}
               disabled={allFiltersApplied}
             >
@@ -310,7 +310,6 @@ export const FiltersDialog = <T extends keyof ListType>({
             <Button
               size="sm"
               variant="outline"
-              className="rounded"
               onClick={() => {
                 setFiltersArray([]);
                 resetFilterFields();
@@ -321,7 +320,7 @@ export const FiltersDialog = <T extends keyof ListType>({
           ) : null}
           <Button
             size="sm"
-            className="ml-auto h-[1.85rem] rounded"
+            className="ml-auto h-[1.85rem]"
             onClick={applyFilters}
             disabled={filtersArray.length === 0}
           >

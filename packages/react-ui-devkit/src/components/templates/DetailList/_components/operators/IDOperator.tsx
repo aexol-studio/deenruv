@@ -43,7 +43,7 @@ export const IDOperator: React.FC<Props<IDOperator>> = ({
         {!ARRAY_TYPES.includes(type) ? (
           <Input
             id="string-input"
-            className="h-8 w-full rounded"
+            className="h-8 w-full"
             disabled={!type}
             value={value}
             onChange={(e) => {
@@ -55,7 +55,7 @@ export const IDOperator: React.FC<Props<IDOperator>> = ({
           <ArrayInput
             type="number"
             value={Array.isArray(value) && value.length ? value : []}
-            className="h-8 w-full rounded"
+            className="h-8 w-full"
             disabled={!type}
             onChange={(e) => {
               if (Array.isArray(e)) {

@@ -54,9 +54,9 @@ import { LanguagesDropdown } from './LanguagesDropdown.js';
 import { Notifications } from './Notifications.js';
 import { NavigationFooter } from '@/components/Menu/NavigationFooter.js';
 
-const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
-  <ResizablePrimitive.PanelGroup
-    className={cn('flex h-full w-full data-[panel-group-direction=vertical]:flex-col', className)}
+const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.Group>) => (
+  <ResizablePrimitive.Group
+    className={cn('flex h-full w-full data-[orientation=vertical]:flex-col', className)}
     {...props}
   />
 );
@@ -67,22 +67,22 @@ const ResizableHandle = ({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
+}: React.ComponentProps<typeof ResizablePrimitive.Separator> & {
   withHandle?: boolean;
 }) => (
-  <ResizablePrimitive.PanelResizeHandle
+  <ResizablePrimitive.Separator
     className={cn(
-      'relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-none data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-1 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:translate-x-0 data-[panel-group-direction=vertical]:after:-translate-y-1/2 [&[data-panel-group-direction=vertical]>div]:rotate-90',
+      'relative flex w-px items-center justify-center bg-border/70 after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-none data-[orientation=vertical]:h-px data-[orientation=vertical]:w-full data-[orientation=vertical]:after:left-0 data-[orientation=vertical]:after:h-1 data-[orientation=vertical]:after:w-full data-[orientation=vertical]:after:translate-x-0 data-[orientation=vertical]:after:-translate-y-1/2 [&[data-orientation=vertical]>div]:rotate-90',
       className,
     )}
     {...props}
   >
     {withHandle && (
-      <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border">
+      <div className="z-10 flex h-4 w-3 items-center justify-center border bg-background text-muted-foreground">
         <GripVertical className="size-2.5" />
       </div>
     )}
-  </ResizablePrimitive.PanelResizeHandle>
+  </ResizablePrimitive.Separator>
 );
 
 const removableCrumbs = ['draft', 'admin-ui'];
@@ -127,49 +127,47 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   );
 
   return (
-    <div className="w-full border-r bg-muted/40">
-      <div className="flex h-full max-h-screen flex-col gap-2">
+    <div className="w-full bg-background">
+      <div className="flex h-full max-h-screen flex-col">
         <div className="flex-1">
           <TooltipProvider delayDuration={100}>
             <ResizablePanelGroup
-              onLayout={(sizes: number[]) => {
-                document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
+              onLayoutChanged={(layout) => {
+                document.cookie = `react-resizable-panels:layout=${JSON.stringify(Object.values(layout))}`;
               }}
-              direction="horizontal"
+              orientation="horizontal"
               className="size-full"
             >
               <ResizablePanel
-                defaultSize={18}
-                collapsedSize={4}
+                id="navigation"
+                defaultSize="16%"
+                collapsedSize="4%"
                 collapsible
-                minSize={10}
-                maxSize={20}
-                onExpand={() => {
-                  setIsCollapsed(false);
-                  document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
-                }}
-                onCollapse={() => {
-                  setIsCollapsed(true);
-                  document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
+                minSize="11%"
+                maxSize="18%"
+                onResize={(size) => {
+                  const collapsed = size.asPercentage <= 4;
+                  setIsCollapsed(collapsed);
+                  document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(collapsed)}`;
                 }}
                 className={cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')}
               >
-                <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b')}>
+                <div className={cn('flex h-[72px] flex-col items-center justify-center gap-4 border-b bg-card/80')}>
                   <div
-                    className={`flex h-full items-center justify-center ${!isCollapsed && 'w-full'} cursor-pointer p-4`}
+                    className={`flex h-full items-center justify-center ${!isCollapsed && 'w-full'} cursor-pointer px-4 py-3`}
                     onClick={() => navigate(Routes.dashboard, { viewTransition: true })}
                   >
                     <BrandLogo isCollapsed={isCollapsed} />
                   </div>
                 </div>
-                <div className="flex h-[calc(100vh-80px)] flex-col justify-between">
+                <div className="flex h-[calc(100vh-72px)] flex-col justify-between bg-card/70">
                   <Navigation isCollapsed={isCollapsed} />
                   <NavigationFooter isCollapsed={isCollapsed} />
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel>
-                <div className="flex h-[70px] items-center border-b p-4 lg:h-[80px] lg:px-6">
+              <ResizablePanel id="content">
+                <div className="flex h-[64px] items-center border-b bg-background/95 px-3 backdrop-blur lg:h-[72px] lg:px-5">
                   <div className="flex flex-col items-start justify-center">
                     <Breadcrumb>
                       <BreadcrumbList>
@@ -180,7 +178,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
                                   <NavLink to={buildURL(linkPath)} viewTransition>
-                                    <p className={cn('text-md font-bold text-foreground capitalize')}>
+                                    <p
+                                      className={cn('text-sm font-semibold tracking-tight text-foreground capitalize')}
+                                    >
                                       {i === 0 ? t('menu.' + dashToCamelCase(c)) : c}
                                     </p>
                                   </NavLink>
@@ -196,7 +196,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         ) : (
                           <BreadcrumbItem>
                             <NavLink to={Routes.dashboard} viewTransition>
-                              <p className="text-2xl font-bold text-foreground">{t('dashboard')}</p>
+                              <p className="text-xl font-semibold tracking-tight text-foreground">{t('dashboard')}</p>
                             </NavLink>
                           </BreadcrumbItem>
                         )}
@@ -204,7 +204,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     </Breadcrumb>
                     <div className="flex items-center gap-2"></div>
                   </div>
-                  <div className="flex flex-1 items-center justify-end gap-2">
+                  <div className="flex flex-1 items-center justify-end gap-1.5">
                     {topNavigationComponents && topNavigationComponents.length > 0 ? (
                       <div className="flex items-center gap-2">
                         {topNavigationComponents.map(({ component: Component }, index) => (
@@ -214,13 +214,13 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     ) : null}
                     <LanguagesDropdown />
                     <ChannelSwitcher className="min-w-44" />
-                    <Button onClick={openGlobalSearch} variant="outline" size="icon" className="relative size-10">
+                    <Button onClick={openGlobalSearch} variant="outline" size="icon" className="relative size-9">
                       <SearchIcon className="size-4" />
                     </Button>
                     <Notifications />
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" className="size-9">
                           {theme === 'light' ? (
                             <Sun className="size-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                           ) : theme === 'dark' ? (
@@ -239,7 +239,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     </DropdownMenu>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" className="size-9">
                           <MenuIcon className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -247,7 +247,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         {activeAdministrator?.emailAddress && (
                           <>
                             <DropdownMenuLabel className="flex items-center gap-2 px-3 py-2 font-medium">
-                              <div className="flex size-5 items-center justify-center rounded-full bg-gray-100 text-xs text-gray-600">
+                              <div className="flex size-6 items-center justify-center bg-primary/10 text-xs font-semibold text-primary">
                                 {activeAdministrator.firstName.charAt(0).toUpperCase()}
                               </div>
                               <div className="truncate text-sm">
@@ -328,7 +328,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     </DropdownMenu>
                   </div>
                 </div>
-                <ScrollArea className="relative h-[calc(100vh-70px)] overflow-y-hidden lg:h-[calc(100vh-80px)]">
+                <ScrollArea className="relative h-[calc(100vh-64px)] overflow-y-hidden lg:h-[calc(100vh-72px)]">
                   {children}
                 </ScrollArea>
               </ResizablePanel>

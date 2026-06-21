@@ -1,6 +1,14 @@
-import { Checkbox, CustomCard, Input, Label, priceFormatter, Textarea, useOrder } from '@deenruv/react-ui-devkit';
+import {
+  Checkbox,
+  CustomCard,
+  Input,
+  Label,
+  priceFormatter,
+  Textarea,
+  useOrder,
+  useTranslation,
+} from '@deenruv/react-ui-devkit';
 import React, { Dispatch, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface RefundPaymentCardProps {
   refundReason: string;

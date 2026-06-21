@@ -23,6 +23,53 @@ import { FacetsSelector } from '@/pages/collections/_components/FacetsSelector';
 import { CombinationMode } from '@/pages/collections/_components/CombinationMode';
 import { VariantsSelector } from '@/pages/collections/_components/VariantsSelector';
 
+type CollectionFilterDefinition = PaymentMethodHandlerType;
+type CollectionFilterArgDefinition = CollectionFilterDefinition['args'][number];
+
+const getArgumentComponent = (argument: CollectionFilterArgDefinition | undefined) =>
+  (argument?.ui as { component?: string } | undefined)?.component;
+
+const getArgumentOptions = (argument: CollectionFilterArgDefinition | undefined) =>
+  (argument?.ui as { options?: { value: string }[] } | undefined)?.options ?? [];
+
+const stringifyDefaultValue = (value: unknown): string => {
+  if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
+    return JSON.stringify(value);
+  }
+  if (typeof value === 'boolean' || typeof value === 'number' || typeof value === 'string') {
+    return String(value);
+  }
+  return '';
+};
+
+const getDefaultArgumentValue = (argument: CollectionFilterArgDefinition): string => {
+  if (argument.defaultValue !== undefined && argument.defaultValue !== null) {
+    return stringifyDefaultValue(argument.defaultValue);
+  }
+
+  const component = getArgumentComponent(argument);
+  if (argument.list || component === 'facet-value-form-input' || component === 'product-multi-form-input') {
+    return '[]';
+  }
+  if (component === 'select-form-input') {
+    return getArgumentOptions(argument)[0]?.value ?? '';
+  }
+  if (argument.type === 'boolean') {
+    return 'false';
+  }
+  return '';
+};
+
+const parseStringArrayValue = (value: string | undefined): string[] => {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [];
+  } catch {
+    return [];
+  }
+};
+
 interface FiltersCardProps {
   inheritValue: boolean | undefined;
   onInheritChange: (checked: boolean) => void;
@@ -66,15 +113,15 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
     (index: number, code: string, args?: { name: string; value: string }[]) => {
       const correspondingFilter = filters.find((h) => h?.code === code);
 
-      if (correspondingFilter && currentFiltersValue) {
-        const newFiltersValue = [...currentFiltersValue];
+      if (correspondingFilter) {
+        const newFiltersValue = [...(currentFiltersValue || [])];
         newFiltersValue[index] = {
           code: correspondingFilter.code,
           arguments:
             args ||
             correspondingFilter.args.map((a) => ({
               name: a.name,
-              value: 'false',
+              value: getDefaultArgumentValue(a),
             })),
         };
 
@@ -97,18 +144,20 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
 
   const handleAddFilter = useCallback(() => {
     const defaultFilter = filters[0];
+    if (!defaultFilter) return;
+
     const newFiltersValue = [
       ...(currentFiltersValue || []),
       {
         code: defaultFilter.code,
         arguments: defaultFilter.args.map((a) => ({
           name: a.name,
-          value: 'false',
+          value: getDefaultArgumentValue(a),
         })),
       },
     ];
     onFiltersValueChange(newFiltersValue);
-  }, [onFiltersValueChange, currentFiltersValue]);
+  }, [filters, onFiltersValueChange, currentFiltersValue]);
 
   return (
     <CustomCard
@@ -124,7 +173,12 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
               <Switch checked={inheritValue} onCheckedChange={onInheritChange} />
               <Label>{t('details.filters.inherit')}</Label>
             </div>
-            <Button className="ml-auto" onClick={handleAddFilter}>
+            <Button
+              className="ml-auto"
+              onClick={handleAddFilter}
+              disabled={filters.length === 0}
+              title={filters.length === 0 ? t('details.filters.noAvailableConditions') : undefined}
+            >
               {t('details.filters.addCondition')}
             </Button>
           </div>
@@ -157,31 +211,31 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                     const _filter = filters?.find((f) => f.code === filter.code);
                     const argument = _filter?.args.find((a) => a.name === e.name);
 
-                    return argument?.ui?.component === 'facet-value-form-input' ? (
+                    return getArgumentComponent(argument) === 'facet-value-form-input' ? (
                       <FacetsSelector
-                        value={JSON.parse(filter?.arguments[i].value)}
+                        value={parseStringArrayValue(filter?.arguments[i].value)}
                         onChange={(e) => {
                           filter.arguments[i] = { name: argument?.name || '', value: JSON.stringify(e) };
                           handleFiltersValueChange(index, filter?.code, filter.arguments);
                         }}
                       />
-                    ) : argument?.ui?.component === 'select-form-input' ? (
+                    ) : getArgumentComponent(argument) === 'select-form-input' ? (
                       <SimpleSelect
                         key={i}
-                        label={argument?.label || argument.name}
+                        label={argument?.label || argument?.name || ''}
                         value={filter?.arguments[i].value}
                         onValueChange={(e) => {
                           filter.arguments[i] = { name: argument?.name || '', value: e };
                           handleFiltersValueChange(index, filter?.code, filter.arguments);
                         }}
                         options={
-                          ((argument?.ui?.options as { value: string }[]).map((o) => ({
+                          (getArgumentOptions(argument).map((o) => ({
                             label: o.value,
                             value: o.value,
                           })) as Option[]) || []
                         }
                       />
-                    ) : argument?.ui?.component === 'combination-mode-form-input' ? (
+                    ) : getArgumentComponent(argument) === 'combination-mode-form-input' ? (
                       <CombinationMode
                         label={t('details.filters.labels.arguments.combination-mode')}
                         value={filter?.arguments[i].value}
@@ -190,11 +244,11 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                           handleFiltersValueChange(index, filter?.code, filter.arguments);
                         }}
                       />
-                    ) : argument?.ui?.component === 'product-multi-form-input' ? (
+                    ) : getArgumentComponent(argument) === 'product-multi-form-input' ? (
                       <VariantsSelector
                         type={argument?.ui?.selectionMode as 'variant' | 'product'}
-                        label={argument?.label || argument.name}
-                        value={JSON.parse(filter?.arguments[i].value)}
+                        label={argument?.label || argument?.name || ''}
+                        value={parseStringArrayValue(filter?.arguments[i].value)}
                         onChange={(e) => {
                           filter.arguments[i] = { name: argument?.name || '', value: JSON.stringify(e) };
                           handleFiltersValueChange(index, filter?.code, filter.arguments);

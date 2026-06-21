@@ -80,7 +80,7 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
             <>
               <Input
                 disabled={!type}
-                className="h-8 w-full rounded"
+                className="h-8 w-full"
                 type="number"
                 placeholder={t("from")}
                 value={isNumberRange(value) ? value.start : 0}
@@ -99,7 +99,7 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
               />
               <Input
                 disabled={!type}
-                className="h-8 w-full rounded"
+                className="h-8 w-full"
                 placeholder={t("to")}
                 type="number"
                 value={isNumberRange(value) ? value.end : 0}
@@ -121,7 +121,7 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
             <Input
               disabled={!type}
               type="number"
-              className="h-8 w-full rounded"
+              className="h-8 w-full"
               value={typeof value === "number" ? value : undefined}
               onChange={(e) => {
                 setValue(parseFloat(e.currentTarget.value));

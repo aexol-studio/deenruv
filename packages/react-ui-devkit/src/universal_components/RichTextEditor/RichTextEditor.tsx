@@ -1,29 +1,12 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import Heading from "@tiptap/extension-heading";
 import { useEffect } from "react";
 import { EditorToolbar } from "./EditorToolbar.js";
 import { cn } from "@/lib/utils.js";
 import React from "react";
 import { ErrorMessage } from "@/components/molecules";
 
-// Configure StarterKit to disable built-in extensions we override explicitly,
-// avoiding tiptap "duplicate extension" warnings.
-const extensions = [
-  StarterKit.configure({
-    document: false,
-    paragraph: false,
-    text: false,
-    heading: false,
-  }),
-  Document,
-  Paragraph,
-  Text,
-  Heading,
-];
+const extensions = [StarterKit];
 
 interface RichTextEditorProps {
   content: string | undefined;
@@ -53,8 +36,8 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     editorProps: {
       attributes: {
         class: cn(
-          "min-h-32 max-h-64 overflow-auto focus-visible:outline-none",
-          "prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc",
+          "min-h-32 max-h-64 overflow-auto text-stone-950 focus-visible:outline-none dark:text-stone-50",
+          "prose prose-stone max-w-none dark:prose-invert [&_ol]:list-decimal [&_ul]:list-disc",
         ),
       },
     },
@@ -69,7 +52,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
   return (
     <>
-      <div className="flex w-full flex-col gap-3 rounded-md border border-stone-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-stone-800 dark:bg-stone-950 dark:placeholder:text-stone-400">
+      <div className="flex w-full flex-col gap-3 rounded-md border border-stone-200 bg-white px-3 py-2 text-sm text-stone-950 ring-offset-white focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-stone-800 dark:bg-stone-950 dark:text-stone-50 dark:placeholder:text-stone-400">
         <EditorToolbar editor={editor} />
         <EditorContent editor={editor} />
       </div>

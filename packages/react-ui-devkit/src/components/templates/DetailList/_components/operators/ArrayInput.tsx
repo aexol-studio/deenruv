@@ -44,14 +44,14 @@ export const ArrayInput = forwardRef<HTMLInputElement, ArrayInputProps>(
                 addPendingDataPoint();
               }
             }}
-            className={cn("rounded-r-none", props.className)}
+            className={cn(props.className)}
             {...props}
             ref={ref}
           />
           <Button
             type="button"
             variant="secondary"
-            className="h-8 rounded-l-none border border-l-0"
+            className="h-8 border border-l-0"
             onClick={addPendingDataPoint}
           >
             Add
@@ -64,7 +64,7 @@ export const ArrayInput = forwardRef<HTMLInputElement, ArrayInputProps>(
               size={"icon"}
               variant={"outline"}
               className={cn(
-                "text-left font-normal size-8 rounded shrink-0",
+                "text-left font-normal size-8 shrink-0",
                 !value && "text-muted-foreground",
               )}
             >
@@ -72,7 +72,7 @@ export const ArrayInput = forwardRef<HTMLInputElement, ArrayInputProps>(
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <div className="flex size-[180px] flex-wrap items-start gap-2 overflow-y-auto rounded-md border p-2">
+            <div className="flex size-[180px] flex-wrap items-start gap-2 overflow-y-auto border p-2">
               {value.map((item, idx) => (
                 <Badge key={idx} variant="secondary">
                   {item}

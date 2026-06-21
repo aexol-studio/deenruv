@@ -42,14 +42,16 @@ export const Search = ({
     str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
-    <div className="flex w-[38rem] items-center justify-center gap-3">
+    <div className="relative flex w-full min-w-0 max-w-[46rem] items-center">
+      <SearchIcon
+        className="pointer-events-none absolute left-3 top-1/2 z-10 size-4 -translate-y-1/2 text-muted-foreground"
+        aria-hidden="true"
+      />
       <Input
-        className="h-8 w-full pl-4"
+        className="h-9 w-full border-border/80 bg-background/80 pl-9 pr-4 text-sm shadow-none focus:border-primary/50 focus:ring-ring/20"
         placeholder={onlyFirstLetterCapitalized(placeholder)}
         value={searchQuery}
         onChange={(e) => setSearchQueryState(e.target.value)}
-        startAdornment={<SearchIcon size={20} />}
-        adornmentPlain
       />
     </div>
   );

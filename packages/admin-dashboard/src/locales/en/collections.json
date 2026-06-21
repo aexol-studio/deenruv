@@ -38,6 +38,7 @@
             "inherit": "Filter inheritance",
             "condition": "Condition",
             "addCondition": "Add condition",
+            "noAvailableConditions": "Filter conditions are still loading",
             "addFacets": "Adding aspect values",
             "labels": {
                 "codes": {
@@ -55,6 +56,12 @@
         },
         "contents": {
             "title": "Content"
+        },
+        "channels": {
+            "title": "Additional channels",
+            "description": "Select additional channels to assign after creating the collection. The current channel is assigned automatically.",
+            "currentChannel": "Current channel",
+            "noChannels": "No channels available"
         }
     },
     "visibility": {

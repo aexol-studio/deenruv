@@ -8,7 +8,6 @@ import {
   apiClient,
   CustomCard,
   CardIcons,
-  EntityCustomFields,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 
@@ -28,6 +27,7 @@ interface PriceCardProps {
   taxRateValue: string | undefined;
   onTaxRateChange: (e: string) => void;
   currencyCode: CurrencyCode;
+  showDefaultPriceWhenEmpty?: boolean;
 }
 
 export const PriceCard: React.FC<PriceCardProps> = ({
@@ -36,6 +36,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
   currencyCode,
   taxRateValue,
   onTaxRateChange,
+  showDefaultPriceWhenEmpty = false,
 }) => {
   const { t } = useTranslation('products');
   const [taxCategories, setTaxCategories] = useState<{ name: string; id: string; value: number | undefined }[]>([]);
@@ -45,9 +46,24 @@ export const PriceCard: React.FC<PriceCardProps> = ({
     value: number | undefined;
   }>();
 
+  const defaultPrice = useMemo<ProductVariantPrice>(
+    () => ({
+      currencyCode,
+      price: 0,
+    }),
+    [currencyCode],
+  );
+
+  const pricesToRender = useMemo(
+    () => (priceValue?.length ? priceValue : showDefaultPriceWhenEmpty ? [defaultPrice] : []),
+    [defaultPrice, priceValue, showDefaultPriceWhenEmpty],
+  );
+
   useEffect(() => {
-    fetchTaxRates();
-  }, []);
+    if (showDefaultPriceWhenEmpty && !priceValue?.length) {
+      onPriceChange([defaultPrice]);
+    }
+  }, [defaultPrice, onPriceChange, priceValue?.length, showDefaultPriceWhenEmpty]);
 
   const fetchTaxRates = useCallback(async () => {
     const response = await apiClient('query')({
@@ -63,18 +79,26 @@ export const PriceCard: React.FC<PriceCardProps> = ({
     setTaxCategories(categoriesWithRates);
   }, []);
 
+  useEffect(() => {
+    fetchTaxRates();
+  }, [fetchTaxRates]);
+
+  useEffect(() => {
+    setCurrentTaxCategory(taxCategories.find((category) => category.id === taxRateValue));
+  }, [taxCategories, taxRateValue]);
+
   const handlePriceChange = useCallback(
     (currencyCode: CurrencyCode, value: number) => {
-      const newPrices = priceValue?.map((p) => (p.currencyCode === currencyCode ? { ...p, price: value } : p));
-      onPriceChange(newPrices || []);
+      const newPrices = pricesToRender.map((p) => (p.currencyCode === currencyCode ? { ...p, price: value } : p));
+      onPriceChange(newPrices);
     },
-    [priceValue, onPriceChange],
+    [onPriceChange, pricesToRender],
   );
 
   return (
     <CustomCard title={t('details.price')} color="rose" icon={<CardIcons.calc />}>
       <div className="flex flex-col gap-y-4">
-        {priceValue?.map((price) => (
+        {pricesToRender.map((price) => (
           <div key={price.currencyCode} className="flex items-center gap-x-2">
             <Input
               type="currency"

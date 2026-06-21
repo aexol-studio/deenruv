@@ -33,7 +33,7 @@ export const ActiveAdmins = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="mr-4">
-        <div className="flex flex-col gap-4 rounded-md">
+        <div className="flex flex-col gap-4">
           <Label className="select-none">{t('awesomeMenu.activeAdministrators')}</Label>
           {activeClients.length ? (
             activeClients.map((client) => (

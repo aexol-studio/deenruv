@@ -16,6 +16,8 @@
         "singleStateChangeError": "An error occurred while changing the review state",
         "singleStateChangeCancelled": "Single change of review state has been cancelled",
         "singleStateChangeNoSelection": "No review selected for state change",
+        "singleAcceptSuccess": "Review has been accepted",
+        "singleAcceptError": "An error occurred while accepting the review",
         "cancel": "Cancel",
         "submit": "Submit",
         "selectError": "Please select a review state"
@@ -29,6 +31,7 @@
         "viewCustomer": "View customer",
         "id": "Review {{id}}",
         "changeState": "Change review state",
+        "acceptReview": "Accept review",
         "changeStateSuccess": "Review state has been changed",
         "changeStateError": "An error occurred while changing the review state",
         "cancel": "Cancel",
@@ -76,10 +79,13 @@
         "titleWithId": "Order review #{{orderId}}"
     },
     "productReviewSidebar": {
+        "title": "Product reviews",
         "averageRating": "Average rating",
         "noAverageRating": "No average rating",
         "totalReviews": "Total reviews",
         "noTotalReviews": "No total reviews",
+        "totalRatings": "Total ratings",
+        "noTotalRatings": "No ratings",
         "totalReviewsForProduct": "Total reviews for product",
         "noTotalReviewsForProduct": "No total reviews for product",
         "viewAllReviews": "See all reviews for this product"
@@ -90,6 +96,7 @@
     },
     "list": {
         "bulkStateChange": "Bulk change state",
+        "acceptReview": "Accept review",
         "stateChange": "Change state",
         "productId": "Product ID",
         "orderId": "Order ID",

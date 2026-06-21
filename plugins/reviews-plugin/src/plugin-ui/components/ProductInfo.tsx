@@ -5,15 +5,13 @@ import {
   CardContent,
   CardHeader,
   Routes,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { Link } from "react-router";
-import { useTranslation } from "react-i18next";
 import { TRANSLATION_NAMESPACE } from "../constants";
 
 export const ProductInfo = ({ review }: { review: ReviewDetail }) => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   if (!review.productVariant) return null;
   return (
     <Card className="w-full">

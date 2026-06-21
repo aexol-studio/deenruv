@@ -36,6 +36,12 @@ interface ListTableProps<TData, TValue> {
   Paginate: ReactNode;
 }
 
+const NARROW_COLUMN_IDS = ["select-id", "select", "actions"];
+const SELECTION_COLUMN_IDS = ["select-id", "select"];
+
+const isSelectionColumn = (columnId: string) =>
+  SELECTION_COLUMN_IDS.includes(columnId);
+
 const getCommonPinningStyles = <T,>(
   column: Column<T>,
   showPinned: boolean,
@@ -48,26 +54,26 @@ const getCommonPinningStyles = <T,>(
   const narrowColumnWidth = 35;
   const idColumnMaxWidth = 350;
   const idColumnWidth = 100;
-  const isNarrowColumn = ["select-id", "select", "actions"].includes(column.id);
+  const isNarrowColumn = NARROW_COLUMN_IDS.includes(column.id);
   const columnWidth = isNarrowColumn ? narrowColumnWidth : undefined;
 
   const styles = {
     left: isPinned === "left" ? `${column.getStart("left")}px` : "unset",
     right: isPinned === "right" ? `${column.getAfter("right")}px` : "unset",
     boxShadow: "unset",
-    opacity: isPinned ? 0.95 : 1,
+    opacity: 1,
     position: isPinned ? ("sticky" as const) : ("relative" as const),
     minWidth: columnWidth,
     maxWidth: column.id === "id" ? idColumnMaxWidth : columnWidth,
     width: column.id === "id" ? idColumnWidth : columnWidth,
-    zIndex: isPinned ? 1 : 0,
+    zIndex: isPinned ? 2 : 0,
   };
 
   if (showPinned) {
     styles.boxShadow = isLastLeftPinnedColumn
-      ? "-1px 0 1px -1px gray inset"
+      ? "-10px 0 14px -14px color-mix(in srgb, var(--foreground) 45%, transparent) inset"
       : isFirstRightPinnedColumn
-        ? "1px 0 1px -1px gray inset"
+        ? "10px 0 14px -14px color-mix(in srgb, var(--foreground) 45%, transparent) inset"
         : "unset";
   }
 
@@ -77,10 +83,12 @@ const getCommonPinningStyles = <T,>(
 const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
   const isPinned = column.getIsPinned();
   if (!isPinned) return "";
-  return cn("bg-background");
+  return cn(
+    "bg-card group-hover:bg-muted/40 group-data-[state=selected]:bg-primary/10",
+  );
 };
 
-const TABLE_HEADER_HEIGHT = 48;
+const TABLE_HEADER_HEIGHT = 40;
 const MINIMUM_ROW_HEIGHT = 30;
 const WIDTH_TRUNCATE_BREAKPOINT = 200;
 
@@ -142,14 +150,16 @@ export function ListTable<TData, TValue>({
 
   useEffect(() => {
     const PADDING_X_VALUE = 64;
-    const scrollArea = document.getElementById("scrollArea");
-    if (!scrollArea || !tableWrapperRef.current) return;
+    const tableWrapper = tableWrapperRef.current;
+    const scrollArea = tableWrapper?.closest(
+      "[data-deenruv-scroll-area-viewport]",
+    );
+    if (!scrollArea || !tableWrapper) return;
 
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       const width = entry.contentRect.width;
-      tableWrapperRef.current!.style.maxWidth =
-        width - PADDING_X_VALUE / 2 + "px";
+      tableWrapper.style.maxWidth = width - PADDING_X_VALUE / 2 + "px";
     });
 
     observer.observe(scrollArea);
@@ -163,18 +173,19 @@ export function ListTable<TData, TValue>({
     <>
       <div
         ref={tableWrapperRef}
-        className={`bg-background w-full h-full overflow-auto rounded-md border scroll-thin`}
+        className="h-full w-full overflow-auto border border-border/80 bg-card"
       >
         <Table
           className={cn("w-full")}
           {...(!table.getRowModel().rows?.length && {
-            containerClassName: "flex",
+            containerClassName: "flex min-h-[22rem]",
           })}
         >
-          <TableHeader className="bg-background sticky top-0 z-20">
+          <TableHeader className="sticky top-0 z-20 border-b border-border/80 bg-card/95 backdrop-blur">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow noHover key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  const isSelectionHeader = isSelectionColumn(header.column.id);
                   const component =
                     typeof header.column.columnDef.header === "string" ? (
                       <TableLabel>{header.column.columnDef.header}</TableLabel>
@@ -185,14 +196,20 @@ export function ListTable<TData, TValue>({
                     <TableHead
                       key={header.id}
                       className={cn(
-                        "relative",
+                        "relative border-b border-border/80 bg-card/95 last:pr-4",
+                        !isSelectionHeader && "first:pl-4",
                         getCommonClassNameStyles(header.column),
                       )}
                       style={{
                         ...getCommonPinningStyles(header.column, showPinned),
                       }}
                     >
-                      <div className="flex items-center justify-between gap-2">
+                      <div
+                        className={cn(
+                          "flex min-h-10 items-center gap-2",
+                          isSelectionHeader ? "justify-center" : "justify-between",
+                        )}
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(component, header.getContext())}
@@ -216,18 +233,23 @@ export function ListTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="group border-b border-border/50 transition-colors last:border-b-0 hover:bg-muted/40 data-[state=selected]:bg-primary/10"
                     ref={(el) => {
                       rowRefs.current[idx] = el;
                     }}
                   >
                     {row.getVisibleCells().map((cell) => {
                       const columnWidth = cell.column.getSize();
+                      const isSelectionCell = isSelectionColumn(cell.column.id);
 
                       return (
                         <TableCell
                           key={cell.id}
                           className={cn(
-                            "whitespace-nowrap",
+                            "whitespace-nowrap border-b border-border/50 last:pr-4",
+                            !isSelectionCell && "first:pl-4",
+                            idx === table.getRowModel().rows.length - 1 &&
+                              "border-b-0",
                             columnWidth > WIDTH_TRUNCATE_BREAKPOINT &&
                               "truncate",
                             getCommonClassNameStyles(cell.column),
@@ -261,14 +283,14 @@ export function ListTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-2">
-        <div className="text-muted-foreground flex-1 text-sm">
+      <div className="mt-2 flex flex-col gap-2 border border-border/70 bg-card/80 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="inline-flex h-7 w-fit items-center border border-border/70 bg-muted/30 px-3 text-xs font-medium text-muted-foreground">
           {t("selectedValue", {
             from: table.getFilteredSelectedRowModel().rows.length,
             to: table.getFilteredRowModel().rows.length,
           })}
         </div>
-        <div className="space-x-2">{Paginate}</div>
+        <div className="flex w-full justify-end sm:w-auto">{Paginate}</div>
       </div>
     </>
   );

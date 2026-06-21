@@ -32,7 +32,7 @@ import { useServer } from "@/state/server.js";
 import { useSettings } from "@/state/settings.js";
 import { useTranslation } from "@/hooks/useTranslation.js";
 
-const CUSTOM_FIELDS_PREFIX = "customFields_";
+const CUSTOM_FIELDS_PREFIX = "customFields.";
 
 export const ColumnView = <T extends { id: string }>({
   table,
@@ -44,6 +44,7 @@ export const ColumnView = <T extends { id: string }>({
   const { t } = useTranslation("table");
   const { language } = useSettings();
   const columnsTranslations = t("columns", { returnObjects: true });
+  const checkboxIdPrefix = React.useId();
   const hideColumns = table.options.meta?.hideColumns ?? [];
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(
@@ -100,8 +101,8 @@ export const ColumnView = <T extends { id: string }>({
           <Button
             variant="outline"
             size="sm"
-            className="h-8 gap-2 py-0"
-            aria-label="Open filters"
+            className="h-8 gap-2 border-transparent bg-transparent px-3 py-0 text-muted-foreground hover:border-border hover:bg-card hover:text-foreground"
+            aria-label={t("actionsMenu.view")}
           >
             <PanelsTopLeft className="size-4" aria-hidden="true" />
             {t("actionsMenu.view")}
@@ -109,9 +110,11 @@ export const ColumnView = <T extends { id: string }>({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"
-          className="max-h-[350px] space-y-2.5 overflow-y-auto p-2"
+          className="max-h-[22rem] w-72 space-y-2 overflow-y-auto border-border/80 p-2"
         >
-          <DropdownMenuLabel>{t("actionsMenu.label")}</DropdownMenuLabel>
+          <DropdownMenuLabel className="px-2 text-xs font-semibold uppercase tracking-[0.04em] text-muted-foreground">
+            {t("actionsMenu.label")}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DndContext
             sensors={sensors}
@@ -144,19 +147,20 @@ export const ColumnView = <T extends { id: string }>({
                   return order.indexOf(a.id) - order.indexOf(b.id);
                 })
                 .map((column) => {
+                  const checkboxId = `${checkboxIdPrefix}-checkbox-${column.id}`;
                   return (
                     <DraggableMenuItem key={column.id} id={column.id}>
-                      <div className="flex items-center gap-3 pr-4">
+                      <div className="flex min-w-0 flex-1 items-center gap-3 pr-2">
                         <Checkbox
-                          id={`checkbox-${column.id}`}
+                          id={checkboxId}
                           checked={column.getIsVisible()}
                           onCheckedChange={(value) =>
                             column.toggleVisibility(!!value)
                           }
                         />
                         <label
-                          htmlFor={`checkbox-${column.id}`}
-                          className="flex-1 cursor-pointer"
+                          htmlFor={checkboxId}
+                          className="flex-1 cursor-pointer truncate text-sm text-foreground"
                         >
                           {columnsTranslations[
                             column.id as keyof typeof columnsTranslations
@@ -200,12 +204,14 @@ const DraggableMenuItem: React.FC<DraggableMenuItemProps> = ({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className="flex items-center"
+      className="flex items-center px-1 py-0.5 hover:bg-muted/50"
     >
       <Button
-        variant="outline"
+        variant="ghost"
         {...listeners}
-        className="mr-2 h-auto cursor-move p-1"
+        aria-label="Drag to reorder column"
+        title="Drag to reorder column"
+        className="mr-2 size-7 cursor-move p-0 text-muted-foreground hover:text-foreground"
       >
         <Grip className="size-3.5" />
       </Button>

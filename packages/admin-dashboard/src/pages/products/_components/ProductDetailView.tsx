@@ -6,6 +6,10 @@ import {
   CF,
   EntityCustomFields,
   normalizeString,
+  CustomCard,
+  CardIcons,
+  Input,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
@@ -22,9 +26,10 @@ export const PRODUCT_FORM_KEYS = [
 ] as const;
 
 export const ProductDetailView = () => {
+  const { t } = useTranslation('products');
   const contentLng = useSettings((p) => p.translationsLanguage);
   const selectedChannel = useSettings((p) => p.selectedChannel);
-  const { entity, id, form, loading, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
+  const { entity, id, form, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
   const { base } = form;
 
   // --- Slug auto-generation ---
@@ -56,6 +61,7 @@ export const ProductDetailView = () => {
   }, [selectedChannel?.id, contentLng]);
 
   const translations = base.watch('translations') || [];
+  const initialVariantPrice = base.watch('initialVariantPrice') ?? 0;
   const currentTranslationValue = useMemo(() => {
     return translations.find((v: any) => v.languageCode === contentLng);
   }, [translations, contentLng]);
@@ -118,6 +124,40 @@ export const ProductDetailView = () => {
               : undefined
           }
         />
+        {!id && (
+          <CustomCard title={t('initialVariant.title')} icon={<CardIcons.tag />} color="rose">
+            <div className="flex flex-col gap-4 pt-4">
+              <p className="text-sm text-muted-foreground">{t('initialVariant.description')}</p>
+              <div className="grid gap-4 md:grid-cols-3">
+                <Input
+                  label={t('initialVariant.sku')}
+                  value={base.watch('initialVariantSku') ?? ''}
+                  onChange={(e) => base.setField('initialVariantSku', e.target.value)}
+                  errors={
+                    base.formState.errors?.initialVariantSku?.message
+                      ? [base.formState.errors.initialVariantSku.message as string]
+                      : undefined
+                  }
+                  required
+                />
+                <Input
+                  type="currency"
+                  label={t('initialVariant.price')}
+                  value={initialVariantPrice}
+                  onChange={(e) => base.setField('initialVariantPrice', +e.target.value)}
+                  startAdornment={selectedChannel?.currencyCode}
+                  step={0.01}
+                />
+                <Input
+                  label={t('initialVariant.name')}
+                  placeholder={t('initialVariant.namePlaceholder')}
+                  value={base.watch('initialVariantName') ?? ''}
+                  onChange={(e) => base.setField('initialVariantName', e.target.value)}
+                />
+              </div>
+            </div>
+          </CustomCard>
+        )}
         <DetailViewMarker position={'products-detail-view'} />
         <EntityCustomFields
           id={id}

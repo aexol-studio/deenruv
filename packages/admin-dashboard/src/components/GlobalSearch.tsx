@@ -145,9 +145,9 @@ export const GlobalSearch = () => {
     <CommandDialog open={isOpen} onOpenChange={toggle} modal>
       <CommandInput
         placeholder={t('globalSearch.placeholder')}
-        className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+        className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
       />
-      <CommandList className="max-h-[300px] overflow-y-auto py-2">
+      <CommandList className="max-h-[320px] overflow-y-auto py-2">
         <CommandEmpty className="py-6 text-center text-sm">{t('globalSearch.emptyState')}</CommandEmpty>
 
         {groupedRoutes.core.length > 0 && (
@@ -161,7 +161,7 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
+                className="group flex cursor-pointer items-center px-3 py-2.5 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
@@ -185,7 +185,7 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
+                className="group flex cursor-pointer items-center px-3 py-2.5 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
@@ -209,7 +209,7 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
+                className="group flex cursor-pointer items-center px-3 py-2.5 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
@@ -233,7 +233,7 @@ export const GlobalSearch = () => {
                   }
                   close();
                 }}
-                className="group flex cursor-pointer items-center rounded-md px-2 py-2 transition-colors hover:bg-accent"
+                className="group flex cursor-pointer items-center px-3 py-2.5 transition-colors hover:bg-accent"
               >
                 {getRouteIcon(route.type)}
                 <div className="flex flex-col">
@@ -247,21 +247,21 @@ export const GlobalSearch = () => {
         )}
       </CommandList>
 
-      <div className="border-t bg-muted/50 p-2">
+      <div className="border-t bg-card p-2">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex gap-2">
             <div className="flex items-center gap-1">
-              <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">↑</kbd>
-              <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">↓</kbd>
+              <kbd className="border bg-muted px-1.5 py-0.5 text-[10px]">↑</kbd>
+              <kbd className="border bg-muted px-1.5 py-0.5 text-[10px]">↓</kbd>
               <span>{t('globalSearch.navigate')}</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">Enter</kbd>
+              <kbd className="border bg-muted px-1.5 py-0.5 text-[10px]">Enter</kbd>
               <span>{t('globalSearch.select')}</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px]">Esc</kbd>
+            <kbd className="border bg-muted px-1.5 py-0.5 text-[10px]">Esc</kbd>
             <span>{t('globalSearch.close')}</span>
           </div>
         </div>

@@ -143,7 +143,7 @@ export const Notifications = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="icon" className="relative size-10">
+        <Button variant="outline" size="icon" className="relative size-9">
           <Bell className="size-4" />
           {hasUnread && (
             <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red-500">
@@ -153,12 +153,12 @@ export const Notifications = () => {
           <span className="sr-only">{t('notificationsBox.toggleNotifications')}</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="z-[2138] w-md p-0" align="end">
+      <PopoverContent className="z-[2138] w-[min(28rem,calc(100vw-2rem))] p-0" align="end">
         <Tabs defaultValue="ALL" className="w-full">
           <Card className="w-full border-0 shadow-none">
             <CardHeader
               className={cn(
-                'flex w-full flex-col items-start justify-start gap-2 bg-muted/30 p-0',
+                'flex w-full flex-col items-start justify-start gap-2 bg-card p-0',
                 components.length === 0 && 'pb-3',
               )}
             >
@@ -178,16 +178,12 @@ export const Notifications = () => {
               </div>
 
               {components.length !== 0 && (
-                <TabsList className="m-0 w-full rounded-none">
-                  <TabsTrigger value="ALL" className="w-full rounded-none text-left">
+                <TabsList className="m-0 w-full bg-muted/50">
+                  <TabsTrigger value="ALL" className="w-full text-left">
                     {t('notificationsBox.all')}
                   </TabsTrigger>
                   {cyclingNotifications.map((notification) => (
-                    <TabsTrigger
-                      key={notification.id}
-                      value={notification.id}
-                      className="w-full rounded-none text-left"
-                    >
+                    <TabsTrigger key={notification.id} value={notification.id} className="w-full text-left">
                       {notification.id}
                     </TabsTrigger>
                   ))}
@@ -201,7 +197,7 @@ export const Notifications = () => {
                     {notifications.map((notification) => (
                       <div
                         key={notification.id}
-                        className={`flex items-start gap-3 p-4 transition-colors ${notification.read ? 'bg-background' : 'bg-muted/20'}`}
+                        className={`flex items-start gap-3 p-4 transition-colors ${notification.read ? 'bg-card' : 'bg-accent/40'}`}
                       >
                         <div className="mt-0.5">{notification.icon}</div>
                         <div className="flex-1 space-y-1">
@@ -217,7 +213,7 @@ export const Notifications = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center px-4 py-8 text-center">
-                    <div className="mb-3 rounded-full bg-muted p-3">
+                    <div className="mb-3 bg-muted p-3">
                       <Bell className="size-6 text-muted-foreground" />
                     </div>
                     <h3 className="text-sm font-medium">{t('notificationsBox.emptyStateMessage')}</h3>

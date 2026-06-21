@@ -38,6 +38,7 @@
             "inherit": "Dziedziczenie filtrów",
             "condition": "Warunek",
             "addCondition": "Dodaj warunek",
+            "noAvailableConditions": "Warunki filtrów nadal się ładują",
             "addFacets": "Dodawanie wartości aspektów",
             "labels": {
                 "codes": {
@@ -55,6 +56,12 @@
         },
         "contents": {
             "title": "Zawartość"
+        },
+        "channels": {
+            "title": "Dodatkowe kanały",
+            "description": "Wybierz dodatkowe kanały, które mają zostać przypisane po utworzeniu kolekcji. Bieżący kanał zostanie przypisany automatycznie.",
+            "currentChannel": "Bieżący kanał",
+            "noChannels": "Brak dostępnych kanałów"
         }
     },
     "visibility": {

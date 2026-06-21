@@ -42,13 +42,17 @@ export const ActionsDropdown = <T extends { id: string }>(
         <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="size-8 p-0">
+              <Button
+                variant="ghost"
+                className="size-7 border border-transparent p-0 text-muted-foreground hover:border-border hover:bg-card hover:text-foreground data-[state=open]:border-primary/30 data-[state=open]:bg-primary/10 data-[state=open]:text-primary"
+              >
                 <span className="sr-only">{t("actionsMenu.open")}</span>
                 <MoreHorizontal className="size-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem
+                className="cursor-pointer gap-2 text-sm"
                 onClick={() => navigator.clipboard.writeText(row.original.id)}
               >
                 <div className="flex items-center gap-2">
@@ -58,6 +62,7 @@ export const ActionsDropdown = <T extends { id: string }>(
               </DropdownMenuItem>
               {route ? (
                 <DropdownMenuItem
+                  className="cursor-pointer gap-2 text-sm"
                   onClick={() => {
                     if ("edit" in route) {
                       route.edit(row.original.id, row, refetch);
@@ -106,7 +111,7 @@ export const ActionsDropdown = <T extends { id: string }>(
                     return canShow ? (
                       <DropdownMenuItem
                         key={action.label}
-                        className="flex items-center gap-2"
+                        className="flex cursor-pointer items-center gap-2 text-sm"
                         onClick={onClick}
                       >
                         {action.icon}
@@ -119,7 +124,10 @@ export const ActionsDropdown = <T extends { id: string }>(
               {onRemove && isPermittedToDelete && (
                 <>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => onRemove([row.original])}>
+                  <DropdownMenuItem
+                    className="cursor-pointer gap-2 text-sm"
+                    onClick={() => onRemove([row.original])}
+                  >
                     <div className="text-destructive flex items-center gap-2">
                       <Trash size={14} />
                       {t("actionsMenu.delete")}

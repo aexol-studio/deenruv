@@ -66,7 +66,7 @@ export const StringOperator: React.FC<Props<StringOperator>> = ({
         ) : ARRAY_TYPES.includes(type) ? (
           <ArrayInput
             type="string"
-            className="h-8 w-full rounded"
+            className="h-8 w-full"
             value={Array.isArray(value) && value.length ? value : []}
             onChange={(e) => {
               if (Array.isArray(e)) {
@@ -81,7 +81,7 @@ export const StringOperator: React.FC<Props<StringOperator>> = ({
         ) : (
           <Input
             id="string-input"
-            className="h-8 w-full rounded"
+            className="h-8 w-full"
             disabled={!type}
             value={value as string}
             onChange={(e) => {

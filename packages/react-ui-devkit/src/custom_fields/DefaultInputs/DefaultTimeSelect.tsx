@@ -46,7 +46,7 @@ export const DefaultTimeSelect: React.FC = () => {
             mode="single"
             selected={date}
             onSelect={setDate}
-            initialFocus
+            autoFocus
           />
         </PopoverContent>
       </Popover>

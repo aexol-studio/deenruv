@@ -36,12 +36,12 @@ export function ChannelSwitcher({ className }: { className?: string }) {
       <Select defaultValue={selectedChannel?.id} onValueChange={onChannelChange} value={selectedChannel?.id}>
         <SelectTrigger
           className={cn(
-            'flex items-center gap-2 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate',
+            'flex h-9 items-center gap-2 border-border/80 bg-card px-3 text-xs font-medium [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate',
           )}
-          aria-label="Select an channel"
+          aria-label="Select a channel"
         >
           <SelectValue>
-            <span className="ml-2">
+            <span className="ml-1">
               {getChannelLabel(channels.find((account) => account.id === selectedChannel?.id)?.code)}
             </span>
           </SelectValue>

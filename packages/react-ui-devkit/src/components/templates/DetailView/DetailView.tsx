@@ -326,32 +326,32 @@ const DetailTabs = ({
         setSearchParams({ tab: value });
       }}
     >
-      <div className="bg-muted sticky top-0 z-[51] w-full items-center justify-start shadow-xl">
+      <div className="sticky top-0 z-[51] w-full items-center justify-start border-b bg-background/95 backdrop-blur">
         <div className="flex w-full items-center justify-between px-4 py-2">
           <div className="flex w-full flex-1 items-center">
             <SimpleTooltip content={t("goBackToList")}>
               <Button
                 variant="secondary"
                 size="icon"
-                className="mb-2"
+                className="size-9"
                 onClick={() => navigate(-1)}
               >
                 <ChevronLeft className="size-4" />
                 <span className="sr-only">{t("create.back")}</span>
               </Button>
             </SimpleTooltip>
-            <Separator orientation="vertical" className="mx-4" />
+            <Separator orientation="vertical" className="mx-4 h-7" />
             {tabs.length > 1 && (
-              <TabsList className="h-12 justify-start gap-2 bg-transparent p-0">
+              <TabsList className="mb-0 h-10 justify-start gap-1 bg-muted/60 p-1">
                 {tabs.map((t, idx) => (
                   <TabsTrigger
                     key={idx}
                     disabled={t.disabled}
                     value={t.name}
                     className={cn(
-                      "px-8 py-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-none",
+                      "border border-transparent px-5 py-1.5 data-[state=active]:border-border data-[state=active]:bg-card data-[state=active]:shadow-none",
                       "transition-all duration-200",
-                      "data-[state=inactive]:bg-muted/50 data-[state=inactive]:hover:bg-muted",
+                      "data-[state=inactive]:bg-transparent data-[state=inactive]:hover:bg-muted",
                     )}
                   >
                     {t.label}

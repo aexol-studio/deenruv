@@ -42,6 +42,14 @@
         "removeVariant": "Usuń wariant",
         "removeVariantFromChannel": "Usuń wariant z kanału"
     },
+    "initialVariant": {
+        "title": "Początkowy wariant",
+        "description": "Utwórz jeden domyślny wariant razem z tym produktem. Jeśli nazwa wariantu jest pusta, zostanie użyta nazwa produktu.",
+        "sku": "SKU",
+        "price": "Cena",
+        "name": "Nazwa wariantu",
+        "namePlaceholder": "Użyj nazwy produktu"
+    },
     "optionsTab": {
         "placeholder": "Wpisz, aby dodać nową wartość opcji",
         "groupName": "Nazwa grupy",
@@ -128,6 +136,7 @@
         "noAssets": "Nie ma jeszcze żadnych aktywów",
         "setAsFeatured": "Ustaw jako polecane",
         "editAsset": "Edytuj zdjęcie",
+        "uploadAsset": "Prześlij obraz",
         "removeAsset": "Usuń zasób",
         "usedForColorsDesc": "Użyj tego atrybutu dla facetów, którzy są kolorami",
         "colorsCollectionDesc": "Użyj tego dla ścieżek produktu w KOLORZE (BLAT/CORPUS)",
@@ -189,6 +198,7 @@
         "createOptions": "Opcje"
     },
     "validation": {
-        "nameSlugRequired": "Pola nazwy i slug są wymagane"
+        "nameSlugRequired": "Pola nazwy i slug są wymagane",
+        "initialVariantSkuRequired": "SKU wariantu jest wymagane"
     }
 }

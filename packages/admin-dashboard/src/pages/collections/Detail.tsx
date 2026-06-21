@@ -1,6 +1,13 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router';
-import { useValidators, DetailView, createDeenruvForm, getMutation, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  useValidators,
+  DetailView,
+  createDeenruvForm,
+  getMutation,
+  useMutation,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';
 import { ModelTypes } from '@deenruv/admin-types';
 
@@ -10,16 +17,19 @@ type FormDataType = Record<string, unknown>;
 const CreateCollectionMutation = getMutation('createCollection');
 const EditCollectionMutation = getMutation('updateCollection');
 const DeleteCollectionMutation = getMutation('deleteCollection');
+const AssignCollectionsToChannelMutation = getMutation('assignCollectionsToChannel');
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
   const [update] = useMutation(EditCollectionMutation);
   const [create] = useMutation(CreateCollectionMutation);
   const [remove] = useMutation(DeleteCollectionMutation);
+  const [assignCollectionsToChannel] = useMutation(AssignCollectionsToChannelMutation);
+  const selectedChannel = useSettings((p) => p.selectedChannel);
   const { configurableOperationArrayValidator, translationsValidator } = useValidators();
 
   const onSubmitHandler = useCallback(
-    (data: FormDataType) => {
+    async (data: FormDataType) => {
       const translations = data.translations as CreateCollectionInput['translations'];
       const inputData = {
         assetIds: data.assetIds as CreateCollectionInput['assetIds'],
@@ -36,9 +46,22 @@ export const CollectionsDetailPage = () => {
       };
 
       if (id) return update({ input: { id, ...inputData } });
-      else return create({ input: inputData });
+
+      const response = await create({ input: inputData });
+      const collectionId = response.createCollection!.id;
+      const additionalChannelIds = Array.isArray(data.additionalChannelIds)
+        ? data.additionalChannelIds.filter(
+            (channelId): channelId is string => typeof channelId === 'string' && channelId !== selectedChannel?.id,
+          )
+        : [];
+
+      for (const channelId of additionalChannelIds) {
+        await assignCollectionsToChannel({ input: { collectionIds: [collectionId], channelId } });
+      }
+
+      return response;
     },
-    [id, update, create],
+    [id, update, create, assignCollectionsToChannel, selectedChannel?.id],
   );
 
   const onDeleteHandler = useCallback(() => {
@@ -67,6 +90,11 @@ export const CollectionsDetailPage = () => {
               },
               inheritFilters: {
                 initialValue: true,
+              },
+              ...{
+                additionalChannelIds: {
+                  initialValue: [],
+                },
               },
               translations: translationsValidator,
               filters: configurableOperationArrayValidator(),

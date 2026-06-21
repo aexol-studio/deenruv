@@ -121,7 +121,7 @@ export const DateOperator: React.FC<Props<DateOperator>> = ({
               disabled={!type}
               variant={"outline"}
               className={cn(
-                "w-[182px] pl-3 text-left font-normal h-8 rounded",
+                "w-[182px] pl-3 text-left font-normal h-8",
                 !value && "text-muted-foreground",
               )}
             >
@@ -147,7 +147,7 @@ export const DateOperator: React.FC<Props<DateOperator>> = ({
                   setValue(e);
                   handleSubmit(e);
                 }}
-                className="rounded-md border bg-white dark:bg-black"
+                className="border bg-white dark:bg-black"
               />
             ) : (
               <Calendar
@@ -159,7 +159,7 @@ export const DateOperator: React.FC<Props<DateOperator>> = ({
                   setValue(e);
                   handleSubmit(e);
                 }}
-                className="rounded-md border bg-white dark:bg-black"
+                className="border bg-white dark:bg-black"
               />
             )}
           </PopoverContent>

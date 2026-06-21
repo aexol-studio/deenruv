@@ -7,12 +7,12 @@ import {
   useLazyQuery,
   Badge,
   useOrder,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React, { useEffect } from "react";
 import { GetReviewForOrderQuery } from "../graphql";
 import { Calendar, MessageSquare, Star } from "lucide-react";
 import { ReviewState } from "../zeus";
-import { useTranslation } from "react-i18next";
 import { TRANSLATION_NAMESPACE } from "../constants";
 
 const StarRating = ({
@@ -51,9 +51,7 @@ const getStatusColor = (status: string) => {
 };
 
 export const ReviewOrder = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   const { order } = useOrder();
   const [getReviewForOrder, { data }] = useLazyQuery(GetReviewForOrderQuery);
 

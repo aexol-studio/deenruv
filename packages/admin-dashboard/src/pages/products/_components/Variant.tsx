@@ -106,6 +106,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
 
   const createVariant = useCallback(() => {
     const values = form.getValues();
+    const firstPrice = Array.isArray(values.prices) ? values.prices[0]?.price : undefined;
     if (productId && values.sku && values.translations)
       return apiClient('mutation')({
         createProductVariants: [
@@ -114,8 +115,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               {
                 productId,
                 translations: values.translations,
-                // price: +values.price,
-                prices: values.prices,
+                price: firstPrice,
                 sku: values.sku,
                 assetIds: values.assetIds,
                 featuredAssetId: values.featuredAssetId,
@@ -276,6 +276,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             onPriceChange={(e: unknown) => form.setField('prices', e)}
             taxRateValue={formValues.taxCategoryId ?? undefined}
             onTaxRateChange={(id: string) => form.setField('taxCategoryId', id)}
+            showDefaultPriceWhenEmpty={!variant}
           />
 
           <AssetsCard

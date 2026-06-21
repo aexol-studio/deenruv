@@ -11,11 +11,11 @@ import {
   SelectItem,
   Input,
   DialogClose,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React, { useState } from "react";
 import { ReviewState } from "../zeus";
 import { TRANSLATION_NAMESPACE } from "../constants";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export const ReviewStateChange = ({
@@ -25,9 +25,7 @@ export const ReviewStateChange = ({
 }) => {
   const [state, setState] = useState<string>();
   const [message, setMessage] = useState<string>();
-  const { t } = useTranslation(TRANSLATION_NAMESPACE, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(TRANSLATION_NAMESPACE);
   return (
     <Dialog>
       <DialogTrigger asChild>

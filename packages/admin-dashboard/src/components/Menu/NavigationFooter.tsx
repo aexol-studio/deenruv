@@ -14,16 +14,16 @@ export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed 
   const isPermittedToExtensions = userPermissions.includes(Permission.ReadSettings);
 
   return (
-    <div className="flex w-full flex-col gap-2 bg-secondary py-2 text-xs shadow-2xl select-none">
+    <div className="flex w-full flex-col gap-2 border-t bg-card/80 py-2 text-xs text-muted-foreground select-none">
       {isPermittedToExtensions && !isCollapsed && (
         <>
           <div>
             <NavLink to={Routes.extensions} viewTransition>
               <div
                 className={cn(
-                  'relative flex items-center justify-center rounded-md px-4 capitalize',
+                  'relative mx-2 flex h-8 items-center justify-center px-3 text-sm font-medium capitalize transition-colors hover:bg-muted/70 hover:text-foreground',
                   location.pathname === Routes.extensions &&
-                    'bg-muted font-semibold opacity-100 hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
+                    'bg-primary/10 text-primary opacity-100 hover:bg-primary/10 hover:text-primary',
                 )}
               >
                 <Puzzle className="mr-2 size-4" />
@@ -34,7 +34,7 @@ export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed 
           <Separator />
         </>
       )}
-      <div className="flex items-center justify-center gap-1">
+      <div className="flex items-center justify-center gap-1 px-2">
         {!isCollapsed && <p className="uppercase">Deenruv</p>}
         <span>
           {!isCollapsed ? 'ver. ' : 'v. '}

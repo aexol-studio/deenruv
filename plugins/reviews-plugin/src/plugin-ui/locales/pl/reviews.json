@@ -16,6 +16,8 @@
         "singleStateChangeError": "Wystąpił błąd podczas zmiany stanu opinii",
         "singleStateChangeCancelled": "Zmiana stanu opinii została anulowana",
         "singleStateChangeNoSelection": "Nie wybrano opinii do zmiany stanu",
+        "singleAcceptSuccess": "Opinia została zaakceptowana",
+        "singleAcceptError": "Wystąpił błąd podczas akceptowania opinii",
         "cancel": "Anuluj",
         "submit": "Zatwierdź",
         "selectError": "Wybierz stan opinii"
@@ -29,6 +31,7 @@
         "viewCustomer": "Zobacz klienta",
         "id": "Opinia {{id}}",
         "changeState": "Zmień stan opinii",
+        "acceptReview": "Zaakceptuj opinię",
         "changeStateSuccess": "Stan opinii został zmieniony",
         "changeStateError": "Wystąpił błąd podczas zmiany stanu opinii",
         "cancel": "Anuluj",
@@ -76,10 +79,13 @@
         "titleWithId": "Recenzja zamówienia #{{orderId}}"
     },
     "productReviewSidebar": {
+        "title": "Opinie o produkcie",
         "averageRating": "Średnia ocena",
         "noAverageRating": "Brak średniej oceny",
         "totalReviews": "Łączna liczba ocen",
         "noTotalReviews": "Brak ocen",
+        "totalRatings": "Łączna liczba ocen cząstkowych",
+        "noTotalRatings": "Brak ocen cząstkowych",
         "totalReviewsForProduct": "Łączna liczba ocen dla produktu",
         "noTotalReviewsForProduct": "Brak ocen dla produktu",
         "viewAllReviews": "Zobacz wszystkie opinie o produkcie"
@@ -90,6 +96,7 @@
     },
     "list": {
         "bulkStateChange": "Zmiana stanu dla wielu",
+        "acceptReview": "Zaakceptuj opinię",
         "stateChange": "Zmień stan",
         "productId": "ID produktu",
         "orderId": "ID zamówienia",

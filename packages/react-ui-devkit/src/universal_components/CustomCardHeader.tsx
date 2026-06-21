@@ -28,13 +28,13 @@ export const CustomCardHeader: React.FC<
 > = ({ children, icon, description, title, isCollapsed, fullWidth }) => (
   <CardHeader className={cn(!fullWidth && "w-[90%] flex-1")}>
     <div className="flex w-full items-center justify-between">
-      <div className="flex min-w-0 flex-1 items-center gap-4">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         {icon && <span className="shrink-0">{icon}</span>}
         <div className="min-w-0 flex-1 text-start">
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardTitle className="text-base">{title}</CardTitle>
           {description && (
             <CardDescription
-              className={`mt-1 ${isCollapsed ? "w-[95%] truncate" : ""}`}
+              className={`mt-1 text-xs ${isCollapsed ? "w-[95%] truncate" : ""}`}
             >
               {description}
             </CardDescription>

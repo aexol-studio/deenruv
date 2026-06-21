@@ -10,6 +10,7 @@ import {
   CustomCard,
   CardIcons,
   AssetsModalInput,
+  AssetUploadButton,
   useTranslation,
   createDialogFromComponent,
 } from '@deenruv/react-ui-devkit';
@@ -70,6 +71,20 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
     [assetsIds, onAssetsChange],
   );
 
+  const handleAssetAdded = useCallback(
+    (id: string | undefined | null) => {
+      if (!id) return;
+
+      if (!assetsIds?.includes(id)) {
+        onAddAsset(id);
+      }
+      if (!featuredAssetId) {
+        onFeaturedAssetChange(id);
+      }
+    },
+    [assetsIds, featuredAssetId, onAddAsset, onFeaturedAssetChange],
+  );
+
   return (
     <CustomCard title={t('assets')} color="green" icon={<CardIcons.asset />}>
       <div className="flex flex-col gap-6">
@@ -87,7 +102,18 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
                   </div>
                 )}
               </div>
-              <AssetsModalInput setValue={(a) => onAddAsset(a?.id)} />
+              <div className="flex flex-wrap gap-2">
+                <AssetsModalInput setValue={(a) => handleAssetAdded(a?.id)} />
+                <AssetUploadButton
+                  buttonProps={{ size: 'sm' }}
+                  cb={(asset) => {
+                    handleAssetAdded(asset.id);
+                    return {};
+                  }}
+                >
+                  {t('details.uploadAsset')}
+                </AssetUploadButton>
+              </div>
             </div>
           </div>
           <div>

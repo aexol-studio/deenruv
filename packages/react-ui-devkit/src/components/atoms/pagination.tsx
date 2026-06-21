@@ -53,7 +53,7 @@ const PaginationLink = ({
   <a
     aria-current={isActive ? "page" : undefined}
     className={cn(
-      "h-8 min-w-8 px-2.5 border-[1px] border-solid border-border flex justify-center items-center rounded-md bg-background",
+      "h-8 min-w-8 px-2.5 border-[1px] border-solid border-border flex justify-center items-center bg-background",
       isActive
         ? "text-primary border-primary"
         : "cursor-pointer text-muted-foreground",

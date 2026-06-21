@@ -56,8 +56,8 @@ export const Paginate = ({
   );
 
   return (
-    <div className="flex gap-8">
-      <div className="mx-auto flex items-center gap-2">
+    <div className="flex w-full flex-wrap items-center justify-end gap-2 text-xs text-muted-foreground lg:gap-3">
+      <div className="flex items-center gap-2 border border-border/60 bg-muted/30 px-2 py-1">
         <span className="whitespace-nowrap">{t("rowsPerPage")}</span>
         <SimpleSelect
           options={itemsPerPage.map((i) => ({
@@ -72,17 +72,17 @@ export const Paginate = ({
             searchParams.set(SearchParamKey.PAGE, "1");
             setSearchParams(searchParams);
           }}
-          className="h-8 w-[120px]"
+          className="h-7 w-[112px] bg-card text-xs"
         />
       </div>
-      <div className="m-auto whitespace-nowrap text-center text-[15px]">
+      <div className="inline-flex h-7 items-center whitespace-nowrap border border-border/60 bg-card px-3 text-center text-xs font-medium text-foreground">
         {t("page", { current: searchParamValues.page, total: totalPages })}
       </div>
-      <Pagination>
-        <PaginationContent>
+      <Pagination className="mx-0 w-auto justify-end">
+        <PaginationContent className="gap-0.5">
           <PaginationFirst
             className={cn(
-              "opacity-100",
+              "h-7 min-w-7 border-border/70 bg-card px-0 opacity-100 hover:border-primary/30 hover:text-primary",
               searchParamValues.page === 1 && "cursor-not-allowed opacity-50",
             )}
             isActive={searchParamValues.page !== 1}
@@ -94,7 +94,7 @@ export const Paginate = ({
           />
           <PaginationPrevious
             className={cn(
-              "opacity-100",
+              "h-7 min-w-7 border-border/70 bg-card px-0 opacity-100 hover:border-primary/30 hover:text-primary",
               searchParamValues.page === 1 && "cursor-not-allowed opacity-50",
             )}
             isActive={searchParamValues.page !== 1}
@@ -111,7 +111,7 @@ export const Paginate = ({
             <PaginationItem
               key={index}
               className={cn(
-                "hidden select-none",
+                "hidden min-w-7 select-none",
                 i !== (searchParamValues.page - 1).toString() && "md:block",
               )}
             >
@@ -119,6 +119,7 @@ export const Paginate = ({
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink
+                  className="h-7 min-w-7 border-border/70 bg-card px-2 text-xs hover:border-primary/30 hover:text-primary"
                   isActive={i === searchParamValues.page}
                   onClick={() => {
                     searchParams.set(SearchParamKey.PAGE, i.toString());
@@ -132,7 +133,7 @@ export const Paginate = ({
           ))}
           <PaginationNext
             className={cn(
-              "opacity-100",
+              "h-7 min-w-7 border-border/70 bg-card px-0 opacity-100 hover:border-primary/30 hover:text-primary",
               searchParamValues.page === totalPages &&
                 "cursor-not-allowed opacity-50",
             )}
@@ -148,7 +149,7 @@ export const Paginate = ({
           />
           <PaginationLast
             className={cn(
-              "opacity-100",
+              "h-7 min-w-7 border-border/70 bg-card px-0 opacity-100 hover:border-primary/30 hover:text-primary",
               searchParamValues.page === totalPages &&
                 "cursor-not-allowed opacity-50",
             )}

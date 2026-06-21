@@ -38,8 +38,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const hasErrors = errors && errors.length > 0;
     const inputClassName = cn(
-      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
-      "focus:outline-none focus:ring-0 focus:border-input",
+      "flex h-9 w-full border border-input bg-card px-3 py-2 text-sm text-foreground shadow-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+      "focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring/10",
       hasErrors && "border-destructive focus:border-destructive",
       className,
     );
@@ -128,7 +128,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {startAdornment && (
               <div
                 className={cn(
-                  "-mr-2 flex h-full items-center rounded-l-md border border-solid border-input bg-muted pl-2 pr-2",
+                  "-mr-2 flex h-full items-center border border-solid border-input bg-muted pl-2 pr-2",
                   adornmentPlain && "bg-background z-10 border-r-0",
                 )}
               >
@@ -149,7 +149,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               {...inputProps}
             />
             {endAdornment && (
-              <div className="-ml-2 flex h-full items-center rounded-r-md border border-solid border-input bg-muted px-2">
+              <div className="-ml-2 flex h-full items-center border border-solid border-input bg-muted px-2">
                 {endAdornment}
               </div>
             )}

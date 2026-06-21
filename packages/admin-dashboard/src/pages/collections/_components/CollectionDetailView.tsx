@@ -6,10 +6,12 @@ import {
   Input,
   Label,
   Switch,
+  Checkbox,
   CustomCard,
   CardIcons,
   useDetailView,
   useSettings,
+  useServer,
   RichTextEditor,
   useTranslation,
   setInArrayBy,
@@ -26,6 +28,7 @@ export const CollectionsDetailView = () => {
   const { t } = useTranslation('collections');
   const contentLng = useSettings((p) => p.translationsLanguage);
   const selectedChannel = useSettings((p) => p.selectedChannel);
+  const channels = useServer((p) => p.channels);
   const navigate = useNavigate();
   const { form, fetchEntity, entity, id } = useDetailView(
     'collections-detail-view',
@@ -77,7 +80,18 @@ export const CollectionsDetailView = () => {
   }, [contentLng, selectedChannel?.id]);
 
   const translations = base.watch('translations') || [];
+  const additionalChannelIds = (base.watch('additionalChannelIds') as string[] | undefined) ?? [];
   const currentTranslationValue = translations.find((v: any) => v.languageCode === contentLng);
+
+  const toggleAdditionalChannel = useCallback(
+    (channelId: string, checked: boolean) => {
+      if (channelId === selectedChannel?.id) return;
+      const currentIds = (base.watch('additionalChannelIds') as string[] | undefined) ?? [];
+      const nextIds = checked ? [...new Set([...currentIds, channelId])] : currentIds.filter((id) => id !== channelId);
+      base.setField('additionalChannelIds', nextIds);
+    },
+    [base, selectedChannel?.id],
+  );
 
   const handleAddAsset = useCallback(
     (newId: string | undefined | null) => {
@@ -187,12 +201,46 @@ export const CollectionsDetailView = () => {
           onFeaturedAssetChange={(id) => base.setField('featuredAssetId', id)}
           onAssetsChange={(ids) => base.setField('assetIds', ids)}
         />
-        <EntityChannelManager
-          entity="collection"
-          entityId={id}
-          entityChannels={[{ id: selectedChannel?.id, code: selectedChannel?.code }]}
-          onRemoveSuccess={() => navigate(Routes.collections.list)}
-        />
+        {id ? (
+          <EntityChannelManager
+            entity="collection"
+            entityId={id}
+            entityChannels={[{ id: selectedChannel?.id, code: selectedChannel?.code }]}
+            onRemoveSuccess={() => navigate(Routes.collections.list)}
+          />
+        ) : (
+          <CustomCard title={t('details.channels.title')} icon={<CardIcons.shipping />} color="green">
+            <div className="flex flex-col gap-4 pt-4">
+              <p className="text-sm text-muted-foreground">{t('details.channels.description')}</p>
+              <div className="grid gap-3 md:grid-cols-2">
+                {channels.map((channel) => {
+                  const isCurrentChannel = channel.id === selectedChannel?.id;
+                  const checked = isCurrentChannel || additionalChannelIds.includes(channel.id);
+
+                  return (
+                    <label
+                      key={channel.id}
+                      className="flex items-center gap-3 rounded-md border p-3 text-sm transition-colors hover:bg-muted/50"
+                    >
+                      <Checkbox
+                        checked={checked}
+                        disabled={isCurrentChannel}
+                        onCheckedChange={(value) => toggleAdditionalChannel(channel.id, !!value)}
+                      />
+                      <span className="font-medium">{channel.code}</span>
+                      {isCurrentChannel && (
+                        <span className="ml-auto rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
+                          {t('details.channels.currentChannel')}
+                        </span>
+                      )}
+                    </label>
+                  );
+                })}
+              </div>
+              {!channels.length && <p className="text-sm text-muted-foreground">{t('details.channels.noChannels')}</p>}
+            </div>
+          </CustomCard>
+        )}
         <FiltersCard
           currentFiltersValue={base.watch('filters') ?? undefined}
           onFiltersValueChange={(filters) => base.setField('filters', filters ?? [])}
