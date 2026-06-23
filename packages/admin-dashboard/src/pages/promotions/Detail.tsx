@@ -1,8 +1,58 @@
 import { useParams } from 'react-router';
-import { useTranslation, useValidators, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  useValidators,
+  createDeenruvForm,
+  DetailView,
+  useMutation,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { PromotionDetailView } from '@/pages/promotions/_components/PromotionDetailView';
 import { PromotionDetailSidebar } from '@/pages/promotions/_components/PromotionDetailSidebar';
+
+type PromotionTranslationInput = {
+  languageCode: string;
+  name?: string | null;
+  description?: string | null;
+  [key: string]: unknown;
+};
+
+const DEFAULT_PROMOTION_LANGUAGE_CODE = 'en';
+
+const ensureDefaultPromotionTranslation = (
+  translations: PromotionTranslationInput[],
+  defaultLanguageCode: string,
+): PromotionTranslationInput[] => {
+  const sourceTranslation = translations.find((translation) => !!translation.name?.trim()) ?? translations[0];
+
+  if (!sourceTranslation?.name?.trim()) return translations;
+
+  let hasDefaultLanguage = false;
+  const normalizedTranslations = translations.map((translation) => {
+    if (translation.languageCode !== defaultLanguageCode) return translation;
+    hasDefaultLanguage = true;
+
+    if (translation.name?.trim()) return translation;
+
+    return {
+      ...translation,
+      name: sourceTranslation.name,
+      description: translation.description ?? sourceTranslation.description ?? '',
+    };
+  });
+
+  if (hasDefaultLanguage) return normalizedTranslations;
+
+  return [
+    ...normalizedTranslations,
+    {
+      languageCode: defaultLanguageCode,
+      name: sourceTranslation.name,
+      description: sourceTranslation.description ?? '',
+    },
+  ];
+};
 
 const EditPromotionMutation = typedGql('mutation', { scalars })({
   updatePromotion: [{ input: $('input', 'UpdatePromotionInput!') }, { '...on Promotion': { id: true } }],
@@ -23,6 +73,9 @@ export const PromotionsDetailPage = () => {
   const [create] = useMutation(CreatePromotionMutation);
   const [remove] = useMutation(DeletePromotionMutation);
   const { translationsValidator, configurableOperationArrayValidator } = useValidators();
+  const defaultLanguageCode = useSettings(
+    (state) => state.selectedChannel?.defaultLanguageCode ?? DEFAULT_PROMOTION_LANGUAGE_CODE,
+  );
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -67,9 +120,12 @@ export const PromotionsDetailPage = () => {
                 code: string;
                 arguments: Array<{ name: string; value: string }>;
               }>;
+              const translations = data.translations as PromotionTranslationInput[];
               const input = {
-                translations: data.translations as Array<{ languageCode: string; name: string }>,
-                enabled: (data.enabled as boolean) || false,
+                translations: id
+                  ? translations
+                  : ensureDefaultPromotionTranslation(translations, defaultLanguageCode),
+                enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
                 actions,
                 conditions: conditions?.map((el) => ({
                   ...el,

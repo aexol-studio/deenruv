@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronDown, CircleX } from "lucide-react";
 import { apiClient } from "@/zeus_client/deenruvAPICall.js";
 import { cn } from "@/lib/utils.js";
 import React from "react";
+import { toast } from "sonner";
 import {
+  AssetUploadButton,
   Dialog,
   DialogClose,
   DialogContent,
@@ -83,6 +85,7 @@ export function AssetsModalInput({
     setSearchTerm,
     totalPages,
     setSkip,
+    refetchData,
   } = useAssets({ skip: true });
 
   useEffect(() => {
@@ -124,6 +127,30 @@ export function AssetsModalInput({
     [totalPages, page],
   );
 
+  const handleUploadedAsset = useCallback(
+    (asset: { id: string }) => {
+      setPage(1);
+      void apiClient("query")({
+        assets: [
+          { options: { take: 1, filter: { id: { eq: asset.id } } } },
+          { items: assetsSelector },
+        ],
+      })
+        .then(({ assets }) => {
+          const uploadedAsset = assets.items[0];
+          if (uploadedAsset) {
+            setSelectedAsset(uploadedAsset);
+          }
+        })
+        .catch(() => {
+          toast.error(t("toasts.error.fetch"));
+        });
+
+      return {};
+    },
+    [setPage, t],
+  );
+
   useEffect(() => {
     setSkip(!open);
   }, [open]);
@@ -140,9 +167,9 @@ export function AssetsModalInput({
           <DialogTitle> {t("asset.dialogTitle")}</DialogTitle>
         </DialogHeader>
         <div className="flex h-[calc(90vh-140px)] w-full flex-col gap-2 ">
-          <div className=" flex gap-2">
+          <div className="flex flex-wrap items-start gap-2">
             <Input
-              className="w-80"
+              className="w-80 max-w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.currentTarget.value)}
               placeholder={t("asset.dialogSearchPlaceholder")}
@@ -182,6 +209,19 @@ export function AssetsModalInput({
                 </div>
               ))}
             </div>
+            <AssetUploadButton
+              cb={handleUploadedAsset}
+              refetch={() => {
+                void refetchData();
+              }}
+              buttonProps={{
+                className: "shrink-0",
+                size: "default",
+                variant: "outline",
+              }}
+            >
+              {t("asset.uploadButton")}
+            </AssetUploadButton>
           </div>
           <div className="w-full flex-1 overflow-y-auto  pr-1">
             {isPending ? (

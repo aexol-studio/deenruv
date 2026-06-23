@@ -40,6 +40,14 @@
     "confirm": "Usuń wersję roboczą",
     "cancel": "Anuluj"
   },
+  "createDraftOrder": {
+    "title": "Utwórz nowy projekt zamówienia",
+    "description": "Projekt zamówienia zostanie utworzony dopiero po potwierdzeniu. Następnie możesz dodać produkty, klienta i dane dostawy.",
+    "startButton": "Rozpocznij projekt zamówienia",
+    "cancelButton": "Wróć do zamówień",
+    "creating": "Tworzenie projektu...",
+    "error": "Nie udało się utworzyć projektu zamówienia"
+  },
   "searchProduct": {
     "id": "ID",
     "image": "Obraz",

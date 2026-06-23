@@ -7,13 +7,13 @@ interface EnabledCardProps {
 }
 
 export const EnabledCard: React.FC<EnabledCardProps> = ({ onEnabledChange, enabledValue }) => {
-  const { t } = useTranslation('products');
+  const { t } = useTranslation('promotions');
 
   return (
-    <CustomCard title={t('details.basicInfo')} icon={<CardIcons.default />} color="teal">
+    <CustomCard title={t('enabled.header')} icon={<CardIcons.default />} color="teal">
       <div className="flex items-center space-x-2">
-        <Switch id="product-enabled" checked={enabledValue} onCheckedChange={onEnabledChange} />
-        <Label htmlFor="product-enabled">{t('enabled')}</Label>
+        <Switch id="promotion-enabled" checked={enabledValue ?? false} onCheckedChange={onEnabledChange} />
+        <Label htmlFor="promotion-enabled">{t('enabled.label')}</Label>
       </div>
     </CustomCard>
   );

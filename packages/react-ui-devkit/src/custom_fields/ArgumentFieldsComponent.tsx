@@ -9,6 +9,22 @@ type Field = Omit<BaseField, "label" | "description"> & {
   description?: string | null;
 };
 
+const decodeConfigArgValue = (value: string): unknown => {
+  try {
+    const result = JSON.parse(value);
+    if (result && typeof result === "object" && !Array.isArray(result)) {
+      return JSON.stringify(result);
+    }
+    return result;
+  } catch {
+    return value;
+  }
+};
+
+const encodeConfigArgValue = (value: unknown): string => {
+  return Array.isArray(value) ? JSON.stringify(value) : (value ?? "").toString();
+};
+
 export const ArgumentFieldsComponent = ({
   actions = [],
   args,
@@ -91,20 +107,10 @@ export const ArgumentFieldsComponent = ({
           if (!arg || !field) return null;
           return (
             <div key={argName}>
-              {components.map(({ component }, i) => {
-                let value = "";
-                try {
-                  value = JSON.parse(arg.value);
-                } catch {
-                  console.error("Error parsing value");
-                }
+              {components.map(({ component }) => {
+                const value = decodeConfigArgValue(arg.value);
                 const setValue = (data: unknown) => {
-                  try {
-                    const value = JSON.stringify(data);
-                    setArg(field, { name: argName, value });
-                  } catch {
-                    console.error("Error setting value");
-                  }
+                  setArg(field, { name: argName, value: encodeConfigArgValue(data) });
                 };
                 const label = [
                   {

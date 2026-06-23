@@ -13,6 +13,10 @@
         "usageLimit": "Limit użycia",
         "perCustomerUsageLimit": "Limit użycia na klienta"
     },
+    "enabled": {
+        "header": "Status",
+        "label": "Promocja aktywna"
+    },
     "conditions": {
         "header": "Warunki",
         "add": "Dodaj nowy warunek",

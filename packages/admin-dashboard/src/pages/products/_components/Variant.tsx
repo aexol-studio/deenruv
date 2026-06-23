@@ -13,6 +13,7 @@ import {
   useTranslation,
   useSettings,
   EntityChannelManager,
+  DEFAULT_CHANNEL_CODE,
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantType } from '@/graphql/products';
@@ -34,6 +35,7 @@ interface VariantProps {
 
 export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng, onActionCompleted, productId }) => {
   const { t } = useTranslation('products');
+  const selectedChannel = useSettings((p) => p.selectedChannel);
   const variantSchema = z.object({
     translations: z.array(z.any()).default([]),
     price: z.any().optional(),
@@ -76,6 +78,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   const currentTranslationValue = translations.find(
     (v: { languageCode: LanguageCode }) => v.languageCode === currentTranslationLng,
   );
+  const variantDisplayName = currentTranslationValue?.name || variant?.name || t('addVariantDialog.new');
+  const variantDisplaySku = formValues.sku || variant?.sku;
 
   useEffect(() => {
     if (!variant) return;
@@ -104,11 +108,13 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     );
   }, [variant]);
 
-  const createVariant = useCallback(() => {
+  const createVariant = useCallback(async () => {
     const values = form.getValues();
     const firstPrice = Array.isArray(values.prices) ? values.prices[0]?.price : undefined;
-    if (productId && values.sku && values.translations)
-      return apiClient('mutation')({
+    if (!productId || !values.sku || !values.translations) return;
+
+    try {
+      const response = await apiClient('mutation')({
         createProductVariants: [
           {
             input: [
@@ -137,15 +143,34 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             id: true,
           },
         ],
-      })
-        .then(() => {
-          toast(t('toasts.createProductVariantSuccessToast'));
-          onActionCompleted();
-        })
-        .catch(() => {
-          toast(t('toasts.createProductVariantErrorToast'));
+      });
+      const createdVariantId = response.createProductVariants?.[0]?.id;
+
+      if (
+        createdVariantId &&
+        selectedChannel?.id &&
+        selectedChannel.code &&
+        selectedChannel.code !== DEFAULT_CHANNEL_CODE
+      ) {
+        await apiClient('mutation')({
+          assignProductVariantsToChannel: [
+            {
+              input: {
+                productVariantIds: [createdVariantId],
+                channelId: selectedChannel.id,
+              },
+            },
+            { id: true },
+          ],
         });
-  }, [form, productId, onActionCompleted, t]);
+      }
+
+      toast(t('toasts.createProductVariantSuccessToast'));
+      onActionCompleted();
+    } catch {
+      toast(t('toasts.createProductVariantErrorToast'));
+    }
+  }, [form, productId, selectedChannel?.id, selectedChannel?.code, onActionCompleted, t]);
 
   const updateVariant = useCallback(() => {
     if (!variant) return;
@@ -234,6 +259,15 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
 
   return (
     <div className="mt-4 flex flex-col gap-4">
+      <div className="flex flex-col gap-2 rounded-lg border bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t('variants')}</p>
+          <h3 className="truncate text-lg font-semibold">{variantDisplayName}</h3>
+        </div>
+        <div className="text-sm text-muted-foreground sm:text-right">
+          <span className="font-medium text-foreground">{t('sku')}:</span> {variantDisplaySku || '—'}
+        </div>
+      </div>
       <div className="flex gap-3 self-end">
         {variant ? (
           <>
@@ -318,18 +352,18 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               />
             </div>
           </CustomCard>
-          <EntityChannelManager
-            entity="productVariant"
-            entityId={variant?.id}
-            entityChannels={variant?.channels ?? []}
-            onRemoveSuccess={onActionCompleted}
-            entityName={variant?.name}
-            entityVariantList={{
-              items: [
-                { price: variant?.price, priceWithTax: variant?.priceWithTax, currencyCode: variant?.currencyCode },
-              ],
-            }}
-          />
+          {variant && (
+            <EntityChannelManager
+              entity="productVariant"
+              entityId={variant.id}
+              entityChannels={variant.channels ?? []}
+              onRemoveSuccess={onActionCompleted}
+              entityName={variant.name}
+              entityVariantList={{
+                items: [{ price: variant.price, priceWithTax: variant.priceWithTax, currencyCode: variant.currencyCode }],
+              }}
+            />
+          )}
           <OptionsCard
             optionGroups={variant?.options || []}
             productId={productId}

@@ -17,17 +17,9 @@ import {
 import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 
 const tableId = 'orders-list-view';
 const { selector } = ListLocations[tableId];
-
-const createDraftOrder = async () => {
-  const response = await apiClient('mutation')({
-    createDraftOrder: { id: true },
-  });
-  return response.createDraftOrder.id;
-};
 
 const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
@@ -107,14 +99,7 @@ export const OrdersListPage = () => {
       searchFields={['code', 'customerLastName']}
       entityName="Order"
       route={{
-        create: () => {
-          createDraftOrder()
-            .then((id) => {
-              if (!id) toast.error('Failed to create draft order');
-              navigate(Routes.orders.to(id), { viewTransition: true });
-            })
-            .catch(() => toast.error('Failed to create draft order'));
-        },
+        create: () => navigate(Routes.orders.new, { viewTransition: true }),
         edit: (id) => navigate(Routes.orders.to(id), { viewTransition: true }),
       }}
       tableId={tableId}

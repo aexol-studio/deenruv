@@ -258,6 +258,7 @@ const DetailTabs = ({
   locationId: DetailKeys;
 }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { t } = useTranslation("common");
   const {
     entity,
@@ -292,6 +293,10 @@ const DetailTabs = ({
   const showEditButton = id && isPermittedToUpdate;
   const showCreateButton = !id && isPermittedToCreate;
   const buttonDisabled = !form.base.isFormValid || !hasUnsavedChanges;
+  const listPath = useMemo(() => {
+    const segments = pathname.split("/").filter(Boolean);
+    return `/${segments.slice(0, -1).join("/")}`;
+  }, [pathname]);
 
   const tabsWithMarker = tabs.map((tab, idx) => (
     <TabsContent key={idx} value={tab.name}>
@@ -334,7 +339,7 @@ const DetailTabs = ({
                 variant="secondary"
                 size="icon"
                 className="size-9"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate(listPath)}
               >
                 <ChevronLeft className="size-4" />
                 <span className="sr-only">{t("create.back")}</span>

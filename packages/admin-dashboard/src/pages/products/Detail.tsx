@@ -3,7 +3,14 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
-import { useTranslation, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  DEFAULT_CHANNEL_CODE,
+  useTranslation,
+  createDeenruvForm,
+  DetailView,
+  useMutation,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 import { $, Permission, scalars, typedGql, ValueTypes } from '@deenruv/admin-types';
 import { useMemo } from 'react';
 
@@ -19,6 +26,10 @@ const CreateProductVariantsMutation = typedGql('mutation', { scalars })({
   createProductVariants: [{ input: $('input', '[CreateProductVariantInput!]!') }, { id: true }],
 });
 
+const AssignProductVariantsToChannelMutation = typedGql('mutation', { scalars })({
+  assignProductVariantsToChannel: [{ input: $('input', 'AssignProductVariantsToChannelInput!') }, { id: true }],
+});
+
 const DeleteProductMutation = typedGql('mutation', { scalars })({
   deleteProduct: [{ id: $('id', 'ID!') }, { result: true }],
 });
@@ -29,7 +40,9 @@ export const ProductsDetailPage = () => {
   const [update] = useMutation(EditProductMutation);
   const [create] = useMutation(CreateProductMutation);
   const [createVariants] = useMutation(CreateProductVariantsMutation);
+  const [assignProductVariantsToChannel] = useMutation(AssignProductVariantsToChannelMutation);
   const [remove] = useMutation(DeleteProductMutation);
+  const selectedChannel = useSettings((p) => p.selectedChannel);
 
   const defaultTabs = useMemo(() => {
     const tabs = [];
@@ -95,7 +108,7 @@ export const ProductsDetailPage = () => {
               const initialVariantSku = typeof data.initialVariantSku === 'string' ? data.initialVariantSku.trim() : '';
               const initialVariantPrice = Number(data.initialVariantPrice ?? 0);
 
-              await createVariants({
+              const variantsResponse = await createVariants({
                 input: [
                   {
                     productId: response.createProduct.id,
@@ -108,6 +121,21 @@ export const ProductsDetailPage = () => {
                   },
                 ],
               });
+              const createdVariantId = variantsResponse.createProductVariants?.[0]?.id;
+
+              if (
+                createdVariantId &&
+                selectedChannel?.id &&
+                selectedChannel.code &&
+                selectedChannel.code !== DEFAULT_CHANNEL_CODE
+              ) {
+                await assignProductVariantsToChannel({
+                  input: {
+                    productVariantIds: [createdVariantId],
+                    channelId: selectedChannel.id,
+                  },
+                });
+              }
 
               return response;
             },

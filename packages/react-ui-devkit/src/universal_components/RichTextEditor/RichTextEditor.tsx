@@ -8,6 +8,14 @@ import { ErrorMessage } from "@/components/molecules";
 
 const extensions = [StarterKit];
 
+const editorContentClassName = cn(
+  "min-h-32 max-h-64 overflow-auto text-stone-950 caret-stone-950 focus-visible:outline-none dark:text-stone-50 dark:caret-stone-50",
+  "prose prose-stone max-w-none dark:prose-invert [&_ol]:list-decimal [&_ul]:list-disc",
+  "[&_a]:text-inherit [&_blockquote]:text-inherit [&_code]:text-inherit [&_em]:text-inherit [&_li]:text-inherit [&_p]:text-inherit [&_strong]:text-inherit",
+  "[&_h1]:text-inherit [&_h2]:text-inherit [&_h3]:text-inherit [&_h4]:text-inherit [&_h5]:text-inherit [&_h6]:text-inherit",
+  "[&_li::marker]:text-stone-600 dark:[&_li::marker]:text-stone-300",
+);
+
 interface RichTextEditorProps {
   content: string | undefined;
   onContentChanged: (content: string) => void;
@@ -35,10 +43,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     onUpdate: ({ editor }) => onContentChanged(editor.getHTML()),
     editorProps: {
       attributes: {
-        class: cn(
-          "min-h-32 max-h-64 overflow-auto text-stone-950 focus-visible:outline-none dark:text-stone-50",
-          "prose prose-stone max-w-none dark:prose-invert [&_ol]:list-decimal [&_ul]:list-disc",
-        ),
+        class: editorContentClassName,
       },
     },
     editable: !disabled,

@@ -6,6 +6,12 @@ import { ShippingMethodDetailView } from '@/pages/shipping-methods/_components/S
 
 type FormDataType = Record<string, unknown>;
 
+const isMissingConfigArgValue = (value: string | null | undefined) => value == null || value.trim() === '';
+
+const hasMissingConfigArgs = (operation: ModelTypes['ConfigurableOperationInput'] | undefined) => {
+  return !!operation?.arguments?.some((argument) => isMissingConfigArgValue(argument.value));
+};
+
 const CreateShippingMethodMutation = getMutation('createShippingMethod');
 const EditShippingMethodMutation = getMutation('updateShippingMethod');
 const DeleteShippingMethodMutation = getMutation('deleteShippingMethod');
@@ -79,20 +85,20 @@ export const ShippingMethodsDetailPage = () => {
               checker: {
                 validate: (v) => {
                   const hasCode = !!v?.code;
-                  const hasArguments = v?.arguments.filter((a) => a.value).length;
+                  const hasInvalidArguments = hasMissingConfigArgs(v);
                   const errors = [];
                   if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
-                  if (!hasArguments) errors.push(t('validation.checkerArgsRequired'));
+                  if (hasInvalidArguments) errors.push(t('validation.checkerArgsRequired'));
                   return errors;
                 },
               },
               calculator: {
                 validate: (v) => {
                   const hasCode = !!v?.code;
-                  const hasInvalidArguments = v?.arguments.filter((a) => !a.value || a.value === 'false').length; // args have 'false' value by default
+                  const hasInvalidArguments = hasMissingConfigArgs(v);
                   const errors = [];
-                  if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
-                  if (hasInvalidArguments) errors.push(t('validation.checkerArgsRequired'));
+                  if (!hasCode) errors.push(t('validation.calculatorCodeRequired'));
+                  if (hasInvalidArguments) errors.push(t('validation.calculatorArgsRequired'));
                   return errors;
                 },
               },

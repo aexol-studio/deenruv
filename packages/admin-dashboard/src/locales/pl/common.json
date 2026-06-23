@@ -961,6 +961,7 @@
     "tags": "Filtruj według tagu",
     "perPageValue": "{{value}} na stronę",
     "confirmButton": "Dodaj zasób",
+    "uploadButton": "Prześlij z dysku",
     "cancel": "Anuluj",
     "noImages": "Brak zasobów dla określonego wyszukiwania",
     "description": "Przesyłanie i zarządzanie zasobami, które mogą być używane w treści"

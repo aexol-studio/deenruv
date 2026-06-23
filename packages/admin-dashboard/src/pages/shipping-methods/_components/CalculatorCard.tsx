@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ModelTypes } from '@deenruv/admin-types';
 import {
   Button,
-  Label,
   Option,
   apiClient,
   ErrorMessage,
   generateInputComponents,
   usePluginStore,
-  CustomFieldsProvider,
+  InputFieldComponent,
   CardIcons,
   CustomCard,
   SimpleSelect,
@@ -24,6 +23,29 @@ interface CalculatorCardProps {
   onCalculatorValueChange: (checker: ModelTypes['ConfigurableOperationInput'] | undefined) => void;
   errors?: string[];
 }
+
+const decodeConfigArgValue = (value: string): unknown => {
+  try {
+    const result = JSON.parse(value);
+    if (result && typeof result === 'object' && !Array.isArray(result)) {
+      return JSON.stringify(result);
+    }
+    return result;
+  } catch {
+    return value;
+  }
+};
+
+const encodeConfigArgValue = (value: unknown): string => {
+  return Array.isArray(value) ? JSON.stringify(value) : (value ?? '').toString();
+};
+
+const createInitialArguments = (args: PaymentMethodHandlerType['args']): ModelTypes['ConfigArgInput'][] => {
+  return args.map((arg) => ({
+    name: arg.name,
+    value: encodeConfigArgValue(arg.defaultValue),
+  }));
+};
 
 export const CalculatorCard: React.FC<CalculatorCardProps> = ({
   currentCalculatorValue,
@@ -55,17 +77,11 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
   const handleCalculatorValueChange = useCallback(
     (code: string, args?: { name: string; value: string }[]) => {
       const correspondingCalculator = calculators.find((h) => h.code === code);
-      console.log('args', args);
 
       if (correspondingCalculator)
         onCalculatorValueChange({
           code: correspondingCalculator.code,
-          arguments:
-            args ||
-            correspondingCalculator.args.map((a) => ({
-              name: a.name,
-              value: 'false',
-            })),
+          arguments: args ?? createInitialArguments(correspondingCalculator.args),
         });
     },
     [calculators, onCalculatorValueChange],
@@ -92,7 +108,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
           )}
         </div>
         <div className="flex gap-3">
-          {currentCalculatorValue?.arguments.map((e, i) => {
+          {currentCalculatorValue?.arguments.map((e) => {
             const calculator = calculators?.find((ch) => ch.code === currentCalculatorValue.code);
             const argument = calculator?.args.find((a) => a.name === e.name);
             if (!argument) return null;
@@ -106,7 +122,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
               ],
               getInputComponent,
             ).map((field) => {
-              const value = e.value;
+              const value = decodeConfigArgValue(e.value);
               const setValue = (data: unknown) => {
                 try {
                   onCalculatorValueChange({
@@ -116,7 +132,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
                         if (a.name === field.name) {
                           return {
                             name: a.name,
-                            value: JSON.stringify(data),
+                            value: encodeConfigArgValue(data),
                           };
                         }
                       } catch {
@@ -131,21 +147,13 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
               };
 
               return (
-                <CustomFieldsProvider
+                <InputFieldComponent
                   key={field.name}
                   field={field}
                   value={value}
                   setValue={setValue}
                   additionalData={{}}
-                  // disabled={disabled}
-                >
-                  <div key={field.name}>
-                    <div>
-                      <Label>{field.name}</Label>
-                    </div>
-                    {field.component}
-                  </div>
-                </CustomFieldsProvider>
+                />
               );
             });
           })}

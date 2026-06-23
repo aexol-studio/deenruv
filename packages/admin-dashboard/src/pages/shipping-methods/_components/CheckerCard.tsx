@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ModelTypes } from '@deenruv/admin-types';
 import {
   Button,
-  Label,
   Option,
   apiClient,
   ErrorMessage,
   generateInputComponents,
   usePluginStore,
-  CustomFieldsProvider,
+  InputFieldComponent,
   CustomCard,
   CardIcons,
   SimpleSelect,
@@ -24,6 +23,29 @@ interface CheckerCardProps {
   onCheckerValueChange: (checker: ModelTypes['ConfigurableOperationInput'] | undefined) => void;
   errors?: string[];
 }
+
+const decodeConfigArgValue = (value: string): unknown => {
+  try {
+    const result = JSON.parse(value);
+    if (result && typeof result === 'object' && !Array.isArray(result)) {
+      return JSON.stringify(result);
+    }
+    return result;
+  } catch {
+    return value;
+  }
+};
+
+const encodeConfigArgValue = (value: unknown): string => {
+  return Array.isArray(value) ? JSON.stringify(value) : (value ?? '').toString();
+};
+
+const createInitialArguments = (args: PaymentMethodHandlerType['args']): ModelTypes['ConfigArgInput'][] => {
+  return args.map((arg) => ({
+    name: arg.name,
+    value: encodeConfigArgValue(arg.defaultValue),
+  }));
+};
 
 export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, onCheckerValueChange, errors }) => {
   const { t } = useTranslation('shippingMethods');
@@ -55,19 +77,13 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
       if (correspondingChecker)
         onCheckerValueChange({
           code: correspondingChecker.code,
-          arguments:
-            args ||
-            correspondingChecker.args.map((a) => ({
-              name: a.name,
-              value: 'false',
-            })),
+          arguments: args ?? createInitialArguments(correspondingChecker.args),
         });
     },
     [checkers, onCheckerValueChange],
   );
 
   const clearInput = useCallback(() => {
-    console.log('CLICK');
     onCheckerValueChange(undefined);
   }, [onCheckerValueChange]);
 
@@ -93,9 +109,9 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
           )}
         </div>
         <div className="flex">
-          {currentCheckerValue?.arguments.map((e, i) => {
+          {currentCheckerValue?.arguments.map((e) => {
             const checker = checkers?.find((ch) => ch.code === currentCheckerValue.code);
-            const argument = checker?.args.find((a) => a.name === a.name);
+            const argument = checker?.args.find((a) => a.name === e.name);
             if (!argument) return null;
             return generateInputComponents(
               [
@@ -107,7 +123,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
               ],
               getInputComponent,
             ).map((field) => {
-              const value = e.value;
+              const value = decodeConfigArgValue(e.value);
               const setValue = (data: unknown) => {
                 try {
                   onCheckerValueChange({
@@ -115,7 +131,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
                     arguments: currentCheckerValue.arguments.map((a) => {
                       try {
                         if (a.name === field.name) {
-                          return { name: field.name, value: JSON.stringify(data) };
+                          return { name: field.name, value: encodeConfigArgValue(data) };
                         }
                       } catch {
                         return a;
@@ -129,21 +145,13 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
               };
 
               return (
-                <CustomFieldsProvider
+                <InputFieldComponent
                   key={field.name}
                   field={field}
                   value={value}
                   setValue={setValue}
                   additionalData={{}}
-                  // disabled={disabled}
-                >
-                  <div key={field.name}>
-                    <div>
-                      <Label>{field.name}</Label>
-                    </div>
-                    {field.component}
-                  </div>
-                </CustomFieldsProvider>
+                />
               );
             });
           })}

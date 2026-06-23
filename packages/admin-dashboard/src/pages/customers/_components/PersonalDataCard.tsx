@@ -8,6 +8,8 @@ interface PersonalDataCard {
 
 export const PersonalDataCard: React.FC<PersonalDataCard> = ({ setField, state }) => {
   const { t } = useTranslation('customers');
+  const getFieldErrors = (fieldName: 'firstName' | 'lastName' | 'emailAddress') =>
+    state.formState.errors?.[fieldName]?.message ? [state.formState.errors[fieldName].message as string] : undefined;
 
   return (
     <CustomCard title={t('personalData.header')} icon={<CardIcons.basic />} color="blue">
@@ -15,37 +17,37 @@ export const PersonalDataCard: React.FC<PersonalDataCard> = ({ setField, state }
         <div className="flex w-1/4 gap-3">
           <Input
             label={t('personalData.title')}
-            value={state.title?.value}
+            value={state.watch('title') ?? undefined}
             onChange={(e) => setField('title', e.target.value)}
           />
         </div>
         <div className="flex items-start gap-3">
           <Input
             label={t('personalData.firstName')}
-            value={state.firstName?.value}
+            value={state.watch('firstName') ?? undefined}
             onChange={(e) => setField('firstName', e.target.value)}
-            errors={state.firstName?.errors}
+            errors={getFieldErrors('firstName')}
             required
           />
           <Input
             label={t('personalData.lastName')}
-            value={state.lastName?.value}
+            value={state.watch('lastName') ?? undefined}
             onChange={(e) => setField('lastName', e.target.value)}
-            errors={state.lastName?.errors}
+            errors={getFieldErrors('lastName')}
             required
           />
         </div>
         <div className="flex items-start gap-3">
           <Input
             label={t('personalData.emailAddress')}
-            value={state.emailAddress?.value}
+            value={state.watch('emailAddress') ?? undefined}
             onChange={(e) => setField('emailAddress', e.target.value)}
-            errors={state.emailAddress?.errors}
+            errors={getFieldErrors('emailAddress')}
             required
           />
           <Input
             label={t('personalData.phoneNumber')}
-            value={state.phoneNumber?.value}
+            value={state.watch('phoneNumber') ?? undefined}
             onChange={(e) => setField('phoneNumber', e.target.value)}
           />
         </div>

@@ -40,6 +40,14 @@
         "confirm": "Delete draft",
         "cancel": "Cancel"
     },
+    "createDraftOrder": {
+        "title": "Create a new draft order",
+        "description": "A draft order will only be created after you confirm. You can then add products, a customer, and shipping details.",
+        "startButton": "Start draft order",
+        "cancelButton": "Back to orders",
+        "creating": "Creating draft...",
+        "error": "Failed to create draft order"
+    },
     "searchProduct": {
         "id": "ID",
         "image": "Image",

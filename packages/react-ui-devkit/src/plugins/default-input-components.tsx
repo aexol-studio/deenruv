@@ -1,8 +1,10 @@
 import { DefaultCurrencyInput } from "@/custom_fields/DefaultInputs/DefaultCurrencyInput.js";
+import { DefaultSelectInput } from "@/custom_fields/DefaultInputs/DefaultSelectInput.js";
 import React from "react";
 
 export const defaultInputComponents = {
   "currency-form-input": DefaultCurrencyInput,
+  "select-form-input": DefaultSelectInput,
   "facet-value-form-input": () => <></>,
   //   <FacetsSelector
   //     value={JSON.parse(action?.arguments[i].value)}

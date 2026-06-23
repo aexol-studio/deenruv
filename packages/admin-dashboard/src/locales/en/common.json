@@ -962,6 +962,7 @@
     "tags": "Filter by tag",
     "perPageValue": "{{value}} per page",
     "confirmButton": "Add resource",
+    "uploadButton": "Upload from disk",
     "cancel": "Cancel",
     "noImages": "No resources for a specific search",
     "description": "Uploading and managing resources that can be used in content"

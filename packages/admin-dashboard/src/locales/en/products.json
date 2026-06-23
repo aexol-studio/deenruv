@@ -61,6 +61,7 @@
         "noOptionValues": "Dodaj opcje powyżej, aby znaleźć je tutaj"
     },
     "variantsTab": {
+        "unnamedVariant": "Unnamed variant",
         "emptyState": {
             "title": "Nic tutaj nie ma",
             "description": "Nie ma jeszcze żadnych wariantów. Użyj przycisku powyżej, aby je dodać, pod warunkiem, że dodałeś już jakieś opcje. Jeśli nie, utwórz je najpierw w zakładce Opcje."
@@ -195,7 +196,8 @@
         "new": "Nowy wariant",
         "selectOption": "Wybierz opcję",
         "createBasic": "Dane podstawowe",
-        "createOptions": "Opcje"
+        "createOptions": "Opcje",
+        "createOptionsHint": "Add an option group from this panel to start choosing variant options. You can refine option values later in the Options tab."
     },
     "validation": {
         "nameSlugRequired": "Pola nazwy i slug są wymagane",

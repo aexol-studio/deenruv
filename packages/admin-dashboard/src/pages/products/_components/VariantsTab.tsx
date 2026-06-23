@@ -71,8 +71,13 @@ export const VariantsTab = () => {
               {t('addVariantDialog.new')}
             </TabsTrigger>
             {variants?.map((v) => (
-              <TabsTrigger key={v.id + '-trigger'} value={v.id}>
-                {v.name}
+              <TabsTrigger key={v.id + '-trigger'} value={v.id} className="max-w-xs">
+                <span className="flex min-w-0 flex-col items-start text-left leading-tight">
+                  <span className="max-w-full truncate">{v.name?.trim() || t('variantsTab.unnamedVariant')}</span>
+                  {v.sku && (
+                    <span className="max-w-full truncate text-xs font-normal text-muted-foreground">{v.sku}</span>
+                  )}
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>

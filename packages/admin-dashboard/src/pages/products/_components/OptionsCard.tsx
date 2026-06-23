@@ -13,9 +13,11 @@ import {
   CustomCard,
   CardIcons,
   useTranslation,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import { toast } from 'sonner';
+import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
 
 interface OptionsCardProps {
   productId: string;
@@ -33,6 +35,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
   createMode,
 }) => {
   const { t } = useTranslation('products');
+  const contentLng = useSettings((p) => p.translationsLanguage);
   const [optionGroups, setOptionGroups] = useState<OptionGroupType[]>();
 
   const fetchOptionGroups = useCallback(async () => {
@@ -54,7 +57,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
         toast.error(t('toasts.fetchProductErrorToast'));
       }
     }
-  }, [productId]);
+  }, [productId, t]);
 
   useEffect(() => {
     fetchOptionGroups();
@@ -71,7 +74,16 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
   );
 
   return (
-    <CustomCard title={t('options')} icon={<CardIcons.options />} color="orange">
+    <CustomCard
+      title={t('options')}
+      icon={<CardIcons.options />}
+      color="orange"
+      upperRight={
+        createMode ? (
+          <AddOptionGroupDialog currentTranslationLng={contentLng} onSuccess={fetchOptionGroups} productId={productId} />
+        ) : undefined
+      }
+    >
       {!createMode ? (
         <Table>
           <TableBody>
@@ -83,31 +95,35 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
             ))}
           </TableBody>
         </Table>
-      ) : (
-        optionGroups?.map((group, i) => (
-          <div key={group.name} className="flex items-center gap-3">
-            <div className="w-1/3 font-semibold">{group.name}:</div>
-            <div className="w-2/3">
-              <Select
-                value={optionIds?.[i] || ''}
-                onValueChange={(e) => {
-                  handleOptionChange(e, i);
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t('addVariantDialog.selectOption')} />
-                </SelectTrigger>
-                <SelectContent>
-                  {group.options.map((o) => (
-                    <SelectItem key={o.id} value={o.id} className="capitalize">
-                      {o.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+      ) : optionGroups === undefined ? null : optionGroups.length ? (
+        <div className="flex flex-col gap-3">
+          {optionGroups.map((group, i) => (
+            <div key={group.name} className="flex items-center gap-3">
+              <div className="w-1/3 font-semibold">{group.name}:</div>
+              <div className="w-2/3">
+                <Select
+                  value={optionIds?.[i] || ''}
+                  onValueChange={(e) => {
+                    handleOptionChange(e, i);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('addVariantDialog.selectOption')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {group.options.map((o) => (
+                      <SelectItem key={o.id} value={o.id} className="capitalize">
+                        {o.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
+      ) : (
+        <p className="text-sm text-muted-foreground">{t('addVariantDialog.createOptionsHint')}</p>
       )}
     </CustomCard>
   );
