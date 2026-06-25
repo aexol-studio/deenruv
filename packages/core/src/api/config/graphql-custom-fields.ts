@@ -5,6 +5,10 @@ import {
 import {
   buildSchema,
   extendSchema,
+  type GraphQLArgument,
+  type GraphQLArgumentConfig,
+  type GraphQLArgumentExtensions,
+  GraphQLField,
   GraphQLInputObjectType,
   GraphQLList,
   GraphQLSchema,
@@ -19,6 +23,66 @@ import {
 import { Logger } from "../../config/logger/deenruv-logger";
 
 import { getCustomFieldsConfigWithoutInterfaces } from "./get-custom-fields-config-without-interfaces";
+
+type GraphQLArgumentConstructor = new (
+  parent: GraphQLField<unknown, unknown>,
+  name: string,
+  config: GraphQLArgumentConfig,
+) => GraphQLArgument;
+
+type GraphQLModuleWithArgument = typeof import("graphql") & {
+  GraphQLArgument?: GraphQLArgumentConstructor;
+};
+
+const graphqlModule = require("graphql") as GraphQLModuleWithArgument;
+
+function createGraphQLArgument(
+  parent: GraphQLField<unknown, unknown>,
+  name: string,
+  config: GraphQLArgumentConfig,
+): GraphQLArgument {
+  const GraphQLArgumentCtor = graphqlModule.GraphQLArgument;
+
+  if (GraphQLArgumentCtor) {
+    return new GraphQLArgumentCtor(parent, name, config);
+  }
+
+  const extensions: Readonly<GraphQLArgumentExtensions> = {
+    ...(config.extensions ?? {}),
+  };
+
+  return {
+    parent,
+    name,
+    description: config.description,
+    type: config.type,
+    defaultValue: config.defaultValue,
+    default: config.default,
+    deprecationReason: config.deprecationReason,
+    extensions,
+    astNode: config.astNode,
+    get [Symbol.toStringTag]() {
+      return "GraphQLArgument";
+    },
+    toConfig() {
+      return {
+        description: config.description,
+        type: config.type,
+        defaultValue: config.defaultValue,
+        default: config.default,
+        deprecationReason: config.deprecationReason,
+        extensions,
+        astNode: config.astNode,
+      };
+    },
+    toString() {
+      return `${parent}(${name}:)`;
+    },
+    toJSON() {
+      return this.toString();
+    },
+  };
+}
 
 /**
  * Given a CustomFields config object, generates an SDL string extending the built-in
@@ -448,29 +512,27 @@ export function addOrderLineCustomFieldsInput(
   if (addItemToOrderMutation) {
     addItemToOrderMutation.args = [
       ...addItemToOrderMutation.args,
-      {
-        name: "customFields",
-        type: input,
+      createGraphQLArgument(addItemToOrderMutation, "customFields", {
         description: null,
+        type: input,
         defaultValue: null,
         extensions: {},
         astNode: null,
         deprecationReason: null,
-      },
+      }),
     ];
   }
   if (adjustOrderLineMutation) {
     adjustOrderLineMutation.args = [
       ...adjustOrderLineMutation.args,
-      {
-        name: "customFields",
-        type: input,
+      createGraphQLArgument(adjustOrderLineMutation, "customFields", {
         description: null,
+        type: input,
         defaultValue: null,
         extensions: {},
         astNode: null,
         deprecationReason: null,
-      },
+      }),
     ];
   }
 

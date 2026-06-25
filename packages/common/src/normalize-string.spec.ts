@@ -15,6 +15,10 @@ describe("normalizeString()", () => {
     expect(normalizeString("el niño")).toBe("el nino");
     expect(normalizeString("genkō yōshi")).toBe("genko yoshi");
     expect(normalizeString("việt nam")).toBe("viet nam");
+    expect(normalizeString("gładka czapa z pomponem", "-")).toBe(
+      "gladka-czapa-z-pomponem",
+    );
+    expect(normalizeString("GŁADKA ŁÓDŹ")).toBe("gladka lodz");
   });
 
   it("replaces spaces with the spaceReplacer", () => {

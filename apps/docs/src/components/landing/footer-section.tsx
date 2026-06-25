@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { GitHubIcon } from "@/components/GitHubIcon";
 import { t, type Lang } from "./translations";
 
 function DiscordIcon({ className }: { className?: string }) {
@@ -74,7 +74,7 @@ export function FooterSection({ lang = "en" }: { lang?: Lang }) {
                 target="_blank"
                 className="text-zinc-500 hover:text-white transition-colors"
               >
-                <Github className="h-5 w-5" />
+                <GitHubIcon className="h-5 w-5" />
               </Link>
               <Link
                 href="https://discord.gg/udyZAJPa"

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, Github, Globe, Menu, Star, X } from "lucide-react";
+import { GitHubIcon } from "@/components/GitHubIcon";
+import { ArrowRight, Globe, Menu, Star, X } from "lucide-react";
 import { t, type Lang } from "./translations";
 
 export function Navigation({ lang = "en" }: { lang?: Lang }) {
@@ -106,7 +107,7 @@ export function Navigation({ lang = "en" }: { lang?: Lang }) {
               rel="noopener noreferrer"
               className="hidden sm:inline-flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
             >
-              <Github className="h-4 w-4" />
+              <GitHubIcon className="h-4 w-4" />
               <span className="inline-flex items-center gap-0.5 rounded-full bg-zinc-800 px-2 py-0.5 text-xs text-zinc-400">
                 <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
                 {starCount}
@@ -193,7 +194,7 @@ export function Navigation({ lang = "en" }: { lang?: Lang }) {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2 px-4 py-3 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
               >
-                <Github className="h-4 w-4" />
+                <GitHubIcon className="h-4 w-4" />
                 GitHub
                 <span className="inline-flex items-center gap-0.5 rounded-full bg-zinc-800 px-2 py-0.5 text-xs text-zinc-400">
                   <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />

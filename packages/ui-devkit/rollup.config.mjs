@@ -13,8 +13,12 @@ export default (commandLineArgs) => {
       name: "DeenruvUiClient",
     },
     plugins: [
-      resolve(),
-      typescript(),
+      resolve({
+        extensions: [".mjs", ".js", ".json", ".node", ".ts"],
+      }),
+      typescript({
+        include: ["src/client/**/*.ts"],
+      }),
       ...(isProd
         ? [
             terser({

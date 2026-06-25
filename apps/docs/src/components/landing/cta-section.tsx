@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Github, Star } from "lucide-react";
+import { GitHubIcon } from "@/components/GitHubIcon";
+import { ArrowRight, Star } from "lucide-react";
 import { t, type Lang } from "./translations";
 
 export function CtaSection({ lang = "en" }: { lang?: Lang }) {
@@ -58,7 +59,7 @@ export function CtaSection({ lang = "en" }: { lang?: Lang }) {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-6 py-3 sm:px-8 sm:py-4 text-base sm:text-lg font-semibold text-white transition-all hover:border-zinc-500 hover:bg-zinc-800/50 w-full sm:w-auto justify-center"
             >
-              <Github className="h-5 w-5 shrink-0" />
+              <GitHubIcon className="h-5 w-5 shrink-0" />
               {text.starOnGitHub}
               <span className="inline-flex items-center gap-0.5 rounded-full bg-zinc-800 px-2 py-0.5 text-xs text-zinc-400 shrink-0">
                 <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />

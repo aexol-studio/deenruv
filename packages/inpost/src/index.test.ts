@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { doesNotReject, notEqual } from "node:assert";
+import { doesNotReject, notEqual, ok } from "node:assert";
 import { Client, CountryCode } from "./index.js";
 import { createWriteStream } from "fs";
 import { tmpdir } from "node:os";
@@ -13,6 +13,22 @@ const {
 } = process.env as {
   INPOST_HOST: string;
   INPOST_API_KEY: string;
+};
+
+type ShipmentWithGeneratedFields = {
+  id?: number;
+  offers?: Array<{ id: number }>;
+};
+
+const shipmentId = (shipment: ShipmentWithGeneratedFields) => {
+  ok(typeof shipment.id === "number", "Expected shipment id to be present");
+  return shipment.id;
+};
+
+const firstOfferId = (shipment: ShipmentWithGeneratedFields) => {
+  const offerId = shipment.offers?.[0]?.id;
+  ok(typeof offerId === "number", "Expected shipment first offer id to be present");
+  return offerId;
 };
 
 describe("inpost client tests", { skip: !apiKey }, () => {
@@ -81,28 +97,30 @@ describe("inpost client tests", { skip: !apiKey }, () => {
       while (!shipment.status || shipment.status === "created") {
         console.log("Waiting for shipment to be created...");
         await new Promise((resolve) => setTimeout(resolve, 500));
-        shipment = await client.shipments().get(shipment.id).fetch();
+        shipment = await client.shipments().get(shipmentId(shipment)).fetch();
       }
 
+      const offerId = firstOfferId(shipment);
       shipment = await client
         .shipments()
-        .get(shipment.id)
-        .buy({ offer_id: shipment.offers[0].id });
+        .get(shipmentId(shipment))
+        .buy({ offer_id: offerId });
 
       let found = shipment.transactions?.find(
-        (t) => t.status === "success" && t.offer_id === shipment.offers?.[0].id,
+        (t) => t.status === "success" && t.offer_id === offerId,
       );
 
       while (!found) {
         console.log("Waiting for transaction to succeed...");
         await new Promise((resolve) => setTimeout(resolve, 500));
-        shipment = await client.shipments().get(shipment.id).fetch();
+        shipment = await client.shipments().get(shipmentId(shipment)).fetch();
         found = shipment.transactions?.find((t) => t.status === "success");
         if (!found) {
+          const retryOfferId = firstOfferId(shipment);
           await client
             .shipments()
-            .get(shipment.id)
-            .buy({ offer_id: shipment.offers[0].id });
+            .get(shipmentId(shipment))
+            .buy({ offer_id: retryOfferId });
         }
       }
 
@@ -113,10 +131,11 @@ describe("inpost client tests", { skip: !apiKey }, () => {
       ) {
         console.log("Waiting for shipment to be ready...");
         await new Promise((resolve) => setTimeout(resolve, 500));
-        shipment = await client.shipments().get(shipment.id).fetch();
+        shipment = await client.shipments().get(shipmentId(shipment)).fetch();
       }
       const tmp = await mkdtemp(join(tmpdir(), "test-inpost-label"));
-      const label = await client.shipments().get(shipment.id).label();
+      const label = await client.shipments().get(shipmentId(shipment)).label();
+      ok(label, "Expected shipment label response body to be present");
       await label.pipeTo(
         Writable.toWeb(
           createWriteStream(join(tmp, "label.pdf")),

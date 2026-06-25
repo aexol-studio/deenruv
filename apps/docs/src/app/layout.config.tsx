@@ -1,4 +1,4 @@
-import { Github } from "lucide-react";
+import { GitHubIcon } from "@/components/GitHubIcon";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 const version = process.env.NEXT_PUBLIC_DEENRUV_VERSION;
@@ -27,7 +27,7 @@ export const baseOptions: BaseLayoutProps = {
     {
       type: "icon",
       label: "GitHub",
-      icon: <Github />,
+      icon: <GitHubIcon />,
       text: "GitHub",
       url: "https://github.com/aexol-studio/deenruv",
     },

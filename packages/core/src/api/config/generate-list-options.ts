@@ -1,6 +1,9 @@
 import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
 import {
   buildSchema,
+  type GraphQLArgument,
+  type GraphQLArgumentConfig,
+  type GraphQLArgumentExtensions,
   GraphQLEnumType,
   GraphQLField,
   GraphQLInputField,
@@ -27,6 +30,66 @@ import {
 // Using require here to prevent issues when running vitest tests also.
 
 const { stitchSchemas, ValidationLevel } = require("@graphql-tools/stitch");
+
+type GraphQLArgumentConstructor = new (
+  parent: GraphQLField<unknown, unknown>,
+  name: string,
+  config: GraphQLArgumentConfig,
+) => GraphQLArgument;
+
+type GraphQLModuleWithArgument = typeof import("graphql/index.js") & {
+  GraphQLArgument?: GraphQLArgumentConstructor;
+};
+
+const graphqlModule = require("graphql/index.js") as GraphQLModuleWithArgument;
+
+function createGraphQLArgument(
+  parent: GraphQLField<unknown, unknown>,
+  name: string,
+  config: GraphQLArgumentConfig,
+): GraphQLArgument {
+  const GraphQLArgumentCtor = graphqlModule.GraphQLArgument;
+
+  if (GraphQLArgumentCtor) {
+    return new GraphQLArgumentCtor(parent, name, config);
+  }
+
+  const extensions: Readonly<GraphQLArgumentExtensions> = {
+    ...(config.extensions ?? {}),
+  };
+
+  return {
+    parent,
+    name,
+    description: config.description,
+    type: config.type,
+    defaultValue: config.defaultValue,
+    default: config.default,
+    deprecationReason: config.deprecationReason,
+    extensions,
+    astNode: config.astNode,
+    get [Symbol.toStringTag]() {
+      return "GraphQLArgument";
+    },
+    toConfig() {
+      return {
+        description: config.description,
+        type: config.type,
+        defaultValue: config.defaultValue,
+        default: config.default,
+        deprecationReason: config.deprecationReason,
+        extensions,
+        astNode: config.astNode,
+      };
+    },
+    toString() {
+      return `${parent}(${name}:)`;
+    },
+    toJSON() {
+      return this.toString();
+    },
+  };
+}
 
 /**
  * Generates ListOptions inputs for queries which return PaginatedList types.
@@ -106,15 +169,14 @@ export function generateListOptions(
       ) {
         query.args = [
           ...query.args,
-          {
-            name: "options",
-            type: generatedListOptions,
+          createGraphQLArgument(query, "options", {
             description: null,
+            type: generatedListOptions,
             defaultValue: null,
             extensions: {},
             astNode: null,
             deprecationReason: null,
-          },
+          }),
         ];
       }
 

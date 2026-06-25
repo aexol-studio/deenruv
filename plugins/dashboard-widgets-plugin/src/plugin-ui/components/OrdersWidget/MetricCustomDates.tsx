@@ -52,7 +52,6 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
             mode="single"
             selected={startDate}
             onSelect={(e) => setDate(e ? startOfDay(e) : e, "start")}
-            initialFocus
           />
         </PopoverContent>
       </Popover>
@@ -78,7 +77,6 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
             mode="single"
             selected={endDate}
             onSelect={(e) => setDate(e ? endOfDay(e) : e, "end")}
-            initialFocus
           />
         </PopoverContent>
       </Popover>

@@ -1,5 +1,5 @@
 import { i18n } from "@/lib/i18n";
-import { Github } from "lucide-react";
+import { GitHubIcon } from "@/components/GitHubIcon";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 export function baseOptions(locale: string): BaseLayoutProps {
@@ -23,7 +23,7 @@ export function baseOptions(locale: string): BaseLayoutProps {
       {
         type: "icon",
         label: "GitHub",
-        icon: <Github />,
+        icon: <GitHubIcon />,
         text: "GitHub",
         url: "https://github.com/aexol-studio/deenruv",
       },
