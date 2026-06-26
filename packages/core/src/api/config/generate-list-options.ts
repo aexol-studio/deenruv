@@ -1,33 +1,24 @@
 import { notNullOrUndefined } from "@deenruv/common/lib/shared-utils";
-import {
-  buildSchema,
-  type GraphQLArgument,
-  type GraphQLArgumentConfig,
-  type GraphQLArgumentExtensions,
+import type {
+  GraphQLArgument,
+  GraphQLArgumentConfig,
+  GraphQLArgumentExtensions,
   GraphQLEnumType,
   GraphQLField,
   GraphQLInputField,
   GraphQLInputFieldConfig,
   GraphQLInputFieldConfigMap,
-  GraphQLInputObjectType,
+  GraphQLInputObjectType as GraphQLInputObjectTypeInstance,
   GraphQLInputType,
-  GraphQLInt,
-  GraphQLList,
+  GraphQLList as GraphQLListInstance,
   GraphQLNamedType,
-  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLOutputType,
   GraphQLSchema,
-  isEnumType,
-  isInputObjectType,
-  isListType,
-  isNonNullType,
-  isObjectType,
-  // Importing this from graphql/index.js is a workaround for the dual-package
-  // hazard issue when testing this file in vitest. See https://github.com/vitejs/vite/issues/7879
-} from "graphql/index.js";
+} from "graphql";
 
-// Using require here to prevent issues when running vitest tests also.
+// Using require here keeps GraphQL runtime values in the same CommonJS module
+// realm as @graphql-tools/stitch and the Vitest specs.
 
 const { stitchSchemas, ValidationLevel } = require("@graphql-tools/stitch");
 
@@ -37,11 +28,27 @@ type GraphQLArgumentConstructor = new (
   config: GraphQLArgumentConfig,
 ) => GraphQLArgument;
 
-type GraphQLModuleWithArgument = typeof import("graphql/index.js") & {
+type GraphQLModuleWithArgument = typeof import("graphql") & {
   GraphQLArgument?: GraphQLArgumentConstructor;
 };
 
-const graphqlModule = require("graphql/index.js") as GraphQLModuleWithArgument;
+type UnwrappedGraphQLType =
+  | GraphQLNamedType
+  | GraphQLListInstance<GraphQLOutputType | GraphQLInputType>;
+
+const graphqlModule = require("graphql") as GraphQLModuleWithArgument;
+const {
+  buildSchema,
+  GraphQLInputObjectType,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull,
+  isEnumType,
+  isInputObjectType,
+  isListType,
+  isNonNullType,
+  isObjectType,
+} = graphqlModule;
 
 function createGraphQLArgument(
   parent: GraphQLField<unknown, unknown>,
@@ -128,7 +135,7 @@ export function generateListOptions(
       const filterParameter = createFilterParameter(schema, targetType);
       const existingListOptions = schema.getType(
         `${targetTypeName}ListOptions`,
-      ) as GraphQLInputObjectType | null;
+      ) as GraphQLInputObjectTypeInstance | null;
       const generatedListOptions = new GraphQLInputObjectType({
         name: `${targetTypeName}ListOptions`,
         fields: {
@@ -248,7 +255,7 @@ function createSortParameter(
 function createFilterParameter(
   schema: GraphQLSchema,
   targetType: GraphQLObjectType,
-): GraphQLInputObjectType {
+): GraphQLInputObjectTypeInstance {
   const fields: Array<GraphQLField<any, any> | GraphQLInputField> =
     Object.values(targetType.getFields());
   const targetTypeName = targetType.name;
@@ -294,32 +301,33 @@ function createFilterParameter(
     }
   }
 
-  const FilterInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: inputName,
-    fields: () => {
-      const namedFields = fields.reduce((result, field) => {
-        const fieldType = field.type;
-        const filterType = isInputObjectType(fieldType)
-          ? fieldType
-          : getFilterType(field);
-        if (!filterType) {
-          return result;
-        }
-        const fieldConfig: GraphQLInputFieldConfig = {
-          type: filterType,
-        };
+  const FilterInputType: GraphQLInputObjectTypeInstance =
+    new GraphQLInputObjectType({
+      name: inputName,
+      fields: () => {
+        const namedFields = fields.reduce((result, field) => {
+          const fieldType = field.type;
+          const filterType = isInputObjectType(fieldType)
+            ? fieldType
+            : getFilterType(field);
+          if (!filterType) {
+            return result;
+          }
+          const fieldConfig: GraphQLInputFieldConfig = {
+            type: filterType,
+          };
+          return {
+            ...result,
+            [field.name]: fieldConfig,
+          };
+        }, {} as GraphQLInputFieldConfigMap);
         return {
-          ...result,
-          [field.name]: fieldConfig,
+          ...namedFields,
+          _and: { type: new GraphQLList(new GraphQLNonNull(FilterInputType)) },
+          _or: { type: new GraphQLList(new GraphQLNonNull(FilterInputType)) },
         };
-      }, {} as GraphQLInputFieldConfigMap);
-      return {
-        ...namedFields,
-        _and: { type: new GraphQLList(new GraphQLNonNull(FilterInputType)) },
-        _or: { type: new GraphQLList(new GraphQLNonNull(FilterInputType)) },
-      };
-    },
-  });
+      },
+    });
 
   return FilterInputType;
 }
@@ -368,7 +376,7 @@ function getCommonTypes(schema: GraphQLSchema) {
  */
 function unwrapNonNullType(
   type: GraphQLOutputType | GraphQLInputType,
-): GraphQLNamedType | GraphQLList<GraphQLOutputType | GraphQLInputType> {
+): UnwrappedGraphQLType {
   if (isNonNullType(type)) {
     return type.ofType;
   }

@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/inpost",
-  "version": "1.0.17-dev.1",
+  "version": "1.0.17-dev.2",
   "type": "commonjs",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
