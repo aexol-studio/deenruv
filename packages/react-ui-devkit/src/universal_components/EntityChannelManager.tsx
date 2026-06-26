@@ -192,7 +192,16 @@ export const EntityChannelManager: React.FC<EntityChannelManagerProps> = ({
     } catch (e) {
       toast.error(t("error.mutation"));
     }
-  }, [entityCode, entitySlug, entityId, entityName, entity, entityVariantList, onRemoveSuccess, t]);
+  }, [
+    entityCode,
+    entitySlug,
+    entityId,
+    entityName,
+    entity,
+    entityVariantList,
+    onRemoveSuccess,
+    t,
+  ]);
 
   return (
     <CustomCard

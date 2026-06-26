@@ -33,10 +33,9 @@ normalizeTerminusModuleRefMetadata(terminusIndicatorsWithModuleRef);
 
 function normalizeTerminusModuleRefMetadata(providers: Array<Type<unknown>>) {
   for (const provider of providers) {
-    const paramTypes = Reflect.getMetadata(
-      "design:paramtypes",
-      provider,
-    ) as unknown[] | undefined;
+    const paramTypes = Reflect.getMetadata("design:paramtypes", provider) as
+      | unknown[]
+      | undefined;
 
     if (!Array.isArray(paramTypes)) {
       continue;

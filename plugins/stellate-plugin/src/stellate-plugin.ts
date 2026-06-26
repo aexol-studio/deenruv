@@ -275,9 +275,8 @@ export class StellatePlugin implements OnApplicationBootstrap {
   onApplicationBootstrap() {
     // Bridge duplicate @nestjs/core type instances when this plugin is built in
     // isolation; both ModuleRef objects are runtime-compatible for Injector.
-    const injectorModuleRef = this.moduleRef as unknown as ConstructorParameters<
-      typeof Injector
-    >[0];
+    const injectorModuleRef = this
+      .moduleRef as unknown as ConstructorParameters<typeof Injector>[0];
     const injector = new Injector(injectorModuleRef);
 
     for (const purgeRule of this.options.purgeRules ?? []) {

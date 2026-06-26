@@ -80,7 +80,11 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
       color="orange"
       upperRight={
         createMode ? (
-          <AddOptionGroupDialog currentTranslationLng={contentLng} onSuccess={fetchOptionGroups} productId={productId} />
+          <AddOptionGroupDialog
+            currentTranslationLng={contentLng}
+            onSuccess={fetchOptionGroups}
+            productId={productId}
+          />
         ) : undefined
       }
     >

@@ -122,9 +122,7 @@ export const PromotionsDetailPage = () => {
               }>;
               const translations = data.translations as PromotionTranslationInput[];
               const input = {
-                translations: id
-                  ? translations
-                  : ensureDefaultPromotionTranslation(translations, defaultLanguageCode),
+                translations: id ? translations : ensureDefaultPromotionTranslation(translations, defaultLanguageCode),
                 enabled: typeof data.enabled === 'boolean' ? data.enabled : true,
                 actions,
                 conditions: conditions?.map((el) => ({

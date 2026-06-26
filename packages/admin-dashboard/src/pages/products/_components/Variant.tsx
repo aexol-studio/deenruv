@@ -261,7 +261,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     <div className="mt-4 flex flex-col gap-4">
       <div className="flex flex-col gap-2 rounded-lg border bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t('variants')}</p>
+          <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{t('variants')}</p>
           <h3 className="truncate text-lg font-semibold">{variantDisplayName}</h3>
         </div>
         <div className="text-sm text-muted-foreground sm:text-right">
@@ -360,7 +360,9 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               onRemoveSuccess={onActionCompleted}
               entityName={variant.name}
               entityVariantList={{
-                items: [{ price: variant.price, priceWithTax: variant.priceWithTax, currencyCode: variant.currencyCode }],
+                items: [
+                  { price: variant.price, priceWithTax: variant.priceWithTax, currencyCode: variant.currencyCode },
+                ],
               }}
             />
           )}

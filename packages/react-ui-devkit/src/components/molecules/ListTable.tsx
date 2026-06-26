@@ -207,7 +207,9 @@ export function ListTable<TData, TValue>({
                       <div
                         className={cn(
                           "flex min-h-10 items-center gap-2",
-                          isSelectionHeader ? "justify-center" : "justify-between",
+                          isSelectionHeader
+                            ? "justify-center"
+                            : "justify-between",
                         )}
                       >
                         {header.isPlaceholder

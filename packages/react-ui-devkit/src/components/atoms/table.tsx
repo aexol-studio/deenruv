@@ -9,13 +9,17 @@ const Table = React.forwardRef<
   <div
     style={{
       scrollbarWidth: "thin",
-      scrollbarColor: "color-mix(in srgb, var(--foreground) 18%, transparent) transparent",
+      scrollbarColor:
+        "color-mix(in srgb, var(--foreground) 18%, transparent) transparent",
     }}
     className={cn("relative h-full w-full overflow-auto", containerClassName)}
   >
     <table
       ref={ref}
-      className={cn("w-full caption-bottom border-separate border-spacing-0 text-sm", className)}
+      className={cn(
+        "w-full caption-bottom border-separate border-spacing-0 text-sm",
+        className,
+      )}
       {...props}
     />
   </div>

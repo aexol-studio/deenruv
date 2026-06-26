@@ -5,13 +5,22 @@ import { useTranslation } from "@/hooks/useTranslation.js";
 import { capitalizeFirstLetter, camelCaseToSpaces } from "@/utils";
 
 type TranslatedLabel = { languageCode?: string; value?: unknown };
-type SelectOptionConfig = { label?: string | TranslatedLabel[]; value?: unknown };
+type SelectOptionConfig = {
+  label?: string | TranslatedLabel[];
+  value?: unknown;
+};
 
-const isSelectOptionConfig = (option: unknown): option is SelectOptionConfig => {
+const isSelectOptionConfig = (
+  option: unknown,
+): option is SelectOptionConfig => {
   return !!option && typeof option === "object" && "value" in option;
 };
 
-const getOptionLabel = (label: SelectOptionConfig["label"], language: string, value: string) => {
+const getOptionLabel = (
+  label: SelectOptionConfig["label"],
+  language: string,
+  value: string,
+) => {
   if (typeof label === "string") return label;
   if (!Array.isArray(label)) return value;
 
@@ -36,7 +45,8 @@ const getOptions = (options: unknown, language: string): Option[] => {
 };
 
 export const DefaultSelectInput: React.FC = () => {
-  const { field, value, label, description, setValue, disabled } = useCustomFields<string>();
+  const { field, value, label, description, setValue, disabled } =
+    useCustomFields<string>();
   const { i18n } = useTranslation();
   const options = getOptions(field?.ui?.options, i18n.language);
 

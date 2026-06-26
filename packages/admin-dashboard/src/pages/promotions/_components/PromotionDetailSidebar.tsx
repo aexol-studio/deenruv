@@ -20,7 +20,10 @@ export const PromotionDetailSidebar = () => {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <EnabledCard enabledValue={id ? enabledValue : (enabledValue ?? true)} onEnabledChange={(e) => base.setField('enabled', e)} />
+      <EnabledCard
+        enabledValue={id ? enabledValue : (enabledValue ?? true)}
+        onEnabledChange={(e) => base.setField('enabled', e)}
+      />
     </div>
   );
 };

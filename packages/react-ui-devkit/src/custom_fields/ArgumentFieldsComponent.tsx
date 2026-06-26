@@ -22,7 +22,9 @@ const decodeConfigArgValue = (value: string): unknown => {
 };
 
 const encodeConfigArgValue = (value: unknown): string => {
-  return Array.isArray(value) ? JSON.stringify(value) : (value ?? "").toString();
+  return Array.isArray(value)
+    ? JSON.stringify(value)
+    : (value ?? "").toString();
 };
 
 export const ArgumentFieldsComponent = ({
@@ -110,7 +112,10 @@ export const ArgumentFieldsComponent = ({
               {components.map(({ component }) => {
                 const value = decodeConfigArgValue(arg.value);
                 const setValue = (data: unknown) => {
-                  setArg(field, { name: argName, value: encodeConfigArgValue(data) });
+                  setArg(field, {
+                    name: argName,
+                    value: encodeConfigArgValue(data),
+                  });
                 };
                 const label = [
                   {
