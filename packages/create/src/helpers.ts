@@ -319,12 +319,12 @@ export function getAdminDependencies(deenruvPkgVersion = ""): {
   const dependencies = [
     `@deenruv/admin-dashboard${deenruvPkgVersion}`,
     `@deenruv/react-ui-devkit${deenruvPkgVersion}`,
-    "react",
-    "react-dom",
+    "react@^19.2.7",
+    "react-dom@^19.2.7",
   ];
   const devDependencies = [
-    "@types/react",
-    "@types/react-dom",
+    "@types/react@^19.2.17",
+    "@types/react-dom@^19.2.3",
     "@vitejs/plugin-react-swc",
     "vite-tsconfig-paths",
     `typescript@${TYPESCRIPT_VERSION}`,
