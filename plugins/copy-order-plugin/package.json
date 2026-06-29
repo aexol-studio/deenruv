@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/copy-order-plugin",
-  "version": "1.0.17-dev.6",
+  "version": "1.0.17-dev.7",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "react": "^19.0.0",
-    "lucide-react": "^0.363.0",
+    "lucide-react": "^1.21.0",
     "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/common": "workspace:^",
     "@deenruv/admin-types": "workspace:^",

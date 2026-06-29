@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/cronjobs-plugin",
-  "version": "1.0.17-dev.6",
+  "version": "1.0.17-dev.7",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -29,7 +29,7 @@
     "@nestjs/graphql": "^12.2.0",
     "graphql-tag": "^2.12.6",
     "graphql-zeus": "^7.0.0",
-    "lucide-react": "^0.363.0",
+    "lucide-react": "^1.21.0",
     "react-hook-form": "^7.71.1",
     "react-i18next": "^14.0.5",
     "react-router": "^7.13.0",

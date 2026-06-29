@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/deenruv-examples-plugin",
-  "version": "1.0.17-dev.6",
+  "version": "1.0.17-dev.7",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -29,7 +29,7 @@
     "graphql-tag": "^2.12.6",
     "graphql-zeus": "^7.0.0",
     "i": "^0.3.7",
-    "lucide-react": "^0.363.0",
+    "lucide-react": "^1.21.0",
     "npm": "^10.9.0",
     "react": "^19.0.0",
     "react-hook-form": "^7.51.3",

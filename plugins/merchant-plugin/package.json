@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/merchant-plugin",
-  "version": "1.0.17-dev.6",
+  "version": "1.0.17-dev.7",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -38,7 +38,7 @@
     "graphql-tag": "^2.12.6",
     "graphql-zeus": "^5.4.2",
     "html-to-text": "^9.0.5",
-    "lucide-react": "^0.363.0",
+    "lucide-react": "^1.21.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^14.0.5",
