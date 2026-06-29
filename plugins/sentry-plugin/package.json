@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/sentry-plugin",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,7 +19,7 @@
   },
   "peerDependencies": {
     "@sentry/node": "7.106.1",
-    "@deenruv/core": "^1.0.0",
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0",
     "graphql": "~16.9.0",
     "graphql-tag": "^2.12.6"
   },

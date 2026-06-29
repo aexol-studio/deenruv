@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/replicate-plugin",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -48,7 +48,7 @@
     "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "@deenruv/core": "^1.0.0",
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0",
     "typeorm": "^0.3.20"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/phone-number-validation",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -24,7 +24,7 @@
     "libphonenumber-js": "^1.12.6"
   },
   "peerDependencies": {
-    "@deenruv/core": "^1.0.0"
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",

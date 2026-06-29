@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/stellate-plugin",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
     "node-fetch": "^2.7.0"
   },
   "peerDependencies": {
-    "@deenruv/core": "^1.0.0",
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0",
     "rxjs": "7.8.1"
   },
   "devDependencies": {

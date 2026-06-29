@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/dashboard-widgets-plugin",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -46,7 +46,7 @@
     "@graphql-typed-document-node/core": "^3.2.0"
   },
   "peerDependencies": {
-    "@deenruv/core": "^1.0.0",
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0",
     "typeorm": "^0.3.20"
   }
 }

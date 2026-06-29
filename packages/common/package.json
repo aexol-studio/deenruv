@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/common",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

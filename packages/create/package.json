@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/create",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "license": "MIT",
   "bin": {
     "create": "./index.js"
@@ -46,6 +46,6 @@
     "tcp-port-used": "^1.0.2"
   },
   "peerDependencies": {
-    "@deenruv/core": "^1.0.0"
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0"
   }
 }

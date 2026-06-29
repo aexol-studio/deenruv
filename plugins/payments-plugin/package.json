@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/payments-plugin",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "license": "MIT",
   "main": "package/index.js",
   "types": "package/index.d.ts",
@@ -42,7 +42,7 @@
     "express": "^4.21.0"
   },
   "peerDependenciesMeta": {
-    "@deenruv/core": "^1.0.0",
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0",
     "@mollie/api-client": {
       "optional": true
     },

@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/testing",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "description": "End-to-end testing tools for deenruv projects",
   "keywords": [
     "deenruv",
@@ -36,7 +36,7 @@
   },
   "peerDependencies": {
     "typeorm": "^0.3.20",
-    "@deenruv/core": "^1.0.0"
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0"
   },
   "dependencies": {
     "@deenruv/common": "workspace:*",

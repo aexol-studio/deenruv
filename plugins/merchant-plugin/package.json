@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/merchant-plugin",
-  "version": "1.0.17-dev.5",
+  "version": "1.0.17-dev.6",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -58,6 +58,6 @@
     "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "@deenruv/core": "^1.0.0"
+    "@deenruv/core": "^1.0.0 || ^1.0.17-dev.0"
   }
 }
