@@ -15,6 +15,64 @@ export const FULL_ADMIN_ACCESS_PROFILE: AdminAccessProfile = {
   },
 };
 
+const SHOP_MANAGER_ALLOWED_ROUTE_IDS = [
+  'orders.list',
+  'orders.detail',
+  'orders.create',
+  'customers.list',
+  'customers.detail',
+  'customers.create',
+  'products.list',
+  'products.detail',
+  'products.create',
+  'productVariants.list',
+  'productVariants.detail',
+  'productVariants.create',
+  'collections.list',
+  'collections.detail',
+  'collections.create',
+  'facets.list',
+  'facets.detail',
+  'facets.create',
+  'assets.list',
+  'paymentMethods.list',
+  'paymentMethods.detail',
+  'paymentMethods.create',
+  'shippingMethods.list',
+  'shippingMethods.detail',
+  'shippingMethods.create',
+  'stockLocations.list',
+  'stockLocations.detail',
+  'stockLocations.create',
+  'countries.list',
+  'countries.detail',
+  'countries.create',
+];
+
+export const SHOP_MANAGER_ACCESS_PROFILE: AdminAccessProfile = {
+  id: 'shop-manager',
+  mode: 'restricted',
+  defaultRouteId: 'orders.list',
+  allowedRouteIds: SHOP_MANAGER_ALLOWED_ROUTE_IDS,
+  plugins: {
+    enabledIds: [],
+  },
+  surfaces: {
+    globalSearch: true,
+    notifications: true,
+    systemStatus: false,
+    extensionsPage: false,
+    channelSwitcher: true,
+    languageSwitcher: true,
+    reindexAction: false,
+  },
+};
+
+export const MINI_ADMIN_ACCESS_PROFILE: AdminAccessProfile = {
+  ...SHOP_MANAGER_ACCESS_PROFILE,
+  id: 'mini-admin',
+};
+
 export const normalizeAccessProfile = (profile?: AdminAccessProfile): AdminAccessProfile => ({
   ...FULL_ADMIN_ACCESS_PROFILE,
   ...profile,

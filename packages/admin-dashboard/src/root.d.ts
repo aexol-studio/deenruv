@@ -10,4 +10,8 @@ export function DeenruvAdminPanel({
   accessProfile?: AdminAccessProfile;
 }): JSX.Element;
 
+export const FULL_ADMIN_ACCESS_PROFILE: AdminAccessProfile;
+export const MINI_ADMIN_ACCESS_PROFILE: AdminAccessProfile;
+export const SHOP_MANAGER_ACCESS_PROFILE: AdminAccessProfile;
+
 export type { AdminAccessProfile, DeenruvAdminPanelSettings, DeenruvUIPlugin };
