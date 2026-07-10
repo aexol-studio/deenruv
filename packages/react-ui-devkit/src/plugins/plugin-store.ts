@@ -447,11 +447,13 @@ export class PluginStore {
   get topNavigationComponents() {
     const components = new Map<
       string,
-      { component: React.ComponentType; id: string }
+      NonNullable<DeenruvUIPlugin["topNavigationComponents"]>[number] & {
+        plugin: DeenruvPluginStored;
+      }
     >();
     this.getPluginMap().forEach((plugin) => {
-      plugin.topNavigationComponents?.forEach(({ component, id }) => {
-        components.set(id, { component, id });
+      plugin.topNavigationComponents?.forEach((entry) => {
+        components.set(entry.id, { ...entry, plugin });
       });
     });
     return Array.from(components.values());
@@ -460,11 +462,13 @@ export class PluginStore {
   get topNavigationActionsMenu() {
     const actions = new Map<
       string,
-      NonNullable<DeenruvUIPlugin["topNavigationActionsMenu"]>[number]
+      NonNullable<DeenruvUIPlugin["topNavigationActionsMenu"]>[number] & {
+        plugin: DeenruvPluginStored;
+      }
     >();
     this.getPluginMap().forEach((plugin) => {
       plugin.topNavigationActionsMenu?.forEach((action) => {
-        actions.set(action.label, action);
+        actions.set(action.label, { ...action, plugin });
       });
     });
     return Array.from(actions.values());

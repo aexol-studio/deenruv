@@ -1,5 +1,6 @@
 import { LanguageCode } from "@deenruv/admin-types";
 import React from "react";
+import type { AdminAccessProfile } from "./access.js";
 
 type Logo = string | React.JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -9,6 +10,7 @@ export type DeenruvAdminPanelSettings = {
     defaultLanguageCode?: LanguageCode;
     defaultTranslationLanguageCode?: LanguageCode;
     extras?: { orderObservableStates?: string[] };
+    accessProfile?: AdminAccessProfile;
   };
   branding: {
     name: string;

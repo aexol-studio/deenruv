@@ -3,7 +3,6 @@ import React, { useMemo } from 'react';
 import {
   cn,
   buttonVariants,
-  Routes,
   usePluginStore,
   Tooltip,
   TooltipContent,
@@ -18,39 +17,27 @@ import {
   capitalizeFirstLetter,
   Skeleton,
 } from '@deenruv/react-ui-devkit';
-import {
-  BarChart,
-  Barcode,
-  Store,
-  ShoppingCart,
-  Images,
-  Folder,
-  Globe2,
-  Tag,
-  UserCog,
-  Users,
-  UserRoundSearch,
-  MapPin,
-  Flag,
-  Coins,
-  Globe,
-  Percent,
-  CreditCard,
-  Truck,
-  Cog,
-  UsersRound,
-  Server,
-  Puzzle,
-  ScanBarcode,
-} from 'lucide-react';
-import { Permission } from '@deenruv/admin-types';
+import type { AdminAccessRequirement } from '@deenruv/react-ui-devkit';
+import { adminNavigationGroups, canAccessAdminItem, useAdminAccess } from '@/access/index.js';
 
 type NavLink = {
   title: string;
   id: string;
   href: string;
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  requiredPermissions?: Permission[];
+  access?: AdminAccessRequirement;
+  routeId?: string;
+};
+
+type PluginNavigationEntry = {
+  id: string;
+  labelId: string;
+  href: string;
+  groupId: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  placement?: { linkId: string; where?: 'above' | 'under' };
+  access?: AdminAccessRequirement;
+  plugin?: { name: string };
 };
 
 interface NavProps {
@@ -62,6 +49,7 @@ export function Navigation({ isCollapsed }: NavProps) {
   const { t: _pluginT } = useTranslation();
   const location = useLocation();
   const { navMenuData, viewMarkers } = usePluginStore();
+  const { profile, routes } = useAdminAccess();
   const userPermissions = useServer((p) => p.userPermissions);
   const loaded = useServer((p) => p.loaded);
   const getNavigationNotification = useNotifications(({ getNavigationNotification }) => getNavigationNotification);
@@ -78,203 +66,31 @@ export function Navigation({ isCollapsed }: NavProps) {
       label: string;
       id: string;
       links: Array<NavLink>;
-    }> = [
-      {
-        label: t('menuGroups.shop'),
-        id: 'shop-group',
-        links: [
-          { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link-dashboard', icon: BarChart },
-          {
-            title: t('menu.orders'),
-            href: Routes.orders.list,
-            id: 'link-orders',
-            icon: ShoppingCart,
-            requiredPermissions: [Permission.ReadOrder],
-          },
-          {
-            title: t('menu.customers'),
-            href: Routes.customers.list,
-            id: 'link-customers',
-            icon: UserRoundSearch,
-            requiredPermissions: [Permission.ReadCustomer],
-          },
-          {
-            title: t('menu.customerGroups'),
-            href: Routes.customerGroups.list,
-            id: 'link-customerGroups',
-            icon: UsersRound,
-            requiredPermissions: [Permission.ReadCustomerGroup],
-          },
-        ],
-      },
-      {
-        label: t('menuGroups.assortment'),
-        id: 'assortment-group',
-        links: [
-          {
-            title: t('menu.products'),
-            href: Routes.products.list,
-            id: 'link-products',
-            icon: Barcode,
-            requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
-          },
-          {
-            title: t('menu.productVariants'),
-            href: Routes.productVariants.list,
-            id: 'link-product-variants',
-            icon: ScanBarcode,
-            requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
-          },
-          {
-            title: t('menu.collections'),
-            href: Routes.collections.list,
-            id: 'link-collections',
-            icon: Folder,
-            requiredPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
-          },
-          {
-            title: t('menu.facets'),
-            href: Routes.facets.list,
-            id: 'link-facets',
-            icon: Tag,
-            requiredPermissions: [Permission.ReadFacet, Permission.ReadCatalog],
-          },
-          {
-            title: t('menu.assets'),
-            href: Routes.assets.list,
-            id: 'link-assets',
-            icon: Images,
-            requiredPermissions: [Permission.ReadAsset, Permission.ReadCatalog],
-          },
-        ],
-      },
-      {
-        label: t('menuGroups.users'),
-        id: 'users-group',
-        links: [
-          {
-            title: t('menu.admins'),
-            href: Routes.admins.list,
-            id: 'link-admins',
-            icon: UserCog,
-            requiredPermissions: [Permission.ReadAdministrator],
-          },
-          {
-            title: t('menu.roles'),
-            href: Routes.roles.list,
-            id: 'link-roles',
-            icon: Users,
-            requiredPermissions: [Permission.ReadAdministrator],
-          },
-          {
-            title: t('menu.sellers'),
-            href: Routes.sellers.list,
-            id: 'link-sellers',
-            icon: Store,
-            requiredPermissions: [Permission.ReadSeller],
-          },
-        ],
-      },
-      {
-        label: t('menuGroups.promotions'),
-        id: 'promotions-group',
-        links: [
-          {
-            title: t('menu.promotions'),
-            href: Routes.promotions.list,
-            id: 'link-promotions',
-            icon: ShoppingCart,
-            requiredPermissions: [Permission.ReadPromotion],
-          },
-        ],
-      },
-      {
-        label: t('menuGroups.shipping'),
-        id: 'shipping-group',
-        links: [
-          {
-            title: t('menu.paymentMethods'),
-            href: Routes.paymentMethods.list,
-            id: 'link-payment-methods',
-            icon: CreditCard,
-            requiredPermissions: [Permission.ReadPaymentMethod],
-          },
-          {
-            title: t('menu.shippingMethods'),
-            href: Routes.shippingMethods.list,
-            id: 'link-shipping-methods',
-            icon: Truck,
-            requiredPermissions: [Permission.ReadShippingMethod],
-          },
-          {
-            title: t('menu.stock'),
-            href: Routes.stockLocations.list,
-            id: 'link-stock',
-            icon: MapPin,
-            requiredPermissions: [Permission.ReadStockLocation],
-          },
-        ],
-      },
-      {
-        label: t('menuGroups.settings'),
-        id: 'settings-group',
-        links: [
-          {
-            title: t('menu.channels'),
-            href: Routes.channels.list,
-            id: 'link-channels',
-            icon: Globe2,
-            requiredPermissions: [Permission.ReadChannel],
-          },
-          {
-            title: t('menu.zones'),
-            href: Routes.zones.list,
-            id: 'link-zones',
-            icon: Globe,
-            requiredPermissions: [Permission.ReadZone],
-          },
-          {
-            title: t('menu.countries'),
-            href: Routes.countries.list,
-            id: 'link-countries',
-            icon: Flag,
-            requiredPermissions: [Permission.ReadCountry],
-          },
-          {
-            title: t('menu.taxCategories'),
-            href: Routes.taxCategories.list,
-            id: 'link-tax-categories',
-            icon: Coins,
-            requiredPermissions: [Permission.ReadTaxCategory],
-          },
-          {
-            title: t('menu.taxRates'),
-            href: Routes.taxRates.list,
-            id: 'link-tax-rates',
-            icon: Percent,
-            requiredPermissions: [Permission.ReadTaxRate],
-          },
-          {
-            title: t('menu.globalSettings'),
-            href: Routes.globalSettings,
-            id: 'link-global-settings',
-            icon: Cog,
-            requiredPermissions: [Permission.ReadSettings],
-          },
-          {
-            title: t('menu.systemStatus'),
-            href: Routes.status,
-            id: 'link-system-status',
-            icon: Server,
-            requiredPermissions: [Permission.ReadSystem],
-          },
-        ],
-      },
-    ];
+    }> = adminNavigationGroups.map((group) => ({
+      label: t(`menuGroups.${group.labelKey}`),
+      id: group.id,
+      links: [],
+    }));
+
+    routes.forEach((route) => {
+      if (!route.nav) return;
+      if (!canAccessAdminItem({ item: route, profile, routeId: route.id, userPermissions })) return;
+      const foundGroupIdx = navData.findIndex((group) => group.id === route.nav?.groupId);
+      if (foundGroupIdx === -1) return;
+      navData[foundGroupIdx].links.push({
+        title: t(`menu.${route.nav.menuKey}`),
+        href: route.path,
+        id: route.nav.linkId,
+        icon: route.nav.icon,
+        access: route,
+        routeId: route.id,
+      });
+    });
 
     const { groups, links } = navMenuData;
 
-    groups.forEach(({ id, labelId, placement }) => {
+    groups.forEach(({ id, labelId, placement, access }) => {
+      if (!canAccessAdminItem({ item: access, profile, userPermissions })) return;
       let foundGroupIdx = -1;
 
       const newGroup = { id, label: pluginT(labelId), links: [] };
@@ -289,13 +105,17 @@ export function Navigation({ isCollapsed }: NavProps) {
       }
     });
 
-    links.forEach(({ groupId, href, labelId, id, icon, placement }) => {
+    (links as PluginNavigationEntry[]).forEach(({ groupId, href, labelId, id, icon, placement, access, plugin }) => {
+      const enabledPluginIds = profile.plugins?.enabledIds;
+      const disabledPluginIds = profile.plugins?.disabledIds;
+      if (plugin?.name && disabledPluginIds?.includes(plugin.name)) return;
+      if (plugin?.name && enabledPluginIds && !enabledPluginIds.includes(plugin.name)) return;
+      if (!canAccessAdminItem({ item: access, profile, userPermissions })) return;
       const foundGroupIdx = navData.findIndex((group) => group.id === groupId);
 
-      if (foundGroupIdx == -1)
-        throw new Error(`Navbar menu group with id ${groupId} was not found.\nPlugin navigation href: ${href}`);
+      if (foundGroupIdx == -1) return;
 
-      const newElement = { title: pluginT(labelId), label: pluginT(labelId), href: `/${href}`, id, icon };
+      const newElement = { title: pluginT(labelId), label: pluginT(labelId), href: `/${href}`, id, icon, access };
 
       if (!placement) {
         navData[foundGroupIdx].links.push(newElement);
@@ -307,21 +127,10 @@ export function Navigation({ isCollapsed }: NavProps) {
       navData[foundGroupIdx].links.splice(foundIndex + offset, 0, newElement);
     });
 
-    return navData;
-  }, [navMenuData.groups, navMenuData.links, t]);
+    return navData.filter((group) => group.links.length > 0);
+  }, [navMenuData.groups, navMenuData.links, pluginT, profile, routes, t, userPermissions]);
 
-  const permittedNavigationGroups = useMemo(() => {
-    return navigationGroups
-      .map((group) => ({
-        ...group,
-        links: group.links.filter((link) =>
-          'requiredPermissions' in link
-            ? link.requiredPermissions?.some((permission) => userPermissions.includes(permission))
-            : true,
-        ),
-      }))
-      .filter((group) => group.links.length > 0);
-  }, [userPermissions, navigationGroups]);
+  const permittedNavigationGroups = navigationGroups;
 
   // const defaultAccordionOpenValue = useMemo(
   //   () =>

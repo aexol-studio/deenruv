@@ -1,5 +1,6 @@
 import { GenericListContextType } from "@/components/templates/DetailList/useDetailListHook/types.js";
 import { Notification } from "@/notifications/types.js";
+import type { AdminAccessRequirement } from "@/access.js";
 import {
   BASE_GROUP_ID,
   DetailKeys,
@@ -26,6 +27,7 @@ export type Widget<T extends Record<string, any> = object> = {
   size: { width: number; height: number };
   sizes: { width: number; height: number }[];
   plugin?: DeenruvUIPlugin<T>;
+  access?: AdminAccessRequirement;
 };
 
 export type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
@@ -46,11 +48,13 @@ export type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
 export type PluginPage = {
   path: string;
   element: React.ReactNode;
+  access?: AdminAccessRequirement;
 };
 
 export type PluginComponent = {
   id: string;
   component: React.ComponentType;
+  access?: AdminAccessRequirement;
 };
 
 export type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> =
@@ -153,6 +157,7 @@ export type PluginNavigationGroup = {
   id: string;
   labelId: string;
   placement?: { groupId: BASE_GROUP_ID | (string & {}) };
+  access?: AdminAccessRequirement;
 };
 
 export type PluginNavigationLink = {
@@ -162,6 +167,7 @@ export type PluginNavigationLink = {
   groupId: BASE_GROUP_ID | (string & {});
   icon: FC<SVGProps<SVGSVGElement>>;
   placement?: { linkId: string; where?: "above" | "under" };
+  access?: AdminAccessRequirement;
 };
 
 export type NavigationAction = {
@@ -169,6 +175,7 @@ export type NavigationAction = {
   icon?: FC<SVGProps<SVGSVGElement>>;
   className?: string;
   onClick: () => void;
+  access?: AdminAccessRequirement;
 };
 
 /**

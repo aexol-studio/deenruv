@@ -5,15 +5,15 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandItem,
-  usePluginStore,
-  Routes,
   useGlobalSearch,
   capitalizeFirstLetter,
   useTranslation,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { LayoutDashboard, ListPlus, FileText, Puzzle, ArrowRight } from 'lucide-react';
+import { canAccessAdminItem, isAccessSurfaceEnabled, useAdminAccess } from '@/access/index.js';
 
 type Route = {
   name: string;
@@ -28,13 +28,16 @@ type Route = {
 export const GlobalSearch = () => {
   const { t, tEntity } = useTranslation('common');
 
-  const { plugins } = usePluginStore();
+  const { profile, routes } = useAdminAccess();
+  const userPermissions = useServer((p) => p.userPermissions);
   const isOpen = useGlobalSearch((s) => s.isOpen);
   const toggle = useGlobalSearch((s) => s.toggle);
   const close = useGlobalSearch((s) => s.close);
   const navigate = useNavigate();
+  const isEnabled = isAccessSurfaceEnabled(profile, 'globalSearch');
 
   useEffect(() => {
+    if (!isEnabled) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === ' ') {
         e.preventDefault();
@@ -43,68 +46,36 @@ export const GlobalSearch = () => {
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [toggle]);
+  }, [isEnabled, toggle]);
 
   const allRoutes = useMemo<Route[]>(() => {
-    const routes: Route[] = [];
+    return routes
+      .filter((route) => route.search)
+      .filter((route) => canAccessAdminItem({ item: route, profile, routeId: route.id, userPermissions }))
+      .map((route) => {
+        const search = route.search!;
+        const isPlugin = search.type === 'plugin';
+        const translatedName = isPlugin ? search.menuKey : capitalizeFirstLetter(t(`menu.${search.menuKey}`));
+        const description =
+          search.type === 'new'
+            ? tEntity('Utwórz', search.menuKey)
+            : search.type === 'list'
+              ? tEntity('Zobacz wszystkie', search.menuKey, 'many')
+              : search.type === 'plugin'
+                ? t('globalSearch.accessPlugin', { pluginName: search.menuKey })
+                : `${t('globalSearch.navigateTo')} ${t(`menu.${search.menuKey}`)}`;
 
-    Object.entries(Routes).forEach(([key, value]) => {
-      if (typeof value === 'object' && value !== null) {
-        const children: Route[] = [];
-        if ('new' in value && typeof value.new === 'string') {
-          children.push({
-            name: capitalizeFirstLetter(t(`menu.${key}`)),
-            path: value.new,
-            type: 'new',
-            description: tEntity('Utwórz', key),
-          });
-        }
-        if ('list' in value && typeof value.list === 'string') {
-          children.push({
-            name: capitalizeFirstLetter(t(`menu.${key}`)),
-            path: value.list,
-            type: 'list',
-            description: tEntity('Zobacz wszystkie', key, 'many'),
-          });
-        }
-        routes.push({ name: key, children });
-      } else if (typeof value === 'string') {
-        routes.push({
-          name: capitalizeFirstLetter(t(`menu.${key}`)),
-          path: value,
-          type: 'default',
-          description: `${t('globalSearch.navigateTo')} ${t(`menu.${key}`)}`,
-        });
-      }
-    });
-
-    plugins.forEach((plugin) => {
-      plugin.pages?.forEach((page, pageIndex) => {
-        if (page.path) {
-          routes.push({
-            name: `${plugin.name} - ${page.path || 'Page'}`,
-            path: page.path,
-            type: 'plugin',
-            description: t('globalSearch.accessPlugin', { pluginName: plugin.name }),
-          });
-        }
+        return {
+          id: route.id,
+          name: translatedName,
+          path: route.path,
+          type: search.type,
+          description,
+        };
       });
-    });
+  }, [profile, routes, t, tEntity, userPermissions]);
 
-    return routes.flatMap((route, routeIndex) =>
-      route.children?.length
-        ? route.children.map((child, childIndex) => ({
-            ...child,
-            id: `${routeIndex}-${childIndex}-${child.type}-${route.name}`,
-          }))
-        : [
-            {
-              ...route,
-              id: `${routeIndex}-main-${route.name}`,
-            },
-          ],
-    );
-  }, [plugins]);
+  if (!isEnabled) return null;
 
   // Group routes by type for better organization
   const groupedRoutes = useMemo(() => {

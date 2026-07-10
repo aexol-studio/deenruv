@@ -15,5 +15,6 @@ export * from "./universal_components";
 export * from "./universal_utils";
 export * from "./universal_table_actions";
 export * from "./notifications";
+export * from "./access.js";
 export * from "./DeenruvAdminPanelSettingsTypes.js";
 export { DEENRUV_UI_VERSION } from "./version.js";

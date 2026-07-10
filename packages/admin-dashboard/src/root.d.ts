@@ -1,11 +1,13 @@
-import type { DeenruvUIPlugin, DeenruvAdminPanelSettings } from '@deenruv/react-ui-devkit';
+import type { AdminAccessProfile, DeenruvUIPlugin, DeenruvAdminPanelSettings } from '@deenruv/react-ui-devkit';
 
 export function DeenruvAdminPanel({
   plugins,
   settings,
+  accessProfile,
 }: {
   plugins: Array<DeenruvUIPlugin>;
   settings: DeenruvAdminPanelSettings;
+  accessProfile?: AdminAccessProfile;
 }): JSX.Element;
 
-export type { DeenruvAdminPanelSettings, DeenruvUIPlugin };
+export type { AdminAccessProfile, DeenruvAdminPanelSettings, DeenruvUIPlugin };

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
 import {
+  type AdminAccessRequirement,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
@@ -30,7 +31,10 @@ import {
   DropdownMenuSubContent,
   createDialog,
   buildURL,
+  type NavigationAction,
+  type PluginComponent,
 } from '@deenruv/react-ui-devkit';
+import { Permission } from '@deenruv/admin-types';
 import { useShallow } from 'zustand/react/shallow';
 
 import {
@@ -53,6 +57,15 @@ import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
 import { Notifications } from './Notifications.js';
 import { NavigationFooter } from '@/components/Menu/NavigationFooter.js';
+import { canAccessAdminItem, isAccessSurfaceEnabled, useAdminAccess } from '@/access/index.js';
+
+type PluginSurfaceEntry = {
+  access?: AdminAccessRequirement;
+  plugin?: { name: string };
+};
+
+type PluginTopNavigationComponent = PluginComponent & PluginSurfaceEntry;
+type PluginTopNavigationAction = NavigationAction & PluginSurfaceEntry;
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.Group>) => (
   <ResizablePrimitive.Group
@@ -92,6 +105,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
   const { topNavigationActionsMenu, topNavigationComponents } = usePluginStore();
+  const { profile, routes, defaultRoute } = useAdminAccess();
   const { logOut, theme, setTheme } = useSettings(
     useShallow((p) => ({
       logOut: p.logOut,
@@ -104,7 +118,51 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const { activeAdministrator, setJobQueue } = useServer();
+  const { activeAdministrator, setJobQueue, userPermissions } = useServer();
+
+  const defaultRoutePath = defaultRoute?.path || Routes.dashboard;
+  const defaultRouteMenuKey = defaultRoute?.nav?.menuKey || defaultRoute?.search?.menuKey || 'dashboard';
+  const globalSearchEnabled = isAccessSurfaceEnabled(profile, 'globalSearch');
+  const languageSwitcherEnabled = isAccessSurfaceEnabled(profile, 'languageSwitcher');
+  const channelSwitcherEnabled = isAccessSurfaceEnabled(profile, 'channelSwitcher');
+  const notificationsEnabled = isAccessSurfaceEnabled(profile, 'notifications');
+  const reindexEnabled =
+    isAccessSurfaceEnabled(profile, 'reindexAction') &&
+    canAccessAdminItem({
+      item: { requiredPermissions: [Permission.UpdateCatalog, Permission.UpdateProduct] },
+      profile,
+      userPermissions,
+    });
+  const isPluginAllowed = (pluginName?: string) => {
+    if (!pluginName) return true;
+    if (profile.plugins?.disabledIds?.includes(pluginName)) return false;
+    return !profile.plugins?.enabledIds || profile.plugins.enabledIds.includes(pluginName);
+  };
+  const canAccessPluginSurface = (entry: PluginSurfaceEntry) =>
+    isPluginAllowed(entry.plugin?.name) && canAccessAdminItem({ item: entry.access, profile, userPermissions });
+  const allowedTopNavigationComponents = (
+    topNavigationComponents as PluginTopNavigationComponent[] | undefined
+  )?.filter(canAccessPluginSurface);
+  const allowedTopNavigationActions = (topNavigationActionsMenu as PluginTopNavigationAction[] | undefined)?.filter(
+    canAccessPluginSurface,
+  );
+  const systemStatusRoute = routes.find((route) => route.id === 'system.status');
+  const globalSettingsRoute = routes.find((route) => route.id === 'settings.global');
+  const fastLinks = [
+    systemStatusRoute &&
+      isAccessSurfaceEnabled(profile, 'systemStatus') &&
+      canAccessAdminItem({ item: systemStatusRoute, profile, routeId: systemStatusRoute.id, userPermissions }) && {
+        key: 'systemStatus',
+        label: t('systemStatus'),
+        path: systemStatusRoute.path,
+      },
+    globalSettingsRoute &&
+      canAccessAdminItem({ item: globalSettingsRoute, profile, routeId: globalSettingsRoute.id, userPermissions }) && {
+        key: 'globalSettings',
+        label: t('globalSettings'),
+        path: globalSettingsRoute.path,
+      },
+  ].filter(Boolean) as Array<{ key: string; label: string; path: string }>;
 
   const rebuildSearchIndex = async () => {
     await apiClient('mutation')({ reindex: { id: true, queueName: true, state: true } }).then(
@@ -155,7 +213,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 <div className={cn('flex h-[72px] flex-col items-center justify-center gap-4 border-b bg-card/80')}>
                   <div
                     className={`flex h-full items-center justify-center ${!isCollapsed && 'w-full'} cursor-pointer px-4 py-3`}
-                    onClick={() => navigate(Routes.dashboard, { viewTransition: true })}
+                    onClick={() => navigate(defaultRoutePath, { viewTransition: true })}
                   >
                     <BrandLogo isCollapsed={isCollapsed} />
                   </div>
@@ -195,8 +253,14 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           })
                         ) : (
                           <BreadcrumbItem>
-                            <NavLink to={Routes.dashboard} viewTransition>
-                              <p className="text-xl font-semibold tracking-tight text-foreground">{t('dashboard')}</p>
+                            <NavLink to={defaultRoutePath} viewTransition>
+                              <p className="text-xl font-semibold tracking-tight text-foreground">
+                                {t(
+                                  defaultRouteMenuKey === 'dashboard'
+                                    ? 'dashboard'
+                                    : `menu.${dashToCamelCase(defaultRouteMenuKey)}`,
+                                )}
+                              </p>
                             </NavLink>
                           </BreadcrumbItem>
                         )}
@@ -205,19 +269,21 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     <div className="flex items-center gap-2"></div>
                   </div>
                   <div className="flex flex-1 items-center justify-end gap-1.5">
-                    {topNavigationComponents && topNavigationComponents.length > 0 ? (
+                    {allowedTopNavigationComponents && allowedTopNavigationComponents.length > 0 ? (
                       <div className="flex items-center gap-2">
-                        {topNavigationComponents.map(({ component: Component }, index) => (
+                        {allowedTopNavigationComponents.map(({ component: Component }, index) => (
                           <Component key={index} />
                         ))}
                       </div>
                     ) : null}
-                    <LanguagesDropdown />
-                    <ChannelSwitcher className="min-w-44" />
-                    <Button onClick={openGlobalSearch} variant="outline" size="icon" className="relative size-9">
-                      <SearchIcon className="size-4" />
-                    </Button>
-                    <Notifications />
+                    {languageSwitcherEnabled && <LanguagesDropdown />}
+                    {channelSwitcherEnabled && <ChannelSwitcher className="min-w-44" />}
+                    {globalSearchEnabled && (
+                      <Button onClick={openGlobalSearch} variant="outline" size="icon" className="relative size-9">
+                        <SearchIcon className="size-4" />
+                      </Button>
+                    )}
+                    {notificationsEnabled && <Notifications />}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="icon" className="size-9">
@@ -257,43 +323,44 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                             <DropdownMenuSeparator className="my-1" />
                           </>
                         )}
-                        <DropdownMenuItem
-                          className="flex cursor-pointer items-center gap-2 text-nowrap"
-                          onSelect={rebuildSearchIndex}
-                        >
-                          <RotateCwSquare className="size-4" />
-                          {t('rebuildSerachIndex')}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                          <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>{t('fastLinks')}</DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                              <DropdownMenuSubContent>
-                                <DropdownMenuItem
-                                  className="flex cursor-pointer items-center gap-2 text-nowrap"
-                                  onSelect={() => navigate(Routes.status, { viewTransition: true })}
-                                >
-                                  <RotateCwSquare className="size-4" />
-                                  {t('systemStatus')}
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                  className="flex cursor-pointer items-center gap-2 text-nowrap"
-                                  onSelect={() => navigate(Routes.globalSettings, { viewTransition: true })}
-                                >
-                                  <RotateCwSquare className="size-4" />
-                                  {t('globalSettings')}
-                                </DropdownMenuItem>
-                              </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                          </DropdownMenuSub>
-                        </DropdownMenuGroup>
+                        {reindexEnabled && (
+                          <DropdownMenuItem
+                            className="flex cursor-pointer items-center gap-2 text-nowrap"
+                            onSelect={rebuildSearchIndex}
+                          >
+                            <RotateCwSquare className="size-4" />
+                            {t('rebuildSerachIndex')}
+                          </DropdownMenuItem>
+                        )}
+                        {reindexEnabled && fastLinks.length > 0 && <DropdownMenuSeparator />}
+                        {fastLinks.length > 0 && (
+                          <DropdownMenuGroup>
+                            <DropdownMenuSub>
+                              <DropdownMenuSubTrigger>{t('fastLinks')}</DropdownMenuSubTrigger>
+                              <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                  {fastLinks.map((link, index) => (
+                                    <React.Fragment key={link.key}>
+                                      {index > 0 && <DropdownMenuSeparator />}
+                                      <DropdownMenuItem
+                                        className="flex cursor-pointer items-center gap-2 text-nowrap"
+                                        onSelect={() => navigate(link.path, { viewTransition: true })}
+                                      >
+                                        <RotateCwSquare className="size-4" />
+                                        {link.label}
+                                      </DropdownMenuItem>
+                                    </React.Fragment>
+                                  ))}
+                                </DropdownMenuSubContent>
+                              </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                          </DropdownMenuGroup>
+                        )}
 
-                        {topNavigationActionsMenu?.length && topNavigationActionsMenu.length > 0 ? (
+                        {allowedTopNavigationActions?.length && allowedTopNavigationActions.length > 0 ? (
                           <>
                             <DropdownMenuSeparator />
-                            {topNavigationActionsMenu.map((action) => (
+                            {allowedTopNavigationActions.map((action) => (
                               <DropdownMenuItem
                                 key={action.label}
                                 className="flex cursor-pointer items-center gap-2"
