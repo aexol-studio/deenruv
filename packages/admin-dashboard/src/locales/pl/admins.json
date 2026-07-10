@@ -32,6 +32,68 @@
             "placeholder": "Dodawanie ról do użytkownika"
         }
     },
+    "provision": {
+        "action": "Utwórz z rolą",
+        "title": "Utwórz administratora z rolą",
+        "description": "Użyj biznesowego presetu, żeby w jednym przepływie utworzyć rolę i przypisać ją do nowego administratora.",
+        "submit": "Utwórz administratora",
+        "submitting": "Tworzenie...",
+        "admin": {
+            "title": "Konto administratora",
+            "description": "Dane logowania i kontaktowe nowego administratora."
+        },
+        "role": {
+            "title": "Konfiguracja roli",
+            "description": "Utwórz nową rolę z wybranego presetu albo użyj istniejącej roli po kodzie.",
+            "code": "Kod roli",
+            "descriptionLabel": "Nazwa roli",
+            "reuseExisting": "Użyj istniejącej roli o tym kodzie",
+            "reuseExistingHint": "Po włączeniu tej opcji uprawnienia i kanały poniżej są ignorowane, a administrator otrzyma istniejącą rolę.",
+            "channels": "Kanały",
+            "channelsPlaceholder": "Dodaj kanał"
+        },
+        "permissions": {
+            "title": "Uprawnienia",
+            "description": "Przejrzyj preset i dostosuj uprawnienia przed utworzeniem roli.",
+            "reuseExisting": "Uprawnienia są pobierane z istniejącej roli, gdy włączone jest użycie istniejącej roli."
+        },
+        "presets": {
+            "title": "Preset biznesowy",
+            "description": "Zacznij od bezpiecznej roli operacyjnej i dostosuj ją, jeśli trzeba.",
+            "defaultBadge": "Domyślny",
+            "backendNote": "Backend nadal egzekwuje każde uprawnienie. Ten wizard tylko zakłada role i konta administratorów.",
+            "shopManager": {
+                "title": "Shop manager",
+                "description": "Obsługa zamówień, wsparcie klienta, widoczność katalogu, podgląd płatności/wysyłki i lokalizacji magazynowych.",
+                "roleDescription": "Shop manager"
+            }
+        },
+        "summary": {
+            "title": "Podsumowanie",
+            "description": "To zostanie wysłane.",
+            "role": "Rola",
+            "channels": "Kanały",
+            "permissions": "Uprawnienia",
+            "mode": "Tryb",
+            "create": "Utwórz rolę",
+            "reuse": "Użyj roli"
+        },
+        "validation": {
+            "emailRequired": "Adres e-mail jest wymagany",
+            "emailInvalid": "Podaj poprawny adres e-mail",
+            "roleCodeRequired": "Kod roli jest wymagany",
+            "channelsRequired": "Wybierz co najmniej jeden kanał",
+            "permissionsRequired": "Wybierz co najmniej jedno uprawnienie",
+            "roleCodeExists": "Rola o tym kodzie już istnieje. Włącz użycie istniejącej roli albo wybierz inny kod.",
+            "roleNotFound": "Nie znaleziono istniejącej roli o tym kodzie."
+        },
+        "toasts": {
+            "success": "Administrator i rola zostały utworzone pomyślnie",
+            "error": "Nie udało się utworzyć administratora z rolą",
+            "roleCodeExists": "Rola o tym kodzie już istnieje",
+            "roleNotFound": "Nie znaleziono istniejącej roli o tym kodzie"
+        }
+    },
     "toasts": {
         "adminLoadingError": "Nie udało się załadować administratora o identyfikatorze {{value}}",
         "adminUpdateSuccess": "Administrator został pomyślnie zaktualizowany",

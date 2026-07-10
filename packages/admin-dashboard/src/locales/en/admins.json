@@ -32,6 +32,68 @@
             "placeholder": "Adding roles to a user"
         }
     },
+    "provision": {
+        "action": "Create with role",
+        "title": "Create administrator with role",
+        "description": "Use a business preset to create a role and assign it to a new administrator in one flow.",
+        "submit": "Create administrator",
+        "submitting": "Creating...",
+        "admin": {
+            "title": "Administrator account",
+            "description": "Credentials and contact details for the new administrator."
+        },
+        "role": {
+            "title": "Role setup",
+            "description": "Create a new role from the selected preset or reuse an existing role by code.",
+            "code": "Role code",
+            "descriptionLabel": "Role name",
+            "reuseExisting": "Use existing role with this code",
+            "reuseExistingHint": "When enabled, permissions and channels below are ignored and the administrator gets the existing role.",
+            "channels": "Channels",
+            "channelsPlaceholder": "Add channel"
+        },
+        "permissions": {
+            "title": "Permissions",
+            "description": "Review the preset and tweak permissions before creating the role.",
+            "reuseExisting": "Permissions are taken from the existing role when reuse mode is enabled."
+        },
+        "presets": {
+            "title": "Business preset",
+            "description": "Start from a safe operational role and adjust it if needed.",
+            "defaultBadge": "Default",
+            "backendNote": "The backend still enforces every permission. This wizard only provisions roles and administrator accounts.",
+            "shopManager": {
+                "title": "Shop manager",
+                "description": "Order handling, customer support, catalog visibility, payment/shipping lookup and stock-location visibility.",
+                "roleDescription": "Shop manager"
+            }
+        },
+        "summary": {
+            "title": "Summary",
+            "description": "What will be submitted.",
+            "role": "Role",
+            "channels": "Channels",
+            "permissions": "Permissions",
+            "mode": "Mode",
+            "create": "Create role",
+            "reuse": "Reuse role"
+        },
+        "validation": {
+            "emailRequired": "Email is required",
+            "emailInvalid": "Enter a valid email address",
+            "roleCodeRequired": "Role code is required",
+            "channelsRequired": "Select at least one channel",
+            "permissionsRequired": "Select at least one permission",
+            "roleCodeExists": "A role with this code already exists. Enable reuse or choose another code.",
+            "roleNotFound": "No existing role with this code was found."
+        },
+        "toasts": {
+            "success": "Administrator and role were created successfully",
+            "error": "Could not create administrator with role",
+            "roleCodeExists": "A role with this code already exists",
+            "roleNotFound": "No existing role with this code was found"
+        }
+    },
     "toasts": {
         "adminLoadingError": "Failed to load administrator with ID {{value}}",
         "adminUpdateSuccess": "Administrator successfully updated",

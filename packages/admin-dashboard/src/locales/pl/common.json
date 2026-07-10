@@ -581,6 +581,7 @@
     "globalSettings": "ustawienia globalne",
     "roles": "role",
     "admins": "administratorzy",
+    "adminProvision": "zakładanie administratora",
     "stock": "lokalizacje magazynowe",
     "sellers": "sprzedawcy",
     "assets": "aktywa",

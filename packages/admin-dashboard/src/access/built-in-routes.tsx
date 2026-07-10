@@ -29,6 +29,7 @@ import {
 import {
   AdminsDetailPage,
   AdminsListPage,
+  AdminsProvisionPage,
   AssetsListPage,
   ChannelsDetailPage,
   ChannelsListPage,
@@ -243,6 +244,13 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     createPermissions: [Permission.CreateAdministrator],
     nav: { groupId: 'users-group', linkId: 'link-admins', menuKey: 'admins', icon: UserCog },
   }),
+  {
+    id: 'admins.provision',
+    path: Routes.admins.provision,
+    element: <AdminsProvisionPage />,
+    requiredPermissions: [Permission.CreateAdministrator],
+    search: { menuKey: 'adminProvision', type: 'new' },
+  },
   ...createCrudRouteDefinitions({
     id: 'roles',
     menuKey: 'roles',

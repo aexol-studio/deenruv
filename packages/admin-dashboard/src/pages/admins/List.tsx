@@ -1,4 +1,5 @@
 import {
+  Button,
   Routes,
   apiClient,
   DetailList,
@@ -8,8 +9,11 @@ import {
   ListLocations,
   useTranslation,
   TableLabel,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
+import { UserPlus } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 const tableId = 'admins-list-view';
 const { selector } = ListLocations[tableId];
@@ -52,6 +56,9 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
 
 export const AdminsListPage = () => {
   const { t } = useTranslation('admins');
+  const navigate = useNavigate();
+  const userPermissions = useServer(({ userPermissions }) => userPermissions);
+  const canCreateAdministrators = userPermissions.includes(Permission.CreateAdministrator);
 
   return (
     <DetailList
@@ -85,6 +92,18 @@ export const AdminsListPage = () => {
       onRemove={onRemove}
       createPermissions={[Permission.CreateAdministrator]}
       deletePermissions={[Permission.DeleteAdministrator]}
+      additionalButtons={
+        canCreateAdministrators ? (
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={() => navigate(Routes.admins.provision)}
+          >
+            <UserPlus size={16} />
+            {t('provision.action')}
+          </Button>
+        ) : null
+      }
     />
   );
 };

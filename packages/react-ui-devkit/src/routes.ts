@@ -33,6 +33,7 @@ export const Routes = {
   admins: {
     list: buildURL(["admins"]),
     new: buildURL(["admins", "new"]),
+    provision: buildURL(["admins", "provision"]),
     route: buildURL(["admins", ":id"]),
     to: (id: string) => buildURL(["admins", id]),
   },

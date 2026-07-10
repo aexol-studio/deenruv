@@ -582,6 +582,7 @@
     "globalSettings": "global settings",
     "roles": "roles",
     "admins": "administrators",
+    "adminProvision": "administrator provisioning",
     "stock": "storage locations",
     "sellers": "retailers",
     "assets": "assets",
