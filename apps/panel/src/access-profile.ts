@@ -12,21 +12,29 @@ const accessProfiles = {
   'shop-manager': SHOP_MANAGER_ACCESS_PROFILE,
 } as const satisfies Record<string, AdminAccessProfile>;
 
-export function getAdminAccessProfile(): AdminAccessProfile {
-  const profileId = import.meta.env.VITE_ADMIN_ACCESS_PROFILE?.trim();
+export function resolveAdminAccessProfile(
+  profileId: string | undefined,
+  warn: (message: string) => void = console.warn,
+): AdminAccessProfile {
+  const normalizedProfileId = profileId?.trim();
 
-  if (!profileId) {
+  if (!normalizedProfileId) {
     return FULL_ADMIN_ACCESS_PROFILE;
   }
 
-  const profile = accessProfiles[profileId as keyof typeof accessProfiles];
+  const profile = accessProfiles[normalizedProfileId as keyof typeof accessProfiles];
   if (profile) {
     return profile;
   }
 
-  console.warn(
-    `[access-profile] Unknown VITE_ADMIN_ACCESS_PROFILE: ${profileId}. ` +
+  warn(
+    `[access-profile] Unknown VITE_ADMIN_ACCESS_PROFILE: ${normalizedProfileId}. ` +
       `Available profiles: ${Object.keys(accessProfiles).join(', ')}`,
   );
   return FULL_ADMIN_ACCESS_PROFILE;
+}
+
+export function getAdminAccessProfile(): AdminAccessProfile {
+  const env = import.meta.env as { VITE_ADMIN_ACCESS_PROFILE?: string } | undefined;
+  return resolveAdminAccessProfile(env?.VITE_ADMIN_ACCESS_PROFILE);
 }

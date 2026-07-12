@@ -25,22 +25,13 @@ import {
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
-
-const SHOP_MANAGER_ROLE_PERMISSIONS = [
-  Permission.ReadOrder,
-  Permission.UpdateOrder,
-  Permission.ReadCustomer,
-  Permission.UpdateCustomer,
-  Permission.ReadProduct,
-  Permission.ReadCatalog,
-  Permission.ReadAsset,
-  Permission.ReadCollection,
-  Permission.ReadFacet,
-  Permission.ReadPaymentMethod,
-  Permission.ReadShippingMethod,
-  Permission.ReadCountry,
-  Permission.ReadStockLocation,
-];
+import {
+  getSelectedAssignablePermissions,
+  normalizeRoleCode,
+  SHOP_MANAGER_ROLE_PERMISSIONS,
+  type AdminProvisionFormErrors as FormErrors,
+  validateAdminProvisionForm,
+} from './Provision.logic';
 
 type ProvisionRole = {
   id: string;
@@ -49,10 +40,6 @@ type ProvisionRole = {
   permissions: Permission[];
   channels: Array<{ id: string; code: string }>;
 };
-
-type FormErrors = Partial<
-  Record<'firstName' | 'lastName' | 'emailAddress' | 'password' | 'roleCode' | 'channelIds' | 'permissions', string>
->;
 
 const roleProvisionSelector = {
   id: true,
@@ -84,8 +71,6 @@ const findRoleByCode = async (code: string): Promise<ProvisionRole | undefined> 
 
   return response.roles.items[0] as ProvisionRole | undefined;
 };
-
-const normalizeRoleCode = (value: string) => value.trim().toLowerCase().replace(/\s+/g, '-');
 
 export const AdminsProvisionPage = () => {
   const { t } = useTranslation('admins');
@@ -127,10 +112,10 @@ export const AdminsProvisionPage = () => {
     );
   }, [serverConfig]);
 
-  const selectedAssignablePermissions = useMemo(() => {
-    if (!assignablePermissions) return permissions;
-    return permissions.filter((permission) => assignablePermissions.has(permission));
-  }, [assignablePermissions, permissions]);
+  const selectedAssignablePermissions = useMemo(
+    () => getSelectedAssignablePermissions(permissions, assignablePermissions),
+    [assignablePermissions, permissions],
+  );
 
   useEffect(() => {
     if (!channelIds.length && channels.length) {
@@ -149,27 +134,32 @@ export const AdminsProvisionPage = () => {
   };
 
   const validateForm = () => {
-    const nextErrors: FormErrors = {};
-    const normalizedRoleCode = normalizeRoleCode(roleCode);
+    const result = validateAdminProvisionForm(
+      {
+        firstName,
+        lastName,
+        emailAddress,
+        password,
+        roleCode,
+        channelIds,
+        permissions,
+        reuseExistingRole,
+      },
+      {
+        firstNameRequired: t('validation.firstNameRequired'),
+        lastNameRequired: t('validation.lastNameRequired'),
+        emailRequired: t('provision.validation.emailRequired'),
+        emailInvalid: t('provision.validation.emailInvalid'),
+        passwordRequired: t('validation.passwordRequired'),
+        roleCodeRequired: t('provision.validation.roleCodeRequired'),
+        channelsRequired: t('provision.validation.channelsRequired'),
+        permissionsRequired: t('provision.validation.permissionsRequired'),
+      },
+      assignablePermissions,
+    );
 
-    if (!firstName.trim()) nextErrors.firstName = t('validation.firstNameRequired');
-    if (!lastName.trim()) nextErrors.lastName = t('validation.lastNameRequired');
-    if (!emailAddress.trim()) nextErrors.emailAddress = t('provision.validation.emailRequired');
-    if (emailAddress.trim() && !emailAddress.includes('@')) {
-      nextErrors.emailAddress = t('provision.validation.emailInvalid');
-    }
-    if (!password.trim()) nextErrors.password = t('validation.passwordRequired');
-    if (!normalizedRoleCode) nextErrors.roleCode = t('provision.validation.roleCodeRequired');
-
-    if (!reuseExistingRole) {
-      if (!channelIds.length) nextErrors.channelIds = t('provision.validation.channelsRequired');
-      if (!selectedAssignablePermissions.length) {
-        nextErrors.permissions = t('provision.validation.permissionsRequired');
-      }
-    }
-
-    setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
+    setErrors(result.errors);
+    return result.valid;
   };
 
   const createRole = async () => {
