@@ -69,6 +69,8 @@ interface Actions {
     activeAdministrator: ActiveAdministratorType | undefined,
   ): void;
   setUserPermissions(permissions: Permission[]): void;
+  setAdministratorAccess(activeAdministrator: ActiveAdministratorType | undefined, permissions: Permission[]): void;
+  clearAdministratorAccess(): void;
   setChannels(channels: ChannelType[]): void;
   setCountries(countries: CountryType[]): void;
   setIsConnected(isConnected: boolean): void;
@@ -162,6 +164,8 @@ export const useServer = create<Server & Actions>()((set, get) => ({
   setPaymentMethodsType: (paymentMethodsType) => set({ paymentMethodsType }),
   setFulfillmentHandlers: (fulfillmentHandlers) => set({ fulfillmentHandlers }),
   setUserPermissions: (userPermissions) => set({ userPermissions }),
+  setAdministratorAccess: (activeAdministrator, userPermissions) => set({ activeAdministrator, userPermissions }),
+  clearAdministratorAccess: () => set({ activeAdministrator: undefined, userPermissions: [] }),
   fetchStatus: async () => {
     set((state) => ({ status: { ...state.status, loading: true } }));
     const data = await getSystemStatus();

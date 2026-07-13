@@ -3,7 +3,7 @@ import { Puzzle } from 'lucide-react';
 import React from 'react';
 import { NavLink } from 'react-router';
 
-import { canAccessAdminItem, isAccessSurfaceEnabled, useAdminAccess } from '@/access/index.js';
+import { canAccessAdminItem, useAdminAccess } from '@/access/index.js';
 
 interface NavigationFooterProps {
   isCollapsed: boolean;
@@ -12,12 +12,9 @@ interface NavigationFooterProps {
 export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed }) => {
   const { t } = useTranslation('common');
   const userPermissions = useServer((p) => p.userPermissions);
-  const { profile, routes } = useAdminAccess();
+  const { routes } = useAdminAccess();
   const extensionsRoute = routes.find((route) => route.id === 'extensions');
-  const isPermittedToExtensions =
-    !!extensionsRoute &&
-    isAccessSurfaceEnabled(profile, 'extensionsPage') &&
-    canAccessAdminItem({ item: extensionsRoute, profile, routeId: extensionsRoute.id, userPermissions });
+  const isPermittedToExtensions = !!extensionsRoute && canAccessAdminItem({ item: extensionsRoute, userPermissions });
   const extensionsPath = extensionsRoute?.path || Routes.extensions;
 
   return (

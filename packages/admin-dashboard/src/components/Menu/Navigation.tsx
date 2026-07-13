@@ -49,7 +49,7 @@ export function Navigation({ isCollapsed }: NavProps) {
   const { t: _pluginT } = useTranslation();
   const location = useLocation();
   const { navMenuData, viewMarkers } = usePluginStore();
-  const { profile, routes } = useAdminAccess();
+  const { routes } = useAdminAccess();
   const userPermissions = useServer((p) => p.userPermissions);
   const loaded = useServer((p) => p.loaded);
   const getNavigationNotification = useNotifications(({ getNavigationNotification }) => getNavigationNotification);
@@ -74,7 +74,7 @@ export function Navigation({ isCollapsed }: NavProps) {
 
     routes.forEach((route) => {
       if (!route.nav) return;
-      if (!canAccessAdminItem({ item: route, profile, routeId: route.id, userPermissions })) return;
+      if (!canAccessAdminItem({ item: route, userPermissions })) return;
       const foundGroupIdx = navData.findIndex((group) => group.id === route.nav?.groupId);
       if (foundGroupIdx === -1) return;
       navData[foundGroupIdx].links.push({
@@ -90,7 +90,7 @@ export function Navigation({ isCollapsed }: NavProps) {
     const { groups, links } = navMenuData;
 
     groups.forEach(({ id, labelId, placement, access }) => {
-      if (!canAccessAdminItem({ item: access, profile, userPermissions })) return;
+      if (!canAccessAdminItem({ item: access, userPermissions })) return;
       let foundGroupIdx = -1;
 
       const newGroup = { id, label: pluginT(labelId), links: [] };
@@ -105,12 +105,8 @@ export function Navigation({ isCollapsed }: NavProps) {
       }
     });
 
-    (links as PluginNavigationEntry[]).forEach(({ groupId, href, labelId, id, icon, placement, access, plugin }) => {
-      const enabledPluginIds = profile.plugins?.enabledIds;
-      const disabledPluginIds = profile.plugins?.disabledIds;
-      if (plugin?.name && disabledPluginIds?.includes(plugin.name)) return;
-      if (plugin?.name && enabledPluginIds && !enabledPluginIds.includes(plugin.name)) return;
-      if (!canAccessAdminItem({ item: access, profile, userPermissions })) return;
+    (links as PluginNavigationEntry[]).forEach(({ groupId, href, labelId, id, icon, placement, access }) => {
+      if (!canAccessAdminItem({ item: access, userPermissions })) return;
       const foundGroupIdx = navData.findIndex((group) => group.id === groupId);
 
       if (foundGroupIdx == -1) return;
@@ -128,7 +124,7 @@ export function Navigation({ isCollapsed }: NavProps) {
     });
 
     return navData.filter((group) => group.links.length > 0);
-  }, [navMenuData.groups, navMenuData.links, pluginT, profile, routes, t, userPermissions]);
+  }, [navMenuData.groups, navMenuData.links, pluginT, routes, t, userPermissions]);
 
   const permittedNavigationGroups = navigationGroups;
 

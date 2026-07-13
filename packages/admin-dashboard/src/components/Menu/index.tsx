@@ -57,7 +57,7 @@ import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
 import { Notifications } from './Notifications.js';
 import { NavigationFooter } from '@/components/Menu/NavigationFooter.js';
-import { canAccessAdminItem, isAccessSurfaceEnabled, useAdminAccess } from '@/access/index.js';
+import { canAccessAdminItem, useAdminAccess } from '@/access/index.js';
 
 type PluginSurfaceEntry = {
   access?: AdminAccessRequirement;
@@ -105,7 +105,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
   const { topNavigationActionsMenu, topNavigationComponents } = usePluginStore();
-  const { profile, routes, defaultRoute } = useAdminAccess();
+  const { routes, defaultRoute } = useAdminAccess();
   const { logOut, theme, setTheme } = useSettings(
     useShallow((p) => ({
       logOut: p.logOut,
@@ -118,28 +118,20 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const { activeAdministrator, setJobQueue, userPermissions } = useServer();
+  const { activeAdministrator, clearAdministratorAccess, setJobQueue, userPermissions } = useServer();
 
   const defaultRoutePath = defaultRoute?.path || Routes.dashboard;
   const defaultRouteMenuKey = defaultRoute?.nav?.menuKey || defaultRoute?.search?.menuKey || 'dashboard';
-  const globalSearchEnabled = isAccessSurfaceEnabled(profile, 'globalSearch');
-  const languageSwitcherEnabled = isAccessSurfaceEnabled(profile, 'languageSwitcher');
-  const channelSwitcherEnabled = isAccessSurfaceEnabled(profile, 'channelSwitcher');
-  const notificationsEnabled = isAccessSurfaceEnabled(profile, 'notifications');
-  const reindexEnabled =
-    isAccessSurfaceEnabled(profile, 'reindexAction') &&
-    canAccessAdminItem({
-      item: { requiredPermissions: [Permission.UpdateCatalog, Permission.UpdateProduct] },
-      profile,
-      userPermissions,
-    });
-  const isPluginAllowed = (pluginName?: string) => {
-    if (!pluginName) return true;
-    if (profile.plugins?.disabledIds?.includes(pluginName)) return false;
-    return !profile.plugins?.enabledIds || profile.plugins.enabledIds.includes(pluginName);
-  };
+  const globalSearchEnabled = true;
+  const languageSwitcherEnabled = true;
+  const channelSwitcherEnabled = true;
+  const notificationsEnabled = true;
+  const reindexEnabled = canAccessAdminItem({
+    item: { requiredPermissions: [Permission.UpdateCatalog, Permission.UpdateProduct] },
+    userPermissions,
+  });
   const canAccessPluginSurface = (entry: PluginSurfaceEntry) =>
-    isPluginAllowed(entry.plugin?.name) && canAccessAdminItem({ item: entry.access, profile, userPermissions });
+    canAccessAdminItem({ item: entry.access, userPermissions });
   const allowedTopNavigationComponents = (
     topNavigationComponents as PluginTopNavigationComponent[] | undefined
   )?.filter(canAccessPluginSurface);
@@ -150,14 +142,13 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const globalSettingsRoute = routes.find((route) => route.id === 'settings.global');
   const fastLinks = [
     systemStatusRoute &&
-      isAccessSurfaceEnabled(profile, 'systemStatus') &&
-      canAccessAdminItem({ item: systemStatusRoute, profile, routeId: systemStatusRoute.id, userPermissions }) && {
+      canAccessAdminItem({ item: systemStatusRoute, userPermissions }) && {
         key: 'systemStatus',
         label: t('systemStatus'),
         path: systemStatusRoute.path,
       },
     globalSettingsRoute &&
-      canAccessAdminItem({ item: globalSettingsRoute, profile, routeId: globalSettingsRoute.id, userPermissions }) && {
+      canAccessAdminItem({ item: globalSettingsRoute, userPermissions }) && {
         key: 'globalSettings',
         label: t('globalSettings'),
         path: globalSettingsRoute.path,
@@ -385,7 +376,10 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                                 { label: t('logOut'), variant: 'destructive', returnValue: true },
                               ],
                             });
-                            if (result) logOut();
+                            if (result) {
+                              clearAdministratorAccess();
+                              logOut();
+                            }
                           }}
                         >
                           <LogOutIcon className="size-4" />

@@ -1,9 +1,7 @@
 import React, { createContext, useContext } from 'react';
-import type { AdminAccessProfile } from '@deenruv/react-ui-devkit';
 import type { AdminRouteDefinition } from './types.js';
 
 export type AdminAccessContextValue = {
-  profile: AdminAccessProfile;
   routes: AdminRouteDefinition[];
   defaultRoute?: AdminRouteDefinition;
 };

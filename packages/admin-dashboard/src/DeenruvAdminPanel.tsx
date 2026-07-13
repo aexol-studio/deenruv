@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-restricted-imports
 import { I18nextProvider } from 'react-i18next';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
@@ -10,6 +10,7 @@ import {
   PluginProvider,
   PluginStore,
   type DeenruvSettingsWindowType,
+  useServer,
   useSettings,
   GlobalStoreProvider,
   DEFAULT_CHANNEL_CODE,
@@ -18,13 +19,10 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { useShallow } from 'zustand/react/shallow';
 import { LanguageCode } from '@deenruv/admin-types';
-
 import { Root } from '@/pages/Root.js';
 import { LoginScreen } from '@/pages/LoginScreen.js';
 import { ErrorPage } from '@/pages/Custom404.js';
-
 import * as resources from '@/locales/index.js';
-
 import { ADMIN_DASHBOARD_VERSION } from '@/version.js';
 import { DeenruvAdminPanel as DeenruvAdminPanelType } from '@/root.js';
 import { ORDER_STATUS_NOTIFICATION } from '@/notifications/OrderStatusNotification.js';
@@ -32,12 +30,9 @@ import { SYSTEM_STATUS_NOTIFICATION } from '@/notifications/SystemStatusNotifica
 import {
   AdminAccessProvider,
   builtInAdminRoutes,
-  isAccessSurfaceEnabled,
-  isItemAllowedByProfile,
-  isRouteAllowedByProfile,
-  normalizeAccessProfile,
+  getDefaultAdminRoute,
+  getPermittedAdminRoutes,
 } from '@/access/index.js';
-import type { AdminRouteDefinition } from '@/access/types.js';
 
 declare global {
   interface Window {
@@ -57,8 +52,8 @@ const loadTranslations = () => {
 };
 
 const pluginsStore = new PluginStore();
-export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings, accessProfile }) => {
-  const profile = normalizeAccessProfile(accessProfile || settings.ui?.accessProfile);
+
+export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
   window.__DEENRUV_SETTINGS__ = {
     ...settings,
     ui: {
@@ -78,41 +73,6 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   pluginsStore.install(plugins, i18n);
   loadTranslations();
 
-  const allowedRoutes = builtInAdminRoutes.filter((route) => isRouteAllowedByProfile(route.id, profile));
-  const defaultRoute =
-    allowedRoutes.find((route) => route.id === profile.defaultRouteId) ||
-    allowedRoutes.find((route) => route.nav) ||
-    allowedRoutes[0];
-  const pluginRouteEntries = pluginsStore.routes.filter((route) => {
-    const pluginName = route.plugin.name;
-    const enabledPluginIds = profile.plugins?.enabledIds;
-    const disabledPluginIds = profile.plugins?.disabledIds;
-    if (disabledPluginIds?.includes(pluginName)) return false;
-    if (enabledPluginIds && !enabledPluginIds.includes(pluginName)) return false;
-    return isItemAllowedByProfile({ item: route.access, profile });
-  });
-  const pluginRoutes: AdminRouteDefinition[] = pluginRouteEntries.map((route) => ({
-    id: `plugin.${route.plugin.name}.${route.path}`,
-    path: route.path,
-    element: route.element as React.ReactElement,
-    ...route.access,
-    search: { menuKey: `${route.plugin.name} - ${route.path}`, type: 'plugin' },
-  }));
-  const routerChildren = [
-    ...allowedRoutes.map(({ path, element }) => ({ path, element })),
-    ...pluginRoutes.map(({ path, element }) => ({ path, element })),
-  ];
-  if (defaultRoute && !allowedRoutes.some((route) => route.path === Routes.dashboard)) {
-    routerChildren.push({ path: Routes.dashboard, element: <Navigate to={defaultRoute.path} replace /> });
-  }
-
-  const router = createBrowserRouter([
-    {
-      element: <Root allPaths={[...allowedRoutes, ...pluginRoutes].map((path) => path.path).filter(Boolean)} />,
-      errorElement: <ErrorPage />,
-      children: routerChildren,
-    },
-  ]);
   const { theme, isLoggedIn, ...context } = useSettings(
     useShallow((p) => ({
       theme: p.theme,
@@ -122,6 +82,40 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
       translationsLanguage: p.translationsLanguage,
     })),
   );
+  const userPermissions = useServer((p) => p.userPermissions);
+  const pluginRoutes = useMemo(
+    () =>
+      pluginsStore.routes.map((route) => ({
+        id: `plugin.${route.plugin.name}.${route.path}`,
+        path: route.path,
+        element: route.element as React.ReactElement,
+        ...route.access,
+        search: { menuKey: `${route.plugin.name} - ${route.path}`, type: 'plugin' as const },
+      })),
+    [plugins],
+  );
+  const permittedRoutes = useMemo(
+    () => getPermittedAdminRoutes([...builtInAdminRoutes, ...pluginRoutes], userPermissions),
+    [pluginRoutes, userPermissions],
+  );
+  const defaultRoute = getDefaultAdminRoute(permittedRoutes);
+  const router = useMemo(() => {
+    const routerChildren = permittedRoutes.map(({ path, element }) => ({ path, element }));
+    if (defaultRoute && !permittedRoutes.some((route) => route.path === Routes.dashboard)) {
+      routerChildren.push({ path: Routes.dashboard, element: <Navigate to={defaultRoute.path} replace /> });
+    }
+    if (defaultRoute) {
+      routerChildren.push({ path: '*', element: <Navigate to={defaultRoute.path} replace /> });
+    }
+
+    return createBrowserRouter([
+      {
+        element: <Root allPaths={permittedRoutes.map((route) => route.path).filter(Boolean)} />,
+        errorElement: <ErrorPage />,
+        children: routerChildren,
+      },
+    ]);
+  }, [defaultRoute, permittedRoutes]);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -139,14 +133,12 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
       <I18nextProvider i18n={i18n} defaultNS={'common'}>
         <AnimatePresence>
           {isLoggedIn ? (
-            <AdminAccessProvider value={{ profile, routes: [...allowedRoutes, ...pluginRoutes], defaultRoute }}>
+            <AdminAccessProvider value={{ routes: permittedRoutes, defaultRoute }}>
               <PluginProvider plugins={pluginsStore} context={context}>
                 <NotificationProvider
-                  notifications={
-                    isAccessSurfaceEnabled(profile, 'notifications')
-                      ? [ORDER_STATUS_NOTIFICATION, SYSTEM_STATUS_NOTIFICATION].concat(pluginsStore.notifications)
-                      : []
-                  }
+                  notifications={[ORDER_STATUS_NOTIFICATION, SYSTEM_STATUS_NOTIFICATION].concat(
+                    pluginsStore.notifications,
+                  )}
                 >
                   <RouterProvider router={router} />
                 </NotificationProvider>

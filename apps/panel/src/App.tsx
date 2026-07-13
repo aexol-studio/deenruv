@@ -1,11 +1,9 @@
 import { DeenruvAdminPanel, type DeenruvAdminPanelSettings } from '@deenruv/admin-dashboard';
 
-import { getAdminAccessProfile } from './access-profile';
 import { getEnabledPlugins } from './plugins/enabled';
 import { DeenruvLogo } from './DeenruvLogo';
 
 const plugins = getEnabledPlugins();
-const accessProfile = getAdminAccessProfile();
 
 const settings: DeenruvAdminPanelSettings = {
   branding: {
@@ -19,9 +17,6 @@ const settings: DeenruvAdminPanelSettings = {
     uri: 'http://localhost:3000',
     authTokenName: 'deenruv-auth-token',
     channelTokenName: 'deenruv-token',
-  },
-  ui: {
-    accessProfile,
   },
 };
 

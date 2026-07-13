@@ -5,21 +5,14 @@ import { UIPlugin as DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-p
  * Central manifest of all available admin UI plugins.
  *
  * Each entry declares:
- * - `id`               — unique string used in `VITE_ADMIN_UI_PLUGINS` env var
+ * - `id`               — unique plugin identifier
  * - `plugin`           — the actual plugin instance (lazy-import recommended for optional plugins)
- * - `enabledByDefault` — whether the plugin loads when the env var is **unset**
+ * - `enabledByDefault` — whether the plugin is installed in the shared admin panel
  *
  * ### Adding a new plugin
  * 1. Install the package in `apps/panel/package.json`.
  * 2. Import its UI plugin export at the top of this file.
  * 3. Add an entry to `pluginManifest` with a unique `id`.
- *
- * ### Toggling plugins at build time
- * Set `VITE_ADMIN_UI_PLUGINS` (see `enabled.ts` for semantics):
- *   - *unset*       → `enabledByDefault` entries only
- *   - `""`          → no plugins
- *   - `"all"` / `"*"` → every manifest entry
- *   - CSV list      → only listed IDs (unknown IDs are warned)
  *
  * ### Installed plugin packages with UI extensions
  * The following plugins are installed as dependencies in `apps/panel/package.json`

@@ -13,7 +13,7 @@ import {
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { LayoutDashboard, ListPlus, FileText, Puzzle, ArrowRight } from 'lucide-react';
-import { canAccessAdminItem, isAccessSurfaceEnabled, useAdminAccess } from '@/access/index.js';
+import { canAccessAdminItem, useAdminAccess } from '@/access/index.js';
 
 type Route = {
   name: string;
@@ -28,13 +28,13 @@ type Route = {
 export const GlobalSearch = () => {
   const { t, tEntity } = useTranslation('common');
 
-  const { profile, routes } = useAdminAccess();
+  const { routes } = useAdminAccess();
   const userPermissions = useServer((p) => p.userPermissions);
   const isOpen = useGlobalSearch((s) => s.isOpen);
   const toggle = useGlobalSearch((s) => s.toggle);
   const close = useGlobalSearch((s) => s.close);
   const navigate = useNavigate();
-  const isEnabled = isAccessSurfaceEnabled(profile, 'globalSearch');
+  const isEnabled = true;
 
   useEffect(() => {
     if (!isEnabled) return;
@@ -51,7 +51,7 @@ export const GlobalSearch = () => {
   const allRoutes = useMemo<Route[]>(() => {
     return routes
       .filter((route) => route.search)
-      .filter((route) => canAccessAdminItem({ item: route, profile, routeId: route.id, userPermissions }))
+      .filter((route) => canAccessAdminItem({ item: route, userPermissions }))
       .map((route) => {
         const search = route.search!;
         const isPlugin = search.type === 'plugin';
@@ -73,7 +73,7 @@ export const GlobalSearch = () => {
           description,
         };
       });
-  }, [profile, routes, t, tEntity, userPermissions]);
+  }, [routes, t, tEntity, userPermissions]);
 
   if (!isEnabled) return null;
 

@@ -11,7 +11,7 @@ import {
   useTranslation,
   capitalizeFirstLetter,
 } from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import {
@@ -68,8 +68,8 @@ const getAllPaymentMethods = async () => {
 export const Root = ({ allPaths }: { allPaths: string[] }) => {
   const isLocalhost = window.location.hostname === 'localhost';
   const { t } = useTranslation('common');
-  const setActiveAdministrator = useServer((p) => p.setActiveAdministrator);
-  const setUserPermissions = useServer((p) => p.setUserPermissions);
+  const clearAdministratorAccess = useServer((p) => p.clearAdministratorAccess);
+  const setAdministratorAccess = useServer((p) => p.setAdministratorAccess);
   const setServerConfig = useServer((p) => p.setServerConfig);
   const setCountries = useServer((p) => p.setCountries);
   const setFulfillmentHandlers = useServer((p) => p.setFulfillmentHandlers);
@@ -91,6 +91,7 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   const channel = useSettings((p) => p.selectedChannel);
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const hasInitializedAdministratorAccess = useRef(false);
 
   const managePageTitle = useCallback(() => {
     const pathname = location.pathname;
@@ -168,6 +169,9 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   }, [notifications.map((n) => n.id).join(','), loaded]);
 
   useEffect(() => {
+    if (hasInitializedAdministratorAccess.current) return;
+    hasInitializedAdministratorAccess.current = true;
+    clearAdministratorAccess();
     const init = async () => {
       const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
@@ -175,10 +179,14 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
       const roles = activeAdministratorResponse.activeAdministrator?.user.roles || [];
 
       if (!activeAdministratorResponse.activeAdministrator) {
+        clearAdministratorAccess();
         toast.error(t('setup.failedAdmin'));
+        return;
       } else {
-        setActiveAdministrator(activeAdministratorResponse.activeAdministrator);
-        setUserPermissions(Array.from(new Set(roles.flatMap((role) => role.permissions))));
+        setAdministratorAccess(
+          activeAdministratorResponse.activeAdministrator,
+          Array.from(new Set(roles.flatMap((role) => role.permissions))),
+        );
         if ([Permission.ReadChannel].some((p) => roles.some((r) => r.permissions.includes(p)))) {
           const {
             channels: { items: allChannels = [] },
@@ -230,12 +238,19 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         // setTranslationLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode);
       }
 
-      const { globalSettings } = await apiClient('query')({
-        globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true },
-      });
-      fetchPendingJobs();
-      initializeOrderCustomFields(globalSettings.serverConfig);
-      setLoaded(true);
+      try {
+        const { globalSettings } = await apiClient('query')({
+          globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true },
+        });
+        fetchPendingJobs();
+        initializeOrderCustomFields(globalSettings.serverConfig);
+        setLoaded(true);
+        setServerConfig(globalSettings.serverConfig);
+        setAvailableLanguages(globalSettings.availableLanguages);
+      } catch {
+        toast.error(t('setup.failedServer'));
+        setLoaded(true);
+      }
 
       if (
         [Permission.ReadCountry, Permission.ReadPaymentMethod, Permission.ReadOrder].some((p) =>
@@ -250,8 +265,6 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         if (countriesResponse.status === 'rejected') {
           toast.error(t('setup.failedServer'));
         } else {
-          setServerConfig(globalSettings.serverConfig);
-          setAvailableLanguages(globalSettings.availableLanguages);
           // const socket = serverConfigResponse.value.globalSettings.serverConfig.plugins?.find(
           //   (plugin) => plugin.name === 'AexolAdminsPlugin',
           // );
@@ -274,10 +287,14 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         }
       }
     };
-    fetchGraphQLSchema().then(async (schema) => {
-      window.__DEENRUV_SCHEMA__ = schema;
-      await init();
-    });
+    fetchGraphQLSchema()
+      .then(async (schema) => {
+        window.__DEENRUV_SCHEMA__ = schema;
+        await init();
+      })
+      .catch(() => {
+        clearAdministratorAccess();
+      });
   }, []);
 
   return (
