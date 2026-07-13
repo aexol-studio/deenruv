@@ -1,7 +1,10 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import find from "find";
 
-const find = require("find");
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(scriptDirectory, "..");
 
 /**
  * An array of regular expressions defining illegal import patterns to be checked in the
@@ -14,11 +17,11 @@ const illegalImportPatterns: RegExp[] = [
   /@deenruv\/admin-ui\/src/,
 ];
 
-const exclude: string[] = [path.join(__dirname, "../packages/dev-server")];
+const exclude: string[] = [path.join(projectRoot, "packages/dev-server")];
 
 findInFiles(
   illegalImportPatterns,
-  path.join(__dirname, "../packages"),
+  path.join(projectRoot, "packages"),
   /\.ts$/,
   exclude,
 );
