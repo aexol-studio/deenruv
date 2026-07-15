@@ -4,6 +4,7 @@ import { Routes } from '@deenruv/react-ui-devkit';
 import {
   BarChart,
   Barcode,
+  BadgePercent,
   Coins,
   Cog,
   CreditCard,
@@ -279,7 +280,7 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     detailElement: () => <PromotionsDetailPage />,
     readPermissions: [Permission.ReadPromotion],
     createPermissions: [Permission.CreatePromotion],
-    nav: { groupId: 'promotions-group', linkId: 'link-promotions', menuKey: 'promotions', icon: ShoppingCart },
+    nav: { groupId: 'promotions-group', linkId: 'link-promotions', menuKey: 'promotions', icon: BadgePercent },
   }),
   ...createCrudRouteDefinitions({
     id: 'paymentMethods',

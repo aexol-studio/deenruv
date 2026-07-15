@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/merchant-plugin",
-  "version": "1.0.17-dev.8",
+  "version": "1.0.17-dev.9",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   cn,
   buttonVariants,
@@ -18,7 +18,15 @@ import {
   Skeleton,
 } from '@deenruv/react-ui-devkit';
 import type { AdminAccessRequirement } from '@deenruv/react-ui-devkit';
-import { adminNavigationGroups, canAccessAdminItem, useAdminAccess } from '@/access/index.js';
+import {
+  adminNavigationGroups,
+  canAccessAdminItem,
+  getActiveNavigationLinkIds,
+  getActiveNavigationGroupIds,
+  getNavigationLinkActivePaths,
+  insertNavigationLink,
+  useAdminAccess,
+} from '@/access/index.js';
 
 type NavLink = {
   title: string;
@@ -27,6 +35,8 @@ type NavLink = {
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
   access?: AdminAccessRequirement;
   routeId?: string;
+  groupId: string;
+  activePaths?: string[];
 };
 
 type PluginNavigationEntry = {
@@ -84,6 +94,8 @@ export function Navigation({ isCollapsed }: NavProps) {
         icon: route.nav.icon,
         access: route,
         routeId: route.id,
+        groupId: route.nav.groupId,
+        activePaths: getNavigationLinkActivePaths(route, routes),
       });
     });
 
@@ -111,32 +123,62 @@ export function Navigation({ isCollapsed }: NavProps) {
 
       if (foundGroupIdx == -1) return;
 
-      const newElement = { title: pluginT(labelId), label: pluginT(labelId), href: `/${href}`, id, icon, access };
+      const newElement = {
+        title: pluginT(labelId),
+        label: pluginT(labelId),
+        href: `/${href}`,
+        id,
+        icon,
+        access,
+        groupId,
+      };
 
       if (!placement) {
         navData[foundGroupIdx].links.push(newElement);
         return;
       }
 
-      const foundIndex = navData[foundGroupIdx].links.findIndex((item) => item.id === placement.linkId);
-      const offset = placement.where === 'above' ? 0 : 1;
-      navData[foundGroupIdx].links.splice(foundIndex + offset, 0, newElement);
+      navData[foundGroupIdx].links = insertNavigationLink(navData[foundGroupIdx].links, newElement, placement);
     });
 
     return navData.filter((group) => group.links.length > 0);
   }, [navMenuData.groups, navMenuData.links, pluginT, routes, t, userPermissions]);
 
   const permittedNavigationGroups = navigationGroups;
+  const activeGroupIds = useMemo(
+    () =>
+      getActiveNavigationGroupIds(
+        permittedNavigationGroups.flatMap((group) => group.links),
+        location.pathname,
+      ),
+    [location.pathname, permittedNavigationGroups],
+  );
+  const activeLinkIds = useMemo(
+    () =>
+      new Set(
+        getActiveNavigationLinkIds(
+          permittedNavigationGroups.flatMap((group) => group.links),
+          location.pathname,
+        ).map((link) => link.id),
+      ),
+    [location.pathname, permittedNavigationGroups],
+  );
+  const previousPathname = useRef(location.pathname);
+  const [openGroupIds, setOpenGroupIds] = useState(activeGroupIds);
 
-  // const defaultAccordionOpenValue = useMemo(
-  //   () =>
-  //     permittedNavigationGroups
-  //       .filter((g) => !navMenuData.groups.find((pluginGroup) => pluginGroup.id === g.id))
-  //       .map((g) => g.id),
-  //   [permittedNavigationGroups, navMenuData],
-  // );
+  useEffect(() => {
+    const hasPathnameChanged = previousPathname.current !== location.pathname;
 
-  const defaultAccordionOpenValue = ['shop-group', 'assortment-group'];
+    previousPathname.current = location.pathname;
+
+    if (!hasPathnameChanged) return;
+
+    setOpenGroupIds((currentGroupIds) => {
+      const nextGroupIds = [...new Set([...currentGroupIds, ...activeGroupIds])];
+
+      return nextGroupIds.length === currentGroupIds.length ? currentGroupIds : nextGroupIds;
+    });
+  }, [activeGroupIds, location.pathname]);
 
   if (!loaded) {
     return (
@@ -171,8 +213,8 @@ export function Navigation({ isCollapsed }: NavProps) {
         <Accordion
           type="multiple"
           className="w-full"
-          defaultValue={defaultAccordionOpenValue}
-          value={isCollapsed ? permittedNavigationGroups.map((g) => g.id) : undefined}
+          value={isCollapsed ? permittedNavigationGroups.map((g) => g.id) : openGroupIds}
+          onValueChange={setOpenGroupIds}
         >
           {permittedNavigationGroups.map((group) => (
             <AccordionItem key={group.id} value={group.id} className="border-none">
@@ -198,19 +240,20 @@ export function Navigation({ isCollapsed }: NavProps) {
                 >
                   {group.links.map((link, index) => {
                     const notifications = getNavigationNotification(link.id);
+                    const isActive = activeLinkIds.has(link.id);
                     return (
                       <React.Fragment key={link.id}>
                         {isCollapsed ? (
                           <Tooltip key={index} delayDuration={0}>
                             <TooltipTrigger asChild>
                               <div>
-                                <NavLink to={link.href} viewTransition>
+                                <NavLink to={link.href} viewTransition aria-current={isActive ? 'page' : undefined}>
                                   <div
                                     className={cn(
                                       buttonVariants({ variant: 'navigation-link', size: 'icon' }),
-                                      'h-9 w-9',
-                                      location.pathname === link.href &&
-                                        'bg-primary/10 text-primary opacity-100 hover:bg-primary/10 hover:text-primary',
+                                      'h-9 w-9 rounded-lg ring-offset-background transition-all hover:scale-[1.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                                      isActive &&
+                                        'bg-primary text-primary-foreground opacity-100 shadow-sm hover:scale-100 hover:bg-primary hover:text-primary-foreground',
                                     )}
                                   >
                                     <link.icon className="size-5" />
@@ -230,13 +273,13 @@ export function Navigation({ isCollapsed }: NavProps) {
                             </TooltipContent>
                           </Tooltip>
                         ) : (
-                          <NavLink to={link.href} viewTransition>
+                          <NavLink to={link.href} viewTransition aria-current={isActive ? 'page' : undefined}>
                             <div
                               id={link.id}
                               className={cn(
-                                'relative flex h-9 items-center justify-start px-3 text-sm font-medium capitalize transition-colors hover:bg-muted/70 hover:text-foreground',
-                                location.pathname === link.href &&
-                                  'bg-primary/10 text-primary opacity-100 hover:bg-primary/10 hover:text-primary',
+                                'relative flex h-10 items-center justify-start rounded-lg px-3 text-sm font-medium capitalize transition-all hover:bg-muted hover:text-foreground',
+                                isActive &&
+                                  'bg-primary text-primary-foreground opacity-100 shadow-sm hover:bg-primary hover:text-primary-foreground',
                               )}
                             >
                               {viewMarkers ? (
@@ -244,8 +287,15 @@ export function Navigation({ isCollapsed }: NavProps) {
                                   {link.id}
                                 </div>
                               ) : null}
-                              <link.icon className="mr-2 size-4 shrink-0" />
-                              {capitalizeFirstLetter(link.title)}
+                              <span
+                                className={cn(
+                                  'mr-2.5 flex size-6 shrink-0 items-center justify-center rounded-md bg-muted/80 text-muted-foreground transition-colors',
+                                  isActive && 'bg-primary-foreground/15 text-primary-foreground',
+                                )}
+                              >
+                                <link.icon className="size-4" />
+                              </span>
+                              <span className="truncate">{capitalizeFirstLetter(link.title)}</span>
                               {notifications}
                             </div>
                           </NavLink>
