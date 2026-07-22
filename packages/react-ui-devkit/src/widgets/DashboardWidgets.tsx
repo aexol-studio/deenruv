@@ -21,6 +21,7 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -216,7 +217,7 @@ export const DashboardWidgets = () => {
       modifiers={[restrictToWindowEdges]}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
-      onDragStart={(event) => setActiveID(event.active.id)}
+      onDragStart={(event: DragStartEvent) => setActiveID(event.active.id)}
     >
       <SortableContext items={widgets || []} strategy={rectSortingStrategy}>
         <div

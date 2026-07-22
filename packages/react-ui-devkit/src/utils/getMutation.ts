@@ -13,7 +13,7 @@ type MutationDocument = TypedDocumentNode<
 >;
 
 const genericResponseObj = { id: true };
-const genericDeleteObj = { message: true };
+const genericDeleteObj = { message: true, result: true };
 
 export const getMutation = (
   mutationName: keyof GraphQLTypes["Mutation"],
@@ -30,14 +30,14 @@ export const getMutation = (
   // so we need targeted type overrides for the Zeus type system
   const inputType =
     `${mutationName.charAt(0).toUpperCase() + mutationName.slice(1)}Input!` as const;
-  const mutationObj = {
-    [mutationName]: [
-      {
+  const mutationArgs = isDeleteMutation
+    ? { id: $("id", "ID!") }
+    : {
         // @ts-expect-error - Dynamic input type string can't satisfy GraphQLVariableType union
         input: $("input", inputType),
-      },
-      responseObj,
-    ],
+      };
+  const mutationObj = {
+    [mutationName]: [mutationArgs, responseObj],
   } as ValueTypes["Mutation"];
 
   // @ts-expect-error - Dynamic mutation object causes deep type instantiation with Zeus

@@ -39,10 +39,10 @@ const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: Pagina
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
-    const { deleteProducts } = await apiClient('mutation')({
-      deleteProducts: [{ ids }, { message: true, result: true }],
+    const { deleteProductVariants } = await apiClient('mutation')({
+      deleteProductVariants: [{ ids }, { message: true, result: true }],
     });
-    return !!deleteProducts.length;
+    return !!deleteProductVariants.length;
   } catch (error) {
     return error;
   }

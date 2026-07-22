@@ -210,7 +210,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                             <CommandItem
                               key={field.name.toString()}
                               value={field.name.toString()}
-                              onSelect={(value) => {
+                              onSelect={(value: string) => {
                                 setFiltersArray((prev) => {
                                   const newArray = [...prev];
                                   newArray[index][0] = value.toString();

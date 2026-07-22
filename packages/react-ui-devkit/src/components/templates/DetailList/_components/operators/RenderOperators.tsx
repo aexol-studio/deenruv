@@ -73,7 +73,7 @@ export function RenderOperators<
             )}
             <CircleX
               size={14}
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<SVGSVGElement>) => {
                 e.stopPropagation();
                 e.preventDefault();
                 removeFilterField(name);

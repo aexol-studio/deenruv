@@ -17,7 +17,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantType } from '@/graphql/products';
-import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
+import { CurrencyCode, DeletionResult, LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard';
@@ -215,16 +215,23 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   const deleteVariant = useCallback(() => {
     if (!variant) return;
     apiClient('mutation')({
-      deleteProductVariant: [{ id: variant.id }, { message: true }],
+      deleteProductVariant: [{ id: variant.id }, { message: true, result: true }],
     })
-      .then(() => {
-        onActionCompleted();
-        toast(t('toasts.deleteProductVariantSuccessToast'), {
-          description: new Date().toLocaleString(),
+      .then(({ deleteProductVariant }) => {
+        if (deleteProductVariant.result === DeletionResult.DELETED) {
+          onActionCompleted();
+          toast(t('toasts.deleteProductVariantSuccessToast'), {
+            description: new Date().toLocaleString(),
+          });
+          return;
+        }
+
+        toast.error(t('toasts.deleteProductVariantErrorToast'), {
+          description: deleteProductVariant.message,
         });
       })
       .catch(() => toast.error(t('toasts.deleteProductVariantErrorToast')));
-  }, [variant]);
+  }, [variant, onActionCompleted, t]);
 
   const setTranslationField = useCallback(
     (field: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

@@ -37,6 +37,14 @@ const handleError = (resp: { response: { errors: GraphQLError[] } }) => {
   toast.error(message || "There was an error", { closeButton: false });
 };
 
+const isDeletionResponse = (
+  value: unknown,
+): value is { message?: string; result?: DeletionResult } => {
+  if (!value || typeof value !== "object") return false;
+
+  return "message" in value || "result" in value;
+};
+
 export const DetailViewStoreContext = createContext<
   StoreContextType<
     DetailKeys,
@@ -164,11 +172,17 @@ export const DetailViewStoreProvider = <
     (resp: Record<string, unknown>) => {
       const [mutationName] = Object.keys(resp);
 
-      if (mutationName.startsWith("delete") && Array.isArray(resp)) {
-        const result = Object.values(resp)[0].result;
+      if (mutationName.startsWith("delete")) {
+        const deleteResponse = Object.values(resp)[0];
 
-        if (result !== DeletionResult.DELETED) {
-          toast.warning(Object.values(resp)[0].message, { closeButton: false });
+        if (
+          isDeletionResponse(deleteResponse) &&
+          deleteResponse.result &&
+          deleteResponse.result !== DeletionResult.DELETED
+        ) {
+          toast.warning(deleteResponse.message || "Unable to delete", {
+            closeButton: false,
+          });
           return;
         }
       }

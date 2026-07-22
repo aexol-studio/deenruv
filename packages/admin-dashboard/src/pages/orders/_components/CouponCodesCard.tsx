@@ -69,7 +69,7 @@ export const CouponCodesCard: React.FC<{}> = () => {
           {
             loading: t('couponCodes.addingCoupon', 'Applying coupon code...'),
             success: t('couponCodes.addToastSuccess', 'Coupon code applied successfully'),
-            error: (err) => err.message,
+            error: (err: Error) => err.message,
           },
         );
       } else {

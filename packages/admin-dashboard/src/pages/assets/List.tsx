@@ -10,7 +10,7 @@ import {
   useTranslation,
   TableLabel,
 } from '@deenruv/react-ui-devkit';
-import { Permission, SortOrder } from '@deenruv/admin-types';
+import { DeletionResult, Permission, SortOrder } from '@deenruv/admin-types';
 import { UploadAssetDialog } from '@/pages/assets/_components/UploadAssetDialog.js';
 import { EditAssetDialog } from '@/pages/assets/_components/EditAssetDialog.js';
 const tableId = 'assets-list-view';
@@ -40,7 +40,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
     const { deleteAssets } = await apiClient('mutation')({
       deleteAssets: [{ input: { assetIds: ids } }, { message: true, result: true }],
     });
-    return !!deleteAssets.result.length;
+    return deleteAssets.result === DeletionResult.DELETED;
   } catch (error) {
     return error;
   }
@@ -126,8 +126,8 @@ export const AssetsListPage = () => {
           },
         },
       ]}
-      createPermissions={[Permission.CreateChannel]}
-      deletePermissions={[Permission.DeleteChannel]}
+      createPermissions={[Permission.CreateAsset]}
+      deletePermissions={[Permission.DeleteAsset]}
     />
   );
 };

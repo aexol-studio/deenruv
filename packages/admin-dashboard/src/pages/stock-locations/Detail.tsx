@@ -29,7 +29,7 @@ const DeleteStockLocationMutation = typedGql('mutation', { scalars })({
     {
       input: $('input', 'DeleteStockLocationInput!'),
     },
-    { message: true },
+    { message: true, result: true },
   ],
 });
 

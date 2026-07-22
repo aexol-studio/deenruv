@@ -151,7 +151,7 @@ export const ChannelsDetailPage = () => {
       throw new Error('Could not find the id.');
     }
 
-    return remove({ input: { id } });
+    return remove({ id });
   }, [remove, id]);
 
   return (

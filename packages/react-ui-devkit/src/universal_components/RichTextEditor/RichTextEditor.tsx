@@ -1,10 +1,11 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EditorToolbar } from "./EditorToolbar.js";
 import { cn } from "@/lib/utils.js";
 import React from "react";
 import { ErrorMessage } from "@/components/molecules";
+import { Textarea } from "@/components/atoms";
 
 const extensions = [StarterKit];
 
@@ -37,10 +38,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   errors,
   disabled,
 }) => {
+  const [rawMode, setRawMode] = useState(false);
+  const [rawContent, setRawContent] = useState(content ?? "");
+
   const editor = useEditor({
     extensions: extensions,
     content: content,
-    onUpdate: ({ editor }) => onContentChanged(editor.getHTML()),
+    onUpdate: ({ editor }) => {
+      const nextContent = editor.getHTML();
+      setRawContent(nextContent);
+      onContentChanged(nextContent);
+    },
     editorProps: {
       attributes: {
         class: editorContentClassName,
@@ -50,16 +58,58 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   });
 
   useEffect(() => {
-    if (editor && content && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+    setRawContent(content ?? "");
+  }, [content]);
+
+  useEffect(() => {
+    const nextContent = content ?? "";
+
+    if (!rawMode && editor && nextContent !== editor.getHTML()) {
+      editor.commands.setContent(nextContent, { emitUpdate: false });
     }
-  }, [content, editor]);
+  }, [content, editor, rawMode]);
+
+  const handleRawModeChange = () => {
+    if (rawMode) {
+      if (editor && rawContent !== editor.getHTML()) {
+        editor.commands.setContent(rawContent, { emitUpdate: false });
+      }
+      setRawMode(false);
+      return;
+    }
+
+    setRawContent(content ?? rawContent);
+    setRawMode(true);
+  };
+
+  const handleRawContentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const nextContent = event.target.value;
+    setRawContent(nextContent);
+    onContentChanged(nextContent);
+  };
 
   return (
     <>
       <div className="flex w-full flex-col gap-3 rounded-md border border-stone-200 bg-white px-3 py-2 text-sm text-stone-950 ring-offset-white focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-stone-800 dark:bg-stone-950 dark:text-stone-50 dark:placeholder:text-stone-400">
-        <EditorToolbar editor={editor} />
-        <EditorContent editor={editor} />
+        <EditorToolbar
+          editor={editor}
+          rawMode={rawMode}
+          onRawModeChange={handleRawModeChange}
+        />
+        {rawMode ? (
+          <Textarea
+            aria-label="Surowe dane HTML"
+            className="min-h-32 max-h-64 resize-y overflow-auto rounded-md font-mono text-xs leading-5"
+            disabled={disabled}
+            onChange={handleRawContentChange}
+            spellCheck={false}
+            value={rawContent}
+          />
+        ) : (
+          <EditorContent editor={editor} />
+        )}
       </div>
       <ErrorMessage errors={errors} />
     </>

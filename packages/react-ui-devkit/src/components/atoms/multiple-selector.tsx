@@ -367,7 +367,7 @@ const MultipleSelector = React.forwardRef<
         <CommandItem
           value={inputValue}
           className="cursor-pointer"
-          onMouseDown={(e) => {
+          onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
             e.preventDefault();
             e.stopPropagation();
           }}
@@ -447,7 +447,7 @@ const MultipleSelector = React.forwardRef<
       <Command
         ref={dropdownRef}
         {...commandProps}
-        onKeyDown={(e) => {
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
           handleKeyDown(e);
           commandProps?.onKeyDown?.(e);
         }}
@@ -486,6 +486,9 @@ const MultipleSelector = React.forwardRef<
                   className={cn(
                     "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
                     "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
+                    "max-w-full min-w-0 whitespace-nowrap",
+                    option.color &&
+                      "border-transparent text-white hover:brightness-110",
                     badgeClassName,
                   )}
                   {...(option.color && {
@@ -494,11 +497,13 @@ const MultipleSelector = React.forwardRef<
                   data-fixed={option.fixed}
                   data-disabled={disabled || undefined}
                 >
-                  {option.label}
+                  <span className="min-w-0 max-w-[12rem] truncate sm:max-w-[16rem]">
+                    {option.label}
+                  </span>
                   <button
                     className={cn(
-                      "ml-1 outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
-                      option.color ? "bg-white opacity-50" : "",
+                      "ml-1 flex-shrink-0 rounded-full p-0.5 outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                      option.color ? "bg-black/15 hover:bg-black/25" : "",
                       (disabled || option.fixed) && "hidden",
                     )}
                     onKeyDown={(e) => {
@@ -512,7 +517,14 @@ const MultipleSelector = React.forwardRef<
                     }}
                     onClick={() => handleUnselect(option)}
                   >
-                    <X className="text-muted-foreground hover:text-foreground size-3" />
+                    <X
+                      className={cn(
+                        "size-3",
+                        option.color
+                          ? "text-white/80 hover:text-white"
+                          : "text-muted-foreground hover:text-foreground",
+                      )}
+                    />
                   </button>
                 </Badge>
               );
@@ -524,17 +536,17 @@ const MultipleSelector = React.forwardRef<
                 ref={inputRef}
                 value={inputValue}
                 disabled={disabled}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   setInputValue(value);
                   inputProps?.onValueChange?.(value);
                 }}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   if (!onScrollbar) {
                     setOpen(false);
                   }
                   inputProps?.onBlur?.(event);
                 }}
-                onFocus={(event) => {
+                onFocus={(event: React.FocusEvent<HTMLInputElement>) => {
                   setOpen(true);
                   triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
                   inputProps?.onFocus?.(event);
@@ -625,7 +637,9 @@ const MultipleSelector = React.forwardRef<
                               key={option.value}
                               value={option.label}
                               disabled={option.disable}
-                              onMouseDown={(e) => {
+                              onMouseDown={(
+                                e: React.MouseEvent<HTMLDivElement>,
+                              ) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                               }}
