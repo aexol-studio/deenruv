@@ -9,6 +9,7 @@ import {
   useSettings,
 } from '@deenruv/react-ui-devkit';
 import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';
+import { CollectionStorefrontAction } from '@/pages/collections/_components/collectionStorefrontAction';
 import { ModelTypes } from '@deenruv/admin-types';
 
 type CreateCollectionInput = ModelTypes['CreateCollectionInput'];
@@ -102,6 +103,9 @@ export const CollectionsDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        topActions={{
+          inline: [<CollectionStorefrontAction key="collection-storefront-action" />],
         }}
       />
     </div>

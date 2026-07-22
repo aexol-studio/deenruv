@@ -7,6 +7,20 @@
     "baseInfoUpdated": "Updated: {{value}}",
     "buttonDisabledTooltip": "Fill in all required fields",
     "noChangesTooltip": "No changes have been made",
+    "storefrontAction": {
+        "label": "Open in storefront",
+        "disabled": {
+            "collectionPrivate": "Make the collection public and save it before opening it in the storefront.",
+            "missingChannel": "Select a channel before opening the collection in the storefront.",
+            "missingSlug": "The saved collection has no slug for the selected language.",
+            "unsavedPrivate": "Save the current visibility before opening the collection in the storefront.",
+            "unsavedSlug": "Save the current slug before opening the collection in the storefront.",
+            "resolverFailed": "The storefront URL could not be resolved.",
+            "resolverEmpty": "The storefront URL resolver returned no URL.",
+            "urlNotAbsolute": "The storefront URL must be absolute.",
+            "unsupportedProtocol": "The storefront URL must use HTTP or HTTPS."
+        }
+    },
     "table": {
         "id": "Id",
         "name": "Name",

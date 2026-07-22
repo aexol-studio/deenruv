@@ -3,6 +3,7 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
+import { ProductStorefrontAction } from './_components/productStorefrontAction';
 import {
   DEFAULT_CHANNEL_CODE,
   useTranslation,
@@ -146,6 +147,9 @@ export const ProductsDetailPage = () => {
           }),
         }}
         defaultTabs={defaultTabs}
+        topActions={{
+          inline: [<ProductStorefrontAction key="product-storefront-action" />],
+        }}
         permissions={{
           create: Permission.CreateProduct,
           edit: Permission.UpdateProduct,

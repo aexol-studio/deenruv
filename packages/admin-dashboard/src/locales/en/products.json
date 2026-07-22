@@ -42,6 +42,21 @@
         "removeVariant": "Usuń wariant",
         "removeVariantFromChannel": "Usuń wariant z kanału"
     },
+    "storefrontAction": {
+        "label": "Open in storefront",
+        "disabled": {
+            "productDisabled": "Enable and save the product before opening it in the storefront.",
+            "missingChannel": "Select a channel before opening the product in the storefront.",
+            "channelNotAssigned": "The saved product is not assigned to the selected channel.",
+            "missingSlug": "The saved product has no slug for the selected language.",
+            "unsavedSlug": "Save the current slug before opening the product in the storefront.",
+            "unsavedEnabled": "Save the current availability status before opening the product in the storefront.",
+            "resolverFailed": "The storefront URL could not be resolved.",
+            "resolverEmpty": "The storefront URL resolver returned no URL.",
+            "urlNotAbsolute": "The storefront URL must be absolute.",
+            "unsupportedProtocol": "The storefront URL must use HTTP or HTTPS."
+        }
+    },
     "initialVariant": {
         "title": "Initial variant",
         "description": "Create one default variant together with this product. If the variant name is empty, the product name will be used.",

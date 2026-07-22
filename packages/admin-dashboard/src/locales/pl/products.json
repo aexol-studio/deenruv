@@ -42,6 +42,21 @@
         "removeVariant": "Usuń wariant",
         "removeVariantFromChannel": "Usuń wariant z kanału"
     },
+    "storefrontAction": {
+        "label": "Otwórz w sklepie",
+        "disabled": {
+            "productDisabled": "Włącz i zapisz produkt, aby otworzyć go w sklepie.",
+            "missingChannel": "Wybierz kanał, aby otworzyć produkt w sklepie.",
+            "channelNotAssigned": "Zapisany produkt nie jest przypisany do wybranego kanału.",
+            "missingSlug": "Zapisany produkt nie ma slugu dla wybranego języka.",
+            "unsavedSlug": "Zapisz bieżący slug, aby otworzyć produkt w sklepie.",
+            "unsavedEnabled": "Zapisz bieżący status dostępności, aby otworzyć produkt w sklepie.",
+            "resolverFailed": "Nie udało się wyznaczyć adresu URL sklepu.",
+            "resolverEmpty": "Konfiguracja sklepu nie zwróciła adresu URL.",
+            "urlNotAbsolute": "Adres URL sklepu musi być bezwzględny.",
+            "unsupportedProtocol": "Adres URL sklepu musi używać protokołu HTTP lub HTTPS."
+        }
+    },
     "initialVariant": {
         "title": "Początkowy wariant",
         "description": "Utwórz jeden domyślny wariant razem z tym produktem. Jeśli nazwa wariantu jest pusta, zostanie użyta nazwa produktu.",

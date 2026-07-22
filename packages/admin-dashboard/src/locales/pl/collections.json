@@ -7,6 +7,20 @@
     "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
+    "storefrontAction": {
+        "label": "Otwórz w sklepie",
+        "disabled": {
+            "collectionPrivate": "Ustaw kolekcję jako publiczną i zapisz ją, aby otworzyć ją w sklepie.",
+            "missingChannel": "Wybierz kanał, aby otworzyć kolekcję w sklepie.",
+            "missingSlug": "Zapisana kolekcja nie ma slugu dla wybranego języka.",
+            "unsavedPrivate": "Zapisz bieżącą widoczność, aby otworzyć kolekcję w sklepie.",
+            "unsavedSlug": "Zapisz bieżący slug, aby otworzyć kolekcję w sklepie.",
+            "resolverFailed": "Nie udało się wyznaczyć adresu URL sklepu.",
+            "resolverEmpty": "Konfiguracja sklepu nie zwróciła adresu URL.",
+            "urlNotAbsolute": "Adres URL sklepu musi być bezwzględny.",
+            "unsupportedProtocol": "Adres URL sklepu musi używać protokołu HTTP lub HTTPS."
+        }
+    },
     "table": {
         "id": "ID",
         "name": "Nazwa",

@@ -538,6 +538,9 @@ async function scaffoldAdminPanel(
     "",
     "VITE_ADMIN_HOST_URL=http://localhost:6100",
     "",
+    "# Optional storefront base URL used by entity detail actions.",
+    "# VITE_STOREFRONT_URL=",
+    "",
   ].join("\n");
   await fs.writeFile(path.join(adminRoot, ".env.local"), envLocalContent);
 

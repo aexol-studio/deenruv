@@ -2,6 +2,7 @@ import { FromSelectorWithScalars, Selector } from "@deenruv/admin-types";
 
 export const CollectionDetailsSelector = Selector("Collection")({
   id: true,
+  breadcrumbs: { id: true, slug: true },
   translations: {
     description: true,
     name: true,
