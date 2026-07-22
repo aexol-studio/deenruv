@@ -29,10 +29,42 @@ plugins: [
 ]
 ```
 
+### Google Merchant API settings
+
+The Google integration uses the stable Merchant API Products v1 clients. The
+Google settings page requires:
+
+- `merchantId` — the numeric Merchant Center account ID.
+- `dataSource` — the full existing data source resource name in the form
+  `accounts/{merchantId}/dataSources/{id}`. Its account segment must match
+  `merchantId`.
+- `credentials` — Google OAuth credential JSON for a service account or an
+  authorized user. Store and distribute this value as a secret.
+- `brand` — the brand applied to exported product attributes.
+
+Product inputs are written only to the configured data source. Merchant API
+processing is asynchronous, so a processed product might not be readable for
+several minutes after a successful write.
+
+#### Deployment prerequisites (documentation only)
+
+An operator must complete the following outside this plugin and outside the
+application deployment. The plugin does not enable APIs, create or register
+data sources, change Merchant Center configuration, or provision credentials:
+
+1. Enable Merchant API for the Google Cloud project that owns the credentials.
+2. Grant the credential identity the required access to the Merchant Center
+   account.
+3. Create or select an API product data source in Merchant Center and copy its
+   full `accounts/{merchantId}/dataSources/{id}` resource name into the plugin
+   settings.
+4. Ensure the credentials can request the
+   `https://www.googleapis.com/auth/content` OAuth scope.
+
 ## Features
 
 - Strategy-based product export architecture supporting Google and Facebook platforms
-- Google Merchant Center integration via Google Content API
+- Google Merchant Center integration via Merchant API Products v1
 - Facebook Commerce integration via Facebook Business SDK
 - Per-platform settings storage and management
 - Bulk product sync to merchant platforms

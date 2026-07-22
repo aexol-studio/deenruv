@@ -1,0 +1,463 @@
+import { v1 } from "@google-shopping/products";
+import type { protos } from "@google-shopping/products";
+import type {
+  GoogleProcessedProduct,
+  GoogleProduct,
+  GoogleProductInput,
+  RemoteProduct,
+} from "../types.js";
+
+const GOOGLE_OAUTH_SCOPE = "https://www.googleapis.com/auth/content";
+const PLAIN_IDENTIFIER_COMPONENT = /^[A-Za-z0-9_-]+$/;
+const MERCHANT_ID_PATTERN = /^[1-9]\d*$/;
+const DATA_SOURCE_PATTERN =
+  /^accounts\/([1-9]\d*)\/dataSources\/([1-9]\d*)$/;
+
+export const GOOGLE_CONTENT_LANGUAGE = "pl";
+export const GOOGLE_FEED_LABEL = "PL";
+export const DEFAULT_GOOGLE_WRITE_CONCURRENCY = 4;
+
+type MerchantClientOptions = NonNullable<
+  ConstructorParameters<typeof v1.ProductsServiceClient>[0]
+>;
+
+export type GoogleMerchantCredentials = NonNullable<
+  MerchantClientOptions["credentials"]
+>;
+
+export type GoogleMerchantSettings = {
+  accountId: string;
+  autoUpdate: boolean;
+  brand: string;
+  credentials: GoogleMerchantCredentials;
+  dataSource: string;
+};
+
+export type GoogleMerchantClients = {
+  productInputs: v1.ProductInputsServiceClient;
+  products: v1.ProductsServiceClient;
+};
+
+type InsertProductInputRequest =
+  protos.google.shopping.merchant.products.v1.IInsertProductInputRequest;
+type UpdateProductInputRequest =
+  protos.google.shopping.merchant.products.v1.IUpdateProductInputRequest;
+type DeleteProductInputRequest =
+  protos.google.shopping.merchant.products.v1.IDeleteProductInputRequest;
+type ListProductsRequest =
+  protos.google.shopping.merchant.products.v1.IListProductsRequest;
+
+export type GoogleWriteOperation =
+  | {
+      communicateID: string;
+      method: "insert";
+      request: InsertProductInputRequest;
+    }
+  | {
+      communicateID: string;
+      method: "update";
+      request: UpdateProductInputRequest;
+    }
+  | {
+      communicateID: string;
+      method: "delete";
+      request: DeleteProductInputRequest;
+    };
+
+export type MerchantOperationResult<T> =
+  | { index: number; item: T; status: "success" }
+  | { error: unknown; index: number; item: T; status: "error" };
+
+export type MerchantOperationSummary<T> = {
+  failures: Array<Extract<MerchantOperationResult<T>, { status: "error" }>>;
+  results: Array<MerchantOperationResult<T>>;
+  status: "success" | "error";
+};
+
+export interface GoogleProductInputsWriter {
+  deleteProductInput(request: DeleteProductInputRequest): Promise<unknown>;
+  insertProductInput(request: InsertProductInputRequest): Promise<unknown>;
+  updateProductInput(request: UpdateProductInputRequest): Promise<unknown>;
+}
+
+export interface GoogleProductsReader {
+  listProductsAsync(
+    request: ListProductsRequest,
+  ): AsyncIterable<GoogleProcessedProduct>;
+}
+
+type SettingEntry = { key: string; value: string };
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function optionalString(
+  value: Record<string, unknown>,
+  key: string,
+): string | undefined {
+  const candidate = value[key];
+  return typeof candidate === "string" && candidate.length > 0
+    ? candidate
+    : undefined;
+}
+
+function requiredString(value: Record<string, unknown>, key: string): string {
+  const candidate = optionalString(value, key);
+  if (!candidate || candidate.trim().length === 0) {
+    throw new Error(`Google credentials field ${key} is required`);
+  }
+  return candidate;
+}
+
+export function parseGoogleCredentials(
+  rawCredentials: string,
+): GoogleMerchantCredentials {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawCredentials);
+  } catch {
+    throw new Error("Google credentials must be valid JSON");
+  }
+  if (!isRecord(parsed)) {
+    throw new Error("Google credentials must be a JSON object");
+  }
+
+  const credentialType = optionalString(parsed, "type");
+  if (credentialType === "authorized_user") {
+    return {
+      type: "authorized_user",
+      client_id: requiredString(parsed, "client_id").trim(),
+      client_secret: requiredString(parsed, "client_secret"),
+      refresh_token: requiredString(parsed, "refresh_token"),
+      ...(optionalString(parsed, "quota_project_id") && {
+        quota_project_id: optionalString(parsed, "quota_project_id"),
+      }),
+    };
+  }
+
+  if (credentialType === undefined || credentialType === "service_account") {
+    return {
+      type: "service_account",
+      client_email: requiredString(parsed, "client_email").trim(),
+      private_key: requiredString(parsed, "private_key"),
+      ...(optionalString(parsed, "private_key_id") && {
+        private_key_id: optionalString(parsed, "private_key_id"),
+      }),
+      ...(optionalString(parsed, "project_id") && {
+        project_id: optionalString(parsed, "project_id"),
+      }),
+      ...(optionalString(parsed, "client_id") && {
+        client_id: optionalString(parsed, "client_id"),
+      }),
+      ...(optionalString(parsed, "quota_project_id") && {
+        quota_project_id: optionalString(parsed, "quota_project_id"),
+      }),
+    };
+  }
+
+  throw new Error(
+    `Unsupported Google credentials type: ${credentialType ?? "missing"}`,
+  );
+}
+
+export function normalizeMerchantId(rawMerchantId: string): string {
+  const merchantId = rawMerchantId.trim();
+  if (!MERCHANT_ID_PATTERN.test(merchantId)) {
+    throw new Error("Merchant ID must be a positive numeric account ID");
+  }
+  return merchantId;
+}
+
+export function normalizeDataSource(
+  rawDataSource: string,
+  merchantId: string,
+): string {
+  const dataSource = rawDataSource.trim();
+  const match = DATA_SOURCE_PATTERN.exec(dataSource);
+  if (!match) {
+    throw new Error(
+      "Google dataSource must match accounts/{merchantId}/dataSources/{id}",
+    );
+  }
+  if (match[1] !== merchantId) {
+    throw new Error("Google dataSource account must match Merchant ID");
+  }
+  return `accounts/${match[1]}/dataSources/${match[2]}`;
+}
+
+export function parseGoogleMerchantSettings(
+  entries: readonly SettingEntry[],
+): GoogleMerchantSettings {
+  const getValue = (key: string) =>
+    entries.find((entry) => entry.key === key)?.value;
+  const accountId = normalizeMerchantId(getValue("merchantId") ?? "");
+  const dataSource = normalizeDataSource(
+    getValue("dataSource") ?? "",
+    accountId,
+  );
+  const brand = (getValue("brand") ?? "").trim();
+  if (!brand) {
+    throw new Error("Google brand is required");
+  }
+  const credentials = parseGoogleCredentials(getValue("credentials") ?? "");
+
+  return {
+    accountId,
+    autoUpdate: (getValue("autoUpdate") ?? "").toLowerCase() === "true",
+    brand,
+    credentials,
+    dataSource,
+  };
+}
+
+export function createGoogleMerchantClients(
+  credentials: GoogleMerchantCredentials,
+): GoogleMerchantClients {
+  const options: MerchantClientOptions = {
+    credentials,
+    scopes: [GOOGLE_OAUTH_SCOPE],
+  };
+  return {
+    productInputs: new v1.ProductInputsServiceClient(options),
+    products: new v1.ProductsServiceClient(options),
+  };
+}
+
+export function buildGoogleProductIdentifier(offerId: string): string {
+  if (!offerId) {
+    throw new Error("Google offer ID is required");
+  }
+  const components = [GOOGLE_CONTENT_LANGUAGE, GOOGLE_FEED_LABEL, offerId];
+  const identifier = components.join("~");
+  return components.every((component) =>
+    PLAIN_IDENTIFIER_COMPONENT.test(component),
+  )
+    ? identifier
+    : Buffer.from(identifier, "utf8").toString("base64url");
+}
+
+export function buildGoogleProductName(
+  accountId: string,
+  offerId: string,
+): string {
+  return `accounts/${accountId}/products/${buildGoogleProductIdentifier(offerId)}`;
+}
+
+export function buildGoogleProductInputName(
+  accountId: string,
+  offerId: string,
+): string {
+  return `accounts/${accountId}/productInputs/${buildGoogleProductIdentifier(offerId)}`;
+}
+
+export function toGoogleProductInput(
+  product: GoogleProduct,
+  brand: string,
+): GoogleProductInput {
+  return {
+    offerId: String(product.communicateID),
+    contentLanguage: GOOGLE_CONTENT_LANGUAGE,
+    feedLabel: GOOGLE_FEED_LABEL,
+    productAttributes: {
+      ...product.productAttributes,
+      brand,
+    },
+    ...(product.customAttributes && {
+      customAttributes: product.customAttributes,
+    }),
+    ...(product.versionNumber !== undefined && {
+      versionNumber: product.versionNumber,
+    }),
+  };
+}
+
+function camelToSnake(value: string): string {
+  return value.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+}
+
+export function buildGoogleUpdateMask(
+  productInput: GoogleProductInput,
+): protos.google.protobuf.IFieldMask {
+  const paths = Object.entries(productInput.productAttributes ?? {})
+    .filter(([, value]) => value !== undefined)
+    .map(([key]) => `product_attributes.${camelToSnake(key)}`);
+
+  for (const customAttribute of productInput.customAttributes ?? []) {
+    if (customAttribute.name) {
+      paths.push(`custom_attribute.${customAttribute.name}`);
+    }
+  }
+  if (paths.length === 0) {
+    throw new Error("Google update requires at least one mutable attribute");
+  }
+  return { paths };
+}
+
+export function createGoogleInsertOperation(
+  product: GoogleProduct,
+  settings: GoogleMerchantSettings,
+): GoogleWriteOperation {
+  const communicateID = String(product.communicateID);
+  return {
+    communicateID,
+    method: "insert",
+    request: {
+      parent: `accounts/${settings.accountId}`,
+      dataSource: settings.dataSource,
+      productInput: toGoogleProductInput(product, settings.brand),
+    },
+  };
+}
+
+export function createGoogleUpdateOperation(
+  product: GoogleProduct,
+  settings: GoogleMerchantSettings,
+): GoogleWriteOperation {
+  const communicateID = String(product.communicateID);
+  const input = toGoogleProductInput(product, settings.brand);
+  const productInput: GoogleProductInput = {
+    name: buildGoogleProductInputName(settings.accountId, communicateID),
+    productAttributes: input.productAttributes,
+    ...(input.customAttributes && {
+      customAttributes: input.customAttributes,
+    }),
+  };
+  return {
+    communicateID,
+    method: "update",
+    request: {
+      dataSource: settings.dataSource,
+      productInput,
+      updateMask: buildGoogleUpdateMask(productInput),
+    },
+  };
+}
+
+export function createGoogleDeleteOperation(
+  communicateID: string,
+  settings: GoogleMerchantSettings,
+): GoogleWriteOperation {
+  return {
+    communicateID,
+    method: "delete",
+    request: {
+      name: buildGoogleProductInputName(settings.accountId, communicateID),
+      dataSource: settings.dataSource,
+    },
+  };
+}
+
+export async function runBoundedMerchantOperations<T>(
+  items: readonly T[],
+  operation: (item: T, index: number) => Promise<void>,
+  concurrency = DEFAULT_GOOGLE_WRITE_CONCURRENCY,
+): Promise<Array<MerchantOperationResult<T>>> {
+  if (!Number.isInteger(concurrency) || concurrency < 1) {
+    throw new Error("Merchant operation concurrency must be a positive integer");
+  }
+  if (items.length === 0) return [];
+
+  const results = new Array<MerchantOperationResult<T>>(items.length);
+  let nextIndex = 0;
+  const workerCount = Math.min(concurrency, items.length);
+  const workers = Array.from({ length: workerCount }, async () => {
+    while (true) {
+      const index = nextIndex;
+      nextIndex += 1;
+      if (index >= items.length) return;
+      const item = items[index];
+      try {
+        await operation(item, index);
+        results[index] = { index, item, status: "success" };
+      } catch (error) {
+        results[index] = { error, index, item, status: "error" };
+      }
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+function isNotFoundError(error: unknown): boolean {
+  if (!isRecord(error)) return false;
+  if (error.code === 5 || error.code === 404 || error.code === "404") return true;
+  const response = error.response;
+  return isRecord(response) && response.status === 404;
+}
+
+export async function executeGoogleWriteOperations(
+  client: GoogleProductInputsWriter,
+  operations: readonly GoogleWriteOperation[],
+  concurrency = DEFAULT_GOOGLE_WRITE_CONCURRENCY,
+): Promise<Array<MerchantOperationResult<GoogleWriteOperation>>> {
+  return runBoundedMerchantOperations(
+    operations,
+    async (operation) => {
+      try {
+        if (operation.method === "insert") {
+          await client.insertProductInput(operation.request);
+        } else if (operation.method === "update") {
+          await client.updateProductInput(operation.request);
+        } else {
+          await client.deleteProductInput(operation.request);
+        }
+      } catch (error) {
+        if (operation.method === "delete" && isNotFoundError(error)) return;
+        throw error;
+      }
+    },
+    concurrency,
+  );
+}
+
+export function summarizeMerchantOperations<T>(
+  results: Array<MerchantOperationResult<T>>,
+): MerchantOperationSummary<T> {
+  const failures = results.filter(
+    (
+      result,
+    ): result is Extract<MerchantOperationResult<T>, { status: "error" }> =>
+      result.status === "error",
+  );
+  return {
+    failures,
+    results,
+    status: failures.length === 0 ? "success" : "error",
+  };
+}
+
+export async function collectGoogleProductsForDataSource(
+  client: GoogleProductsReader,
+  accountId: string,
+  dataSource: string,
+): Promise<RemoteProduct[]> {
+  const products = new Map<string, RemoteProduct>();
+  for await (const product of client.listProductsAsync({
+    parent: `accounts/${accountId}`,
+    pageSize: 1000,
+  })) {
+    if (product.dataSource !== dataSource || !product.offerId) continue;
+    products.set(product.offerId, {
+      communicateID: product.offerId,
+      name: product.productAttributes?.title ?? undefined,
+    });
+  }
+  return [...products.values()];
+}
+
+export function selectRemoteOrphanProducts(
+  remoteProducts: readonly RemoteProduct[],
+  localProducts: readonly Pick<GoogleProduct, "communicateID">[],
+): RemoteProduct[] {
+  const localIds = new Set(
+    localProducts.map((product) => String(product.communicateID)),
+  );
+  const selected = new Map<string, RemoteProduct>();
+  for (const remoteProduct of remoteProducts) {
+    if (!localIds.has(remoteProduct.communicateID)) {
+      selected.set(remoteProduct.communicateID, remoteProduct);
+    }
+  }
+  return [...selected.values()];
+}

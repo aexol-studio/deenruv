@@ -40,6 +40,7 @@ import { customAdminUi } from "compile-admin-ui.js";
 
 interface ProductData extends ProductVariant {
   communicateID: string;
+  variantID: string | number;
   product: Product;
   price: number;
   priceWithTax: number;
@@ -162,23 +163,29 @@ export class MerchantExportStrategy implements DefaultStrategy<
       result.push({
         variantID: variant.id,
         communicateID: variant.sku,
-        offerId: String(variant.sku),
-        mpn: variant.sku,
-        itemGroupId: String(product.id),
-        title,
-        description,
-        link: [this.HOST_URL, "products", product.slug, variant.id].join("/"),
-        imageLink: this.toAbsoluteUrl(asset?.source || asset?.preview),
-        availability: stockLevel > 0 ? "in_stock" : "out_of_stock",
-        productWeight: weight
-          ? {
-              unit: "GRAMS",
-              value: parseFloat(weight?.replace(/[^0-9.]/g, "")),
-            }
-          : undefined,
-        price: { value: (price / 100).toFixed(2), currency },
-        ...(manufacturer && { customLabel0: manufacturer }),
-        ...(nutritions && { customLabel1: nutritions }),
+        productAttributes: {
+          mpn: variant.sku,
+          itemGroupId: String(product.id),
+          title,
+          description,
+          link: [this.HOST_URL, "products", product.slug, variant.id].join(
+            "/",
+          ),
+          imageLink: this.toAbsoluteUrl(asset?.source || asset?.preview),
+          availability: stockLevel > 0 ? "IN_STOCK" : "OUT_OF_STOCK",
+          productWeight: weight
+            ? {
+                unit: "g",
+                value: parseFloat(weight?.replace(/[^0-9.]/g, "")),
+              }
+            : undefined,
+          price: {
+            amountMicros: String(Math.round(price * 10_000)),
+            currencyCode: currency,
+          },
+          ...(manufacturer && { customLabel_0: manufacturer }),
+          ...(nutritions && { customLabel_1: nutritions }),
+        },
       });
     }
     return result;

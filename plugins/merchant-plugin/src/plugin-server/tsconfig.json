@@ -19,5 +19,5 @@
     "resolveJsonModule": true,
     "outDir": "../../dist/plugin-server"
   },
-  "exclude": ["node_modules", "dist", "ui"]
+  "exclude": ["node_modules", "dist", "ui", "**/*.spec.ts"]
 }

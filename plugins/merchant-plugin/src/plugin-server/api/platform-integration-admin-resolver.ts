@@ -32,12 +32,19 @@ export class PlatformIntegrationAdminResolver {
       args.platform,
     );
     if (args.platform === "google") {
+      let isValidConnection = false;
+      if (settings) {
+        try {
+          this.googlePlatformIntegrationService.validateGoogleSettings(settings);
+          isValidConnection = true;
+        } catch {
+          isValidConnection = false;
+        }
+      }
       return [
         {
           productsCount: 0,
-          isValidConnection:
-            settings?.entries.find((entry) => entry.key === "credentials")
-              ?.value !== "",
+          isValidConnection,
         },
       ];
     }
@@ -66,6 +73,12 @@ export class PlatformIntegrationAdminResolver {
         (entry) => new MerchantPlatformSetting(entry),
       ),
     });
+
+    if (settingsEntity.platform === "google") {
+      this.googlePlatformIntegrationService.validateGoogleSettings(
+        settingsEntity,
+      );
+    }
 
     const settings =
       await this.platformIntegrationService.savePlatformIntegrationSettings(

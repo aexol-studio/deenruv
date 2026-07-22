@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/merchant-plugin",
-  "version": "1.0.17-dev.11",
+  "version": "1.0.17-dev.12",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,20 +20,20 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"SERVER,UI\" -c \"yellow.bold,cyan.bold\" \"tsc --watch --project src/plugin-server/tsconfig.json\" \"tsc --watch --project src/plugin-ui/tsconfig.json\"",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
+    "test": "vitest --run --exclude='src/plugin-server/e2e/**'",
     "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --es && zeus http://localhost:6100/admin-api ./src/plugin-server/ui --td && zeus http://localhost:6100/admin-api ./src/plugin-ui --td --es"
   },
   "dependencies": {
     "@deenruv/admin-types": "workspace:^",
+    "@deenruv/admin-ui": "workspace:^",
     "@deenruv/common": "workspace:^",
     "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/ui-devkit": "workspace:^",
-    "@deenruv/admin-ui": "workspace:^",
+    "@google-shopping/products": "0.9.0",
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",
     "date-fns": "^4.1.0",
     "facebook-nodejs-business-sdk": "^23.0.1",
-    "google-auth-library": "^9.15.0",
-    "googleapis": "^144.0.0",
     "graphql": "~16.9.0",
     "graphql-tag": "^2.12.6",
     "graphql-zeus": "^5.4.2",
@@ -42,8 +42,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^14.0.5",
-    "sonner": "^1.4.41",
-    "recharts": "^2.12.7"
+    "recharts": "^2.12.7",
+    "sonner": "^1.4.41"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",

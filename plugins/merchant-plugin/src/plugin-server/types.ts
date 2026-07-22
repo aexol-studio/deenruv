@@ -1,5 +1,5 @@
 import { InjectableStrategy, Product, RequestContext } from "@deenruv/core";
-import { content_v2_1 } from "googleapis";
+import type { protos } from "@google-shopping/products";
 
 export type BaseData = {
   communicateID: string;
@@ -9,11 +9,24 @@ export type BaseData = {
 export type BaseProductData<T extends BaseData> = Array<T>;
 
 export type MerchantPluginOptions = {
-  strategy?: MerchantExportStrategy<BaseProductData<any>>;
+  strategy?: MerchantExportStrategy<BaseProductData<BaseData>>;
 };
 
-export type GoogleProduct = Omit<content_v2_1.Schema$Product, "brand"> &
-  BaseData;
+export type GoogleProductInput =
+  protos.google.shopping.merchant.products.v1.IProductInput;
+
+export type GoogleProcessedProduct =
+  protos.google.shopping.merchant.products.v1.IProduct;
+
+export type GoogleProduct = BaseData & {
+  productAttributes: NonNullable<GoogleProductInput["productAttributes"]>;
+  customAttributes?: GoogleProductInput["customAttributes"];
+  versionNumber?: GoogleProductInput["versionNumber"];
+};
+
+export type RemoteProduct = Pick<BaseData, "communicateID"> & {
+  name?: string;
+};
 
 export type FacebookProduct = Record<string, unknown> & {
   communicateID: string;
@@ -21,20 +34,17 @@ export type FacebookProduct = Record<string, unknown> & {
 };
 
 export interface MerchantExportStrategy<
-  T extends BaseProductData<any>,
+  T extends BaseProductData<BaseData>,
 > extends InjectableStrategy {
-  getBaseData: (
-    ctx: RequestContext,
-    product: Product,
-  ) => Promise<T | undefined>;
-  prepareGoogleProductPayload: (
+  getBaseData(ctx: RequestContext, product: Product): Promise<T | undefined>;
+  prepareGoogleProductPayload(
     ctx: RequestContext,
     data: T,
-  ) => Promise<Array<GoogleProduct> | undefined>;
-  prepareFacebookProductPayload: (
+  ): Promise<Array<GoogleProduct> | undefined>;
+  prepareFacebookProductPayload(
     ctx: RequestContext,
     data: T,
-  ) => Promise<Array<FacebookProduct> | undefined>;
+  ): Promise<Array<FacebookProduct> | undefined>;
 }
 
 declare module "@deenruv/core" {

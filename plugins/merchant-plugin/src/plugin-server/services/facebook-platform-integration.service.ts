@@ -8,12 +8,28 @@ import {
 import { Injectable } from "@nestjs/common";
 import { FacebookAdsApi, ProductCatalog } from "facebook-nodejs-business-sdk";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
-import { BaseData, BaseProductData } from "../types.js";
+import { BaseData, BaseProductData, RemoteProduct } from "../types.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
 import { In } from "typeorm";
 
 type FbMethod = "CREATE" | "UPDATE" | "DELETE";
-type OpResult = { status: "success" | "error"; message?: string };
+export type FacebookOperationResult = {
+  status: "success" | "error";
+  message?: string;
+};
+
+export async function executeFacebookBatches(
+  batches: readonly BaseProductData<BaseData>[],
+  executeBatch: (
+    batch: BaseProductData<BaseData>,
+  ) => Promise<FacebookOperationResult>,
+): Promise<FacebookOperationResult> {
+  for (const batch of batches) {
+    const result = await executeBatch(batch);
+    if (result.status === "error") return result;
+  }
+  return { status: "success", message: "Products processed successfully" };
+}
 
 @Injectable()
 export class FacebookPlatformIntegrationService {
@@ -32,7 +48,7 @@ export class FacebookPlatformIntegrationService {
     private readonly strategy: MerchantStrategyService,
   ) {}
 
-  async removeOrphanItems(ctx: RequestContext, items: BaseData[]) {
+  async removeOrphanItems(ctx: RequestContext, items: RemoteProduct[]) {
     const { catalog } = await this.withCatalog(ctx);
     const payload = items.map((item) => ({
       retailer_id: item.communicateID,
@@ -44,7 +60,7 @@ export class FacebookPlatformIntegrationService {
     }
   }
 
-  async getAllProducts(ctx: RequestContext) {
+  async getAllProducts(ctx: RequestContext): Promise<RemoteProduct[]> {
     const { catalog } = await this.withCatalog(ctx);
     let cursor = await catalog.getProducts(
       ["retailer_id", "name"],
@@ -84,7 +100,7 @@ export class FacebookPlatformIntegrationService {
     ctx: RequestContext;
     method: FbMethod;
     data: BaseProductData<BaseData>;
-  }): Promise<OpResult> {
+  }): Promise<FacebookOperationResult> {
     const { ctx, method, data } = opts;
     try {
       const { catalog, brand } = await this.withCatalog(ctx);
@@ -176,7 +192,7 @@ export class FacebookPlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<BaseData>;
     entity?: Product;
-  }): Promise<OpResult> {
+  }): Promise<FacebookOperationResult> {
     return this.sendBatch({ ctx, method: "CREATE", data });
   }
 
@@ -187,7 +203,7 @@ export class FacebookPlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<BaseData>;
     entity?: Product;
-  }): Promise<OpResult> {
+  }): Promise<FacebookOperationResult> {
     return this.sendBatch({ ctx, method: "UPDATE", data });
   }
 
@@ -198,7 +214,7 @@ export class FacebookPlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<BaseData>;
     entity?: Product;
-  }): Promise<OpResult> {
+  }): Promise<FacebookOperationResult> {
     return this.sendBatch({ ctx, method: "DELETE", data });
   }
 
@@ -209,14 +225,15 @@ export class FacebookPlatformIntegrationService {
     ctx: RequestContext;
     products: BaseProductData<BaseData>[];
     entity?: Product;
-  }): Promise<OpResult> {
+  }): Promise<FacebookOperationResult> {
     const flatten = products.flat();
-    const batchSize = 500;
-    for (let i = 0; i < flatten.length; i += batchSize) {
-      const batch = flatten.slice(i, i + batchSize);
-      await this.sendBatch({ ctx, method: "UPDATE", data: batch });
+    const batches: BaseProductData<BaseData>[] = [];
+    for (let i = 0; i < flatten.length; i += 500) {
+      batches.push(flatten.slice(i, i + 500));
     }
-    return { status: "success", message: "Products processed successfully" };
+    return executeFacebookBatches(batches, (batch) =>
+      this.sendBatch({ ctx, method: "UPDATE", data: batch }),
+    );
   }
 
   async setFacebookSettings(

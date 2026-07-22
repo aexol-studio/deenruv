@@ -12,6 +12,7 @@ import {
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
 import { FacebookPlatformIntegrationService } from "./facebook-platform-integration.service.js";
+import { selectRemoteOrphanProducts } from "./google-merchant-api.js";
 import { GooglePlatformIntegrationService } from "./google-platform-integration.service.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
 
@@ -115,6 +116,9 @@ export class PlatformIntegrationService implements OnModuleInit {
               } else {
                 this.log("Error sending products to google");
                 googleResponse = false;
+                throw response.error instanceof Error
+                  ? response.error
+                  : new Error("Google product sync failed");
               }
             }
             if (platform === "facebook") {
@@ -128,6 +132,7 @@ export class PlatformIntegrationService implements OnModuleInit {
               } else {
                 this.log("Error sending products to facebook");
                 facebookResponse = false;
+                throw new Error(response.message || "Facebook product sync failed");
               }
             }
 
@@ -151,29 +156,34 @@ export class PlatformIntegrationService implements OnModuleInit {
         };
         const service = map[platform as keyof typeof map];
         if (!service) throw new Error("Unknown platform");
-        const results = await service.getAllProducts(ctx);
+        const remoteProducts = await service.getAllProducts(ctx);
         const products = [];
-        for await (const product of this.fetchProducts(
-          { ctx, worker: 0 },
-          (progress) => {
-            if (job.state === JobState.CANCELLED) {
-              throw new Error("Job was cancelled");
-            } else job.setProgress(progress);
-          },
-        )) {
-          products.push(...product);
+        const { totalItems } = await this.productService.findAll(ctx, {
+          take: 1,
+          skip: 0,
+        });
+        const workers = Math.ceil(totalItems / WORKER_THRESHOLD);
+        for (let worker = 0; worker < workers; worker++) {
+          for await (const product of this.fetchProducts(
+            { ctx, worker },
+            (progress) => {
+              if (job.state === JobState.CANCELLED) {
+                throw new Error("Job was cancelled");
+              } else job.setProgress(progress);
+            },
+          )) {
+            products.push(...product);
+          }
         }
-        const missingProducts = products.filter(
-          (product) =>
-            !results.find(
-              (result) => result.communicateID === product.communicateID,
-            ),
+        const orphanProducts = selectRemoteOrphanProducts(
+          remoteProducts,
+          products,
         );
-        if (missingProducts.length > 0) {
+        if (orphanProducts.length > 0) {
           this.log(
-            `Found ${missingProducts.length} orphan items for platform ${platform}`,
+            `Found ${orphanProducts.length} orphan items for platform ${platform}`,
           );
-          await service.removeOrphanItems(ctx, missingProducts);
+          await service.removeOrphanItems(ctx, orphanProducts);
         } else {
           this.log(`No orphan items found for platform ${platform}`);
         }

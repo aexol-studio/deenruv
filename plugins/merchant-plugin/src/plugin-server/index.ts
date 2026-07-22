@@ -18,7 +18,9 @@ import { PlatformIntegrationService } from "./services/platform-integration.serv
 import { SubscriberService } from "./services/subscriber.service.js";
 import {
   FacebookProduct,
+  GoogleProcessedProduct,
   GoogleProduct,
+  GoogleProductInput,
   MerchantExportStrategy,
   MerchantPluginOptions,
 } from "./types.js";
@@ -101,7 +103,9 @@ class MerchantPlugin implements OnApplicationBootstrap {
 
 export {
   FacebookProduct,
+  GoogleProcessedProduct,
   GoogleProduct,
+  GoogleProductInput,
   MerchantExportStrategy,
   MerchantPlugin,
 };

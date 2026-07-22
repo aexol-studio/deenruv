@@ -54,6 +54,7 @@ export const GooglePage = () => {
   const [settingsForm, setSettingsForm] = useState({
     brand: "",
     merchantId: "",
+    dataSource: "",
     credentials: "",
     autoUpdate: true,
     firstSync: true,
@@ -75,6 +76,9 @@ export const GooglePage = () => {
             if (key === "merchantId") {
               acc.merchantId = value;
             }
+            if (key === "dataSource") {
+              acc.dataSource = value;
+            }
             if (key === "credentials") {
               acc.credentials = value;
             }
@@ -89,6 +93,7 @@ export const GooglePage = () => {
           {} as {
             brand: string;
             merchantId: string;
+            dataSource: string;
             credentials: string;
             autoUpdate: boolean;
             firstSync: boolean;
@@ -183,6 +188,7 @@ export const GooglePage = () => {
               <label>Merchant ID</label>
               <input
                 className="w-full"
+                required
                 value={settingsForm.merchantId}
                 onChange={(e) =>
                   setSettingsForm({
@@ -192,6 +198,21 @@ export const GooglePage = () => {
                 }
               />
             </div>
+          </div>
+          <div className="w-full flex flex-col gap-2">
+            <label>Data source</label>
+            <input
+              className="w-full"
+              placeholder="accounts/{merchantId}/dataSources/{id}"
+              required
+              value={settingsForm.dataSource}
+              onChange={(e) =>
+                setSettingsForm({
+                  ...settingsForm,
+                  dataSource: e.target.value,
+                })
+              }
+            />
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
