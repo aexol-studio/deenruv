@@ -168,9 +168,7 @@ export class MerchantExportStrategy implements DefaultStrategy<
           itemGroupId: String(product.id),
           title,
           description,
-          link: [this.HOST_URL, "products", product.slug, variant.id].join(
-            "/",
-          ),
+          link: [this.HOST_URL, "products", product.slug, variant.id].join("/"),
           imageLink: this.toAbsoluteUrl(asset?.source || asset?.preview),
           availability: stockLevel > 0 ? "IN_STOCK" : "OUT_OF_STOCK",
           productWeight: weight
