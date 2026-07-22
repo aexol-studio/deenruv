@@ -37,7 +37,9 @@ export const EditorToolbar = ({
     <div className="flex min-h-8 flex-wrap gap-1">
       {!rawMode && (
         <>
-          <ToggleButton onClick={() => editor.chain().focus().toggleBold().run()}>
+          <ToggleButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+          >
             <Bold size={20} />
           </ToggleButton>
           <ToggleButton
