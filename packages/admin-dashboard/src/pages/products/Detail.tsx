@@ -4,6 +4,7 @@ import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
 import { ProductStorefrontAction } from './_components/productStorefrontAction';
+import { getProductInitialVariantFormConfig } from './ProductInitialVariantFormConfig';
 import {
   DEFAULT_CHANNEL_CODE,
   useTranslation,
@@ -75,19 +76,7 @@ export const ProductsDetailPage = () => {
                   if (!name || !slug) return [t('validation.nameSlugRequired')];
                 },
               },
-              ...{
-                initialVariantSku: {
-                  validate: (v: unknown) => {
-                    if (!id && (!v || typeof v !== 'string' || !v.trim())) {
-                      return [t('validation.initialVariantSkuRequired')];
-                    }
-                  },
-                },
-                initialVariantPrice: {
-                  initialValue: 0,
-                },
-                initialVariantName: {},
-              },
+              ...getProductInitialVariantFormConfig(!id, t('validation.initialVariantSkuRequired')),
             },
             onSubmitted: async (data) => {
               if (!data.translations) throw new Error('Name is required.');
