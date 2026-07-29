@@ -38,6 +38,7 @@ interface ListTableProps<TData, TValue> {
 
 const NARROW_COLUMN_IDS = ["select-id", "select", "actions"];
 const SELECTION_COLUMN_IDS = ["select-id", "select"];
+const MAXIMUM_COLUMN_WIDTH = 320;
 
 const isSelectionColumn = (columnId: string) =>
   SELECTION_COLUMN_IDS.includes(columnId);
@@ -56,6 +57,14 @@ const getCommonPinningStyles = <T,>(
   const idColumnWidth = 100;
   const isNarrowColumn = NARROW_COLUMN_IDS.includes(column.id);
   const columnWidth = isNarrowColumn ? narrowColumnWidth : undefined;
+  const columnMinWidth =
+    column.id === "id"
+      ? undefined
+      : (columnWidth ?? Math.min(column.getSize(), MAXIMUM_COLUMN_WIDTH));
+  const columnMaxWidth =
+    column.id === "id"
+      ? idColumnMaxWidth
+      : (columnWidth ?? MAXIMUM_COLUMN_WIDTH);
 
   const styles = {
     left: isPinned === "left" ? `${column.getStart("left")}px` : "unset",
@@ -63,8 +72,8 @@ const getCommonPinningStyles = <T,>(
     boxShadow: "unset",
     opacity: 1,
     position: isPinned ? ("sticky" as const) : ("relative" as const),
-    minWidth: columnWidth,
-    maxWidth: column.id === "id" ? idColumnMaxWidth : columnWidth,
+    minWidth: columnMinWidth,
+    maxWidth: columnMaxWidth,
     width: column.id === "id" ? idColumnWidth : columnWidth,
     zIndex: isPinned ? 2 : 0,
   };
@@ -90,7 +99,6 @@ const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
 
 const TABLE_HEADER_HEIGHT = 40;
 const MINIMUM_ROW_HEIGHT = 30;
-const WIDTH_TRUNCATE_BREAKPOINT = 200;
 
 export function ListTable<TData, TValue>({
   table,
@@ -173,19 +181,23 @@ export function ListTable<TData, TValue>({
     <>
       <div
         ref={tableWrapperRef}
-        className="h-full w-full overflow-auto border border-border/80 bg-card"
+        className="h-full w-full min-w-0 max-w-full overflow-auto border border-border/80 bg-card"
       >
         <Table
           className={cn("w-full")}
-          {...(!table.getRowModel().rows?.length && {
-            containerClassName: "flex min-h-[22rem]",
-          })}
+          containerClassName={cn(
+            "min-w-0 max-w-full",
+            !table.getRowModel().rows?.length && "flex min-h-[22rem]",
+          )}
         >
           <TableHeader className="sticky top-0 z-20 border-b border-border/80 bg-card/95 backdrop-blur">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow noHover key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const isSelectionHeader = isSelectionColumn(header.column.id);
+                  const isNarrowHeader = NARROW_COLUMN_IDS.includes(
+                    header.column.id,
+                  );
                   const component =
                     typeof header.column.columnDef.header === "string" ? (
                       <TableLabel>{header.column.columnDef.header}</TableLabel>
@@ -212,9 +224,16 @@ export function ListTable<TData, TValue>({
                             : "justify-between",
                         )}
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(component, header.getContext())}
+                        {header.isPlaceholder ? null : isNarrowHeader ? (
+                          flexRender(component, header.getContext())
+                        ) : (
+                          <div
+                            className="min-w-0 truncate"
+                            style={{ maxWidth: MAXIMUM_COLUMN_WIDTH }}
+                          >
+                            {flexRender(component, header.getContext())}
+                          </div>
+                        )}
 
                         <ListViewMarker
                           column={header.column}
@@ -241,8 +260,23 @@ export function ListTable<TData, TValue>({
                     }}
                   >
                     {row.getVisibleCells().map((cell) => {
-                      const columnWidth = cell.column.getSize();
                       const isSelectionCell = isSelectionColumn(cell.column.id);
+                      const isNarrowCell = NARROW_COLUMN_IDS.includes(
+                        cell.column.id,
+                      );
+                      const cellValue = cell.getValue();
+                      const renderedCell = flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      );
+                      const cellTitle =
+                        typeof renderedCell === "string" &&
+                        renderedCell.length > 0
+                          ? renderedCell
+                          : typeof cellValue === "string" &&
+                              cellValue.length > 0
+                            ? cellValue
+                            : undefined;
 
                       return (
                         <TableCell
@@ -252,17 +286,23 @@ export function ListTable<TData, TValue>({
                             !isSelectionCell && "first:pl-4",
                             idx === table.getRowModel().rows.length - 1 &&
                               "border-b-0",
-                            columnWidth > WIDTH_TRUNCATE_BREAKPOINT &&
-                              "truncate",
+                            !isNarrowCell && "overflow-hidden",
                             getCommonClassNameStyles(cell.column),
                           )}
                           style={{
                             ...getCommonPinningStyles(cell.column, showPinned),
                           }}
                         >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
+                          {isNarrowCell ? (
+                            renderedCell
+                          ) : (
+                            <div
+                              className="min-w-0 truncate"
+                              style={{ maxWidth: MAXIMUM_COLUMN_WIDTH }}
+                              title={cellTitle}
+                            >
+                              {renderedCell}
+                            </div>
                           )}
                         </TableCell>
                       );

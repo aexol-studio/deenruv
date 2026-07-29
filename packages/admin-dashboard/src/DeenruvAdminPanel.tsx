@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { I18nextProvider } from 'react-i18next';
 import React, { useEffect, useMemo } from 'react';
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 import i18n from './i18.js';
@@ -33,6 +33,7 @@ import {
   getDefaultAdminRoute,
   getPermittedAdminRoutes,
 } from '@/access/index.js';
+import { createAdminRouterRoutes } from '@/access/admin-router.js';
 
 declare global {
   interface Window {
@@ -99,23 +100,18 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
     [pluginRoutes, userPermissions],
   );
   const defaultRoute = getDefaultAdminRoute(permittedRoutes);
-  const router = useMemo(() => {
-    const routerChildren = permittedRoutes.map(({ path, element }) => ({ path, element }));
-    if (defaultRoute && !permittedRoutes.some((route) => route.path === Routes.dashboard)) {
-      routerChildren.push({ path: Routes.dashboard, element: <Navigate to={defaultRoute.path} replace /> });
-    }
-    if (defaultRoute) {
-      routerChildren.push({ path: '*', element: <Navigate to={defaultRoute.path} replace /> });
-    }
-
-    return createBrowserRouter([
-      {
-        element: <Root allPaths={permittedRoutes.map((route) => route.path).filter(Boolean)} />,
-        errorElement: <ErrorPage />,
-        children: routerChildren,
-      },
-    ]);
-  }, [defaultRoute, permittedRoutes]);
+  const router = useMemo(
+    () =>
+      createBrowserRouter(
+        createAdminRouterRoutes({
+          permittedRoutes,
+          defaultRoute,
+          rootElement: <Root allPaths={permittedRoutes.map((route) => route.path).filter(Boolean)} />,
+          errorElement: <ErrorPage />,
+        }),
+      ),
+    [defaultRoute, permittedRoutes],
+  );
 
   useEffect(() => {
     const root = window.document.documentElement;

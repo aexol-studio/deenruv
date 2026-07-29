@@ -123,7 +123,6 @@ type FilterField<ENTITY extends keyof ModelTypes> =
       }>;
     };
 
-const CHARACTERS_LIMIT = 100;
 export function DetailList<
   KEY extends LocationKeys | ({} & string),
   T extends PromisePaginated,
@@ -487,22 +486,11 @@ export function DetailList<
             );
           }
 
-          if (typeof value === "string" && value.length > CHARACTERS_LIMIT) {
-            return (
-              <div className="text-nowrap">
-                {value.slice(0, CHARACTERS_LIMIT)}...
-                <span className="text-gray-500">
-                  {value.length - CHARACTERS_LIMIT} {t("znaków")}
-                </span>
-              </div>
-            );
-          }
-
           if (key === detailLinkColumn && route) {
             return (
               <Button
                 variant="outline"
-                className="h-7 border-border/80 px-3 text-xs text-foreground hover:border-primary/30 hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring/30"
+                className="h-7 min-w-0 max-w-full border-border/80 px-3 text-xs text-foreground hover:border-primary/30 hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring/30"
                 onClick={() => {
                   if ("edit" in route) {
                     route.edit(row.original.id, row, refetch);
@@ -513,8 +501,10 @@ export function DetailList<
                   }
                 }}
               >
-                {row.original[detailLinkColumn]}
-                <ArrowRight className="pl-1" size={16} />
+                <span className="min-w-0 truncate">
+                  {row.original[detailLinkColumn]}
+                </span>
+                <ArrowRight className="shrink-0 pl-1" size={16} />
               </Button>
             );
           }
