@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/redis-strategy-plugin",
-  "version": "1.0.17-dev.18",
+  "version": "1.0.17-dev.19",
   "license": "MIT",
   "type": "module",
   "publishConfig": {

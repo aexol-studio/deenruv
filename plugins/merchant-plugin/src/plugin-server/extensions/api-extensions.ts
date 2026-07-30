@@ -10,7 +10,7 @@ const base: DocumentNode = gql`
   type MerchantPlatformSettingsEntity implements Node {
     id: ID!
     platform: String!
-    entries: [MerchantPlatformSetting!]
+    entries: [MerchantPlatformSetting!]!
   }
 
   type MerchantPlatformInfo {
@@ -76,7 +76,7 @@ export const adminApiExtensions = gql`
 
   input SaveMerchantPlatformSettingInput {
     platform: String!
-    entries: [MerchantPlatformSettingInput!]
+    entries: [MerchantPlatformSettingInput!]!
   }
 
   extend type Mutation {
