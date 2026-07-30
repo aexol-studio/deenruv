@@ -1,8 +1,6 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class AddMerchantSyncHistory1785413307077
-  implements MigrationInterface
-{
+export class AddMerchantSyncHistory1785413307077 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `CREATE TABLE "merchant_sync_run" ("createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "platform" character varying NOT NULL, "trigger" character varying NOT NULL, "status" character varying NOT NULL DEFAULT 'PENDING', "jobId" character varying, "total" integer NOT NULL DEFAULT '0', "succeeded" integer NOT NULL DEFAULT '0', "failed" integer NOT NULL DEFAULT '0', "errorSummary" text, "startedAt" TIMESTAMP, "finishedAt" TIMESTAMP, "id" SERIAL NOT NULL, CONSTRAINT "PK_52c60a4b2d01324206ce4ec0471" PRIMARY KEY ("id"))`,
