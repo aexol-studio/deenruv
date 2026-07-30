@@ -41,10 +41,21 @@ Google settings page requires:
 - `credentials` — Google OAuth credential JSON for a service account or an
   authorized user. Store and distribute this value as a secret.
 - `brand` — the brand applied to exported product attributes.
+- `contentLanguage` — two-letter product language code (defaults to `pl`).
+- `feedLabel` — Merchant Center feed label (defaults to `PL`).
+
+`publicBaseUrl` is supplied by the export strategy. It must produce absolute,
+publicly reachable `http` or `https` product and image URLs. The example server
+reads it from `PUBLIC_URL`, then `HOST_URL`, and only falls back to localhost in
+local development.
 
 Product inputs are written only to the configured data source. Merchant API
 processing is asynchronous, so a processed product might not be readable for
 several minutes after a successful write.
+
+After upgrading an existing installation, generate and run a database migration
+for the new `merchant_sync_run` and `merchant_sync_item` history tables before
+starting workers.
 
 #### Deployment prerequisites (documentation only)
 
@@ -67,6 +78,9 @@ data sources, change Merchant Center configuration, or provision credentials:
 - Google Merchant Center integration via Merchant API Products v1
 - Facebook Commerce integration via Facebook Business SDK
 - Per-platform settings storage and management
+- Live account and data-source connection diagnostics
+- Persistent synchronization run and per-product error history
+- Retried, queued, idempotent Google product updates
 - Bulk product sync to merchant platforms
 - Orphan item cleanup for removed products
 - `communicateID` custom field on ProductVariant for platform communication tracking

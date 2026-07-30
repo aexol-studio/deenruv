@@ -2647,6 +2647,9 @@ importers:
       '@deenruv/ui-devkit':
         specifier: workspace:^
         version: link:../../packages/ui-devkit
+      '@google-shopping/datasources':
+        specifier: 0.11.1
+        version: 0.11.1
       '@google-shopping/products':
         specifier: 0.9.0
         version: 0.9.0
@@ -6314,6 +6317,10 @@ packages:
   '@google-cloud/pubsub@2.19.4':
     resolution: {integrity: sha512-+aZxq6N5XGarQS3xGXjKSRFy4TB+3PMpI0CBmSrcC59g3TB5nmwps3pv/KkdLa0Cd+CPHDdfrEW1uSrGBMLICw==}
     engines: {node: '>=10'}
+
+  '@google-shopping/datasources@0.11.1':
+    resolution: {integrity: sha512-CL2vvB5iG9QhcE9ptwazIKDePfhNe23jK4Rn26U4DV6CBKxys0BEZ3qjRUiF7SlAb0hfEhAx4CsMzoelHfPLyw==}
+    engines: {node: '>=18'}
 
   '@google-shopping/products@0.9.0':
     resolution: {integrity: sha512-6YzKW7/J8w5PW+sN35rSaqEvLLV/1tCgLMVT3moSJLR3meirOY/D94QBEzUigNKfim6+ZgxACewxbk5RePAv/A==}
@@ -22536,6 +22543,12 @@ snapshots:
       p-defer: 3.0.0
     transitivePeerDependencies:
       - encoding
+      - supports-color
+
+  '@google-shopping/datasources@0.11.1':
+    dependencies:
+      google-gax: 5.0.7
+    transitivePeerDependencies:
       - supports-color
 
   '@google-shopping/products@0.9.0':

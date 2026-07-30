@@ -19,6 +19,7 @@ import {
   buildGoogleProductName,
   collectGoogleProductsForDataSource,
   createGoogleDeleteOperation,
+  diagnoseGoogleMerchantConnection,
   createGoogleInsertOperation,
   createGoogleMerchantClients,
   createGoogleUpdateOperation,
@@ -27,14 +28,16 @@ import {
   GoogleMerchantSettings,
   GoogleWriteOperation,
   MerchantOperationResult,
+  normalizeGoogleMerchantError,
   parseGoogleMerchantSettings,
   summarizeMerchantOperations,
+  validateGoogleProductUrls,
 } from "./google-merchant-api.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
 
 type GMethod = "insert" | "update" | "delete";
-type GoogleWriteResult = MerchantOperationResult<GoogleWriteOperation>;
-type OpResult = {
+export type GoogleWriteResult = MerchantOperationResult<GoogleWriteOperation>;
+export type GoogleOperationResult = {
   error?: unknown;
   results: GoogleWriteResult[];
   status: "success" | "error";
@@ -107,6 +110,55 @@ export class GooglePlatformIntegrationService {
     }
   }
 
+  async getConnectionDiagnostic(ctx: RequestContext) {
+    const rawSettings = await this.connection
+      .getRepository(ctx, MerchantPlatformSettingsEntity)
+      .findOne({ relations: ["entries"], where: { platform: "google" } });
+    const checkedAt = new Date().toISOString();
+    const emptyDiagnostic = {
+      checkedAt,
+      dataSourceVerified: false,
+      disapprovedProductsCount: 0,
+      issues: [],
+      issuesCount: 0,
+      latencyMs: 0,
+      productsCount: 0,
+    };
+    if (!rawSettings) {
+      return {
+        ...emptyDiagnostic,
+        connectionStatus: "NOT_CONFIGURED" as const,
+      };
+    }
+
+    let settings: GoogleMerchantSettings;
+    try {
+      settings = this.validateGoogleSettings(rawSettings);
+    } catch (error) {
+      const normalized = normalizeGoogleMerchantError(error);
+      return {
+        ...emptyDiagnostic,
+        connectionStatus: "INVALID_CONFIGURATION" as const,
+        lastError: {
+          code: "INVALID_CONFIGURATION",
+          message: normalized.message,
+          retryable: false,
+        },
+      };
+    }
+
+    const clients = createGoogleMerchantClients(settings.credentials);
+    try {
+      return await diagnoseGoogleMerchantConnection(
+        clients.products,
+        settings,
+        clients.dataSources,
+      );
+    } finally {
+      await this.closeClients(clients);
+    }
+  }
+
   async getGoogleProduct(
     ctx: RequestContext,
     { communicateID }: { communicateID: string },
@@ -117,6 +169,8 @@ export class GooglePlatformIntegrationService {
         name: buildGoogleProductName(
           authorization.settings.accountId,
           communicateID,
+          authorization.settings.contentLanguage,
+          authorization.settings.feedLabel,
         ),
       });
       return product ?? null;
@@ -132,7 +186,7 @@ export class GooglePlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<T>;
     entity: Product;
-  }): Promise<OpResult> {
+  }): Promise<GoogleOperationResult> {
     return this.sendProducts({ ...opts, method: "insert" });
   }
 
@@ -140,7 +194,7 @@ export class GooglePlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<BaseData>;
     entity: Product;
-  }): Promise<OpResult> {
+  }): Promise<GoogleOperationResult> {
     return this.sendProducts({ ...opts, method: "update" });
   }
 
@@ -148,14 +202,50 @@ export class GooglePlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<BaseData>;
     entity: Product;
-  }): Promise<OpResult> {
+  }): Promise<GoogleOperationResult> {
     return this.sendProducts({ ...opts, method: "delete" });
+  }
+
+  async deleteProductsByCommunicationIds(
+    ctx: RequestContext,
+    communicateIds: string[],
+  ): Promise<GoogleOperationResult> {
+    const uniqueIds = [...new Set(communicateIds.filter(Boolean))];
+    if (uniqueIds.length === 0) return { results: [], status: "success" };
+    let authorization:
+      | Awaited<ReturnType<GooglePlatformIntegrationService["getAuthorization"]>>
+      | undefined;
+    let results: GoogleWriteResult[] = [];
+    try {
+      authorization = await this.getAuthorization(ctx);
+      const operations = uniqueIds.map((communicateID) =>
+        createGoogleDeleteOperation(communicateID, authorization!.settings),
+      );
+      results = await executeGoogleWriteOperations(
+        authorization.clients.productInputs,
+        operations,
+      );
+      const summary = summarizeMerchantOperations(results);
+      if (summary.status === "error") {
+        return {
+          error: new GoogleMerchantOperationError("delete", results),
+          results,
+          status: "error",
+        };
+      }
+      return { results, status: "success" };
+    } catch (error) {
+      this.error("Google delete failed", error);
+      return { error, results, status: "error" };
+    } finally {
+      if (authorization) await this.closeClients(authorization.clients);
+    }
   }
 
   async batchProductsAction(opts: {
     ctx: RequestContext;
     products: BaseProductData<BaseData>[];
-  }): Promise<OpResult> {
+  }): Promise<GoogleOperationResult> {
     const { ctx, products } = opts;
     try {
       const payload: GoogleProduct[] = [];
@@ -173,7 +263,7 @@ export class GooglePlatformIntegrationService {
     ctx: RequestContext;
     data: BaseProductData<BaseData>;
     method: GMethod;
-  }): Promise<OpResult> {
+  }): Promise<GoogleOperationResult> {
     const { ctx, method, data } = opts;
     try {
       const payload = await this.buildPayload(ctx, data);
@@ -188,7 +278,7 @@ export class GooglePlatformIntegrationService {
     ctx: RequestContext,
     method: GMethod,
     payload: GoogleProduct[],
-  ): Promise<OpResult> {
+  ): Promise<GoogleOperationResult> {
     if (payload.length === 0) {
       return { results: [], status: "success" };
     }
@@ -218,7 +308,6 @@ export class GooglePlatformIntegrationService {
         const previousIds = await this.persistCommunicationIds(
           ctx,
           successfulProducts,
-          method,
         );
         if (previousIds.length > 0) {
           const cleanupOperations = previousIds.map((communicateID) =>
@@ -277,7 +366,6 @@ export class GooglePlatformIntegrationService {
   private async persistCommunicationIds(
     ctx: RequestContext,
     products: GoogleProduct[],
-    method: Exclude<GMethod, "delete">,
   ): Promise<string[]> {
     const items = products.filter((product) => product.variantID !== undefined);
     const ids = [...new Set(items.map((item) => String(item.variantID)))];
@@ -294,7 +382,7 @@ export class GooglePlatformIntegrationService {
       if (!variant) continue;
       const nextId = String(item.communicateID);
       const previousId = variant.customFields?.communicateID;
-      if (method === "update" && previousId && previousId !== nextId) {
+      if (previousId && previousId !== nextId) {
         previousIds.add(previousId);
       }
       variant.customFields = {
@@ -313,7 +401,7 @@ export class GooglePlatformIntegrationService {
     data: BaseProductData<BaseData>,
   ): Promise<GoogleProduct[]> {
     const payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-    return (payload ?? []).filter(
+    const validPayload = (payload ?? []).filter(
       (product): product is GoogleProduct =>
         Boolean(
           product &&
@@ -321,6 +409,8 @@ export class GooglePlatformIntegrationService {
             product.productAttributes,
         ),
     );
+    for (const product of validPayload) validateGoogleProductUrls(product);
+    return validPayload;
   }
 
   validateGoogleSettings(
@@ -353,7 +443,11 @@ export class GooglePlatformIntegrationService {
   }
 
   private async closeClients(clients: GoogleMerchantClients): Promise<void> {
-    for (const client of [clients.products, clients.productInputs]) {
+    for (const client of [
+      clients.products,
+      clients.productInputs,
+      clients.dataSources,
+    ]) {
       try {
         await client.close();
       } catch (error) {

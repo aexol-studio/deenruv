@@ -15,11 +15,15 @@ export class PlatformIntegrationAdminResolver {
   ) {}
 
   @Query()
-  getMerchantPlatformSettings(
+  async getMerchantPlatformSettings(
     @Ctx() ctx: RequestContext,
     @Args() args: { platform: string },
   ) {
-    return this.platformIntegrationService.getBaseSettings(ctx, args.platform);
+    const settings = await this.platformIntegrationService.getBaseSettings(
+      ctx,
+      args.platform,
+    );
+    return settings ? this.redactCredentials(settings) : null;
   }
 
   @Query()
@@ -32,19 +36,12 @@ export class PlatformIntegrationAdminResolver {
       args.platform,
     );
     if (args.platform === "google") {
-      let isValidConnection = false;
-      if (settings) {
-        try {
-          this.googlePlatformIntegrationService.validateGoogleSettings(settings);
-          isValidConnection = true;
-        } catch {
-          isValidConnection = false;
-        }
-      }
+      const diagnostic =
+        await this.googlePlatformIntegrationService.getConnectionDiagnostic(ctx);
       return [
         {
-          productsCount: 0,
-          isValidConnection,
+          ...diagnostic,
+          isValidConnection: diagnostic.connectionStatus === "CONNECTED",
         },
       ];
     }
@@ -63,13 +60,53 @@ export class PlatformIntegrationAdminResolver {
   }
 
   @Mutation()
+  async sendAllProductsToMerchantPlatform(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { platform: string },
+  ) {
+    return this.platformIntegrationService.enqueueFullSync(ctx, args.platform);
+  }
+
+  @Query()
+  async getMerchantSyncHistory(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { platform: string; take?: number },
+  ) {
+    return this.platformIntegrationService.getSyncHistory(
+      ctx,
+      args.platform,
+      args.take,
+    );
+  }
+
+  @Mutation()
   async saveMerchantPlatformSettings(
     @Ctx() ctx: RequestContext,
     @Args() args: { input: MerchantPlatformSettingsEntity },
   ) {
+    let entries = args.input.entries;
+    if (
+      args.input.platform === "google" &&
+      entries.find((entry) => entry.key === "credentials")?.value === ""
+    ) {
+      const existing = await this.platformIntegrationService.getBaseSettings(
+        ctx,
+        "google",
+      );
+      const existingCredentials = existing?.entries.find(
+        (entry) => entry.key === "credentials",
+      )?.value;
+      if (existingCredentials) {
+        entries = entries.map((entry) =>
+          entry.key === "credentials"
+            ? { ...entry, value: existingCredentials }
+            : entry,
+        );
+      }
+    }
     const settingsEntity = new MerchantPlatformSettingsEntity({
       platform: args.input.platform,
-      entries: args.input.entries.map(
+      entries: entries.map(
         (entry) => new MerchantPlatformSetting(entry),
       ),
     });
@@ -86,7 +123,7 @@ export class PlatformIntegrationAdminResolver {
         settingsEntity,
       );
 
-    return settings;
+    return settings ? this.redactCredentials(settings) : settings;
   }
 
   @Mutation()
@@ -98,5 +135,16 @@ export class PlatformIntegrationAdminResolver {
       ctx,
       args.platform,
     );
+  }
+
+  private redactCredentials(
+    settings: MerchantPlatformSettingsEntity,
+  ): MerchantPlatformSettingsEntity {
+    return {
+      ...settings,
+      entries: settings.entries.map((entry) =>
+        entry.key === "credentials" ? { ...entry, value: "" } : entry,
+      ),
+    } as MerchantPlatformSettingsEntity;
   }
 }

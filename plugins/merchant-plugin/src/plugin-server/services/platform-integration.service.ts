@@ -1,4 +1,4 @@
-import { JobState } from "@deenruv/admin-types";
+import { JobState, SortOrder } from "@deenruv/admin-types";
 import {
   Channel,
   JobQueue,
@@ -15,6 +15,7 @@ import { FacebookPlatformIntegrationService } from "./facebook-platform-integrat
 import { selectRemoteOrphanProducts } from "./google-merchant-api.js";
 import { GooglePlatformIntegrationService } from "./google-platform-integration.service.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
+import { MerchantSyncHistoryService } from "./merchant-sync-history.service.js";
 
 type JOB_PAYLOAD = {
   platform: string;
@@ -43,6 +44,7 @@ export class PlatformIntegrationService implements OnModuleInit {
     private readonly facebookService: FacebookPlatformIntegrationService,
     private readonly productService: ProductService,
     private readonly strategy: MerchantStrategyService,
+    private readonly syncHistory: MerchantSyncHistoryService,
   ) {}
 
   async removeOrphanItems(
@@ -50,7 +52,7 @@ export class PlatformIntegrationService implements OnModuleInit {
     platform: string,
   ): Promise<boolean> {
     if (["facebook", "google"].includes(platform)) {
-      await this.OrphanItemsQueue.add({ platform });
+      await this.OrphanItemsQueue.add({ platform }, { retries: 3 });
       return true;
     }
     return false;
@@ -65,13 +67,21 @@ export class PlatformIntegrationService implements OnModuleInit {
     const start = worker * WORKER_THRESHOLD;
     for (let i = start; i < totalToFetch; i += BATCH_SIZE) {
       const { items } = await this.productService.findAll(ctx, {
+        sort: { id: SortOrder.ASC },
         take: BATCH_SIZE,
         skip: i,
       });
+      if (items.length === 0) break;
       for (const product of items) {
         const baseProduct = await this.strategy.getBaseData(ctx, product);
         if (callback) {
-          const progress = Math.floor((i / totalToFetch) * 100);
+          const progress = Math.min(
+            100,
+            Math.floor(
+              ((i - start + items.indexOf(product) + 1) / WORKER_THRESHOLD) *
+                100,
+            ),
+          );
           callback(progress);
         }
         if (!baseProduct) continue;
@@ -106,10 +116,22 @@ export class PlatformIntegrationService implements OnModuleInit {
             let googleResponse = false;
             let facebookResponse = false;
             if (platform === "google") {
+              const run = await this.syncHistory.start(ctx, {
+                jobId: job.id == null ? undefined : String(job.id),
+                platform,
+                total: products.length,
+                trigger: "FULL_SYNC",
+              });
               const response = await this.googleService.batchProductsAction({
                 ctx,
                 products,
               });
+              await this.syncHistory.finishGoogleRun(
+                ctx,
+                run,
+                response.results,
+                response.error,
+              );
               if (response.status === "success") {
                 this.log("Products sent to google");
                 googleResponse = true;
@@ -212,42 +234,35 @@ export class PlatformIntegrationService implements OnModuleInit {
     ctx: RequestContext,
     settings: MerchantPlatformSettingsEntity,
   ) {
-    const repository = this.connection.getRepository(
-      ctx,
-      MerchantPlatformSettingsEntity,
-    );
-    const existing = await repository.findOne({
-      where: { platform: settings.platform },
-    });
-    if (existing) await repository.delete(existing.id);
-    let response = await repository.save(settings);
-    if (!response.id) return;
     const [isFirstSync, isAutoUpdate] = [
       this.lookup(settings, "firstSync") === "true",
       this.lookup(settings, "autoUpdate") === "true",
     ];
-    if (isFirstSync && isAutoUpdate) {
-      const products = await this.productService.findAll(ctx, {
-        take: 1,
-        skip: 0,
-      });
-      const total = products.totalItems;
-      const workers = Math.ceil(total / WORKER_THRESHOLD);
-      for (let worker = 0; worker < workers; worker++) {
-        await this.MerchantPlatformQueue.add({
-          worker,
-          payload: {
-            platform: response.platform,
-            action: "SEND_ALL_PRODUCTS",
-          },
+    const shouldStartFullSync = isFirstSync && isAutoUpdate;
+    const settingsToSave = new MerchantPlatformSettingsEntity({
+      ...settings,
+      entries: settings.entries.map((entry) =>
+        shouldStartFullSync && entry.key === "firstSync"
+          ? { ...entry, value: "false" }
+          : entry,
+      ),
+    });
+    const response = await this.connection.withTransaction(
+      ctx,
+      async (transactionCtx) => {
+        const repository = this.connection.getRepository(
+          transactionCtx,
+          MerchantPlatformSettingsEntity,
+        );
+        const existing = await repository.findOne({
+          where: { platform: settings.platform },
         });
-      }
-      response = await repository.save({
-        ...settings,
-        entries: settings.entries.map((entry) =>
-          entry.key === "firstSync" ? { ...entry, value: "false" } : entry,
-        ),
-      });
+        if (existing) await repository.delete(existing.id);
+        return repository.save(settingsToSave);
+      },
+    );
+    if (response.id && shouldStartFullSync) {
+      await this.enqueueFullSync(ctx, response.platform);
     }
     return response;
   }
@@ -256,6 +271,32 @@ export class PlatformIntegrationService implements OnModuleInit {
     return this.connection
       .getRepository(ctx, MerchantPlatformSettingsEntity)
       .findOne({ relations: ["entries"], where: { platform } });
+  }
+
+  async enqueueFullSync(ctx: RequestContext, platform: string) {
+    if (!["google", "facebook"].includes(platform)) return false;
+    const { totalItems } = await this.productService.findAll(ctx, {
+      take: 1,
+      skip: 0,
+    });
+    const workers = Math.max(1, Math.ceil(totalItems / WORKER_THRESHOLD));
+    for (let worker = 0; worker < workers; worker += 1) {
+      await this.MerchantPlatformQueue.add(
+        {
+          worker,
+          payload: {
+            platform,
+            action: "SEND_ALL_PRODUCTS",
+          },
+        },
+        { retries: 3 },
+      );
+    }
+    return true;
+  }
+
+  getSyncHistory(ctx: RequestContext, platform: string, take?: number) {
+    return this.syncHistory.findLatest(ctx, platform, take);
   }
   async getPlatformAutoUpdateSettings(ctx: RequestContext) {
     const [googlePlatformSettings, facebookPlatformSettings] =

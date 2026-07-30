@@ -10,10 +10,13 @@ import { PlatformIntegrationAdminResolver } from "./api/platform-integration-adm
 import { MERCHANT_PLUGIN_OPTIONS } from "./constants.js";
 import { MerchantPlatformSetting } from "./entities/platform-integration-setting.entity.js";
 import { MerchantPlatformSettingsEntity } from "./entities/platform-integration-settings.entity.js";
+import { MerchantSyncItem } from "./entities/merchant-sync-item.entity.js";
+import { MerchantSyncRun } from "./entities/merchant-sync-run.entity.js";
 import { adminApiExtensions } from "./extensions/api-extensions.js";
 import { FacebookPlatformIntegrationService } from "./services/facebook-platform-integration.service.js";
 import { GooglePlatformIntegrationService } from "./services/google-platform-integration.service.js";
 import { MerchantStrategyService } from "./services/merchant-strategy.service.js";
+import { MerchantSyncHistoryService } from "./services/merchant-sync-history.service.js";
 import { PlatformIntegrationService } from "./services/platform-integration.service.js";
 import { SubscriberService } from "./services/subscriber.service.js";
 import {
@@ -27,7 +30,12 @@ import {
 @DeenruvPlugin({
   compatibility: "^2.0.0",
   imports: [PluginCommonModule],
-  entities: [MerchantPlatformSetting, MerchantPlatformSettingsEntity],
+  entities: [
+    MerchantPlatformSetting,
+    MerchantPlatformSettingsEntity,
+    MerchantSyncRun,
+    MerchantSyncItem,
+  ],
   shopApiExtensions: {},
   adminApiExtensions: {
     schema: adminApiExtensions,
@@ -39,6 +47,7 @@ import {
       useFactory: () => MerchantPlugin.options,
     },
     MerchantStrategyService,
+    MerchantSyncHistoryService,
     PlatformIntegrationService,
     GooglePlatformIntegrationService,
     FacebookPlatformIntegrationService,

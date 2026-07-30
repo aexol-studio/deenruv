@@ -9,14 +9,18 @@ import {
   createGoogleInsertOperation,
   createGoogleMerchantClients,
   createGoogleUpdateOperation,
+  diagnoseGoogleMerchantConnection,
   executeGoogleWriteOperations,
   GoogleProductInputsWriter,
+  GoogleDataSourcesReader,
   GoogleProductsReader,
+  normalizeGoogleMerchantError,
   parseGoogleMerchantSettings,
   runBoundedMerchantOperations,
   selectRemoteOrphanProducts,
   summarizeMerchantOperations,
   toGoogleProductInput,
+  validateGoogleProductUrls,
 } from "./google-merchant-api.js";
 
 const credentialJson = JSON.stringify({
@@ -104,14 +108,150 @@ describe("Google Merchant settings", () => {
     });
   });
 
+  it("uses the configured market context in product input identifiers", () => {
+    const settings = parseGoogleMerchantSettings([
+      { key: "merchantId", value: "123456" },
+      {
+        key: "dataSource",
+        value: "accounts/123456/dataSources/987654",
+      },
+      { key: "brand", value: "Deenruv" },
+      { key: "credentials", value: credentialJson },
+      { key: "contentLanguage", value: "en" },
+      { key: "feedLabel", value: "US" },
+    ]);
+
+    expect(createGoogleInsertOperation(createProduct(), settings).request)
+      .toMatchObject({
+        productInput: { contentLanguage: "en", feedLabel: "US" },
+      });
+    expect(
+      createGoogleUpdateOperation(createProduct(), settings).request.productInput
+        ?.name,
+    ).toBe("accounts/123456/productInputs/en~US~sku-123");
+  });
+
   it("constructs stable v1 clients without initializing a network request", async () => {
     const clients = createGoogleMerchantClients(createSettings().credentials);
 
     expect(clients.products.getProduct).toBeTypeOf("function");
     expect(clients.productInputs.insertProductInput).toBeTypeOf("function");
+    expect(clients.dataSources.getDataSource).toBeTypeOf("function");
 
     await clients.products.close();
     await clients.productInputs.close();
+    await clients.dataSources.close();
+  });
+});
+
+describe("Google Merchant connection diagnostics", () => {
+  it("verifies the account with Google and reports processed product issues", async () => {
+    const reader: GoogleProductsReader = {
+      async *listProductsAsync() {
+        yield {
+          dataSource: "accounts/123456/dataSources/987654",
+          offerId: "healthy",
+          productStatus: { itemLevelIssues: [] },
+        };
+        yield {
+          dataSource: "accounts/123456/dataSources/987654",
+          offerId: "rejected",
+          productStatus: {
+            itemLevelIssues: [
+              {
+                code: "invalid_image",
+                description: "Image cannot be fetched",
+                severity: "DISAPPROVED",
+              },
+            ],
+          },
+        };
+        yield {
+          dataSource: "accounts/123456/dataSources/111111",
+          offerId: "another-source",
+        };
+      },
+    };
+    const dataSources: GoogleDataSourcesReader = {
+      async getDataSource() {
+        return [{ name: "accounts/123456/dataSources/987654" }];
+      },
+    };
+
+    await expect(
+      diagnoseGoogleMerchantConnection(reader, createSettings(), dataSources),
+    ).resolves.toMatchObject({
+      connectionStatus: "CONNECTED",
+      dataSourceVerified: true,
+      disapprovedProductsCount: 1,
+      issuesCount: 1,
+      productsCount: 2,
+    });
+  });
+
+  it("normalizes Google authentication errors without exposing credentials", () => {
+    expect(
+      normalizeGoogleMerchantError({
+        code: 16,
+        details: "Invalid authentication credentials",
+      }),
+    ).toEqual({
+      code: "UNAUTHENTICATED",
+      message: "Invalid authentication credentials",
+      retryable: false,
+      status: "AUTHENTICATION_FAILED",
+    });
+  });
+
+  it("redacts secrets embedded in error details", () => {
+    expect(
+      normalizeGoogleMerchantError({
+        code: 16,
+        details:
+          "refresh_token=secret-token client_secret=secret-value access denied",
+      }).message,
+    ).toBe(
+      "refresh_token=[REDACTED] client_secret=[REDACTED] access denied",
+    );
+  });
+
+  it("returns a diagnostic result when Google rejects authentication", async () => {
+    const reader: GoogleProductsReader = {
+      async *listProductsAsync() {
+        throw { code: 16, details: "Credentials rejected" };
+      },
+    };
+
+    await expect(
+      diagnoseGoogleMerchantConnection(reader, createSettings()),
+    ).resolves.toMatchObject({
+      connectionStatus: "AUTHENTICATION_FAILED",
+      lastError: {
+        code: "UNAUTHENTICATED",
+        message: "Credentials rejected",
+        retryable: false,
+      },
+      productsCount: 0,
+    });
+  });
+
+  it("does not report a connection when the configured data source is missing", async () => {
+    const reader: GoogleProductsReader = {
+      async *listProductsAsync() {},
+    };
+    const dataSources: GoogleDataSourcesReader = {
+      async getDataSource() {
+        throw { code: 5, details: "Data source was not found" };
+      },
+    };
+
+    await expect(
+      diagnoseGoogleMerchantConnection(reader, createSettings(), dataSources),
+    ).resolves.toMatchObject({
+      connectionStatus: "DATA_SOURCE_NOT_FOUND",
+      dataSourceVerified: false,
+      lastError: { code: "NOT_FOUND" },
+    });
   });
 });
 
@@ -190,6 +330,19 @@ describe("Google Merchant ProductInput mapping", () => {
       dataSource: settings.dataSource,
     });
   });
+
+  it("rejects relative storefront URLs before sending them to Google", () => {
+    expect(() =>
+      validateGoogleProductUrls({
+        ...createProduct(),
+        productAttributes: {
+          ...createProduct().productAttributes,
+          imageLink: "/assets/image.jpg",
+          link: "/products/test",
+        },
+      }),
+    ).toThrow("absolute http(s) URL");
+  });
 });
 
 describe("bounded Merchant API operations", () => {
@@ -249,6 +402,52 @@ describe("bounded Merchant API operations", () => {
     expect(summary.status).toBe("error");
     expect(summary.failures).toHaveLength(1);
     expect(summary.failures[0].item.communicateID).toBe("update");
+  });
+
+  it("retries transient Google failures and eventually reports success", async () => {
+    const settings = createSettings();
+    let attempts = 0;
+    const writer: GoogleProductInputsWriter = {
+      async deleteProductInput() {},
+      async insertProductInput() {
+        attempts += 1;
+        if (attempts < 3) throw { code: 14, details: "Temporarily unavailable" };
+      },
+      async updateProductInput() {},
+    };
+
+    const results = await executeGoogleWriteOperations(
+      writer,
+      [createGoogleInsertOperation(createProduct("retry-me"), settings)],
+      1,
+      { delay: async () => undefined, maxAttempts: 3 },
+    );
+
+    expect(attempts).toBe(3);
+    expect(results[0]).toMatchObject({ attempts: 3, status: "success" });
+  });
+
+  it("does not retry permanent permission failures", async () => {
+    const settings = createSettings();
+    let attempts = 0;
+    const writer: GoogleProductInputsWriter = {
+      async deleteProductInput() {},
+      async insertProductInput() {
+        attempts += 1;
+        throw { code: 7, details: "Permission denied" };
+      },
+      async updateProductInput() {},
+    };
+
+    const results = await executeGoogleWriteOperations(
+      writer,
+      [createGoogleInsertOperation(createProduct("forbidden"), settings)],
+      1,
+      { delay: async () => undefined, maxAttempts: 3 },
+    );
+
+    expect(attempts).toBe(1);
+    expect(results[0]).toMatchObject({ attempts: 1, status: "error" });
   });
 });
 

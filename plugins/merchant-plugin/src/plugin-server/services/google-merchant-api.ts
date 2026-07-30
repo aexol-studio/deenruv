@@ -1,4 +1,5 @@
 import { v1 } from "@google-shopping/products";
+import { v1 as dataSourcesV1 } from "@google-shopping/datasources";
 import type { protos } from "@google-shopping/products";
 import type {
   GoogleProcessedProduct,
@@ -12,6 +13,8 @@ const PLAIN_IDENTIFIER_COMPONENT = /^[A-Za-z0-9_-]+$/;
 const MERCHANT_ID_PATTERN = /^[1-9]\d*$/;
 const DATA_SOURCE_PATTERN =
   /^accounts\/([1-9]\d*)\/dataSources\/([1-9]\d*)$/;
+const CONTENT_LANGUAGE_PATTERN = /^[a-z]{2}$/;
+const FEED_LABEL_PATTERN = /^[A-Z0-9_-]{1,20}$/;
 
 export const GOOGLE_CONTENT_LANGUAGE = "pl";
 export const GOOGLE_FEED_LABEL = "PL";
@@ -31,9 +34,12 @@ export type GoogleMerchantSettings = {
   brand: string;
   credentials: GoogleMerchantCredentials;
   dataSource: string;
+  contentLanguage: string;
+  feedLabel: string;
 };
 
 export type GoogleMerchantClients = {
+  dataSources: dataSourcesV1.DataSourcesServiceClient;
   productInputs: v1.ProductInputsServiceClient;
   products: v1.ProductsServiceClient;
 };
@@ -65,8 +71,14 @@ export type GoogleWriteOperation =
     };
 
 export type MerchantOperationResult<T> =
-  | { index: number; item: T; status: "success" }
-  | { error: unknown; index: number; item: T; status: "error" };
+  | { attempts: number; index: number; item: T; status: "success" }
+  | {
+      attempts: number;
+      error: unknown;
+      index: number;
+      item: T;
+      status: "error";
+    };
 
 export type MerchantOperationSummary<T> = {
   failures: Array<Extract<MerchantOperationResult<T>, { status: "error" }>>;
@@ -86,10 +98,124 @@ export interface GoogleProductsReader {
   ): AsyncIterable<GoogleProcessedProduct>;
 }
 
+export interface GoogleDataSourcesReader {
+  getDataSource(request: { name: string }): Promise<unknown>;
+}
+
+export type GoogleMerchantRetryOptions = {
+  delay?: (attempt: number) => Promise<void>;
+  maxAttempts?: number;
+};
+
+export type GoogleMerchantConnectionStatus =
+  | "CONNECTED"
+  | "NOT_CONFIGURED"
+  | "INVALID_CONFIGURATION"
+  | "DATA_SOURCE_NOT_FOUND"
+  | "AUTHENTICATION_FAILED"
+  | "PERMISSION_DENIED"
+  | "UNAVAILABLE"
+  | "ERROR";
+
+export type GoogleMerchantProductIssue = {
+  code: string;
+  description: string;
+  offerId: string;
+  severity: string;
+};
+
+export type GoogleMerchantConnectionDiagnostic = {
+  checkedAt: string;
+  connectionStatus: GoogleMerchantConnectionStatus;
+  dataSourceVerified: boolean;
+  disapprovedProductsCount: number;
+  issues: GoogleMerchantProductIssue[];
+  issuesCount: number;
+  lastError?: Omit<NormalizedGoogleMerchantError, "status">;
+  latencyMs: number;
+  productsCount: number;
+};
+
+export type NormalizedGoogleMerchantError = {
+  code: string;
+  message: string;
+  retryable: boolean;
+  status: GoogleMerchantConnectionStatus;
+};
+
 type SettingEntry = { key: string; value: string };
+
+class MerchantOperationAttemptError {
+  constructor(
+    readonly cause: unknown,
+    readonly attempts: number,
+  ) {}
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+export function normalizeGoogleMerchantError(
+  error: unknown,
+): NormalizedGoogleMerchantError {
+  const candidate = isRecord(error) ? error : {};
+  const numericCode =
+    typeof candidate.code === "number"
+      ? candidate.code
+      : Number.parseInt(String(candidate.code ?? ""), 10);
+  const codeMap: Record<
+    number,
+    Pick<NormalizedGoogleMerchantError, "code" | "retryable" | "status">
+  > = {
+    7: {
+      code: "PERMISSION_DENIED",
+      retryable: false,
+      status: "PERMISSION_DENIED",
+    },
+    5: {
+      code: "NOT_FOUND",
+      retryable: false,
+      status: "DATA_SOURCE_NOT_FOUND",
+    },
+    8: {
+      code: "RESOURCE_EXHAUSTED",
+      retryable: true,
+      status: "UNAVAILABLE",
+    },
+    13: { code: "INTERNAL", retryable: true, status: "UNAVAILABLE" },
+    14: { code: "UNAVAILABLE", retryable: true, status: "UNAVAILABLE" },
+    16: {
+      code: "UNAUTHENTICATED",
+      retryable: false,
+      status: "AUTHENTICATION_FAILED",
+    },
+  };
+  const classification = codeMap[numericCode] ?? {
+    code:
+      typeof candidate.code === "string"
+        ? candidate.code
+        : Number.isFinite(numericCode)
+          ? String(numericCode)
+          : "UNKNOWN",
+    retryable: false,
+    status: "ERROR" as const,
+  };
+  const rawMessage =
+    typeof candidate.details === "string"
+      ? candidate.details
+      : error instanceof Error
+        ? error.message
+        : "Unknown Google Merchant error";
+  const message = rawMessage
+    .replace(
+      /-----BEGIN [^-]+ PRIVATE KEY-----[\s\S]*?-----END [^-]+ PRIVATE KEY-----/g,
+      "[REDACTED PRIVATE KEY]",
+    )
+    .replace(/(access_token|refresh_token|client_secret)=([^&\s]+)/gi, "$1=[REDACTED]")
+    .slice(0, 2000);
+
+  return { ...classification, message };
 }
 
 function optionalString(
@@ -201,6 +327,22 @@ export function parseGoogleMerchantSettings(
     throw new Error("Google brand is required");
   }
   const credentials = parseGoogleCredentials(getValue("credentials") ?? "");
+  const contentLanguage = (
+    getValue("contentLanguage") ?? GOOGLE_CONTENT_LANGUAGE
+  )
+    .trim()
+    .toLowerCase();
+  if (!CONTENT_LANGUAGE_PATTERN.test(contentLanguage)) {
+    throw new Error("Google contentLanguage must be a two-letter language code");
+  }
+  const feedLabel = (getValue("feedLabel") ?? GOOGLE_FEED_LABEL)
+    .trim()
+    .toUpperCase();
+  if (!FEED_LABEL_PATTERN.test(feedLabel)) {
+    throw new Error(
+      "Google feedLabel must contain 1-20 uppercase letters, numbers, hyphens, or underscores",
+    );
+  }
 
   return {
     accountId,
@@ -208,6 +350,8 @@ export function parseGoogleMerchantSettings(
     brand,
     credentials,
     dataSource,
+    contentLanguage,
+    feedLabel,
   };
 }
 
@@ -219,16 +363,21 @@ export function createGoogleMerchantClients(
     scopes: [GOOGLE_OAUTH_SCOPE],
   };
   return {
+    dataSources: new dataSourcesV1.DataSourcesServiceClient(options),
     productInputs: new v1.ProductInputsServiceClient(options),
     products: new v1.ProductsServiceClient(options),
   };
 }
 
-export function buildGoogleProductIdentifier(offerId: string): string {
+export function buildGoogleProductIdentifier(
+  offerId: string,
+  contentLanguage = GOOGLE_CONTENT_LANGUAGE,
+  feedLabel = GOOGLE_FEED_LABEL,
+): string {
   if (!offerId) {
     throw new Error("Google offer ID is required");
   }
-  const components = [GOOGLE_CONTENT_LANGUAGE, GOOGLE_FEED_LABEL, offerId];
+  const components = [contentLanguage, feedLabel, offerId];
   const identifier = components.join("~");
   return components.every((component) =>
     PLAIN_IDENTIFIER_COMPONENT.test(component),
@@ -240,25 +389,39 @@ export function buildGoogleProductIdentifier(offerId: string): string {
 export function buildGoogleProductName(
   accountId: string,
   offerId: string,
+  contentLanguage = GOOGLE_CONTENT_LANGUAGE,
+  feedLabel = GOOGLE_FEED_LABEL,
 ): string {
-  return `accounts/${accountId}/products/${buildGoogleProductIdentifier(offerId)}`;
+  return `accounts/${accountId}/products/${buildGoogleProductIdentifier(
+    offerId,
+    contentLanguage,
+    feedLabel,
+  )}`;
 }
 
 export function buildGoogleProductInputName(
   accountId: string,
   offerId: string,
+  contentLanguage = GOOGLE_CONTENT_LANGUAGE,
+  feedLabel = GOOGLE_FEED_LABEL,
 ): string {
-  return `accounts/${accountId}/productInputs/${buildGoogleProductIdentifier(offerId)}`;
+  return `accounts/${accountId}/productInputs/${buildGoogleProductIdentifier(
+    offerId,
+    contentLanguage,
+    feedLabel,
+  )}`;
 }
 
 export function toGoogleProductInput(
   product: GoogleProduct,
   brand: string,
+  contentLanguage = GOOGLE_CONTENT_LANGUAGE,
+  feedLabel = GOOGLE_FEED_LABEL,
 ): GoogleProductInput {
   return {
     offerId: String(product.communicateID),
-    contentLanguage: GOOGLE_CONTENT_LANGUAGE,
-    feedLabel: GOOGLE_FEED_LABEL,
+    contentLanguage,
+    feedLabel,
     productAttributes: {
       ...product.productAttributes,
       brand,
@@ -270,6 +433,34 @@ export function toGoogleProductInput(
       versionNumber: product.versionNumber,
     }),
   };
+}
+
+export function validateGoogleProductUrls(product: GoogleProduct): void {
+  const attributes = product.productAttributes;
+  const urls = [
+    ["link", attributes.link],
+    ["imageLink", attributes.imageLink],
+    ...((attributes.additionalImageLinks ?? []).map((url, index) => [
+      `additionalImageLinks[${index}]`,
+      url,
+    ]) as Array<[string, string | null | undefined]>),
+  ] as Array<[string, string | null | undefined]>;
+  for (const [field, value] of urls) {
+    if (!value) continue;
+    let parsed: URL;
+    try {
+      parsed = new URL(value);
+    } catch {
+      throw new Error(
+        `Google product ${product.communicateID} ${field} must be an absolute http(s) URL`,
+      );
+    }
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      throw new Error(
+        `Google product ${product.communicateID} ${field} must be an absolute http(s) URL`,
+      );
+    }
+  }
 }
 
 function camelToSnake(value: string): string {
@@ -305,7 +496,12 @@ export function createGoogleInsertOperation(
     request: {
       parent: `accounts/${settings.accountId}`,
       dataSource: settings.dataSource,
-      productInput: toGoogleProductInput(product, settings.brand),
+      productInput: toGoogleProductInput(
+        product,
+        settings.brand,
+        settings.contentLanguage,
+        settings.feedLabel,
+      ),
     },
   };
 }
@@ -315,9 +511,19 @@ export function createGoogleUpdateOperation(
   settings: GoogleMerchantSettings,
 ): GoogleWriteOperation {
   const communicateID = String(product.communicateID);
-  const input = toGoogleProductInput(product, settings.brand);
+  const input = toGoogleProductInput(
+    product,
+    settings.brand,
+    settings.contentLanguage,
+    settings.feedLabel,
+  );
   const productInput: GoogleProductInput = {
-    name: buildGoogleProductInputName(settings.accountId, communicateID),
+    name: buildGoogleProductInputName(
+      settings.accountId,
+      communicateID,
+      settings.contentLanguage,
+      settings.feedLabel,
+    ),
     productAttributes: input.productAttributes,
     ...(input.customAttributes && {
       customAttributes: input.customAttributes,
@@ -342,7 +548,12 @@ export function createGoogleDeleteOperation(
     communicateID,
     method: "delete",
     request: {
-      name: buildGoogleProductInputName(settings.accountId, communicateID),
+      name: buildGoogleProductInputName(
+        settings.accountId,
+        communicateID,
+        settings.contentLanguage,
+        settings.feedLabel,
+      ),
       dataSource: settings.dataSource,
     },
   };
@@ -350,7 +561,7 @@ export function createGoogleDeleteOperation(
 
 export async function runBoundedMerchantOperations<T>(
   items: readonly T[],
-  operation: (item: T, index: number) => Promise<void>,
+  operation: (item: T, index: number) => Promise<number | void>,
   concurrency = DEFAULT_GOOGLE_WRITE_CONCURRENCY,
 ): Promise<Array<MerchantOperationResult<T>>> {
   if (!Number.isInteger(concurrency) || concurrency < 1) {
@@ -368,10 +579,23 @@ export async function runBoundedMerchantOperations<T>(
       if (index >= items.length) return;
       const item = items[index];
       try {
-        await operation(item, index);
-        results[index] = { index, item, status: "success" };
+        const attempts = await operation(item, index);
+        results[index] = {
+          attempts: attempts ?? 1,
+          index,
+          item,
+          status: "success",
+        };
       } catch (error) {
-        results[index] = { error, index, item, status: "error" };
+        results[index] = {
+          attempts:
+            error instanceof MerchantOperationAttemptError ? error.attempts : 1,
+          error:
+            error instanceof MerchantOperationAttemptError ? error.cause : error,
+          index,
+          item,
+          status: "error",
+        };
       }
     }
   });
@@ -390,21 +614,39 @@ export async function executeGoogleWriteOperations(
   client: GoogleProductInputsWriter,
   operations: readonly GoogleWriteOperation[],
   concurrency = DEFAULT_GOOGLE_WRITE_CONCURRENCY,
+  retryOptions: GoogleMerchantRetryOptions = {},
 ): Promise<Array<MerchantOperationResult<GoogleWriteOperation>>> {
+  const maxAttempts = retryOptions.maxAttempts ?? 3;
+  const delay =
+    retryOptions.delay ??
+    (async (attempt: number) => {
+      const exponentialDelay = 250 * 2 ** (attempt - 1);
+      const jitter = Math.floor(Math.random() * 100);
+      await new Promise((resolve) =>
+        setTimeout(resolve, exponentialDelay + jitter),
+      );
+    });
   return runBoundedMerchantOperations(
     operations,
     async (operation) => {
-      try {
-        if (operation.method === "insert") {
-          await client.insertProductInput(operation.request);
-        } else if (operation.method === "update") {
-          await client.updateProductInput(operation.request);
-        } else {
-          await client.deleteProductInput(operation.request);
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        try {
+          if (operation.method === "insert") {
+            await client.insertProductInput(operation.request);
+          } else if (operation.method === "update") {
+            await client.updateProductInput(operation.request);
+          } else {
+            await client.deleteProductInput(operation.request);
+          }
+          return attempt;
+        } catch (error) {
+          if (operation.method === "delete" && isNotFoundError(error)) return;
+          const normalized = normalizeGoogleMerchantError(error);
+          if (!normalized.retryable || attempt === maxAttempts) {
+            throw new MerchantOperationAttemptError(error, attempt);
+          }
+          await delay(attempt);
         }
-      } catch (error) {
-        if (operation.method === "delete" && isNotFoundError(error)) return;
-        throw error;
       }
     },
     concurrency,
@@ -444,6 +686,72 @@ export async function collectGoogleProductsForDataSource(
     });
   }
   return [...products.values()];
+}
+
+export async function diagnoseGoogleMerchantConnection(
+  client: GoogleProductsReader,
+  settings: Pick<GoogleMerchantSettings, "accountId" | "dataSource">,
+  dataSourcesClient?: GoogleDataSourcesReader,
+): Promise<GoogleMerchantConnectionDiagnostic> {
+  const startedAt = Date.now();
+  const issues: GoogleMerchantProductIssue[] = [];
+  let productsCount = 0;
+  let disapprovedProductsCount = 0;
+
+  try {
+    if (dataSourcesClient) {
+      await dataSourcesClient.getDataSource({ name: settings.dataSource });
+    }
+    for await (const product of client.listProductsAsync({
+      parent: `accounts/${settings.accountId}`,
+      pageSize: 1000,
+    })) {
+      if (product.dataSource !== settings.dataSource) continue;
+      productsCount += 1;
+      let isDisapproved = false;
+      for (const issue of product.productStatus?.itemLevelIssues ?? []) {
+        const severity =
+          typeof issue.severity === "string"
+            ? issue.severity
+            : issue.severity === 3
+              ? "DISAPPROVED"
+              : String(issue.severity ?? "SEVERITY_UNSPECIFIED");
+        if (severity === "DISAPPROVED") isDisapproved = true;
+        issues.push({
+          code: issue.code ?? "unknown",
+          description:
+            issue.description ?? issue.detail ?? "Unknown product issue",
+          offerId: product.offerId ?? "unknown",
+          severity,
+        });
+      }
+      if (isDisapproved) disapprovedProductsCount += 1;
+    }
+  } catch (error) {
+    const { status, ...lastError } = normalizeGoogleMerchantError(error);
+    return {
+      checkedAt: new Date().toISOString(),
+      connectionStatus: status,
+      dataSourceVerified: false,
+      disapprovedProductsCount,
+      issues,
+      issuesCount: issues.length,
+      lastError,
+      latencyMs: Date.now() - startedAt,
+      productsCount,
+    };
+  }
+
+  return {
+    checkedAt: new Date().toISOString(),
+    connectionStatus: "CONNECTED",
+    dataSourceVerified: Boolean(dataSourcesClient),
+    disapprovedProductsCount,
+    issues,
+    issuesCount: issues.length,
+    latencyMs: Date.now() - startedAt,
+    productsCount,
+  };
 }
 
 export function selectRemoteOrphanProducts(

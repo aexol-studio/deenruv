@@ -29,6 +29,7 @@
     "@deenruv/common": "workspace:^",
     "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/ui-devkit": "workspace:^",
+    "@google-shopping/datasources": "0.11.1",
     "@google-shopping/products": "0.9.0",
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",

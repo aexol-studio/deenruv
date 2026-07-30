@@ -21,3 +21,10 @@ export const saveMerchantPlatformSettings = mutation({
 export const removeOrphanItems = mutation({
   removeOrphanItems: [{ platform: $("platform", "String!") }, true],
 });
+
+export const sendAllProductsToMerchantPlatform = mutation({
+  sendAllProductsToMerchantPlatform: [
+    { platform: $("platform", "String!") },
+    true,
+  ],
+});
