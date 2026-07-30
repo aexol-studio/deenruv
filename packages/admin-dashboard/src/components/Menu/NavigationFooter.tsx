@@ -1,50 +1,112 @@
-import { capitalizeFirstLetter, cn, Routes, Separator, useServer, useTranslation } from '@deenruv/react-ui-devkit';
+import {
+  cn,
+  Routes,
+  Separator,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  useServer,
+  useTranslation,
+} from '@deenruv/react-ui-devkit';
 import { Puzzle } from 'lucide-react';
 import React from 'react';
 import { NavLink } from 'react-router';
 
 import { canAccessAdminItem, useAdminAccess } from '@/access/index.js';
 
-interface NavigationFooterProps {
-  isCollapsed: boolean;
-}
+import { AccountMenu } from './AccountMenu.js';
 
-export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed }) => {
+type NavigationFooterProps = {
+  isCollapsed: boolean;
+  mode: 'desktop' | 'mobile';
+  onNavigate?: () => void;
+};
+
+export const NavigationFooter = ({ isCollapsed, mode, onNavigate }: NavigationFooterProps) => {
   const { t } = useTranslation('common');
-  const userPermissions = useServer((p) => p.userPermissions);
+  const userPermissions = useServer((state) => state.userPermissions);
   const { routes } = useAdminAccess();
   const extensionsRoute = routes.find((route) => route.id === 'extensions');
-  const isPermittedToExtensions = !!extensionsRoute && canAccessAdminItem({ item: extensionsRoute, userPermissions });
+  const canAccessExtensions = !!extensionsRoute && canAccessAdminItem({ item: extensionsRoute, userPermissions });
   const extensionsPath = extensionsRoute?.path || Routes.extensions;
+  const version = window.__DEENRUV_SETTINGS__.appVersion;
+  const extensionsLink = (
+    <NavLink
+      to={extensionsPath}
+      viewTransition
+      onClick={onNavigate}
+      aria-label={t('menu.extensions')}
+      className="sidebar-link group/sidebar-link"
+    >
+      {({ isActive }) => (
+        <span
+          className={cn(
+            isCollapsed
+              ? 'mx-auto flex size-8 items-center justify-center rounded-[4px] text-[var(--sidebar-secondary)] transition-colors hover:bg-[var(--sidebar-hover)] hover:text-[var(--sidebar-ink)]'
+              : 'sidebar-row mx-2',
+            'group-focus-visible/sidebar-link:ring-2 group-focus-visible/sidebar-link:ring-[var(--sidebar-focus)] group-focus-visible/sidebar-link:outline-none',
+            isCollapsed &&
+              isActive &&
+              'bg-[var(--sidebar-active)] text-[var(--sidebar-active-ink)] shadow-[inset_2px_0_0_var(--sidebar-active-indicator)]',
+          )}
+          data-active={!isCollapsed && isActive}
+        >
+          {isCollapsed ? (
+            <Puzzle className="size-4" />
+          ) : (
+            <span className="sidebar-icon-slot">
+              <Puzzle className="size-4" />
+            </span>
+          )}
+          {!isCollapsed && <span className="truncate">{t('menu.extensions')}</span>}
+        </span>
+      )}
+    </NavLink>
+  );
 
   return (
-    <div className="flex w-full flex-col gap-2 border-t bg-card/80 py-2 text-xs text-muted-foreground select-none">
-      {isPermittedToExtensions && !isCollapsed && (
+    <div className="shrink-0 border-t border-[var(--sidebar-hairline)] bg-[var(--sidebar-surface)] py-2 text-xs text-[var(--sidebar-secondary)]">
+      {canAccessExtensions && (
         <>
-          <div>
-            <NavLink to={extensionsPath} viewTransition>
-              <div
-                className={cn(
-                  'relative mx-2 flex h-8 items-center justify-center px-3 text-sm font-medium capitalize transition-colors hover:bg-muted/70 hover:text-foreground',
-                  location.pathname === extensionsPath &&
-                    'bg-primary/10 text-primary opacity-100 hover:bg-primary/10 hover:text-primary',
-                )}
-              >
-                <Puzzle className="mr-2 size-4" />
-                {capitalizeFirstLetter(t('menu.extensions'))}
-              </div>
-            </NavLink>
-          </div>
-          <Separator />
+          {isCollapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex h-8 items-center justify-center">{extensionsLink}</div>
+              </TooltipTrigger>
+              <TooltipContent side="right">{t('menu.extensions')}</TooltipContent>
+            </Tooltip>
+          ) : (
+            extensionsLink
+          )}
+          <Separator className="my-2 bg-[var(--sidebar-hairline)]" />
         </>
       )}
-      <div className="flex items-center justify-center gap-1 px-2">
-        {!isCollapsed && <p className="uppercase">Deenruv</p>}
-        <span>
-          {!isCollapsed ? 'ver. ' : 'v. '}
-          {window.__DEENRUV_SETTINGS__.appVersion}
-        </span>
-      </div>
+      {isCollapsed ? (
+        <div className="flex justify-center">
+          <AccountMenu isCollapsed mode={mode} onNavigate={onNavigate} />
+        </div>
+      ) : (
+        <AccountMenu isCollapsed={false} mode={mode} onNavigate={onNavigate} />
+      )}
+      {isCollapsed ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="mx-auto mt-2 max-w-10 truncate px-1 text-center text-[10px] text-[var(--sidebar-tertiary)]">
+              v {version}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            {t('versionAbbreviation')} {version}
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        <div className="mt-2 flex h-8 items-center gap-1 px-4 text-xs text-[var(--sidebar-tertiary)]">
+          <span>Deenruv</span>
+          <span>
+            {t('versionAbbreviation')} {version}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

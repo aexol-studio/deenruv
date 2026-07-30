@@ -8,18 +8,18 @@ export const BrandLogo: React.FC<{ isCollapsed?: boolean }> = ({ isCollapsed = f
   let Logo = null;
 
   if (isCollapsed) {
-    if (typeof collapsed === 'string') Logo = <img src={collapsed} alt="Logo" className="size-full object-fill" />;
-    if (typeof collapsed === 'object') Logo = React.cloneElement(collapsed, { className: 'object-contain' });
+    if (typeof collapsed === 'string') Logo = <img src={collapsed} alt="" className="size-full object-contain" />;
+    if (typeof collapsed === 'object') Logo = React.cloneElement(collapsed, { className: 'size-full object-contain' });
   }
 
   if (!isCollapsed) {
-    if (typeof full === 'string') Logo = <img src={full} alt="Logo" className="size-full object-fill" />;
-    if (typeof full === 'object') Logo = React.cloneElement(full, { className: 'object-contain' });
+    if (typeof full === 'string') Logo = <img src={full} alt="" className="size-full object-contain" />;
+    if (typeof full === 'object') Logo = React.cloneElement(full, { className: 'size-full object-contain' });
   }
 
   if (!Logo)
     return (
-      <svg width="260px" height="100%" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+      <svg className="size-full" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
             <feOffset result="offOut" in="SourceAlpha" dx="2" dy="2" />
