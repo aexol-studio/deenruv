@@ -84,8 +84,7 @@ describe("catalog translation search SQLite execution", () => {
     const entities = Object.values(coreEntitiesMap);
     setEntityIdStrategy(defaultConfig.entityIdStrategy, entities);
     const dataSource = new DataSource({
-      type: "sqlite",
-      database: ":memory:",
+      type: "sqljs",
       entities,
       synchronize: true,
     });
