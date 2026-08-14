@@ -981,6 +981,14 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Zone"]],
+getMerchantPlatformSettings?: [{	platform: string | Variable<any, string>},ValueTypes["MerchantPlatformSettingsEntity"]],
+getMerchantPlatformInfo?: [{	platform: string | Variable<any, string>},ValueTypes["MerchantPlatformInfo"]],
+getMerchantSyncHistory?: [{	platform: string | Variable<any, string>,	take?: number | undefined | null | Variable<any, string>},ValueTypes["MerchantSyncRun"]],
+	additionalOrderStates?:ValueTypes["AdditionalOrderState"],
+chartMetric?: [{	input: ValueTypes["ChartMetricInput"] | Variable<any, string>},ValueTypes["ChartMetrics"]],
+orderSummaryMetric?: [{	input: ValueTypes["OrderSummaryMetricInput"] | Variable<any, string>},ValueTypes["OrderSummaryMetrics"]],
+	getInpostConfig?:ValueTypes["InpostConfig"],
+getInpostOrganizations?: [{	input?: ValueTypes["GetInpostOrganizationsInput"] | undefined | null | Variable<any, string>},ValueTypes["InpostOrganizationResponse"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -1149,6 +1157,10 @@ deleteZone?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Deleti
 deleteZones?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: ValueTypes["ID"] | Variable<any, string>,	memberIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: ValueTypes["ID"] | Variable<any, string>,	memberIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Zone"]],
+sendAllProductsToMerchantPlatform?: [{	platform: string | Variable<any, string>},boolean | `@${string}`],
+saveMerchantPlatformSettings?: [{	input: ValueTypes["SaveMerchantPlatformSettingInput"] | Variable<any, string>},ValueTypes["MerchantPlatformSettingsEntity"]],
+removeOrphanItems?: [{	platform: string | Variable<any, string>},boolean | `@${string}`],
+setInpostShippingMethodConfig?: [{	input: ValueTypes["SetInpostShippingMethodConfigInput"] | Variable<any, string>},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -1838,7 +1850,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary?:ValueTypes["OrderTaxSummary"],
 history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null | Variable<any, string>},ValueTypes["HistoryEntryList"]],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["OrderCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Fulfillment"]: AliasType<{
@@ -1851,7 +1863,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	state?:boolean | `@${string}`,
 	method?:boolean | `@${string}`,
 	trackingCode?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["FulfillmentCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Payment"]: AliasType<{
@@ -1910,7 +1922,8 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	total?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	totalWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
+	pickupPointId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -1928,7 +1941,8 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	shipping?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	shippingWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	total?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	pickupPointId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -1949,7 +1963,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 };
 	["UpdateOrderInput"]: {
 	id: ValueTypes["ID"] | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateOrderCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ValueTypes["OrderLineInput"]> | Variable<any, string>,
@@ -2037,7 +2051,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ValueTypes["ModifyOrderOptions"] | undefined | null | Variable<any, string>,
 	couponCodes?: Array<string> | undefined | null | Variable<any, string>,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>
+	shippingMethodIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
+	customFields?: ValueTypes["UpdateOrderCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AddItemInput"]: {
 	productVariantId: ValueTypes["ID"] | Variable<any, string>,
@@ -2411,7 +2426,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	options?:ValueTypes["ProductOption"],
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductVariantTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductVariantCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -2484,6 +2499,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	take?: number | undefined | null | Variable<any, string>
 };
 	["ProductListOptions"]: {
+	searchTerm?: string | undefined | null | Variable<any, string>,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null | Variable<any, string>,
 	/** Takes n results, for use in pagination */
@@ -2510,6 +2526,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["ProductVariantListOptions"]: {
+	searchTerm?: string | undefined | null | Variable<any, string>,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null | Variable<any, string>,
 	/** Takes n results, for use in pagination */
@@ -2541,7 +2558,8 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	priceWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	stockLevel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
+	communicateID?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["ProductTranslationInput"]: {
 	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
@@ -3450,6 +3468,7 @@ current session. */
 		['...on User']?: Omit<ValueTypes["User"],keyof ValueTypes["Node"]>;
 		['...on AuthenticationMethod']?: Omit<ValueTypes["AuthenticationMethod"],keyof ValueTypes["Node"]>;
 		['...on Zone']?: Omit<ValueTypes["Zone"],keyof ValueTypes["Node"]>;
+		['...on MerchantPlatformSettingsEntity']?: Omit<ValueTypes["MerchantPlatformSettingsEntity"],keyof ValueTypes["Node"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["ErrorResult"]:AliasType<{
@@ -4535,6 +4554,168 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["MerchantPlatformSetting"]: AliasType<{
+	key?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformSettingsEntity"]: AliasType<{
+	id?:boolean | `@${string}`,
+	platform?:boolean | `@${string}`,
+	entries?:ValueTypes["MerchantPlatformSetting"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformInfo"]: AliasType<{
+	isValidConnection?:boolean | `@${string}`,
+	productsCount?:boolean | `@${string}`,
+	connectionStatus?:boolean | `@${string}`,
+	dataSourceVerified?:boolean | `@${string}`,
+	checkedAt?:boolean | `@${string}`,
+	latencyMs?:boolean | `@${string}`,
+	disapprovedProductsCount?:boolean | `@${string}`,
+	issuesCount?:boolean | `@${string}`,
+	lastError?:ValueTypes["MerchantPlatformError"],
+	issues?:ValueTypes["MerchantProductIssue"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformError"]: AliasType<{
+	code?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	retryable?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantProductIssue"]: AliasType<{
+	offerId?:boolean | `@${string}`,
+	code?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	severity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncItem"]: AliasType<{
+	id?:boolean | `@${string}`,
+	offerId?:boolean | `@${string}`,
+	operation?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	errorCode?:boolean | `@${string}`,
+	errorMessage?:boolean | `@${string}`,
+	attempts?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncRun"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	platform?:boolean | `@${string}`,
+	trigger?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	jobId?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	succeeded?:boolean | `@${string}`,
+	failed?:boolean | `@${string}`,
+	errorSummary?:boolean | `@${string}`,
+	startedAt?:boolean | `@${string}`,
+	finishedAt?:boolean | `@${string}`,
+	items?:ValueTypes["MerchantSyncItem"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformSettingInput"]: {
+	key: string | Variable<any, string>,
+	value: string | Variable<any, string>
+};
+	["SaveMerchantPlatformSettingInput"]: {
+	platform: string | Variable<any, string>,
+	entries: Array<ValueTypes["MerchantPlatformSettingInput"]> | Variable<any, string>
+};
+	["AdditionalOrderState"]: AliasType<{
+	state?:boolean | `@${string}`,
+	selectedByDefault?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartDataType"]: AliasType<{
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ValueTypes["ChartEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartMetrics"]: AliasType<{
+	data?:ValueTypes["ChartDataType"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryMetrics"]: AliasType<{
+	data?:ValueTypes["OrderSummaryDataMetric"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryDataMetric"]: AliasType<{
+	currencyCode?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	totalWithTax?:boolean | `@${string}`,
+	orderCount?:boolean | `@${string}`,
+	averageOrderValue?:boolean | `@${string}`,
+	averageOrderValueWithTax?:boolean | `@${string}`,
+	productCount?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
+	["ChartMetricType"]:ChartMetricType;
+	["ChartEntryAdditionalData"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	quantity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartEntry"]: AliasType<{
+	intervalTick?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+	additionalData?:ValueTypes["ChartEntryAdditionalData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["BetterMetricRangeInput"]: {
+	start: ValueTypes["DateTime"] | Variable<any, string>,
+	end?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
+};
+	["OrderSummaryMetricInput"]: {
+	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
+	orderStates: Array<string> | Variable<any, string>
+};
+	["ChartMetricInput"]: {
+	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
+	interval: ValueTypes["MetricIntervalType"] | Variable<any, string>,
+	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
+	orderStates: Array<string> | Variable<any, string>,
+	productIDs?: Array<string> | undefined | null | Variable<any, string>,
+	net?: boolean | undefined | null | Variable<any, string>
+};
+	["SetInpostShippingMethodConfigInput"]: {
+	shippingMethodId: ValueTypes["ID"] | Variable<any, string>,
+	host: string | Variable<any, string>,
+	apiKey: string | Variable<any, string>,
+	geowidgetKey?: string | undefined | null | Variable<any, string>,
+	inpostOrganization: number | Variable<any, string>,
+	service: string | Variable<any, string>
+};
+	["InpostConfig"]: AliasType<{
+	shippingMethodId?:boolean | `@${string}`,
+	host?:boolean | `@${string}`,
+	apiKey?:boolean | `@${string}`,
+	geowidgetKey?:boolean | `@${string}`,
+	inpostOrganization?:boolean | `@${string}`,
+	service?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["InpostOrganization"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	services?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["InpostOrganizationResponse"]: AliasType<{
+	items?:ValueTypes["InpostOrganization"],
+		__typename?: boolean | `@${string}`
+}>;
+	["GetInpostOrganizationsInput"]: {
+	host: string | Variable<any, string>,
+	apiKey: string | Variable<any, string>
+};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -4659,7 +4840,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	price?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	priceWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	communicateID?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["CountryFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4987,6 +5169,21 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
+	["FulfillmentCustomFields"]: AliasType<{
+	inpostLabel?:ValueTypes["Asset"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderCustomFields"]: AliasType<{
+	pickupPointId?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateOrderCustomFieldsInput"]: {
+	pickupPointId?: string | undefined | null | Variable<any, string>
+};
+	["ProductVariantCustomFields"]: AliasType<{
+	communicateID?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["NativeAuthInput"]: {
 	username: string | Variable<any, string>,
 	password: string | Variable<any, string>
@@ -5029,7 +5226,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	customFields?:ValueTypes["CustomFieldConfig"],
 		__typename?: boolean | `@${string}`
 }>;
-	["ID"]:string
+	["ID"]:unknown
   }
 
 export type ResolverInputTypes = {
@@ -5106,6 +5303,14 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Zone"]],
+getMerchantPlatformSettings?: [{	platform: string},ResolverInputTypes["MerchantPlatformSettingsEntity"]],
+getMerchantPlatformInfo?: [{	platform: string},ResolverInputTypes["MerchantPlatformInfo"]],
+getMerchantSyncHistory?: [{	platform: string,	take?: number | undefined | null},ResolverInputTypes["MerchantSyncRun"]],
+	additionalOrderStates?:ResolverInputTypes["AdditionalOrderState"],
+chartMetric?: [{	input: ResolverInputTypes["ChartMetricInput"]},ResolverInputTypes["ChartMetrics"]],
+orderSummaryMetric?: [{	input: ResolverInputTypes["OrderSummaryMetricInput"]},ResolverInputTypes["OrderSummaryMetrics"]],
+	getInpostConfig?:ResolverInputTypes["InpostConfig"],
+getInpostOrganizations?: [{	input?: ResolverInputTypes["GetInpostOrganizationsInput"] | undefined | null},ResolverInputTypes["InpostOrganizationResponse"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -5274,6 +5479,10 @@ deleteZone?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionRespon
 deleteZones?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: ResolverInputTypes["ID"],	memberIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: ResolverInputTypes["ID"],	memberIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Zone"]],
+sendAllProductsToMerchantPlatform?: [{	platform: string},boolean | `@${string}`],
+saveMerchantPlatformSettings?: [{	input: ResolverInputTypes["SaveMerchantPlatformSettingInput"]},ResolverInputTypes["MerchantPlatformSettingsEntity"]],
+removeOrphanItems?: [{	platform: string},boolean | `@${string}`],
+setInpostShippingMethodConfig?: [{	input: ResolverInputTypes["SetInpostShippingMethodConfigInput"]},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -5973,7 +6182,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary?:ResolverInputTypes["OrderTaxSummary"],
 history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined | null},ResolverInputTypes["HistoryEntryList"]],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["OrderCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Fulfillment"]: AliasType<{
@@ -5986,7 +6195,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	state?:boolean | `@${string}`,
 	method?:boolean | `@${string}`,
 	trackingCode?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["FulfillmentCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Payment"]: AliasType<{
@@ -6045,7 +6254,8 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	total?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
+	pickupPointId?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -6063,7 +6273,8 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	shipping?: ResolverInputTypes["SortOrder"] | undefined | null,
 	shippingWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
 	total?: ResolverInputTypes["SortOrder"] | undefined | null,
-	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null
+	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
+	pickupPointId?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6084,7 +6295,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 };
 	["UpdateOrderInput"]: {
 	id: ResolverInputTypes["ID"],
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ResolverInputTypes["OrderLineInput"]>,
@@ -6172,7 +6383,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ResolverInputTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<ResolverInputTypes["ID"]> | undefined | null
+	shippingMethodIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
+	customFields?: ResolverInputTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 	productVariantId: ResolverInputTypes["ID"],
@@ -6558,7 +6770,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	options?:ResolverInputTypes["ProductOption"],
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductVariantTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductVariantCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -6631,6 +6843,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	take?: number | undefined | null
 };
 	["ProductListOptions"]: {
+	searchTerm?: string | undefined | null,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
@@ -6657,6 +6870,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null
 };
 	["ProductVariantListOptions"]: {
+	searchTerm?: string | undefined | null,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
@@ -6688,7 +6902,8 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	priceWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	stockLevel?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
+	communicateID?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: ResolverInputTypes["ID"] | undefined | null,
@@ -7601,6 +7816,7 @@ current session. */
 		['...on User']?: Omit<ResolverInputTypes["User"],keyof ResolverInputTypes["Node"]>;
 		['...on AuthenticationMethod']?: Omit<ResolverInputTypes["AuthenticationMethod"],keyof ResolverInputTypes["Node"]>;
 		['...on Zone']?: Omit<ResolverInputTypes["Zone"],keyof ResolverInputTypes["Node"]>;
+		['...on MerchantPlatformSettingsEntity']?: Omit<ResolverInputTypes["MerchantPlatformSettingsEntity"],keyof ResolverInputTypes["Node"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["ErrorResult"]:AliasType<{
@@ -8692,6 +8908,168 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["MerchantPlatformSetting"]: AliasType<{
+	key?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformSettingsEntity"]: AliasType<{
+	id?:boolean | `@${string}`,
+	platform?:boolean | `@${string}`,
+	entries?:ResolverInputTypes["MerchantPlatformSetting"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformInfo"]: AliasType<{
+	isValidConnection?:boolean | `@${string}`,
+	productsCount?:boolean | `@${string}`,
+	connectionStatus?:boolean | `@${string}`,
+	dataSourceVerified?:boolean | `@${string}`,
+	checkedAt?:boolean | `@${string}`,
+	latencyMs?:boolean | `@${string}`,
+	disapprovedProductsCount?:boolean | `@${string}`,
+	issuesCount?:boolean | `@${string}`,
+	lastError?:ResolverInputTypes["MerchantPlatformError"],
+	issues?:ResolverInputTypes["MerchantProductIssue"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformError"]: AliasType<{
+	code?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	retryable?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantProductIssue"]: AliasType<{
+	offerId?:boolean | `@${string}`,
+	code?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	severity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncItem"]: AliasType<{
+	id?:boolean | `@${string}`,
+	offerId?:boolean | `@${string}`,
+	operation?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	errorCode?:boolean | `@${string}`,
+	errorMessage?:boolean | `@${string}`,
+	attempts?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncRun"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	platform?:boolean | `@${string}`,
+	trigger?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	jobId?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	succeeded?:boolean | `@${string}`,
+	failed?:boolean | `@${string}`,
+	errorSummary?:boolean | `@${string}`,
+	startedAt?:boolean | `@${string}`,
+	finishedAt?:boolean | `@${string}`,
+	items?:ResolverInputTypes["MerchantSyncItem"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformSettingInput"]: {
+	key: string,
+	value: string
+};
+	["SaveMerchantPlatformSettingInput"]: {
+	platform: string,
+	entries: Array<ResolverInputTypes["MerchantPlatformSettingInput"]>
+};
+	["AdditionalOrderState"]: AliasType<{
+	state?:boolean | `@${string}`,
+	selectedByDefault?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartDataType"]: AliasType<{
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ResolverInputTypes["ChartEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartMetrics"]: AliasType<{
+	data?:ResolverInputTypes["ChartDataType"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryMetrics"]: AliasType<{
+	data?:ResolverInputTypes["OrderSummaryDataMetric"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryDataMetric"]: AliasType<{
+	currencyCode?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	totalWithTax?:boolean | `@${string}`,
+	orderCount?:boolean | `@${string}`,
+	averageOrderValue?:boolean | `@${string}`,
+	averageOrderValueWithTax?:boolean | `@${string}`,
+	productCount?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
+	["ChartMetricType"]:ChartMetricType;
+	["ChartEntryAdditionalData"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	quantity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartEntry"]: AliasType<{
+	intervalTick?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+	additionalData?:ResolverInputTypes["ChartEntryAdditionalData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["BetterMetricRangeInput"]: {
+	start: ResolverInputTypes["DateTime"],
+	end?: ResolverInputTypes["DateTime"] | undefined | null
+};
+	["OrderSummaryMetricInput"]: {
+	range: ResolverInputTypes["BetterMetricRangeInput"],
+	orderStates: Array<string>
+};
+	["ChartMetricInput"]: {
+	range: ResolverInputTypes["BetterMetricRangeInput"],
+	interval: ResolverInputTypes["MetricIntervalType"],
+	types: Array<ResolverInputTypes["ChartMetricType"]>,
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
+};
+	["SetInpostShippingMethodConfigInput"]: {
+	shippingMethodId: ResolverInputTypes["ID"],
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined | null,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostConfig"]: AliasType<{
+	shippingMethodId?:boolean | `@${string}`,
+	host?:boolean | `@${string}`,
+	apiKey?:boolean | `@${string}`,
+	geowidgetKey?:boolean | `@${string}`,
+	inpostOrganization?:boolean | `@${string}`,
+	service?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["InpostOrganization"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	services?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["InpostOrganizationResponse"]: AliasType<{
+	items?:ResolverInputTypes["InpostOrganization"],
+		__typename?: boolean | `@${string}`
+}>;
+	["GetInpostOrganizationsInput"]: {
+	host: string,
+	apiKey: string
+};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -8816,7 +9194,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	price?: ResolverInputTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null
+	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null,
+	communicateID?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9144,6 +9523,21 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null
 };
+	["FulfillmentCustomFields"]: AliasType<{
+	inpostLabel?:ResolverInputTypes["Asset"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderCustomFields"]: AliasType<{
+	pickupPointId?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateOrderCustomFieldsInput"]: {
+	pickupPointId?: string | undefined | null
+};
+	["ProductVariantCustomFields"]: AliasType<{
+	communicateID?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["NativeAuthInput"]: {
 	username: string,
 	password: string
@@ -9191,7 +9585,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	mutation?:ResolverInputTypes["Mutation"],
 		__typename?: boolean | `@${string}`
 }>;
-	["ID"]:string
+	["ID"]:unknown
   }
 
 export type ModelTypes = {
@@ -9277,6 +9671,14 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined | null,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined | null,
+	getMerchantPlatformSettings?: ModelTypes["MerchantPlatformSettingsEntity"] | undefined | null,
+	getMerchantPlatformInfo?: Array<ModelTypes["MerchantPlatformInfo"]> | undefined | null,
+	getMerchantSyncHistory: Array<ModelTypes["MerchantSyncRun"]>,
+	additionalOrderStates: Array<ModelTypes["AdditionalOrderState"]>,
+	chartMetric: ModelTypes["ChartMetrics"],
+	orderSummaryMetric: ModelTypes["OrderSummaryMetrics"],
+	getInpostConfig?: ModelTypes["InpostConfig"] | undefined | null,
+	getInpostOrganizations: ModelTypes["InpostOrganizationResponse"],
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<ModelTypes["MetricSummary"]>
 };
@@ -9588,7 +9990,11 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Add members to a Zone */
 	addMembersToZone: ModelTypes["Zone"],
 	/** Remove members from a Zone */
-	removeMembersFromZone: ModelTypes["Zone"]
+	removeMembersFromZone: ModelTypes["Zone"],
+	sendAllProductsToMerchantPlatform?: boolean | undefined | null,
+	saveMerchantPlatformSettings: ModelTypes["MerchantPlatformSettingsEntity"],
+	removeOrphanItems?: boolean | undefined | null,
+	setInpostShippingMethodConfig: boolean
 };
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10219,7 +10625,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary: Array<ModelTypes["OrderTaxSummary"]>,
 	history: ModelTypes["HistoryEntryList"],
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["OrderCustomFields"] | undefined | null
 };
 	["Fulfillment"]: {
 		nextStates: Array<string>,
@@ -10231,7 +10637,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	state: string,
 	method: string,
 	trackingCode?: string | undefined | null,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["FulfillmentCustomFields"] | undefined | null
 };
 	["Payment"]: {
 		nextStates: Array<string>,
@@ -10286,7 +10692,8 @@ sum of `OrderLine.discountedLinePrice` values. */
 	total?: ModelTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: ModelTypes["NumberOperators"] | undefined | null,
 	_and?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null,
-	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null
+	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null,
+	pickupPointId?: ModelTypes["StringOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ModelTypes["SortOrder"] | undefined | null,
@@ -10304,7 +10711,8 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shipping?: ModelTypes["SortOrder"] | undefined | null,
 	shippingWithTax?: ModelTypes["SortOrder"] | undefined | null,
 	total?: ModelTypes["SortOrder"] | undefined | null,
-	totalWithTax?: ModelTypes["SortOrder"] | undefined | null
+	totalWithTax?: ModelTypes["SortOrder"] | undefined | null,
+	pickupPointId?: ModelTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10325,7 +10733,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["UpdateOrderInput"]: {
 	id: ModelTypes["ID"],
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ModelTypes["OrderLineInput"]>,
@@ -10413,7 +10821,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ModelTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<ModelTypes["ID"]> | undefined | null
+	shippingMethodIds?: Array<ModelTypes["ID"]> | undefined | null,
+	customFields?: ModelTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 	productVariantId: ModelTypes["ID"],
@@ -10696,7 +11105,7 @@ is not in the required state. */
 	options: Array<ModelTypes["ProductOption"]>,
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductVariantTranslation"]>,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["ProductVariantCustomFields"] | undefined | null
 };
 	["ProductOptionGroupTranslationInput"]: {
 	id?: ModelTypes["ID"] | undefined | null,
@@ -10767,6 +11176,7 @@ is not in the required state. */
 	take?: number | undefined | null
 };
 	["ProductListOptions"]: {
+	searchTerm?: string | undefined | null,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
@@ -10793,6 +11203,7 @@ is not in the required state. */
 	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined | null
 };
 	["ProductVariantListOptions"]: {
+	searchTerm?: string | undefined | null,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
@@ -10824,7 +11235,8 @@ is not in the required state. */
 	priceWithTax?: ModelTypes["NumberOperators"] | undefined | null,
 	stockLevel?: ModelTypes["StringOperators"] | undefined | null,
 	_and?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined | null,
-	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined | null
+	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined | null,
+	communicateID?: ModelTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: ModelTypes["ID"] | undefined | null,
@@ -11556,7 +11968,7 @@ current session. */
 	/** The `Money` scalar type represents monetary values and supports signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
 ["Money"]:any;
 	["PaginatedList"]: ModelTypes["AdministratorList"] | ModelTypes["ChannelList"] | ModelTypes["CustomerGroupList"] | ModelTypes["JobList"] | ModelTypes["PaymentMethodList"] | ModelTypes["SellerList"] | ModelTypes["StockLocationList"] | ModelTypes["TaxCategoryList"] | ModelTypes["ZoneList"] | ModelTypes["AssetList"] | ModelTypes["CollectionList"] | ModelTypes["CustomerList"] | ModelTypes["FacetList"] | ModelTypes["FacetValueList"] | ModelTypes["HistoryEntryList"] | ModelTypes["OrderList"] | ModelTypes["ProductList"] | ModelTypes["ProductVariantList"] | ModelTypes["PromotionList"] | ModelTypes["CountryList"] | ModelTypes["ProvinceList"] | ModelTypes["RoleList"] | ModelTypes["ShippingMethodList"] | ModelTypes["TagList"] | ModelTypes["TaxRateList"];
-	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"];
+	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"] | ModelTypes["MerchantPlatformSettingsEntity"];
 	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"] | ModelTypes["OrderMiddlewareError"];
 	["Adjustment"]: {
 		adjustmentSource: string,
@@ -12431,6 +12843,151 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
+	["MerchantPlatformSetting"]: {
+		key: string,
+	value: string
+};
+	["MerchantPlatformSettingsEntity"]: {
+		id: ModelTypes["ID"],
+	platform: string,
+	entries: Array<ModelTypes["MerchantPlatformSetting"]>
+};
+	["MerchantPlatformInfo"]: {
+		isValidConnection: boolean,
+	productsCount: number,
+	connectionStatus?: string | undefined | null,
+	dataSourceVerified?: boolean | undefined | null,
+	checkedAt?: ModelTypes["DateTime"] | undefined | null,
+	latencyMs?: number | undefined | null,
+	disapprovedProductsCount?: number | undefined | null,
+	issuesCount?: number | undefined | null,
+	lastError?: ModelTypes["MerchantPlatformError"] | undefined | null,
+	issues?: Array<ModelTypes["MerchantProductIssue"]> | undefined | null
+};
+	["MerchantPlatformError"]: {
+		code: string,
+	message: string,
+	retryable: boolean
+};
+	["MerchantProductIssue"]: {
+		offerId: string,
+	code: string,
+	description: string,
+	severity: string
+};
+	["MerchantSyncItem"]: {
+		id: ModelTypes["ID"],
+	offerId: string,
+	operation: string,
+	status: string,
+	errorCode?: string | undefined | null,
+	errorMessage?: string | undefined | null,
+	attempts: number
+};
+	["MerchantSyncRun"]: {
+		id: ModelTypes["ID"],
+	createdAt: ModelTypes["DateTime"],
+	platform: string,
+	trigger: string,
+	status: string,
+	jobId?: string | undefined | null,
+	total: number,
+	succeeded: number,
+	failed: number,
+	errorSummary?: string | undefined | null,
+	startedAt?: ModelTypes["DateTime"] | undefined | null,
+	finishedAt?: ModelTypes["DateTime"] | undefined | null,
+	items: Array<ModelTypes["MerchantSyncItem"]>
+};
+	["MerchantPlatformSettingInput"]: {
+	key: string,
+	value: string
+};
+	["SaveMerchantPlatformSettingInput"]: {
+	platform: string,
+	entries: Array<ModelTypes["MerchantPlatformSettingInput"]>
+};
+	["AdditionalOrderState"]: {
+		state: string,
+	selectedByDefault: boolean
+};
+	["ChartDataType"]: {
+		type: ModelTypes["ChartMetricType"],
+	title: string,
+	entries: Array<ModelTypes["ChartEntry"]>
+};
+	["ChartMetrics"]: {
+		data: Array<ModelTypes["ChartDataType"]>
+};
+	["OrderSummaryMetrics"]: {
+		data: ModelTypes["OrderSummaryDataMetric"]
+};
+	["OrderSummaryDataMetric"]: {
+		currencyCode: ModelTypes["CurrencyCode"],
+	total: number,
+	totalWithTax: number,
+	orderCount: number,
+	averageOrderValue: number,
+	averageOrderValueWithTax: number,
+	productCount: number
+};
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
+	["ChartMetricType"]:ChartMetricType;
+	["ChartEntryAdditionalData"]: {
+		id: string,
+	name: string,
+	quantity: number
+};
+	["ChartEntry"]: {
+		intervalTick: number,
+	value: number,
+	additionalData?: Array<ModelTypes["ChartEntryAdditionalData"]> | undefined | null
+};
+	["BetterMetricRangeInput"]: {
+	start: ModelTypes["DateTime"],
+	end?: ModelTypes["DateTime"] | undefined | null
+};
+	["OrderSummaryMetricInput"]: {
+	range: ModelTypes["BetterMetricRangeInput"],
+	orderStates: Array<string>
+};
+	["ChartMetricInput"]: {
+	range: ModelTypes["BetterMetricRangeInput"],
+	interval: ModelTypes["MetricIntervalType"],
+	types: Array<ModelTypes["ChartMetricType"]>,
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
+};
+	["SetInpostShippingMethodConfigInput"]: {
+	shippingMethodId: ModelTypes["ID"],
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined | null,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostConfig"]: {
+		shippingMethodId: ModelTypes["ID"],
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined | null,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostOrganization"]: {
+		id: number,
+	name: string,
+	services: Array<string>
+};
+	["InpostOrganizationResponse"]: {
+		items: Array<ModelTypes["InpostOrganization"]>
+};
+	["GetInpostOrganizationsInput"]: {
+	host: string,
+	apiKey: string
+};
 	["MetricSummary"]: {
 		interval: ModelTypes["MetricInterval"],
 	type: ModelTypes["MetricType"],
@@ -12553,7 +13110,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["SortOrder"] | undefined | null,
 	price?: ModelTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ModelTypes["SortOrder"] | undefined | null,
-	stockLevel?: ModelTypes["SortOrder"] | undefined | null
+	stockLevel?: ModelTypes["SortOrder"] | undefined | null,
+	communicateID?: ModelTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -12881,6 +13439,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ModelTypes["SortOrder"] | undefined | null,
 	updatedAt?: ModelTypes["SortOrder"] | undefined | null
 };
+	["FulfillmentCustomFields"]: {
+		inpostLabel?: ModelTypes["Asset"] | undefined | null
+};
+	["OrderCustomFields"]: {
+		pickupPointId?: string | undefined | null
+};
+	["UpdateOrderCustomFieldsInput"]: {
+	pickupPointId?: string | undefined | null
+};
+	["ProductVariantCustomFields"]: {
+		communicateID?: string | undefined | null
+};
 	["NativeAuthInput"]: {
 	username: string,
 	password: string
@@ -12925,7 +13495,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	query?: ModelTypes["Query"] | undefined | null,
 	mutation?: ModelTypes["Mutation"] | undefined | null
 };
-	["ID"]:string
+	["ID"]:any
     }
 
 export type GraphQLTypes = {
@@ -13012,6 +13582,14 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined | null,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined | null,
+	getMerchantPlatformSettings?: GraphQLTypes["MerchantPlatformSettingsEntity"] | undefined | null,
+	getMerchantPlatformInfo?: Array<GraphQLTypes["MerchantPlatformInfo"]> | undefined | null,
+	getMerchantSyncHistory: Array<GraphQLTypes["MerchantSyncRun"]>,
+	additionalOrderStates: Array<GraphQLTypes["AdditionalOrderState"]>,
+	chartMetric: GraphQLTypes["ChartMetrics"],
+	orderSummaryMetric: GraphQLTypes["OrderSummaryMetrics"],
+	getInpostConfig?: GraphQLTypes["InpostConfig"] | undefined | null,
+	getInpostOrganizations: GraphQLTypes["InpostOrganizationResponse"],
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<GraphQLTypes["MetricSummary"]>
 };
@@ -13324,7 +13902,11 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Add members to a Zone */
 	addMembersToZone: GraphQLTypes["Zone"],
 	/** Remove members from a Zone */
-	removeMembersFromZone: GraphQLTypes["Zone"]
+	removeMembersFromZone: GraphQLTypes["Zone"],
+	sendAllProductsToMerchantPlatform?: boolean | undefined | null,
+	saveMerchantPlatformSettings: GraphQLTypes["MerchantPlatformSettingsEntity"],
+	removeOrphanItems?: boolean | undefined | null,
+	setInpostShippingMethodConfig: boolean
 };
 	["AdministratorListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14025,7 +14607,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary: Array<GraphQLTypes["OrderTaxSummary"]>,
 	history: GraphQLTypes["HistoryEntryList"],
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["OrderCustomFields"] | undefined | null
 };
 	["Fulfillment"]: {
 	__typename: "Fulfillment",
@@ -14038,7 +14620,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	state: string,
 	method: string,
 	trackingCode?: string | undefined | null,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["FulfillmentCustomFields"] | undefined | null
 };
 	["Payment"]: {
 	__typename: "Payment",
@@ -14096,7 +14678,8 @@ sum of `OrderLine.discountedLinePrice` values. */
 	total?: GraphQLTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: GraphQLTypes["NumberOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null,
-	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null
+	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null,
+	pickupPointId?: GraphQLTypes["StringOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 		customerLastName?: GraphQLTypes["SortOrder"] | undefined | null,
@@ -14114,7 +14697,8 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shipping?: GraphQLTypes["SortOrder"] | undefined | null,
 	shippingWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
 	total?: GraphQLTypes["SortOrder"] | undefined | null,
-	totalWithTax?: GraphQLTypes["SortOrder"] | undefined | null
+	totalWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
+	pickupPointId?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14135,7 +14719,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["UpdateOrderInput"]: {
 		id: GraphQLTypes["ID"],
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 		lines: Array<GraphQLTypes["OrderLineInput"]>,
@@ -14223,7 +14807,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: GraphQLTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<GraphQLTypes["ID"]> | undefined | null
+	shippingMethodIds?: Array<GraphQLTypes["ID"]> | undefined | null,
+	customFields?: GraphQLTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 		productVariantId: GraphQLTypes["ID"],
@@ -14611,7 +15196,7 @@ is not in the required state. */
 	options: Array<GraphQLTypes["ProductOption"]>,
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductVariantTranslation"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["ProductVariantCustomFields"] | undefined | null
 };
 	["ProductOptionGroupTranslationInput"]: {
 		id?: GraphQLTypes["ID"] | undefined | null,
@@ -14683,7 +15268,8 @@ is not in the required state. */
 	take?: number | undefined | null
 };
 	["ProductListOptions"]: {
-		/** Skips the first n results, for use in pagination */
+		searchTerm?: string | undefined | null,
+	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
 	take?: number | undefined | null,
@@ -14709,7 +15295,8 @@ is not in the required state. */
 	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined | null
 };
 	["ProductVariantListOptions"]: {
-		/** Skips the first n results, for use in pagination */
+		searchTerm?: string | undefined | null,
+	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
 	take?: number | undefined | null,
@@ -14740,7 +15327,8 @@ is not in the required state. */
 	priceWithTax?: GraphQLTypes["NumberOperators"] | undefined | null,
 	stockLevel?: GraphQLTypes["StringOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined | null,
-	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined | null
+	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined | null,
+	communicateID?: GraphQLTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 		id?: GraphQLTypes["ID"] | undefined | null,
@@ -15608,7 +16196,7 @@ current session. */
 	['...on TaxRateList']: '__union' & GraphQLTypes["TaxRateList"];
 };
 	["Node"]: {
-	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone",
+	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone" | "MerchantPlatformSettingsEntity",
 	id: GraphQLTypes["ID"]
 	['...on Administrator']: '__union' & GraphQLTypes["Administrator"];
 	['...on Collection']: '__union' & GraphQLTypes["Collection"];
@@ -15654,6 +16242,7 @@ current session. */
 	['...on User']: '__union' & GraphQLTypes["User"];
 	['...on AuthenticationMethod']: '__union' & GraphQLTypes["AuthenticationMethod"];
 	['...on Zone']: '__union' & GraphQLTypes["Zone"];
+	['...on MerchantPlatformSettingsEntity']: '__union' & GraphQLTypes["MerchantPlatformSettingsEntity"];
 };
 	["ErrorResult"]: {
 	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError" | "OrderMiddlewareError",
@@ -16744,6 +17333,168 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
+	["MerchantPlatformSetting"]: {
+	__typename: "MerchantPlatformSetting",
+	key: string,
+	value: string
+};
+	["MerchantPlatformSettingsEntity"]: {
+	__typename: "MerchantPlatformSettingsEntity",
+	id: GraphQLTypes["ID"],
+	platform: string,
+	entries: Array<GraphQLTypes["MerchantPlatformSetting"]>
+};
+	["MerchantPlatformInfo"]: {
+	__typename: "MerchantPlatformInfo",
+	isValidConnection: boolean,
+	productsCount: number,
+	connectionStatus?: string | undefined | null,
+	dataSourceVerified?: boolean | undefined | null,
+	checkedAt?: GraphQLTypes["DateTime"] | undefined | null,
+	latencyMs?: number | undefined | null,
+	disapprovedProductsCount?: number | undefined | null,
+	issuesCount?: number | undefined | null,
+	lastError?: GraphQLTypes["MerchantPlatformError"] | undefined | null,
+	issues?: Array<GraphQLTypes["MerchantProductIssue"]> | undefined | null
+};
+	["MerchantPlatformError"]: {
+	__typename: "MerchantPlatformError",
+	code: string,
+	message: string,
+	retryable: boolean
+};
+	["MerchantProductIssue"]: {
+	__typename: "MerchantProductIssue",
+	offerId: string,
+	code: string,
+	description: string,
+	severity: string
+};
+	["MerchantSyncItem"]: {
+	__typename: "MerchantSyncItem",
+	id: GraphQLTypes["ID"],
+	offerId: string,
+	operation: string,
+	status: string,
+	errorCode?: string | undefined | null,
+	errorMessage?: string | undefined | null,
+	attempts: number
+};
+	["MerchantSyncRun"]: {
+	__typename: "MerchantSyncRun",
+	id: GraphQLTypes["ID"],
+	createdAt: GraphQLTypes["DateTime"],
+	platform: string,
+	trigger: string,
+	status: string,
+	jobId?: string | undefined | null,
+	total: number,
+	succeeded: number,
+	failed: number,
+	errorSummary?: string | undefined | null,
+	startedAt?: GraphQLTypes["DateTime"] | undefined | null,
+	finishedAt?: GraphQLTypes["DateTime"] | undefined | null,
+	items: Array<GraphQLTypes["MerchantSyncItem"]>
+};
+	["MerchantPlatformSettingInput"]: {
+		key: string,
+	value: string
+};
+	["SaveMerchantPlatformSettingInput"]: {
+		platform: string,
+	entries: Array<GraphQLTypes["MerchantPlatformSettingInput"]>
+};
+	["AdditionalOrderState"]: {
+	__typename: "AdditionalOrderState",
+	state: string,
+	selectedByDefault: boolean
+};
+	["ChartDataType"]: {
+	__typename: "ChartDataType",
+	type: GraphQLTypes["ChartMetricType"],
+	title: string,
+	entries: Array<GraphQLTypes["ChartEntry"]>
+};
+	["ChartMetrics"]: {
+	__typename: "ChartMetrics",
+	data: Array<GraphQLTypes["ChartDataType"]>
+};
+	["OrderSummaryMetrics"]: {
+	__typename: "OrderSummaryMetrics",
+	data: GraphQLTypes["OrderSummaryDataMetric"]
+};
+	["OrderSummaryDataMetric"]: {
+	__typename: "OrderSummaryDataMetric",
+	currencyCode: GraphQLTypes["CurrencyCode"],
+	total: number,
+	totalWithTax: number,
+	orderCount: number,
+	averageOrderValue: number,
+	averageOrderValueWithTax: number,
+	productCount: number
+};
+	["MetricRangeType"]: MetricRangeType;
+	["MetricIntervalType"]: MetricIntervalType;
+	["ChartMetricType"]: ChartMetricType;
+	["ChartEntryAdditionalData"]: {
+	__typename: "ChartEntryAdditionalData",
+	id: string,
+	name: string,
+	quantity: number
+};
+	["ChartEntry"]: {
+	__typename: "ChartEntry",
+	intervalTick: number,
+	value: number,
+	additionalData?: Array<GraphQLTypes["ChartEntryAdditionalData"]> | undefined | null
+};
+	["BetterMetricRangeInput"]: {
+		start: GraphQLTypes["DateTime"],
+	end?: GraphQLTypes["DateTime"] | undefined | null
+};
+	["OrderSummaryMetricInput"]: {
+		range: GraphQLTypes["BetterMetricRangeInput"],
+	orderStates: Array<string>
+};
+	["ChartMetricInput"]: {
+		range: GraphQLTypes["BetterMetricRangeInput"],
+	interval: GraphQLTypes["MetricIntervalType"],
+	types: Array<GraphQLTypes["ChartMetricType"]>,
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
+};
+	["SetInpostShippingMethodConfigInput"]: {
+		shippingMethodId: GraphQLTypes["ID"],
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined | null,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostConfig"]: {
+	__typename: "InpostConfig",
+	shippingMethodId: GraphQLTypes["ID"],
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined | null,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostOrganization"]: {
+	__typename: "InpostOrganization",
+	id: number,
+	name: string,
+	services: Array<string>
+};
+	["InpostOrganizationResponse"]: {
+	__typename: "InpostOrganizationResponse",
+	items: Array<GraphQLTypes["InpostOrganization"]>
+};
+	["GetInpostOrganizationsInput"]: {
+		host: string,
+	apiKey: string
+};
 	["MetricSummary"]: {
 	__typename: "MetricSummary",
 	interval: GraphQLTypes["MetricInterval"],
@@ -16868,7 +17619,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["SortOrder"] | undefined | null,
 	price?: GraphQLTypes["SortOrder"] | undefined | null,
 	priceWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
-	stockLevel?: GraphQLTypes["SortOrder"] | undefined | null
+	stockLevel?: GraphQLTypes["SortOrder"] | undefined | null,
+	communicateID?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17196,6 +17948,21 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null
 };
+	["FulfillmentCustomFields"]: {
+	__typename: "FulfillmentCustomFields",
+	inpostLabel?: GraphQLTypes["Asset"] | undefined | null
+};
+	["OrderCustomFields"]: {
+	__typename: "OrderCustomFields",
+	pickupPointId?: string | undefined | null
+};
+	["UpdateOrderCustomFieldsInput"]: {
+		pickupPointId?: string | undefined | null
+};
+	["ProductVariantCustomFields"]: {
+	__typename: "ProductVariantCustomFields",
+	communicateID?: string | undefined | null
+};
 	["NativeAuthInput"]: {
 		username: string,
 	password: string
@@ -17238,7 +18005,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	entityName: string,
 	customFields: Array<GraphQLTypes["CustomFieldConfig"]>
 };
-	["ID"]: string
+	["ID"]: "scalar" & { name: "ID" }
     }
 /** @description
 The state of a Job in the JobQueue
@@ -17821,6 +18588,31 @@ export enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
+export enum MetricRangeType {
+	Today = "Today",
+	Yesterday = "Yesterday",
+	ThisWeek = "ThisWeek",
+	LastWeek = "LastWeek",
+	ThisMonth = "ThisMonth",
+	LastMonth = "LastMonth",
+	ThisYear = "ThisYear",
+	LastYear = "LastYear",
+	FirstQuarter = "FirstQuarter",
+	SecondQuarter = "SecondQuarter",
+	ThirdQuarter = "ThirdQuarter",
+	FourthQuarter = "FourthQuarter",
+	Custom = "Custom"
+}
+export enum MetricIntervalType {
+	Day = "Day",
+	Hour = "Hour"
+}
+export enum ChartMetricType {
+	OrderCount = "OrderCount",
+	OrderTotal = "OrderTotal",
+	AverageOrderValue = "AverageOrderValue",
+	OrderTotalProductsCount = "OrderTotalProductsCount"
+}
 export enum MetricInterval {
 	Daily = "Daily"
 }
@@ -18016,6 +18808,16 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
+	["MerchantPlatformSettingInput"]: ValueTypes["MerchantPlatformSettingInput"];
+	["SaveMerchantPlatformSettingInput"]: ValueTypes["SaveMerchantPlatformSettingInput"];
+	["MetricRangeType"]: ValueTypes["MetricRangeType"];
+	["MetricIntervalType"]: ValueTypes["MetricIntervalType"];
+	["ChartMetricType"]: ValueTypes["ChartMetricType"];
+	["BetterMetricRangeInput"]: ValueTypes["BetterMetricRangeInput"];
+	["OrderSummaryMetricInput"]: ValueTypes["OrderSummaryMetricInput"];
+	["ChartMetricInput"]: ValueTypes["ChartMetricInput"];
+	["SetInpostShippingMethodConfigInput"]: ValueTypes["SetInpostShippingMethodConfigInput"];
+	["GetInpostOrganizationsInput"]: ValueTypes["GetInpostOrganizationsInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];
 	["MetricType"]: ValueTypes["MetricType"];
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];
@@ -18064,6 +18866,7 @@ type ZEUS_VARIABLES = {
 	["ZoneSortParameter"]: ValueTypes["ZoneSortParameter"];
 	["HistoryEntryFilterParameter"]: ValueTypes["HistoryEntryFilterParameter"];
 	["HistoryEntrySortParameter"]: ValueTypes["HistoryEntrySortParameter"];
+	["UpdateOrderCustomFieldsInput"]: ValueTypes["UpdateOrderCustomFieldsInput"];
 	["NativeAuthInput"]: ValueTypes["NativeAuthInput"];
 	["ID"]: ValueTypes["ID"];
 }

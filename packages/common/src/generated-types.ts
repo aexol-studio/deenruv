@@ -1,11 +1,6 @@
 /* eslint-disable */
 export type Maybe<T> = T;
 export type InputMaybe<T> = T;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string | number; }
@@ -43,6 +38,12 @@ export type AddNoteToOrderInput = {
   id: Scalars['ID']['input'];
   isPublic: Scalars['Boolean']['input'];
   note: Scalars['String']['input'];
+};
+
+export type AdditionalOrderState = {
+  __typename?: 'AdditionalOrderState';
+  selectedByDefault: Scalars['Boolean']['output'];
+  state: Scalars['String']['output'];
 };
 
 export type Address = Node & {
@@ -307,6 +308,11 @@ export type AuthenticationMethod = Node & {
 
 export type AuthenticationResult = CurrentUser | InvalidCredentialsError;
 
+export type BetterMetricRangeInput = {
+  end?: InputMaybe<Scalars['DateTime']['input']>;
+  start: Scalars['DateTime']['input'];
+};
+
 export type BooleanCustomFieldConfig = CustomField & {
   __typename?: 'BooleanCustomFieldConfig';
   description?: Maybe<Array<LocalizedString>>;
@@ -451,6 +457,48 @@ export type ChannelSortParameter = {
   outOfStockThreshold?: InputMaybe<SortOrder>;
   token?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
+};
+
+export type ChartDataType = {
+  __typename?: 'ChartDataType';
+  entries: Array<ChartEntry>;
+  title: Scalars['String']['output'];
+  type: ChartMetricType;
+};
+
+export type ChartEntry = {
+  __typename?: 'ChartEntry';
+  additionalData?: Maybe<Array<ChartEntryAdditionalData>>;
+  intervalTick: Scalars['Int']['output'];
+  value: Scalars['Float']['output'];
+};
+
+export type ChartEntryAdditionalData = {
+  __typename?: 'ChartEntryAdditionalData';
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  quantity: Scalars['Float']['output'];
+};
+
+export type ChartMetricInput = {
+  interval: MetricIntervalType;
+  net?: InputMaybe<Scalars['Boolean']['input']>;
+  orderStates: Array<Scalars['String']['input']>;
+  productIDs?: InputMaybe<Array<Scalars['String']['input']>>;
+  range: BetterMetricRangeInput;
+  types: Array<ChartMetricType>;
+};
+
+export enum ChartMetricType {
+  AverageOrderValue = 'AverageOrderValue',
+  OrderCount = 'OrderCount',
+  OrderTotal = 'OrderTotal',
+  OrderTotalProductsCount = 'OrderTotalProductsCount'
+}
+
+export type ChartMetrics = {
+  __typename?: 'ChartMetrics';
+  data: Array<ChartDataType>;
 };
 
 export type Collection = Node & {
@@ -1869,7 +1917,7 @@ export type FulfillOrderInput = {
 export type Fulfillment = Node & {
   __typename?: 'Fulfillment';
   createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<FulfillmentCustomFields>;
   id: Scalars['ID']['output'];
   lines: Array<FulfillmentLine>;
   method: Scalars['String']['output'];
@@ -1879,6 +1927,11 @@ export type Fulfillment = Node & {
   summary: Array<FulfillmentLine>;
   trackingCode?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
+};
+
+export type FulfillmentCustomFields = {
+  __typename?: 'FulfillmentCustomFields';
+  inpostLabel?: Maybe<Asset>;
 };
 
 export type FulfillmentLine = {
@@ -1898,6 +1951,11 @@ export type FulfillmentStateTransitionError = ErrorResult & {
   message: Scalars['String']['output'];
   toState: Scalars['String']['output'];
   transitionError: Scalars['String']['output'];
+};
+
+export type GetInpostOrganizationsInput = {
+  apiKey: Scalars['String']['input'];
+  host: Scalars['String']['input'];
 };
 
 export enum GlobalFlag {
@@ -2026,6 +2084,28 @@ export type IneligibleShippingMethodError = ErrorResult & {
   __typename?: 'IneligibleShippingMethodError';
   errorCode: ErrorCode;
   message: Scalars['String']['output'];
+};
+
+export type InpostConfig = {
+  __typename?: 'InpostConfig';
+  apiKey: Scalars['String']['output'];
+  geowidgetKey?: Maybe<Scalars['String']['output']>;
+  host: Scalars['String']['output'];
+  inpostOrganization: Scalars['Int']['output'];
+  service: Scalars['String']['output'];
+  shippingMethodId: Scalars['ID']['output'];
+};
+
+export type InpostOrganization = {
+  __typename?: 'InpostOrganization';
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  services: Array<Scalars['String']['output']>;
+};
+
+export type InpostOrganizationResponse = {
+  __typename?: 'InpostOrganizationResponse';
+  items: Array<InpostOrganization>;
 };
 
 /** Returned when attempting to add more items to the Order than are available */
@@ -2573,8 +2653,104 @@ export type ManualPaymentStateError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
+export type MerchantPlatformError = {
+  __typename?: 'MerchantPlatformError';
+  code: Scalars['String']['output'];
+  message: Scalars['String']['output'];
+  retryable: Scalars['Boolean']['output'];
+};
+
+export type MerchantPlatformInfo = {
+  __typename?: 'MerchantPlatformInfo';
+  checkedAt?: Maybe<Scalars['DateTime']['output']>;
+  connectionStatus?: Maybe<Scalars['String']['output']>;
+  dataSourceVerified?: Maybe<Scalars['Boolean']['output']>;
+  disapprovedProductsCount?: Maybe<Scalars['Int']['output']>;
+  isValidConnection: Scalars['Boolean']['output'];
+  issues?: Maybe<Array<MerchantProductIssue>>;
+  issuesCount?: Maybe<Scalars['Int']['output']>;
+  lastError?: Maybe<MerchantPlatformError>;
+  latencyMs?: Maybe<Scalars['Int']['output']>;
+  productsCount: Scalars['Int']['output'];
+};
+
+export type MerchantPlatformSetting = {
+  __typename?: 'MerchantPlatformSetting';
+  key: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type MerchantPlatformSettingInput = {
+  key: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
+export type MerchantPlatformSettingsEntity = Node & {
+  __typename?: 'MerchantPlatformSettingsEntity';
+  entries: Array<MerchantPlatformSetting>;
+  id: Scalars['ID']['output'];
+  platform: Scalars['String']['output'];
+};
+
+export type MerchantProductIssue = {
+  __typename?: 'MerchantProductIssue';
+  code: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  offerId: Scalars['String']['output'];
+  severity: Scalars['String']['output'];
+};
+
+export type MerchantSyncItem = {
+  __typename?: 'MerchantSyncItem';
+  attempts: Scalars['Int']['output'];
+  errorCode?: Maybe<Scalars['String']['output']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  offerId: Scalars['String']['output'];
+  operation: Scalars['String']['output'];
+  status: Scalars['String']['output'];
+};
+
+export type MerchantSyncRun = {
+  __typename?: 'MerchantSyncRun';
+  createdAt: Scalars['DateTime']['output'];
+  errorSummary?: Maybe<Scalars['String']['output']>;
+  failed: Scalars['Int']['output'];
+  finishedAt?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['ID']['output'];
+  items: Array<MerchantSyncItem>;
+  jobId?: Maybe<Scalars['String']['output']>;
+  platform: Scalars['String']['output'];
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  status: Scalars['String']['output'];
+  succeeded: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  trigger: Scalars['String']['output'];
+};
+
 export enum MetricInterval {
   Daily = 'Daily'
+}
+
+export enum MetricIntervalType {
+  Day = 'Day',
+  Hour = 'Hour'
+}
+
+export enum MetricRangeType {
+  Custom = 'Custom',
+  FirstQuarter = 'FirstQuarter',
+  FourthQuarter = 'FourthQuarter',
+  LastMonth = 'LastMonth',
+  LastWeek = 'LastWeek',
+  LastYear = 'LastYear',
+  SecondQuarter = 'SecondQuarter',
+  ThirdQuarter = 'ThirdQuarter',
+  ThisMonth = 'ThisMonth',
+  ThisWeek = 'ThisWeek',
+  ThisYear = 'ThisYear',
+  Today = 'Today',
+  Yesterday = 'Yesterday'
 }
 
 export type MetricSummary = {
@@ -2622,6 +2798,7 @@ export type ModifyOrderInput = {
   addItems?: InputMaybe<Array<AddItemInput>>;
   adjustOrderLines?: InputMaybe<Array<OrderLineInput>>;
   couponCodes?: InputMaybe<Array<Scalars['String']['input']>>;
+  customFields?: InputMaybe<UpdateOrderCustomFieldsInput>;
   dryRun: Scalars['Boolean']['input'];
   note?: InputMaybe<Scalars['String']['input']>;
   options?: InputMaybe<ModifyOrderOptions>;
@@ -2890,6 +3067,7 @@ export type Mutation = {
    * as well as removing any of the group's options from the Product's ProductVariants.
    */
   removeOptionGroupFromProduct: RemoveOptionGroupFromProductResult;
+  removeOrphanItems?: Maybe<Scalars['Boolean']['output']>;
   /** Removes PaymentMethods from the specified Channel */
   removePaymentMethodsFromChannel: Array<PaymentMethod>;
   /** Removes ProductVariants from the specified Channel */
@@ -2905,6 +3083,8 @@ export type Mutation = {
   /** Removes StockLocations from the specified Channel */
   removeStockLocationsFromChannel: Array<StockLocation>;
   runPendingSearchIndexUpdates: Success;
+  saveMerchantPlatformSettings: MerchantPlatformSettingsEntity;
+  sendAllProductsToMerchantPlatform?: Maybe<Scalars['Boolean']['output']>;
   setCustomerForDraftOrder: SetCustomerForDraftOrderResult;
   /** Sets the billing address for a draft Order */
   setDraftOrderBillingAddress: Order;
@@ -2914,6 +3094,7 @@ export type Mutation = {
   setDraftOrderShippingAddress: Order;
   /** Sets the shipping method by id, which can be obtained with the `eligibleShippingMethodsForDraftOrder` query */
   setDraftOrderShippingMethod: SetOrderShippingMethodResult;
+  setInpostShippingMethodConfig: Scalars['Boolean']['output'];
   setOrderCustomFields?: Maybe<Order>;
   /** Allows a different Customer to be assigned to an Order. Added in v2.2.0. */
   setOrderCustomer?: Maybe<Order>;
@@ -3550,6 +3731,11 @@ export type MutationRemoveOptionGroupFromProductArgs = {
 };
 
 
+export type MutationRemoveOrphanItemsArgs = {
+  platform: Scalars['String']['input'];
+};
+
+
 export type MutationRemovePaymentMethodsFromChannelArgs = {
   input: RemovePaymentMethodsFromChannelInput;
 };
@@ -3586,6 +3772,16 @@ export type MutationRemoveStockLocationsFromChannelArgs = {
 };
 
 
+export type MutationSaveMerchantPlatformSettingsArgs = {
+  input: SaveMerchantPlatformSettingInput;
+};
+
+
+export type MutationSendAllProductsToMerchantPlatformArgs = {
+  platform: Scalars['String']['input'];
+};
+
+
 export type MutationSetCustomerForDraftOrderArgs = {
   customerId?: InputMaybe<Scalars['ID']['input']>;
   input?: InputMaybe<CreateCustomerInput>;
@@ -3614,6 +3810,11 @@ export type MutationSetDraftOrderShippingAddressArgs = {
 export type MutationSetDraftOrderShippingMethodArgs = {
   orderId: Scalars['ID']['input'];
   shippingMethodId: Scalars['ID']['input'];
+};
+
+
+export type MutationSetInpostShippingMethodConfigArgs = {
+  input: SetInpostShippingMethodConfigInput;
 };
 
 
@@ -3894,7 +4095,7 @@ export type Order = Node & {
   couponCodes: Array<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<OrderCustomFields>;
   customer?: Maybe<Customer>;
   discounts: Array<Discount>;
   /** An array of all promotions excluded from the Order */
@@ -3966,6 +4167,11 @@ export type OrderAddress = {
   streetLine2?: Maybe<Scalars['String']['output']>;
 };
 
+export type OrderCustomFields = {
+  __typename?: 'OrderCustomFields';
+  pickupPointId?: Maybe<Scalars['String']['output']>;
+};
+
 export type OrderFilterParameter = {
   _and?: InputMaybe<Array<OrderFilterParameter>>;
   _or?: InputMaybe<Array<OrderFilterParameter>>;
@@ -3977,6 +4183,7 @@ export type OrderFilterParameter = {
   customerLastName?: InputMaybe<StringOperators>;
   id?: InputMaybe<IdOperators>;
   orderPlacedAt?: InputMaybe<DateOperators>;
+  pickupPointId?: InputMaybe<StringOperators>;
   shipping?: InputMaybe<NumberOperators>;
   shippingWithTax?: InputMaybe<NumberOperators>;
   state?: InputMaybe<StringOperators>;
@@ -4144,6 +4351,7 @@ export type OrderSortParameter = {
   customerLastName?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   orderPlacedAt?: InputMaybe<SortOrder>;
+  pickupPointId?: InputMaybe<SortOrder>;
   shipping?: InputMaybe<SortOrder>;
   shippingWithTax?: InputMaybe<SortOrder>;
   state?: InputMaybe<SortOrder>;
@@ -4164,6 +4372,27 @@ export type OrderStateTransitionError = ErrorResult & {
   message: Scalars['String']['output'];
   toState: Scalars['String']['output'];
   transitionError: Scalars['String']['output'];
+};
+
+export type OrderSummaryDataMetric = {
+  __typename?: 'OrderSummaryDataMetric';
+  averageOrderValue: Scalars['Float']['output'];
+  averageOrderValueWithTax: Scalars['Float']['output'];
+  currencyCode: CurrencyCode;
+  orderCount: Scalars['Float']['output'];
+  productCount: Scalars['Float']['output'];
+  total: Scalars['Float']['output'];
+  totalWithTax: Scalars['Float']['output'];
+};
+
+export type OrderSummaryMetricInput = {
+  orderStates: Array<Scalars['String']['input']>;
+  range: BetterMetricRangeInput;
+};
+
+export type OrderSummaryMetrics = {
+  __typename?: 'OrderSummaryMetrics';
+  data: OrderSummaryDataMetric;
 };
 
 /**
@@ -4615,6 +4844,7 @@ export type ProductListOptions = {
   filter?: InputMaybe<ProductFilterParameter>;
   /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
   filterOperator?: InputMaybe<LogicalOperator>;
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
   /** Skips the first n results, for use in pagination */
   skip?: InputMaybe<Scalars['Int']['input']>;
   /** Specifies which properties to sort the results by */
@@ -4725,7 +4955,7 @@ export type ProductVariant = Node & {
   channels: Array<Channel>;
   createdAt: Scalars['DateTime']['output'];
   currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<ProductVariantCustomFields>;
   enabled: Scalars['Boolean']['output'];
   facetValues: Array<FacetValue>;
   featuredAsset?: Maybe<Asset>;
@@ -4760,9 +4990,15 @@ export type ProductVariantStockMovementsArgs = {
   options?: InputMaybe<StockMovementListOptions>;
 };
 
+export type ProductVariantCustomFields = {
+  __typename?: 'ProductVariantCustomFields';
+  communicateID?: Maybe<Scalars['String']['output']>;
+};
+
 export type ProductVariantFilterParameter = {
   _and?: InputMaybe<Array<ProductVariantFilterParameter>>;
   _or?: InputMaybe<Array<ProductVariantFilterParameter>>;
+  communicateID?: InputMaybe<StringOperators>;
   createdAt?: InputMaybe<DateOperators>;
   currencyCode?: InputMaybe<StringOperators>;
   enabled?: InputMaybe<BooleanOperators>;
@@ -4794,6 +5030,7 @@ export type ProductVariantListOptions = {
   filter?: InputMaybe<ProductVariantFilterParameter>;
   /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
   filterOperator?: InputMaybe<LogicalOperator>;
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
   /** Skips the first n results, for use in pagination */
   skip?: InputMaybe<Scalars['Int']['input']>;
   /** Specifies which properties to sort the results by */
@@ -4820,6 +5057,7 @@ export type ProductVariantPriceInput = {
 };
 
 export type ProductVariantSortParameter = {
+  communicateID?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
@@ -5012,6 +5250,7 @@ export type Query = {
   __typename?: 'Query';
   activeAdministrator?: Maybe<Administrator>;
   activeChannel: Channel;
+  additionalOrderStates: Array<AdditionalOrderState>;
   administrator?: Maybe<Administrator>;
   administrators: AdministratorList;
   /** Get a single Asset by id */
@@ -5020,6 +5259,7 @@ export type Query = {
   assets: AssetList;
   channel?: Maybe<Channel>;
   channels: ChannelList;
+  chartMetric: ChartMetrics;
   /** Get a Collection either by id or slug. If neither id nor slug is specified, an error will result. */
   collection?: Maybe<Collection>;
   collectionFilters: Array<ConfigurableOperationDefinition>;
@@ -5038,6 +5278,11 @@ export type Query = {
   facetValues: FacetValueList;
   facets: FacetList;
   fulfillmentHandlers: Array<ConfigurableOperationDefinition>;
+  getInpostConfig?: Maybe<InpostConfig>;
+  getInpostOrganizations: InpostOrganizationResponse;
+  getMerchantPlatformInfo?: Maybe<Array<MerchantPlatformInfo>>;
+  getMerchantPlatformSettings?: Maybe<MerchantPlatformSettingsEntity>;
+  getMerchantSyncHistory: Array<MerchantSyncRun>;
   globalSettings: GlobalSettings;
   job?: Maybe<Job>;
   jobBufferSize: Array<JobBufferSize>;
@@ -5048,6 +5293,7 @@ export type Query = {
   /** Get metrics for the given interval and metric types. */
   metricSummary: Array<MetricSummary>;
   order?: Maybe<Order>;
+  orderSummaryMetric: OrderSummaryMetrics;
   orders: OrderList;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethodEligibilityCheckers: Array<ConfigurableOperationDefinition>;
@@ -5126,6 +5372,11 @@ export type QueryChannelsArgs = {
 };
 
 
+export type QueryChartMetricArgs = {
+  input: ChartMetricInput;
+};
+
+
 export type QueryCollectionArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
@@ -5187,6 +5438,27 @@ export type QueryFacetsArgs = {
 };
 
 
+export type QueryGetInpostOrganizationsArgs = {
+  input?: InputMaybe<GetInpostOrganizationsInput>;
+};
+
+
+export type QueryGetMerchantPlatformInfoArgs = {
+  platform: Scalars['String']['input'];
+};
+
+
+export type QueryGetMerchantPlatformSettingsArgs = {
+  platform: Scalars['String']['input'];
+};
+
+
+export type QueryGetMerchantSyncHistoryArgs = {
+  platform: Scalars['String']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryJobArgs = {
   jobId: Scalars['ID']['input'];
 };
@@ -5214,6 +5486,11 @@ export type QueryMetricSummaryArgs = {
 
 export type QueryOrderArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryOrderSummaryMetricArgs = {
+  input: OrderSummaryMetricInput;
 };
 
 
@@ -5628,6 +5905,11 @@ export type Sale = Node & StockMovement & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type SaveMerchantPlatformSettingInput = {
+  entries: Array<MerchantPlatformSettingInput>;
+  platform: Scalars['String']['input'];
+};
+
 export type SearchInput = {
   collectionId?: InputMaybe<Scalars['ID']['input']>;
   collectionSlug?: InputMaybe<Scalars['String']['input']>;
@@ -5755,6 +6037,15 @@ export type ServerConfig = {
 };
 
 export type SetCustomerForDraftOrderResult = EmailAddressConflictError | Order;
+
+export type SetInpostShippingMethodConfigInput = {
+  apiKey: Scalars['String']['input'];
+  geowidgetKey?: InputMaybe<Scalars['String']['input']>;
+  host: Scalars['String']['input'];
+  inpostOrganization: Scalars['Int']['input'];
+  service: Scalars['String']['input'];
+  shippingMethodId: Scalars['ID']['input'];
+};
 
 export type SetOrderCustomerInput = {
   customerId: Scalars['ID']['input'];
@@ -6420,8 +6711,12 @@ export type UpdateOrderAddressInput = {
   streetLine2?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateOrderCustomFieldsInput = {
+  pickupPointId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateOrderInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
+  customFields?: InputMaybe<UpdateOrderCustomFieldsInput>;
   id: Scalars['ID']['input'];
 };
 

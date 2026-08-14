@@ -178,10 +178,10 @@ export function ListTable<TData, TValue>({
   }, [tableWrapperRef]);
 
   return (
-    <>
+    <div className="flex min-h-0 w-full flex-1 flex-col overflow-hidden">
       <div
         ref={tableWrapperRef}
-        className="h-full w-full min-w-0 max-w-full overflow-auto border border-border/80 bg-card"
+        className="min-h-0 w-full min-w-0 max-w-full flex-1 overflow-auto border border-border/80 bg-card"
       >
         <Table
           className={cn("w-full")}
@@ -325,7 +325,7 @@ export function ListTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="mt-2 flex flex-col gap-2 border border-border/70 bg-card/80 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-2 flex shrink-0 flex-col gap-2 border border-border/70 bg-card/80 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="inline-flex h-7 w-fit items-center border border-border/70 bg-muted/30 px-3 text-xs font-medium text-muted-foreground">
           {t("selectedValue", {
             from: table.getFilteredSelectedRowModel().rows.length,
@@ -334,6 +334,6 @@ export function ListTable<TData, TValue>({
         </div>
         <div className="flex w-full justify-end sm:w-auto">{Paginate}</div>
       </div>
-    </>
+    </div>
   );
 }

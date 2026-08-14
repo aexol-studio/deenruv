@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
     ChannelService,
+    buildTokenizedSearchFilter,
     GetOrderListDocument,
     getOrderStateTranslationToken,
-    LogicalOperator,
     OrderListOptions,
     OrderType,
     ServerConfigService,
@@ -45,7 +45,10 @@ export class OrderListComponent
             name: 'state',
             type: {
                 kind: 'select',
-                options: this.orderStates.map(s => ({ value: s, label: getOrderStateTranslationToken(s) })),
+                options: this.orderStates.map(s => ({
+                    value: s,
+                    label: getOrderStateTranslationToken(s),
+                })),
             },
             label: _('order.state'),
             filterField: 'state',
@@ -56,7 +59,10 @@ export class OrderListComponent
                 kind: 'select',
                 options: [
                     { value: OrderType.Regular, label: _('order.order-type-regular') },
-                    { value: OrderType.Aggregate, label: _('order.order-type-aggregate') },
+                    {
+                        value: OrderType.Aggregate,
+                        label: _('order.order-type-aggregate'),
+                    },
                     { value: OrderType.Seller, label: _('order.order-type-seller') },
                 ],
             },
@@ -137,19 +143,11 @@ export class OrderListComponent
                 ...(filterInput ?? {}),
             };
         }
-        if (searchTerm) {
-            filterInput = {
-                code: {
-                    contains: searchTerm,
-                },
-                customerLastName: {
-                    contains: searchTerm,
-                },
-                transactionId: {
-                    contains: searchTerm,
-                },
-            };
-        }
+        filterInput = buildTokenizedSearchFilter(
+            searchTerm,
+            ['code', 'customerLastName', 'transactionId'],
+            filterInput,
+        );
         return {
             options: {
                 skip,
@@ -157,7 +155,6 @@ export class OrderListComponent
                 filter: {
                     ...(filterInput ?? {}),
                 },
-                filterOperator: searchTerm ? LogicalOperator.OR : LogicalOperator.AND,
                 sort: this.sorts.createSortInput(),
             },
         };

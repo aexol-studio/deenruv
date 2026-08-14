@@ -10,6 +10,7 @@ import {
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { TaxRateDetailView } from '@/pages/tax-rates/_components/TaxRateDetailView.js';
+import { Permission } from '@deenruv/admin-types';
 
 type FormDataType = Record<string, unknown>;
 
@@ -82,6 +83,11 @@ export const TaxRatesDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: [Permission.CreateTaxRate, Permission.CreateSettings],
+          edit: [Permission.UpdateTaxRate, Permission.UpdateSettings],
+          delete: [Permission.DeleteTaxRate, Permission.DeleteSettings],
         }}
       />
     </div>

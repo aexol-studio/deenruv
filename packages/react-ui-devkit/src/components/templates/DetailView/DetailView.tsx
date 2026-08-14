@@ -6,7 +6,7 @@ import {
   useSearchParams,
 } from "react-router";
 import { ChevronLeft, EllipsisVerticalIcon, Trash2 } from "lucide-react";
-import { ModelTypes, Permission } from "@deenruv/admin-types";
+import { ModelTypes } from "@deenruv/admin-types";
 import { cn } from "@/lib";
 import { usePluginStore } from "@/plugins";
 import { DetailKeys } from "@/types";
@@ -38,6 +38,11 @@ import { useServer } from "@/state/server.js";
 import { getPermissions } from "@/utils/getPermissions.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
 import { LoadingMask } from "@/components/templates/DetailView/_components/LoadingMask.js";
+import {
+  hasDetailDropdownActions,
+  matchesPermissions,
+  type PermissionRequirement,
+} from "@/access.js";
 
 interface DetailViewFormProps<
   FORMKEY extends keyof ModelTypes,
@@ -128,9 +133,9 @@ export const createDeenruvForm = <
 });
 
 interface Permissions {
-  create: Permission;
-  delete: Permission;
-  edit: Permission;
+  create: PermissionRequirement;
+  delete: PermissionRequirement;
+  edit: PermissionRequirement;
 }
 
 interface DetailViewProps<LOCATION extends DetailKeys> {
@@ -278,20 +283,25 @@ const DetailTabs = ({
   const { userPermissions } = useServer();
 
   const isPermittedToCreate = useMemo(
-    () => userPermissions.includes(permissions.create),
-    [userPermissions],
+    () => matchesPermissions(userPermissions, permissions.create),
+    [userPermissions, permissions.create],
   );
   const isPermittedToUpdate = useMemo(
-    () => userPermissions.includes(permissions.edit),
-    [userPermissions],
+    () => matchesPermissions(userPermissions, permissions.edit),
+    [userPermissions, permissions.edit],
   );
   const isPermittedToDelete = useMemo(
-    () => userPermissions.includes(permissions.delete),
-    [userPermissions],
+    () => matchesPermissions(userPermissions, permissions.delete),
+    [userPermissions, permissions.delete],
   );
 
   const showEditButton = id && isPermittedToUpdate;
   const showCreateButton = !id && isPermittedToCreate;
+  const showDropdown = hasDetailDropdownActions({
+    canDelete: isPermittedToDelete,
+    dropdownActionCount: topActions?.dropdown?.length ?? 0,
+    hasEntity: Boolean(id),
+  });
   const buttonDisabled = !form.base.isFormValid || !hasUnsavedChanges;
   const listPath = useMemo(() => {
     const segments = pathname.split("/").filter(Boolean);
@@ -404,12 +414,9 @@ const DetailTabs = ({
                   </Button>
                 </SimpleTooltip>
               )}
-              {isPermittedToDelete && (
+              {showDropdown && (
                 <DropdownMenu>
-                  <DropdownMenuTrigger
-                    asChild
-                    {...(!id && { className: "invisible" })}
-                  >
+                  <DropdownMenuTrigger asChild>
                     <Button variant="secondary" size="icon" className="size-9">
                       <EllipsisVerticalIcon size={20} />
                     </Button>
@@ -418,19 +425,21 @@ const DetailTabs = ({
                     {!!topActions?.dropdown?.length && (
                       <>
                         {topActions?.dropdown?.map((action) => action)}
-                        <DropdownMenuSeparator />
+                        {isPermittedToDelete && <DropdownMenuSeparator />}
                       </>
                     )}
-                    <DropdownMenuItem asChild>
-                      <Button
-                        onClick={() => actionHandler("delete")}
-                        variant="ghost"
-                        className="w-full justify-start gap-2"
-                      >
-                        <Trash2 size={20} />
-                        {texts?.deleteButton || t("actionsMenu.delete")}
-                      </Button>
-                    </DropdownMenuItem>
+                    {isPermittedToDelete && (
+                      <DropdownMenuItem asChild>
+                        <Button
+                          onClick={() => actionHandler("delete")}
+                          variant="ghost"
+                          className="w-full justify-start gap-2"
+                        >
+                          <Trash2 size={20} />
+                          {texts?.deleteButton || t("actionsMenu.delete")}
+                        </Button>
+                      </DropdownMenuItem>
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
+    buildTokenizedSearchFilter,
     GetTaxCategoryListDocument,
     TAX_CATEGORY_FRAGMENT,
     TypedBaseListComponent,
@@ -58,12 +59,11 @@ export class TaxCategoryListComponent extends TypedBaseListComponent<
                 options: {
                     skip,
                     take,
-                    filter: {
-                        name: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['name'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

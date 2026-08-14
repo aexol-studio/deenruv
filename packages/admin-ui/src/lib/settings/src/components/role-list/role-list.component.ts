@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
+    buildTokenizedSearchFilter,
     GetRoleListDocument,
     GetRolesQuery,
     ItemOf,
@@ -29,10 +30,7 @@ export const GET_ROLE_LIST = gql`
     styleUrls: ['./role-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RoleListComponent
-    extends TypedBaseListComponent<typeof GetRoleListDocument, 'roles'>
-    implements OnInit
-{
+export class RoleListComponent extends TypedBaseListComponent<typeof GetRoleListDocument, 'roles'> implements OnInit {
     readonly initialLimit = 3;
     displayLimit: { [id: string]: number } = {};
     readonly filters = this.createFilterCollection()
@@ -63,12 +61,11 @@ export class RoleListComponent
                 options: {
                     skip,
                     take,
-                    filter: {
-                        code: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['code'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

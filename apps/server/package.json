@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "1.0.17-dev.20",
+  "version": "1.0.17-dev.21",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -39,6 +39,7 @@
     "@deenruv/asset-server-plugin": "workspace:*",
     "@deenruv/common": "workspace:*",
     "@deenruv/copy-order-plugin": "workspace:*",
+    "@deenruv/cronjobs-plugin": "workspace:*",
     "@deenruv/core": "workspace:*",
     "@deenruv/dashboard-widgets-plugin": "workspace:*",
     "@deenruv/deenruv-examples-plugin": "workspace:*",

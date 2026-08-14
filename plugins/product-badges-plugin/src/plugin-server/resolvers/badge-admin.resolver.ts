@@ -3,7 +3,12 @@ import { Allow, Ctx, Permission, Transaction } from "@deenruv/core";
 import { Args, Mutation, Query } from "@nestjs/graphql";
 import type { RequestContext } from "@deenruv/core";
 import { BadgeService } from "../services/badge.service.js";
-import { ModelTypes } from "../zeus/index.js";
+import type {
+  CreateBadgeInput,
+  EditBadgeInput,
+  GetProductBadgesInput,
+  RemoveBadgeInput,
+} from "../extensions/badge.extension.js";
 
 @Resolver()
 export class BadgeAdminResolver {
@@ -14,7 +19,7 @@ export class BadgeAdminResolver {
   @Allow(Permission.Authenticated)
   async createBadge(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["CreateBadgeInput"] },
+    @Args() args: { input: CreateBadgeInput },
   ) {
     return this.badgeService.createBadge(ctx, args.input);
   }
@@ -23,7 +28,7 @@ export class BadgeAdminResolver {
   @Allow(Permission.Authenticated)
   async removeBadge(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["RemoveBadgeInput"] },
+    @Args() args: { input: RemoveBadgeInput },
   ) {
     return this.badgeService.removeBadge(ctx, args.input.id);
   }
@@ -33,7 +38,7 @@ export class BadgeAdminResolver {
   @Allow(Permission.Authenticated)
   async editBadge(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["EditBadgeInput"] },
+    @Args() args: { input: EditBadgeInput },
   ) {
     return this.badgeService.editBadge(ctx, args.input);
   }
@@ -41,7 +46,7 @@ export class BadgeAdminResolver {
   @Query()
   async getProductBadges(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["GetProductBadgesInput"] },
+    @Args() args: { input: GetProductBadgesInput },
   ) {
     return this.badgeService.findAll(ctx, [args.input.productId]);
   }

@@ -942,6 +942,10 @@ zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
 getMerchantPlatformSettings?: [{	platform: string | Variable<any, string>},ValueTypes["MerchantPlatformSettingsEntity"]],
 getMerchantPlatformInfo?: [{	platform: string | Variable<any, string>},ValueTypes["MerchantPlatformInfo"]],
+getMerchantSyncHistory?: [{	platform: string | Variable<any, string>,	take?: number | undefined | null | Variable<any, string>},ValueTypes["MerchantSyncRun"]],
+	additionalOrderStates?:ValueTypes["AdditionalOrderState"],
+chartMetric?: [{	input: ValueTypes["ChartMetricInput"] | Variable<any, string>},ValueTypes["ChartMetrics"]],
+orderSummaryMetric?: [{	input: ValueTypes["OrderSummaryMetricInput"] | Variable<any, string>},ValueTypes["OrderSummaryMetrics"]],
 	getInpostConfig?:ValueTypes["InpostConfig"],
 getInpostOrganizations?: [{	input?: ValueTypes["GetInpostOrganizationsInput"] | undefined | null | Variable<any, string>},ValueTypes["InpostOrganizationResponse"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
@@ -2454,6 +2458,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	take?: number | undefined | null | Variable<any, string>
 };
 	["ProductListOptions"]: {
+	searchTerm?: string | undefined | null | Variable<any, string>,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null | Variable<any, string>,
 	/** Takes n results, for use in pagination */
@@ -2480,6 +2485,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["ProductVariantListOptions"]: {
+	searchTerm?: string | undefined | null | Variable<any, string>,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null | Variable<any, string>,
 	/** Takes n results, for use in pagination */
@@ -4521,6 +4527,53 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["MerchantPlatformInfo"]: AliasType<{
 	isValidConnection?:boolean | `@${string}`,
 	productsCount?:boolean | `@${string}`,
+	connectionStatus?:boolean | `@${string}`,
+	dataSourceVerified?:boolean | `@${string}`,
+	checkedAt?:boolean | `@${string}`,
+	latencyMs?:boolean | `@${string}`,
+	disapprovedProductsCount?:boolean | `@${string}`,
+	issuesCount?:boolean | `@${string}`,
+	lastError?:ValueTypes["MerchantPlatformError"],
+	issues?:ValueTypes["MerchantProductIssue"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformError"]: AliasType<{
+	code?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	retryable?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantProductIssue"]: AliasType<{
+	offerId?:boolean | `@${string}`,
+	code?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	severity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncItem"]: AliasType<{
+	id?:boolean | `@${string}`,
+	offerId?:boolean | `@${string}`,
+	operation?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	errorCode?:boolean | `@${string}`,
+	errorMessage?:boolean | `@${string}`,
+	attempts?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncRun"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	platform?:boolean | `@${string}`,
+	trigger?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	jobId?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	succeeded?:boolean | `@${string}`,
+	failed?:boolean | `@${string}`,
+	errorSummary?:boolean | `@${string}`,
+	startedAt?:boolean | `@${string}`,
+	finishedAt?:boolean | `@${string}`,
+	items?:ValueTypes["MerchantSyncItem"],
 		__typename?: boolean | `@${string}`
 }>;
 	["MerchantPlatformSettingInput"]: {
@@ -4529,7 +4582,67 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["SaveMerchantPlatformSettingInput"]: {
 	platform: string | Variable<any, string>,
-	entries?: Array<ValueTypes["MerchantPlatformSettingInput"]> | undefined | null | Variable<any, string>
+	entries: Array<ValueTypes["MerchantPlatformSettingInput"]> | Variable<any, string>
+};
+	["AdditionalOrderState"]: AliasType<{
+	state?:boolean | `@${string}`,
+	selectedByDefault?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartDataType"]: AliasType<{
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ValueTypes["ChartEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartMetrics"]: AliasType<{
+	data?:ValueTypes["ChartDataType"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryMetrics"]: AliasType<{
+	data?:ValueTypes["OrderSummaryDataMetric"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryDataMetric"]: AliasType<{
+	currencyCode?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	totalWithTax?:boolean | `@${string}`,
+	orderCount?:boolean | `@${string}`,
+	averageOrderValue?:boolean | `@${string}`,
+	averageOrderValueWithTax?:boolean | `@${string}`,
+	productCount?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
+	["ChartMetricType"]:ChartMetricType;
+	["ChartEntryAdditionalData"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	quantity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartEntry"]: AliasType<{
+	intervalTick?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+	additionalData?:ValueTypes["ChartEntryAdditionalData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["BetterMetricRangeInput"]: {
+	start: ValueTypes["DateTime"] | Variable<any, string>,
+	end?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
+};
+	["OrderSummaryMetricInput"]: {
+	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
+	orderStates: Array<string> | Variable<any, string>
+};
+	["ChartMetricInput"]: {
+	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
+	interval: ValueTypes["MetricIntervalType"] | Variable<any, string>,
+	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
+	orderStates: Array<string> | Variable<any, string>,
+	productIDs?: Array<string> | undefined | null | Variable<any, string>,
+	net?: boolean | undefined | null | Variable<any, string>
 };
 	["SetInpostShippingMethodConfigInput"]: {
 	shippingMethodId: string | Variable<any, string>,
@@ -5150,6 +5263,10 @@ zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},R
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
 getMerchantPlatformSettings?: [{	platform: string},ResolverInputTypes["MerchantPlatformSettingsEntity"]],
 getMerchantPlatformInfo?: [{	platform: string},ResolverInputTypes["MerchantPlatformInfo"]],
+getMerchantSyncHistory?: [{	platform: string,	take?: number | undefined | null},ResolverInputTypes["MerchantSyncRun"]],
+	additionalOrderStates?:ResolverInputTypes["AdditionalOrderState"],
+chartMetric?: [{	input: ResolverInputTypes["ChartMetricInput"]},ResolverInputTypes["ChartMetrics"]],
+orderSummaryMetric?: [{	input: ResolverInputTypes["OrderSummaryMetricInput"]},ResolverInputTypes["OrderSummaryMetrics"]],
 	getInpostConfig?:ResolverInputTypes["InpostConfig"],
 getInpostOrganizations?: [{	input?: ResolverInputTypes["GetInpostOrganizationsInput"] | undefined | null},ResolverInputTypes["InpostOrganizationResponse"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
@@ -6684,6 +6801,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	take?: number | undefined | null
 };
 	["ProductListOptions"]: {
+	searchTerm?: string | undefined | null,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
@@ -6710,6 +6828,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null
 };
 	["ProductVariantListOptions"]: {
+	searchTerm?: string | undefined | null,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
 	/** Takes n results, for use in pagination */
@@ -8761,6 +8880,53 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["MerchantPlatformInfo"]: AliasType<{
 	isValidConnection?:boolean | `@${string}`,
 	productsCount?:boolean | `@${string}`,
+	connectionStatus?:boolean | `@${string}`,
+	dataSourceVerified?:boolean | `@${string}`,
+	checkedAt?:boolean | `@${string}`,
+	latencyMs?:boolean | `@${string}`,
+	disapprovedProductsCount?:boolean | `@${string}`,
+	issuesCount?:boolean | `@${string}`,
+	lastError?:ResolverInputTypes["MerchantPlatformError"],
+	issues?:ResolverInputTypes["MerchantProductIssue"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantPlatformError"]: AliasType<{
+	code?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	retryable?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantProductIssue"]: AliasType<{
+	offerId?:boolean | `@${string}`,
+	code?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	severity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncItem"]: AliasType<{
+	id?:boolean | `@${string}`,
+	offerId?:boolean | `@${string}`,
+	operation?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	errorCode?:boolean | `@${string}`,
+	errorMessage?:boolean | `@${string}`,
+	attempts?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MerchantSyncRun"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	platform?:boolean | `@${string}`,
+	trigger?:boolean | `@${string}`,
+	status?:boolean | `@${string}`,
+	jobId?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	succeeded?:boolean | `@${string}`,
+	failed?:boolean | `@${string}`,
+	errorSummary?:boolean | `@${string}`,
+	startedAt?:boolean | `@${string}`,
+	finishedAt?:boolean | `@${string}`,
+	items?:ResolverInputTypes["MerchantSyncItem"],
 		__typename?: boolean | `@${string}`
 }>;
 	["MerchantPlatformSettingInput"]: {
@@ -8769,7 +8935,67 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["SaveMerchantPlatformSettingInput"]: {
 	platform: string,
-	entries?: Array<ResolverInputTypes["MerchantPlatformSettingInput"]> | undefined | null
+	entries: Array<ResolverInputTypes["MerchantPlatformSettingInput"]>
+};
+	["AdditionalOrderState"]: AliasType<{
+	state?:boolean | `@${string}`,
+	selectedByDefault?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartDataType"]: AliasType<{
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ResolverInputTypes["ChartEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartMetrics"]: AliasType<{
+	data?:ResolverInputTypes["ChartDataType"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryMetrics"]: AliasType<{
+	data?:ResolverInputTypes["OrderSummaryDataMetric"],
+		__typename?: boolean | `@${string}`
+}>;
+	["OrderSummaryDataMetric"]: AliasType<{
+	currencyCode?:boolean | `@${string}`,
+	total?:boolean | `@${string}`,
+	totalWithTax?:boolean | `@${string}`,
+	orderCount?:boolean | `@${string}`,
+	averageOrderValue?:boolean | `@${string}`,
+	averageOrderValueWithTax?:boolean | `@${string}`,
+	productCount?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
+	["ChartMetricType"]:ChartMetricType;
+	["ChartEntryAdditionalData"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	quantity?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ChartEntry"]: AliasType<{
+	intervalTick?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+	additionalData?:ResolverInputTypes["ChartEntryAdditionalData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["BetterMetricRangeInput"]: {
+	start: ResolverInputTypes["DateTime"],
+	end?: ResolverInputTypes["DateTime"] | undefined | null
+};
+	["OrderSummaryMetricInput"]: {
+	range: ResolverInputTypes["BetterMetricRangeInput"],
+	orderStates: Array<string>
+};
+	["ChartMetricInput"]: {
+	range: ResolverInputTypes["BetterMetricRangeInput"],
+	interval: ResolverInputTypes["MetricIntervalType"],
+	types: Array<ResolverInputTypes["ChartMetricType"]>,
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
 };
 	["SetInpostShippingMethodConfigInput"]: {
 	shippingMethodId: string,
@@ -9404,6 +9630,10 @@ export type ModelTypes = {
 	zone?: ModelTypes["Zone"] | undefined,
 	getMerchantPlatformSettings?: ModelTypes["MerchantPlatformSettingsEntity"] | undefined,
 	getMerchantPlatformInfo?: Array<ModelTypes["MerchantPlatformInfo"]> | undefined,
+	getMerchantSyncHistory: Array<ModelTypes["MerchantSyncRun"]>,
+	additionalOrderStates: Array<ModelTypes["AdditionalOrderState"]>,
+	chartMetric: ModelTypes["ChartMetrics"],
+	orderSummaryMetric: ModelTypes["OrderSummaryMetrics"],
 	getInpostConfig?: ModelTypes["InpostConfig"] | undefined,
 	getInpostOrganizations: ModelTypes["InpostOrganizationResponse"],
 	/** Get metrics for the given interval and metric types. */
@@ -10903,6 +11133,7 @@ is not in the required state. */
 	take?: number | undefined
 };
 	["ProductListOptions"]: {
+	searchTerm?: string | undefined,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined,
 	/** Takes n results, for use in pagination */
@@ -10929,6 +11160,7 @@ is not in the required state. */
 	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined
 };
 	["ProductVariantListOptions"]: {
+	searchTerm?: string | undefined,
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined,
 	/** Takes n results, for use in pagination */
@@ -12575,11 +12807,54 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["MerchantPlatformSettingsEntity"]: {
 		id: string,
 	platform: string,
-	entries?: Array<ModelTypes["MerchantPlatformSetting"]> | undefined
+	entries: Array<ModelTypes["MerchantPlatformSetting"]>
 };
 	["MerchantPlatformInfo"]: {
 		isValidConnection: boolean,
-	productsCount: number
+	productsCount: number,
+	connectionStatus?: string | undefined,
+	dataSourceVerified?: boolean | undefined,
+	checkedAt?: ModelTypes["DateTime"] | undefined,
+	latencyMs?: number | undefined,
+	disapprovedProductsCount?: number | undefined,
+	issuesCount?: number | undefined,
+	lastError?: ModelTypes["MerchantPlatformError"] | undefined,
+	issues?: Array<ModelTypes["MerchantProductIssue"]> | undefined
+};
+	["MerchantPlatformError"]: {
+		code: string,
+	message: string,
+	retryable: boolean
+};
+	["MerchantProductIssue"]: {
+		offerId: string,
+	code: string,
+	description: string,
+	severity: string
+};
+	["MerchantSyncItem"]: {
+		id: string,
+	offerId: string,
+	operation: string,
+	status: string,
+	errorCode?: string | undefined,
+	errorMessage?: string | undefined,
+	attempts: number
+};
+	["MerchantSyncRun"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	platform: string,
+	trigger: string,
+	status: string,
+	jobId?: string | undefined,
+	total: number,
+	succeeded: number,
+	failed: number,
+	errorSummary?: string | undefined,
+	startedAt?: ModelTypes["DateTime"] | undefined,
+	finishedAt?: ModelTypes["DateTime"] | undefined,
+	items: Array<ModelTypes["MerchantSyncItem"]>
 };
 	["MerchantPlatformSettingInput"]: {
 	key: string,
@@ -12587,7 +12862,60 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["SaveMerchantPlatformSettingInput"]: {
 	platform: string,
-	entries?: Array<ModelTypes["MerchantPlatformSettingInput"]> | undefined
+	entries: Array<ModelTypes["MerchantPlatformSettingInput"]>
+};
+	["AdditionalOrderState"]: {
+		state: string,
+	selectedByDefault: boolean
+};
+	["ChartDataType"]: {
+		type: ModelTypes["ChartMetricType"],
+	title: string,
+	entries: Array<ModelTypes["ChartEntry"]>
+};
+	["ChartMetrics"]: {
+		data: Array<ModelTypes["ChartDataType"]>
+};
+	["OrderSummaryMetrics"]: {
+		data: ModelTypes["OrderSummaryDataMetric"]
+};
+	["OrderSummaryDataMetric"]: {
+		currencyCode: ModelTypes["CurrencyCode"],
+	total: number,
+	totalWithTax: number,
+	orderCount: number,
+	averageOrderValue: number,
+	averageOrderValueWithTax: number,
+	productCount: number
+};
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
+	["ChartMetricType"]:ChartMetricType;
+	["ChartEntryAdditionalData"]: {
+		id: string,
+	name: string,
+	quantity: number
+};
+	["ChartEntry"]: {
+		intervalTick: number,
+	value: number,
+	additionalData?: Array<ModelTypes["ChartEntryAdditionalData"]> | undefined
+};
+	["BetterMetricRangeInput"]: {
+	start: ModelTypes["DateTime"],
+	end?: ModelTypes["DateTime"] | undefined
+};
+	["OrderSummaryMetricInput"]: {
+	range: ModelTypes["BetterMetricRangeInput"],
+	orderStates: Array<string>
+};
+	["ChartMetricInput"]: {
+	range: ModelTypes["BetterMetricRangeInput"],
+	interval: ModelTypes["MetricIntervalType"],
+	types: Array<ModelTypes["ChartMetricType"]>,
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined,
+	net?: boolean | undefined
 };
 	["SetInpostShippingMethodConfigInput"]: {
 	shippingMethodId: string,
@@ -13212,6 +13540,10 @@ export type GraphQLTypes = {
 	zone?: GraphQLTypes["Zone"] | undefined,
 	getMerchantPlatformSettings?: GraphQLTypes["MerchantPlatformSettingsEntity"] | undefined,
 	getMerchantPlatformInfo?: Array<GraphQLTypes["MerchantPlatformInfo"]> | undefined,
+	getMerchantSyncHistory: Array<GraphQLTypes["MerchantSyncRun"]>,
+	additionalOrderStates: Array<GraphQLTypes["AdditionalOrderState"]>,
+	chartMetric: GraphQLTypes["ChartMetrics"],
+	orderSummaryMetric: GraphQLTypes["OrderSummaryMetrics"],
 	getInpostConfig?: GraphQLTypes["InpostConfig"] | undefined,
 	getInpostOrganizations: GraphQLTypes["InpostOrganizationResponse"],
 	/** Get metrics for the given interval and metric types. */
@@ -14892,7 +15224,8 @@ is not in the required state. */
 	take?: number | undefined
 };
 	["ProductListOptions"]: {
-		/** Skips the first n results, for use in pagination */
+		searchTerm?: string | undefined,
+	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined,
 	/** Takes n results, for use in pagination */
 	take?: number | undefined,
@@ -14918,7 +15251,8 @@ is not in the required state. */
 	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined
 };
 	["ProductVariantListOptions"]: {
-		/** Skips the first n results, for use in pagination */
+		searchTerm?: string | undefined,
+	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined,
 	/** Takes n results, for use in pagination */
 	take?: number | undefined,
@@ -16964,12 +17298,59 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	__typename: "MerchantPlatformSettingsEntity",
 	id: string,
 	platform: string,
-	entries?: Array<GraphQLTypes["MerchantPlatformSetting"]> | undefined
+	entries: Array<GraphQLTypes["MerchantPlatformSetting"]>
 };
 	["MerchantPlatformInfo"]: {
 	__typename: "MerchantPlatformInfo",
 	isValidConnection: boolean,
-	productsCount: number
+	productsCount: number,
+	connectionStatus?: string | undefined,
+	dataSourceVerified?: boolean | undefined,
+	checkedAt?: GraphQLTypes["DateTime"] | undefined,
+	latencyMs?: number | undefined,
+	disapprovedProductsCount?: number | undefined,
+	issuesCount?: number | undefined,
+	lastError?: GraphQLTypes["MerchantPlatformError"] | undefined,
+	issues?: Array<GraphQLTypes["MerchantProductIssue"]> | undefined
+};
+	["MerchantPlatformError"]: {
+	__typename: "MerchantPlatformError",
+	code: string,
+	message: string,
+	retryable: boolean
+};
+	["MerchantProductIssue"]: {
+	__typename: "MerchantProductIssue",
+	offerId: string,
+	code: string,
+	description: string,
+	severity: string
+};
+	["MerchantSyncItem"]: {
+	__typename: "MerchantSyncItem",
+	id: string,
+	offerId: string,
+	operation: string,
+	status: string,
+	errorCode?: string | undefined,
+	errorMessage?: string | undefined,
+	attempts: number
+};
+	["MerchantSyncRun"]: {
+	__typename: "MerchantSyncRun",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	platform: string,
+	trigger: string,
+	status: string,
+	jobId?: string | undefined,
+	total: number,
+	succeeded: number,
+	failed: number,
+	errorSummary?: string | undefined,
+	startedAt?: GraphQLTypes["DateTime"] | undefined,
+	finishedAt?: GraphQLTypes["DateTime"] | undefined,
+	items: Array<GraphQLTypes["MerchantSyncItem"]>
 };
 	["MerchantPlatformSettingInput"]: {
 		key: string,
@@ -16977,7 +17358,67 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["SaveMerchantPlatformSettingInput"]: {
 		platform: string,
-	entries?: Array<GraphQLTypes["MerchantPlatformSettingInput"]> | undefined
+	entries: Array<GraphQLTypes["MerchantPlatformSettingInput"]>
+};
+	["AdditionalOrderState"]: {
+	__typename: "AdditionalOrderState",
+	state: string,
+	selectedByDefault: boolean
+};
+	["ChartDataType"]: {
+	__typename: "ChartDataType",
+	type: GraphQLTypes["ChartMetricType"],
+	title: string,
+	entries: Array<GraphQLTypes["ChartEntry"]>
+};
+	["ChartMetrics"]: {
+	__typename: "ChartMetrics",
+	data: Array<GraphQLTypes["ChartDataType"]>
+};
+	["OrderSummaryMetrics"]: {
+	__typename: "OrderSummaryMetrics",
+	data: GraphQLTypes["OrderSummaryDataMetric"]
+};
+	["OrderSummaryDataMetric"]: {
+	__typename: "OrderSummaryDataMetric",
+	currencyCode: GraphQLTypes["CurrencyCode"],
+	total: number,
+	totalWithTax: number,
+	orderCount: number,
+	averageOrderValue: number,
+	averageOrderValueWithTax: number,
+	productCount: number
+};
+	["MetricRangeType"]: MetricRangeType;
+	["MetricIntervalType"]: MetricIntervalType;
+	["ChartMetricType"]: ChartMetricType;
+	["ChartEntryAdditionalData"]: {
+	__typename: "ChartEntryAdditionalData",
+	id: string,
+	name: string,
+	quantity: number
+};
+	["ChartEntry"]: {
+	__typename: "ChartEntry",
+	intervalTick: number,
+	value: number,
+	additionalData?: Array<GraphQLTypes["ChartEntryAdditionalData"]> | undefined
+};
+	["BetterMetricRangeInput"]: {
+		start: GraphQLTypes["DateTime"],
+	end?: GraphQLTypes["DateTime"] | undefined
+};
+	["OrderSummaryMetricInput"]: {
+		range: GraphQLTypes["BetterMetricRangeInput"],
+	orderStates: Array<string>
+};
+	["ChartMetricInput"]: {
+		range: GraphQLTypes["BetterMetricRangeInput"],
+	interval: GraphQLTypes["MetricIntervalType"],
+	types: Array<GraphQLTypes["ChartMetricType"]>,
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined,
+	net?: boolean | undefined
 };
 	["SetInpostShippingMethodConfigInput"]: {
 		shippingMethodId: string,
@@ -18102,6 +18543,31 @@ export const enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
+export const enum MetricRangeType {
+	Today = "Today",
+	Yesterday = "Yesterday",
+	ThisWeek = "ThisWeek",
+	LastWeek = "LastWeek",
+	ThisMonth = "ThisMonth",
+	LastMonth = "LastMonth",
+	ThisYear = "ThisYear",
+	LastYear = "LastYear",
+	FirstQuarter = "FirstQuarter",
+	SecondQuarter = "SecondQuarter",
+	ThirdQuarter = "ThirdQuarter",
+	FourthQuarter = "FourthQuarter",
+	Custom = "Custom"
+}
+export const enum MetricIntervalType {
+	Day = "Day",
+	Hour = "Hour"
+}
+export const enum ChartMetricType {
+	OrderCount = "OrderCount",
+	OrderTotal = "OrderTotal",
+	AverageOrderValue = "AverageOrderValue",
+	OrderTotalProductsCount = "OrderTotalProductsCount"
+}
 export const enum MetricInterval {
 	Daily = "Daily"
 }
@@ -18299,6 +18765,12 @@ type ZEUS_VARIABLES = {
 	["OrderType"]: ValueTypes["OrderType"];
 	["MerchantPlatformSettingInput"]: ValueTypes["MerchantPlatformSettingInput"];
 	["SaveMerchantPlatformSettingInput"]: ValueTypes["SaveMerchantPlatformSettingInput"];
+	["MetricRangeType"]: ValueTypes["MetricRangeType"];
+	["MetricIntervalType"]: ValueTypes["MetricIntervalType"];
+	["ChartMetricType"]: ValueTypes["ChartMetricType"];
+	["BetterMetricRangeInput"]: ValueTypes["BetterMetricRangeInput"];
+	["OrderSummaryMetricInput"]: ValueTypes["OrderSummaryMetricInput"];
+	["ChartMetricInput"]: ValueTypes["ChartMetricInput"];
 	["SetInpostShippingMethodConfigInput"]: ValueTypes["SetInpostShippingMethodConfigInput"];
 	["GetInpostOrganizationsInput"]: ValueTypes["GetInpostOrganizationsInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];

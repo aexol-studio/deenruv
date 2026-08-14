@@ -1,3 +1,5 @@
+import { scalars } from "@deenruv/admin-types";
+
 import { FromSelector, Selector } from "../zeus";
 
 const FacetSelector = Selector("Facet")({
@@ -29,10 +31,16 @@ export const ProductFacetValueSelector = Selector("Product")({
 
 export type ProductFacetValueType = FromSelector<
   typeof ProductFacetValueSelector,
-  "Product"
+  "Product",
+  typeof scalars
 >;
 export type FacetValueType = FromSelector<
   typeof FacetValueSelector,
-  "FacetValue"
+  "FacetValue",
+  typeof scalars
 >;
-export type FacetType = FromSelector<typeof FacetSelector, "Facet">;
+export type FacetType = FromSelector<
+  typeof FacetSelector,
+  "Facet",
+  typeof scalars
+>;

@@ -15,6 +15,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useServer } from "@/state";
 import { useTranslation } from "@/hooks/useTranslation.js";
+import { matchesPermissions } from "@/access.js";
 
 export const ActionsDropdown = <T extends { id: string }>(
   navigate: NavigateFunction,
@@ -30,11 +31,8 @@ export const ActionsDropdown = <T extends { id: string }>(
 
       const { userPermissions } = useServer();
       const isPermittedToDelete = useMemo(
-        () =>
-          deletePermissions.every((permission) =>
-            userPermissions.includes(permission),
-          ),
-        [userPermissions],
+        () => matchesPermissions(userPermissions, deletePermissions),
+        [userPermissions, deletePermissions],
       );
 
       const { t } = useTranslation("table");

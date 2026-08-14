@@ -383,7 +383,15 @@
     "title": "Anuluj i refunduj zamówienie",
     "refund": "Refunduj",
     "returnToStock": "Zwróć do magazynu",
-    "refundShipping": "Zwróć za przesyłkę"
+    "refundShipping": "Zwróć koszt przesyłki",
+    "cancelShipping": "Zwróć przesyłkę do magazynu",
+    "cancelShippingRequiresLines": "Wybierz co najmniej jeden produkt do zwrotu przed zwrotem przesyłki.",
+    "refundQuantity": "Ilość do refundacji",
+    "reason": "Powód",
+    "suggestedAmount": "Wyliczony zwrot",
+    "auto": "Automatycznie",
+    "submit": "Zastosuj anulowanie i zwrot",
+    "error": "Nie udało się anulować lub zwrócić płatności"
   },
   "create": {
     "addModal": {

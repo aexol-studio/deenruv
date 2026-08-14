@@ -9,7 +9,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { FacetsDetailView } from '@/pages/facets/_components/FacetDetailView.js';
 import { useCallback } from 'react';
-import { ModelTypes } from '@deenruv/admin-types';
+import { ModelTypes, Permission } from '@deenruv/admin-types';
 
 const CreateFacetMutation = getMutation('createFacet');
 const EditFacetMutation = getMutation('updateFacet');
@@ -75,6 +75,11 @@ export const FacetsDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: [Permission.CreateFacet, Permission.CreateCatalog],
+          edit: [Permission.UpdateFacet, Permission.UpdateCatalog],
+          delete: [Permission.DeleteFacet, Permission.DeleteCatalog],
         }}
       />
     </div>

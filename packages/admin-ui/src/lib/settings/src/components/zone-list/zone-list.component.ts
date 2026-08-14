@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
     DataService,
+    buildTokenizedSearchFilter,
     GetZoneListDocument,
     GetZoneListQuery,
     ItemOf,
     LanguageCode,
-    LogicalOperator,
     ModalService,
     NotificationService,
     TypedBaseListComponent,
@@ -41,10 +41,7 @@ export const GET_ZONE_LIST = gql`
     styleUrls: ['./zone-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ZoneListComponent
-    extends TypedBaseListComponent<typeof GetZoneListDocument, 'zones'>
-    implements OnInit
-{
+export class ZoneListComponent extends TypedBaseListComponent<typeof GetZoneListDocument, 'zones'> implements OnInit {
     activeZone$: Observable<ItemOf<GetZoneListQuery, 'zones'> | undefined>;
     activeIndex$: Observable<number>;
     selectedMemberIds: string[] = [];
@@ -83,13 +80,11 @@ export class ZoneListComponent
                 options: {
                     skip,
                     take,
-                    filter: {
-                        name: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
-                    filterOperator: this.searchTermControl.value ? LogicalOperator.OR : LogicalOperator.AND,
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['name'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),
@@ -129,7 +124,10 @@ export class ZoneListComponent
     closeMembers() {
         const params = { ...this.route.snapshot.params };
         delete params.contents;
-        this.router.navigate(['./', params], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+        this.router.navigate(['./', params], {
+            relativeTo: this.route,
+            queryParamsHandling: 'preserve',
+        });
     }
 
     addToZone(zone: ItemOf<GetZoneListQuery, 'zones'>) {
@@ -144,9 +142,7 @@ export class ZoneListComponent
             .pipe(
                 switchMap(memberIds =>
                     memberIds
-                        ? this.dataService.settings
-                              .addMembersToZone(zone.id, memberIds)
-                              .pipe(mapTo(memberIds))
+                        ? this.dataService.settings.addMembersToZone(zone.id, memberIds).pipe(mapTo(memberIds))
                         : EMPTY,
                 ),
             )

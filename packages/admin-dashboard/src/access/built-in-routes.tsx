@@ -74,6 +74,7 @@ import {
   ZonesListPage,
 } from '@/pages/index.js';
 import type { AdminNavigationGroupDefinition, AdminRouteDefinition } from './types.js';
+import { catalogRoutePermissions, settingsRoutePermissions } from './built-in-route-permissions.js';
 
 type CrudRoutes = {
   list: string;
@@ -188,8 +189,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.products,
     listElement: () => <ProductsListPage />,
     detailElement: () => <ProductsDetailPage />,
-    readPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
-    createPermissions: [Permission.CreateProduct],
+    readPermissions: catalogRoutePermissions.products.read,
+    createPermissions: catalogRoutePermissions.products.create,
     nav: { groupId: 'assortment-group', linkId: 'link-products', menuKey: 'products', icon: Barcode },
   }),
   ...createCrudRouteDefinitions({
@@ -198,8 +199,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.productVariants,
     listElement: () => <ProductVariantsListPage />,
     detailElement: () => <ProductVariantDetailPage />,
-    readPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
-    createPermissions: [Permission.CreateProduct],
+    readPermissions: catalogRoutePermissions.products.read,
+    createPermissions: catalogRoutePermissions.products.create,
     nav: {
       groupId: 'assortment-group',
       linkId: 'link-product-variants',
@@ -213,8 +214,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.collections,
     listElement: () => <CollectionsListPage />,
     detailElement: () => <CollectionsDetailPage />,
-    readPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
-    createPermissions: [Permission.CreateCollection],
+    readPermissions: catalogRoutePermissions.collections.read,
+    createPermissions: catalogRoutePermissions.collections.create,
     nav: { groupId: 'assortment-group', linkId: 'link-collections', menuKey: 'collections', icon: Folder },
   }),
   ...createCrudRouteDefinitions({
@@ -223,15 +224,15 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.facets,
     listElement: () => <FacetsListPage />,
     detailElement: () => <FacetsDetailPage />,
-    readPermissions: [Permission.ReadFacet, Permission.ReadCatalog],
-    createPermissions: [Permission.CreateFacet],
+    readPermissions: catalogRoutePermissions.facets.read,
+    createPermissions: catalogRoutePermissions.facets.create,
     nav: { groupId: 'assortment-group', linkId: 'link-facets', menuKey: 'facets', icon: Tag },
   }),
   {
     id: 'assets.list',
     path: Routes.assets.list,
     element: <AssetsListPage />,
-    requiredPermissions: [Permission.ReadAsset, Permission.ReadCatalog],
+    requiredPermissions: catalogRoutePermissions.assets.read,
     nav: { groupId: 'assortment-group', linkId: 'link-assets', menuKey: 'assets', icon: Images },
     search: { menuKey: 'assets', type: 'list' },
   },
@@ -288,8 +289,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.paymentMethods,
     listElement: () => <PaymentMethodsListPage />,
     detailElement: () => <PaymentMethodsDetailPage />,
-    readPermissions: [Permission.ReadPaymentMethod],
-    createPermissions: [Permission.CreatePaymentMethod],
+    readPermissions: settingsRoutePermissions.paymentMethods.read,
+    createPermissions: settingsRoutePermissions.paymentMethods.create,
     nav: {
       groupId: 'shipping-group',
       linkId: 'link-payment-methods',
@@ -303,8 +304,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.shippingMethods,
     listElement: () => <ShippingMethodsListPage />,
     detailElement: () => <ShippingMethodsDetailPage />,
-    readPermissions: [Permission.ReadShippingMethod],
-    createPermissions: [Permission.CreateShippingMethod],
+    readPermissions: settingsRoutePermissions.shippingMethods.read,
+    createPermissions: settingsRoutePermissions.shippingMethods.create,
     nav: {
       groupId: 'shipping-group',
       linkId: 'link-shipping-methods',
@@ -338,8 +339,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.zones,
     listElement: () => <ZonesListPage />,
     detailElement: () => <ZonesDetailPage />,
-    readPermissions: [Permission.ReadZone],
-    createPermissions: [Permission.CreateZone],
+    readPermissions: settingsRoutePermissions.zones.read,
+    createPermissions: settingsRoutePermissions.zones.create,
     nav: { groupId: 'settings-group', linkId: 'link-zones', menuKey: 'zones', icon: Globe },
   }),
   ...createCrudRouteDefinitions({
@@ -348,8 +349,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.countries,
     listElement: () => <CountriesListPage />,
     detailElement: () => <CountriesDetailPage />,
-    readPermissions: [Permission.ReadCountry],
-    createPermissions: [Permission.CreateCountry],
+    readPermissions: settingsRoutePermissions.countries.read,
+    createPermissions: settingsRoutePermissions.countries.create,
     nav: { groupId: 'settings-group', linkId: 'link-countries', menuKey: 'countries', icon: Flag },
   }),
   ...createCrudRouteDefinitions({
@@ -358,8 +359,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.taxCategories,
     listElement: () => <TaxCategoriesListPage />,
     detailElement: () => <TaxCategoriesDetailPage />,
-    readPermissions: [Permission.ReadTaxCategory],
-    createPermissions: [Permission.CreateTaxCategory],
+    readPermissions: settingsRoutePermissions.taxCategories.read,
+    createPermissions: settingsRoutePermissions.taxCategories.create,
     nav: {
       groupId: 'settings-group',
       linkId: 'link-tax-categories',
@@ -373,8 +374,8 @@ export const builtInAdminRoutes: AdminRouteDefinition[] = [
     routes: Routes.taxRates,
     listElement: () => <TaxRatesListPage />,
     detailElement: () => <TaxRatesDetailPage />,
-    readPermissions: [Permission.ReadTaxRate],
-    createPermissions: [Permission.CreateTaxRate],
+    readPermissions: settingsRoutePermissions.taxRates.read,
+    createPermissions: settingsRoutePermissions.taxRates.create,
     nav: { groupId: 'settings-group', linkId: 'link-tax-rates', menuKey: 'taxRates', icon: Percent },
   }),
   {

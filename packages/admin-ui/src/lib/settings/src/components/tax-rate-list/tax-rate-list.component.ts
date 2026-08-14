@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { GetTaxRateListDocument, TAX_RATE_FRAGMENT, TypedBaseListComponent } from '@deenruv/admin-ui/core';
+import {
+    buildTokenizedSearchFilter,
+    GetTaxRateListDocument,
+    TAX_RATE_FRAGMENT,
+    TypedBaseListComponent,
+} from '@deenruv/admin-ui/core';
 import { gql } from 'apollo-angular';
 
 export const GET_TAX_RATE_LIST = gql`
@@ -65,12 +70,11 @@ export class TaxRateListComponent extends TypedBaseListComponent<typeof GetTaxRa
                 options: {
                     skip,
                     take,
-                    filter: {
-                        name: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['name'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

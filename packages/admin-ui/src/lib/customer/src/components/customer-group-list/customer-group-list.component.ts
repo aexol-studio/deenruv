@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
     CUSTOMER_GROUP_FRAGMENT,
+    buildTokenizedSearchFilter,
     DataService,
     GetCustomerGroupListDocument,
     GetCustomerGroupsQuery,
@@ -44,9 +45,7 @@ export class CustomerGroupListComponent
     activeGroup$: Observable<ItemOf<GetCustomerGroupsQuery, 'customerGroups'> | undefined>;
     activeIndex$: Observable<number>;
     listIsEmpty$: Observable<boolean>;
-    members$: Observable<
-        NonNullable<GetCustomerGroupWithCustomersQuery['customerGroup']>['customers']['items']
-    >;
+    members$: Observable<NonNullable<GetCustomerGroupWithCustomersQuery['customerGroup']>['customers']['items']>;
     membersTotal$: Observable<number>;
     fetchGroupMembers$ = new BehaviorSubject<CustomerGroupMemberFetchParams>({
         skip: 0,
@@ -87,10 +86,11 @@ export class CustomerGroupListComponent
                 options: {
                     skip,
                     take,
-                    filter: {
-                        name: { contains: this.searchTermControl.value },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['name'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),
@@ -132,11 +132,7 @@ export class CustomerGroupListComponent
                         .getCustomerGroupWithCustomers(activeGroup.id, {
                             skip,
                             take,
-                            filter: {
-                                emailAddress: {
-                                    contains: filterTerm,
-                                },
-                            },
+                            filter: buildTokenizedSearchFilter(filterTerm, ['emailAddress']),
                         })
                         .mapStream(res => res.customerGroup?.customers);
                 } else {
@@ -152,7 +148,10 @@ export class CustomerGroupListComponent
     closeMembers() {
         const params = { ...this.route.snapshot.params };
         delete params.contents;
-        this.router.navigate(['./', params], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+        this.router.navigate(['./', params], {
+            relativeTo: this.route,
+            queryParamsHandling: 'preserve',
+        });
     }
 
     addToGroup(group: NonNullable<GetCustomerGroupWithCustomersQuery['customerGroup']>) {
@@ -168,9 +167,7 @@ export class CustomerGroupListComponent
             .pipe(
                 switchMap(customerIds =>
                     customerIds
-                        ? this.dataService.customer
-                              .addCustomersToGroup(group.id, customerIds)
-                              .pipe(mapTo(customerIds))
+                        ? this.dataService.customer.addCustomersToGroup(group.id, customerIds).pipe(mapTo(customerIds))
                         : EMPTY,
                 ),
             )

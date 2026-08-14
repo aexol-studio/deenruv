@@ -41,6 +41,9 @@ const draftOrderLineSelector = Selector("OrderLine")({
   unitPriceWithTax: true,
   discountedUnitPrice: true,
   discountedUnitPriceWithTax: true,
+  proratedUnitPrice: true,
+  proratedUnitPriceWithTax: true,
+  orderPlacedQuantity: true,
   taxRate: true,
 });
 

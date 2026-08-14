@@ -1,4 +1,10 @@
-import { FromSelector, Selector } from "../zeus";
+import { FromSelector, Selector, ZeusScalars } from "../zeus";
+
+const scalars = ZeusScalars({
+  ID: {
+    decode: (value) => value as string,
+  },
+});
 
 const FacetValueSelector = Selector("FacetValue")({
   id: true,
@@ -29,5 +35,9 @@ export const FacetListOptionsSelector = Selector("FacetList")({
   totalItems: true,
 });
 
-export type FacetValue = FromSelector<typeof FacetValueSelector, "FacetValue">;
-export type Facet = FromSelector<typeof FacetSelector, "Facet">;
+export type FacetValue = FromSelector<
+  typeof FacetValueSelector,
+  "FacetValue",
+  typeof scalars
+>;
+export type Facet = FromSelector<typeof FacetSelector, "Facet", typeof scalars>;

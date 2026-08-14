@@ -18,6 +18,10 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { SortSelect } from "@/components/templates/DetailList/useDetailListHook/SortSelect.js";
 import { useSettings } from "@/state/settings.js";
 import { useOptionalDetailView } from "../../DetailView/useDetailView.js";
+import {
+  buildDetailListSearchParams,
+  DetailListSearchTransport,
+} from "./buildSearchFilter.js";
 
 type FIELD = keyof ModelTypes[ListType[keyof ListType]];
 type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
@@ -33,12 +37,14 @@ export const useDetailListHook = <
   searchFields,
   fakeURLParams,
   searchTranslations,
+  searchTransport = "filter",
 }: {
   fetch: T;
   customItemsPerPage?: ItemsPerPageType;
   searchFields?: S[];
   fakeURLParams?: boolean;
   searchTranslations?: Array<{ key: S; value: string }>;
+  searchTransport?: DetailListSearchTransport;
   refetchTimeout?: number;
 }): {
   Paginate: React.JSX.Element;
@@ -170,15 +176,13 @@ export const useDetailListHook = <
     const sortDir = searchParams.get(SearchParamKey.SORT_DIR);
     const filter = searchParams.get(SearchParamKey.FILTER);
 
-    const searchFilter = ((searchFields as string[]) || []).reduce(
-      (acc, field) => {
-        if (search) acc[field] = { contains: search };
-        return acc;
-      },
-      {} as Record<string, { contains: string }>,
-    );
     const filters = filter ? JSON.parse(filter) : undefined;
-    const mergedFilters = { ...filters, ...searchFilter };
+    const searchValues = buildDetailListSearchParams(
+      search,
+      searchFields as string[] | undefined,
+      filters,
+      searchTransport,
+    );
     try {
       return {
         page: page ? parseInt(page) : 1,
@@ -187,15 +191,14 @@ export const useDetailListHook = <
           sort && sortDir
             ? { key: sort, sortDir: sortDir as SortOrder }
             : undefined,
-        filter: mergedFilters,
-        filterOperator: Object.keys(searchFilter).length
-          ? LogicalOperator.OR
-          : LogicalOperator.AND,
+        filter: searchValues.filter,
+        searchTerm: searchValues.searchTerm,
+        filterOperator: LogicalOperator.AND,
       };
     } catch (err) {
       throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
     }
-  }, [searchParams, searchFields]);
+  }, [searchParams, searchFields, searchTransport]);
 
   const selectedChannel = useSettings(({ selectedChannel }) => selectedChannel);
 

@@ -9,6 +9,7 @@ export type PaginationInputSort = { key: string; sortDir: SortOrder };
 export type PaginationInput = {
   page: number;
   perPage: number;
+  searchTerm?: string;
   sort?: PaginationInputSort;
   filter?:
     | ModelTypes["OrderFilterParameter"]

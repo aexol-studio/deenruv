@@ -126,8 +126,8 @@ export const AssetsListPage = () => {
           },
         },
       ]}
-      createPermissions={[Permission.CreateAsset]}
-      deletePermissions={[Permission.DeleteAsset]}
+      createPermissions={[Permission.CreateAsset, Permission.CreateCatalog]}
+      deletePermissions={[Permission.DeleteAsset, Permission.DeleteCatalog]}
     />
   );
 };

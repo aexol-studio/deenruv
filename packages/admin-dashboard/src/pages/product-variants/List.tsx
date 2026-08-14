@@ -18,7 +18,10 @@ import { useNavigate } from 'react-router';
 const tableId = 'productVariants-list-view';
 const { selector } = ListLocations[tableId];
 
-const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
+const fetch = async <T,>(
+  { page, perPage, filter, filterOperator, searchTerm, sort }: PaginationInput,
+  additionalSelector?: T,
+) => {
   const response = await apiClient('query')({
     productVariants: [
       {
@@ -26,6 +29,7 @@ const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: Pagina
           take: perPage,
           skip: (page - 1) * perPage,
           filterOperator: filterOperator,
+          ...(searchTerm && { searchTerm }),
           sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
           ...(filter && { filter }),
         },
@@ -83,6 +87,7 @@ export const ProductVariantsListPage = () => {
       ]}
       detailLinkColumn="id"
       searchFields={['name', 'sku']}
+      searchTransport="searchTerm"
       hideColumns={['customFields', 'productId', 'stockOnHand', 'stockAllocated']}
       entityName={'ProductVariant'}
       route={{
@@ -97,8 +102,8 @@ export const ProductVariantsListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateProduct]}
-      deletePermissions={[Permission.DeleteProduct]}
+      createPermissions={[Permission.CreateProduct, Permission.CreateCatalog]}
+      deletePermissions={[Permission.DeleteProduct, Permission.DeleteCatalog]}
       additionalColumns={[
         {
           id: 'stock',

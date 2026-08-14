@@ -68,6 +68,7 @@ import {
   RouteWithoutCreate,
 } from "./useDetailListHook/types.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
+import { matchesPermissions } from "@/access.js";
 
 export const isAssetObject = (value: object): boolean => {
   return Boolean(
@@ -135,6 +136,7 @@ export function DetailList<
   entityName,
   searchFields,
   searchTranslations,
+  searchTransport,
   hideColumns,
   additionalColumns = [],
   detailLinkColumn,
@@ -160,6 +162,7 @@ export function DetailList<
     key: Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>;
     value: string;
   }>;
+  searchTransport?: "filter" | "searchTerm";
   hideColumns?: FIELDS<T>;
   additionalColumns?: ColumnDef<AwaitedReturnType<T>["items"][number]>[];
   detailLinkColumn?: keyof AwaitedReturnType<T>["items"][number];
@@ -188,11 +191,12 @@ export function DetailList<
   const { t } = useTranslation("table");
   const userPermissions = useServer(({ userPermissions }) => userPermissions);
   const isPermittedToCreate = useMemo(() => {
-    if (!createPermissions) return true;
-    return createPermissions.some((permission) =>
-      userPermissions.includes(permission),
-    );
-  }, [userPermissions]);
+    return matchesPermissions(userPermissions, createPermissions);
+  }, [userPermissions, createPermissions]);
+  const isPermittedToDelete = useMemo(
+    () => matchesPermissions(userPermissions, deletePermissions),
+    [userPermissions, deletePermissions],
+  );
 
   const navigate = useNavigate();
   const { getTableExtensions } = usePluginStore();
@@ -345,6 +349,7 @@ export function DetailList<
       fetch(params, customFieldsSelector, mergedSelectors),
     searchFields,
     searchTranslations,
+    searchTransport,
     refetchTimeout,
   });
 
@@ -698,7 +703,10 @@ export function DetailList<
   );
 
   return (
-    <PageBlock withoutPadding={noPaddings}>
+    <PageBlock
+      className="h-full min-h-0 overflow-hidden"
+      withoutPadding={noPaddings}
+    >
       <DetailListStoreProvider
         refetch={refetch}
         sortButton={SortButton}
@@ -707,7 +715,11 @@ export function DetailList<
         {loading ? (
           <LoadingMask />
         ) : (
-          <div className={cn("w-full")}>
+          <div
+            className={cn(
+              "flex h-full min-h-0 w-full flex-col overflow-hidden",
+            )}
+          >
             <DeleteDialog
               {...{
                 itemsToDelete,
@@ -716,7 +728,7 @@ export function DetailList<
                 onConfirmDelete,
               }}
             />
-            <div className="page-content-h flex w-full flex-col gap-2">
+            <div className="flex h-full min-h-0 w-full flex-col gap-2 overflow-hidden">
               <div className="mb-1 flex w-full flex-col items-start gap-4">
                 <div className="flex w-full flex-col gap-2 border border-border/80 bg-card/95 p-2.5 lg:p-3">
                   <div className="flex w-full flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
@@ -796,7 +808,7 @@ export function DetailList<
                                   })}
                                 </DropdownMenuGroup>
 
-                                {remove && (
+                                {remove && isPermittedToDelete && (
                                   <>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuGroup>

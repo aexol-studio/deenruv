@@ -18,7 +18,7 @@ const tableId = 'products-list-view';
 const { selector } = ListLocations[tableId];
 
 const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
+  { page, perPage, filter, filterOperator, searchTerm, sort }: PaginationInput,
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
@@ -29,6 +29,7 @@ const fetch = async <T, K>(
           take: perPage,
           skip: (page - 1) * perPage,
           filterOperator: filterOperator,
+          ...(searchTerm && { searchTerm }),
           sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
           ...(filter && { filter }),
         },
@@ -82,14 +83,15 @@ export const ProductsListPage = () => {
       additionalBulkActions={[...EntityChannelManagementBulkAction(tableId), EntityFacetManagementBulkAction(tableId)]}
       detailLinkColumn="id"
       searchFields={['name', 'slug', 'sku']}
+      searchTransport="searchTerm"
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'Product'}
       route={Routes['products']}
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateProduct]}
-      deletePermissions={[Permission.DeleteProduct]}
+      createPermissions={[Permission.CreateProduct, Permission.CreateCatalog]}
+      deletePermissions={[Permission.DeleteProduct, Permission.DeleteCatalog]}
       suggestedOrderColumns={{
         featuredAsset: 4,
         variants: 99,

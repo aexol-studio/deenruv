@@ -11,17 +11,24 @@ import {
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useCallback } from 'react';
+import { switchSelectedChannel } from '@/access/channel-selection.js';
 
 export function ChannelSwitcher({ className }: { className?: string }) {
   const channels = useServer((p) => p.channels);
   const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
   const selectedChannel = useSettings((p) => p.selectedChannel);
+  const setUserPermissions = useServer((p) => p.setUserPermissions);
+  const setSelectedChannelPermissions = useServer((p) => p.setSelectedChannelPermissions);
   const { t } = useTranslation('common');
 
   const onChannelChange = (id: string) => {
     const channel = channels.find((channel) => channel.id === id);
     if (!channel) return;
-    setSelectedChannel(channel);
+    switchSelectedChannel(channel, {
+      clearPermissions: () => setUserPermissions([]),
+      selectChannel: setSelectedChannel,
+      setPermissionsForChannel: setSelectedChannelPermissions,
+    });
   };
 
   const getChannelLabel = useCallback(

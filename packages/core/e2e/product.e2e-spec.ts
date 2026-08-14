@@ -206,6 +206,71 @@ describe("Product resolver", () => {
       expect(result.products.items[0].name).toBe("Hard Drive");
     });
 
+    it("searches products across name and variant SKU with AND token semantics", async () => {
+      const result = await adminClient.query<
+        Codegen.GetProductListQuery,
+        Codegen.GetProductListQueryVariables
+      >(GET_PRODUCT_LIST, {
+        options: {
+          searchTerm: "  IHD455T1   Hard  ",
+        },
+      });
+
+      expect(result.products.items.map((product) => product.name)).toEqual([
+        "Hard Drive",
+      ]);
+      expect(result.products.totalItems).toBe(1);
+    });
+
+    it("composes product search with structured filters", async () => {
+      const matching = await adminClient.query<
+        Codegen.GetProductListQuery,
+        Codegen.GetProductListQueryVariables
+      >(GET_PRODUCT_LIST, {
+        options: {
+          searchTerm: "camera",
+          filter: { enabled: { eq: true } },
+        },
+      });
+      const missingToken = await adminClient.query<
+        Codegen.GetProductListQuery,
+        Codegen.GetProductListQueryVariables
+      >(GET_PRODUCT_LIST, {
+        options: {
+          searchTerm: "camera missing-token",
+          filter: { enabled: { eq: true } },
+        },
+      });
+
+      expect(matching.products.totalItems).toBeGreaterThan(0);
+      expect(missingToken.products).toEqual({ items: [], totalItems: 0 });
+    });
+
+    it("counts a product once when multiple active-channel variants match", async () => {
+      const result = await adminClient.query<
+        Codegen.GetProductListQuery,
+        Codegen.GetProductListQueryVariables
+      >(GET_PRODUCT_LIST, {
+        options: { searchTerm: "L220" },
+      });
+
+      expect(result.products.items.map((product) => product.name)).toEqual([
+        "Laptop",
+      ]);
+      expect(result.products.totalItems).toBe(1);
+    });
+
+    it("treats an empty product search term as a no-op", async () => {
+      const result = await adminClient.query<
+        Codegen.GetProductListQuery,
+        Codegen.GetProductListQueryVariables
+      >(GET_PRODUCT_LIST, {
+        options: { searchTerm: " \t\n " },
+      });
+
+      expect(result.products.totalItems).toBe(20);
+    });
+
     it("sorts by name shop", async () => {
       const result = await shopClient.query<
         Codegen.GetProductListQuery,
@@ -739,6 +804,44 @@ describe("Product resolver", () => {
           sku: "B0012UUP02",
         },
       ]);
+    });
+
+    it("searches variants across name and SKU with order-independent AND tokens", async () => {
+      const { productVariants } = await adminClient.query<
+        Codegen.GetProductVariantListQuery,
+        Codegen.GetProductVariantListQueryVariables
+      >(GET_PRODUCT_VARIANT_LIST, {
+        options: { searchTerm: "B0012UUP02 Camera" },
+      });
+
+      expect(productVariants.items.map((variant) => variant.name)).toEqual([
+        "Camera Lens",
+      ]);
+      expect(productVariants.totalItems).toBe(1);
+    });
+
+    it("composes variant search with filters and rejects a missing token", async () => {
+      const matching = await adminClient.query<
+        Codegen.GetProductVariantListQuery,
+        Codegen.GetProductVariantListQueryVariables
+      >(GET_PRODUCT_VARIANT_LIST, {
+        options: {
+          searchTerm: "camera",
+          filter: { enabled: { eq: true } },
+        },
+      });
+      const missing = await adminClient.query<
+        Codegen.GetProductVariantListQuery,
+        Codegen.GetProductVariantListQueryVariables
+      >(GET_PRODUCT_VARIANT_LIST, {
+        options: {
+          searchTerm: "camera missing-token",
+          filter: { enabled: { eq: true } },
+        },
+      });
+
+      expect(matching.productVariants.totalItems).toBeGreaterThan(0);
+      expect(missing.productVariants).toEqual({ items: [], totalItems: 0 });
     });
 
     it("sort by price", async () => {
@@ -2384,6 +2487,112 @@ describe("Product resolver", () => {
       }
       expect(product.slug).toBe(productToDelete.slug);
     });
+  });
+
+  it("searches default translations only when the active translation is absent", async () => {
+    const productIds: string[] = [];
+    try {
+      const createSearchProduct = async (
+        code: string,
+        includeGermanTranslation: boolean,
+      ) => {
+        const { createProduct } = await adminClient.query<
+          Codegen.CreateProductMutation,
+          Codegen.CreateProductMutationVariables
+        >(CREATE_PRODUCT, {
+          input: {
+            translations: [
+              {
+                languageCode: LanguageCode.en,
+                name: `fallback-name-${code}`,
+                slug: `fallback-slug-${code}`,
+                description: "",
+              },
+              ...(includeGermanTranslation
+                ? [
+                    {
+                      languageCode: LanguageCode.de,
+                      name: `active-name-${code}`,
+                      slug: `active-slug-${code}`,
+                      description: "",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        });
+        productIds.push(createProduct.id);
+        const { createProductVariants } = await adminClient.query<
+          Codegen.CreateProductVariantsMutation,
+          Codegen.CreateProductVariantsMutationVariables
+        >(CREATE_PRODUCT_VARIANTS, {
+          input: [
+            {
+              productId: createProduct.id,
+              sku: `LANG-${code}`,
+              optionIds: [],
+              translations: [
+                {
+                  languageCode: LanguageCode.en,
+                  name: `fallback-variant-${code}`,
+                },
+                ...(includeGermanTranslation
+                  ? [
+                      {
+                        languageCode: LanguageCode.de,
+                        name: `active-variant-${code}`,
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          ],
+        });
+        return {
+          productId: createProduct.id,
+          variantId: createProductVariants[0]!.id,
+        };
+      };
+
+      const translated = await createSearchProduct("translated", true);
+      const fallback = await createSearchProduct("fallback", false);
+
+      for (const searchTerm of ["fallback-name", "fallback-slug"]) {
+        const { products } = await adminClient.query<
+          Codegen.GetProductListQuery,
+          Codegen.GetProductListQueryVariables
+        >(
+          GET_PRODUCT_LIST,
+          { options: { searchTerm } },
+          { languageCode: LanguageCode.de },
+        );
+        expect(products.items.map((product) => product.id)).toContain(
+          fallback.productId,
+        );
+        expect(products.items.map((product) => product.id)).not.toContain(
+          translated.productId,
+        );
+      }
+
+      const { productVariants } = await adminClient.query<
+        Codegen.GetProductVariantListQuery,
+        Codegen.GetProductVariantListQueryVariables
+      >(
+        GET_PRODUCT_VARIANT_LIST,
+        { options: { searchTerm: "fallback-variant" } },
+        { languageCode: LanguageCode.de },
+      );
+      expect(productVariants.items.map((variant) => variant.id)).toContain(
+        fallback.variantId,
+      );
+      expect(productVariants.items.map((variant) => variant.id)).not.toContain(
+        translated.variantId,
+      );
+    } finally {
+      for (const productId of productIds) {
+        await adminClient.query(DELETE_PRODUCT, { id: productId });
+      }
+    }
   });
 
   async function createOptionGroup(name: string, options: string[]) {

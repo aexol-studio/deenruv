@@ -245,7 +245,7 @@ function inheritsFromErrorResult(
 ): boolean {
   const interfaceNames = isObjectType(node)
     ? node.getInterfaces().map((i) => i.name)
-    : node.interfaces.map((i) => i.name.value);
+    : (node.interfaces ?? []).map((i) => i.name.value);
   return interfaceNames.includes(ERROR_INTERFACE_NAME);
 }
 

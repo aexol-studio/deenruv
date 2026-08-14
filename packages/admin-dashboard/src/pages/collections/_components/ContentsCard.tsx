@@ -70,8 +70,8 @@ export const ContentsCard: React.FC<ContentsCardProps> = ({ collectionId }) => {
         tableId="products-list-view"
         fetch={fetch}
         noCreateButton
-        createPermissions={[Permission.CreateProduct]}
-        deletePermissions={[Permission.DeleteProduct]}
+        createPermissions={[Permission.CreateProduct, Permission.CreateCatalog]}
+        deletePermissions={[Permission.DeleteProduct, Permission.DeleteCatalog]}
         additionalColumns={[
           {
             accessorKey: 'product',

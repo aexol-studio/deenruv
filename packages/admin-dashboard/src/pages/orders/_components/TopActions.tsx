@@ -13,7 +13,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
   Routes,
   OrderStateBadge,
   apiClient,
@@ -31,7 +30,7 @@ import {
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
 import { PossibleOrderStates } from '@/pages/orders/_components/PossibleOrderStates';
-import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/admin-types';
+import { DeletionResult, HistoryEntryType, Permission, ResolverInputTypes } from '@deenruv/admin-types';
 
 import { ChevronLeft, EllipsisVerticalIcon, Info } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -56,6 +55,9 @@ export const TopActions: React.FC = () => {
     cancelAndRefundOrder,
   } = useOrder();
   const orderProcess = useServer(useShallow((p) => p.serverConfig?.orderProcess || []));
+  const userPermissions = useServer((state) => state.userPermissions);
+  const canUpdateOrder = userPermissions.includes(Permission.UpdateOrder);
+  const canDeleteOrder = userPermissions.includes(Permission.DeleteOrder);
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
   const { getDetailViewActions } = usePluginStore();
@@ -166,20 +168,18 @@ export const TopActions: React.FC = () => {
         toast.error(t('topActions.orderCancelError', { value: err.message }));
       });
 
-  const cancelAndRefund = (
-    amount: number,
-    lines: { orderLineId: string; quantity: number }[],
-    reason: string,
-    shipping: number,
-    cancelShipping: boolean,
-    adjustment: number,
-  ) =>
-    cancelAndRefundOrder({ adjustment, amount, cancelShipping, lines, reason, shipping })
-      .then(() => {
-        toast.info(t('topActions.orderRefundedSuccessfully'));
+  const cancelAndRefund = (input: Parameters<typeof cancelAndRefundOrder>[0]) =>
+    cancelAndRefundOrder(input)
+      .then((result) => {
+        toast.info(
+          result?.outcome === 'cancellation'
+            ? t('topActions.orderCanceledSuccessfully')
+            : t('topActions.orderRefundedSuccessfully'),
+        );
       })
-      .catch(() => {
+      .catch((error) => {
         toast.error(t('topActions.orderRefundError'));
+        throw error;
       });
 
   const deleteDraftOrder = async () => {
@@ -308,131 +308,133 @@ export const TopActions: React.FC = () => {
         {t('create.orderId', { value: order?.id })}
       </h1>
       <OrderStateBadge state={order?.state} />
-      <div className="hidden items-center gap-2 md:ml-auto md:flex">
-        {actions?.inline?.map(({ component }) => React.createElement(component)) || null}
-        {exitingModifyStates ? (
-          <Button size="sm" onClick={onSubmit} disabled={!isOrderValid}>
-            {order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT
-              ? t('create.addPaymentButton')
-              : t('create.completeOrderButton')}
-          </Button>
-        ) : needFulfillment ? (
-          <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={!canAddFulfillment} />
-        ) : inModifyState ? (
-          <ModifyAcceptModal />
-        ) : null}
-        {(order.state === ORDER_STATE.ARRANGING_PAYMENT ||
-          order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) && (
-          <div className="flex items-center gap-2 text-sm">
-            <Info size={20} className="text-blue-500" />
-            <p>{t('addPaymentInfo')}</p>
-          </div>
-        )}
-        {order.state === ORDER_STATE.SHIPPED && (
-          <div className="flex items-center gap-2 text-sm">
-            <Info size={20} className="text-blue-500" />
-            <p>{t('markFulfillmentInfo')}</p>
-          </div>
-        )}
-      </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <EllipsisVerticalIcon className="size-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem asChild>
-            <PossibleOrderStates orderState={order.state} />
-          </DropdownMenuItem>
-          {order.state !== ORDER_STATE.CANCELLED &&
-            order.state !== ORDER_STATE.DRAFT &&
-            currentPossibilities?.to.length && (
+      {canUpdateOrder && (
+        <div className="hidden items-center gap-2 md:ml-auto md:flex">
+          {actions?.inline?.map(({ component }) => React.createElement(component)) || null}
+          {exitingModifyStates ? (
+            <Button size="sm" onClick={onSubmit} disabled={!isOrderValid}>
+              {order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT
+                ? t('create.addPaymentButton')
+                : t('create.completeOrderButton')}
+            </Button>
+          ) : needFulfillment ? (
+            <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={!canAddFulfillment} />
+          ) : inModifyState ? (
+            <ModifyAcceptModal />
+          ) : null}
+          {(order.state === ORDER_STATE.ARRANGING_PAYMENT ||
+            order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) && (
+            <div className="flex items-center gap-2 text-sm">
+              <Info size={20} className="text-blue-500" />
+              <p>{t('addPaymentInfo')}</p>
+            </div>
+          )}
+          {order.state === ORDER_STATE.SHIPPED && (
+            <div className="flex items-center gap-2 text-sm">
+              <Info size={20} className="text-blue-500" />
+              <p>{t('markFulfillmentInfo')}</p>
+            </div>
+          )}
+        </div>
+      )}
+      {canUpdateOrder && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <EllipsisVerticalIcon className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <PossibleOrderStates orderState={order.state} />
+            </DropdownMenuItem>
+            {order.state !== ORDER_STATE.CANCELLED &&
+              order.state !== ORDER_STATE.DRAFT &&
+              currentPossibilities?.to.length && (
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => setManualChange({ state: true, toAction: undefined })}
+                    variant="ghost"
+                    className="w-full cursor-pointer justify-start px-4 py-2 text-orange-400 hover:text-orange-400 focus-visible:ring-transparent dark:text-orange-400 dark:hover:text-orange-400 dark:focus-visible:ring-transparent"
+                  >
+                    {t('topActions.manualChangeStatus')}
+                  </Button>
+                </DropdownMenuItem>
+              )}
+            {actions?.dropdown?.map(({ component }) => React.createElement(component)) || null}
+            {order.state === ORDER_STATE.PARTIALLY_DELIVERED ||
+            order.state === ORDER_STATE.SHIPPED ||
+            order.state === ORDER_STATE.PAYMENT_SETTLED ||
+            order.state === ORDER_STATE.PAYMENT_AUTHORIZED ||
+            order.state === ORDER_STATE.PARTIALLY_SHIPPED ? (
               <DropdownMenuItem asChild>
                 <Button
-                  onClick={() => setManualChange({ state: true, toAction: undefined })}
                   variant="ghost"
-                  className="w-full cursor-pointer justify-start px-4 py-2 text-orange-400 hover:text-orange-400 focus-visible:ring-transparent dark:text-orange-400 dark:hover:text-orange-400 dark:focus-visible:ring-transparent"
+                  className="w-full cursor-pointer justify-start px-4 py-2 text-blue-400 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-400"
+                  onClick={changeOrderStatus.bind(null, ORDER_STATE.MODIFYING)}
                 >
-                  {t('topActions.manualChangeStatus')}
+                  {t('create.modifyOrder')}
                 </Button>
               </DropdownMenuItem>
-            )}
-          {actions?.dropdown?.map(({ component }) => React.createElement(component)) || null}
-          {order.state === ORDER_STATE.PARTIALLY_DELIVERED ||
-          order.state === ORDER_STATE.SHIPPED ||
-          order.state === ORDER_STATE.PAYMENT_SETTLED ||
-          order.state === ORDER_STATE.PAYMENT_AUTHORIZED ||
-          order.state === ORDER_STATE.PARTIALLY_SHIPPED ? (
-            <DropdownMenuItem asChild>
-              <Button
-                variant="ghost"
-                className="w-full cursor-pointer justify-start px-4 py-2 text-blue-400 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-400"
-                onClick={changeOrderStatus.bind(null, ORDER_STATE.MODIFYING)}
-              >
-                {t('create.modifyOrder')}
-              </Button>
-            </DropdownMenuItem>
-          ) : null}
+            ) : null}
 
-          {order.state === ORDER_STATE.ARRANGING_PAYMENT && (
-            <DropdownMenuItem asChild>
-              <ConfirmationDialog
-                onConfirm={() => cancelOrder()}
-                title={t('create.areYouSure')}
-                description={t('create.cancelOrderMessage')}
-                additionalElement={
-                  <SimpleSelect
-                    label={t('cancellationLabel')}
-                    value={cancellationReason}
-                    onValueChange={setCancellationReason}
-                    options={reasonOptions}
-                  />
-                }
-              >
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:text-red-400 dark:hover:text-red-400"
+            {order.state === ORDER_STATE.ARRANGING_PAYMENT && (
+              <DropdownMenuItem asChild>
+                <ConfirmationDialog
+                  onConfirm={() => cancelOrder()}
+                  title={t('create.areYouSure')}
+                  description={t('create.cancelOrderMessage')}
+                  additionalElement={
+                    <SimpleSelect
+                      label={t('cancellationLabel')}
+                      value={cancellationReason}
+                      onValueChange={setCancellationReason}
+                      options={reasonOptions}
+                    />
+                  }
                 >
-                  {t('create.cancelOrder')}
-                </Button>
-              </ConfirmationDialog>
-            </DropdownMenuItem>
-          )}
-          {(order.state === ORDER_STATE.PAYMENT_SETTLED ||
-            order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) && (
-            <CancelAndRefundDialog
-              refundReason={cancellationReason}
-              setRefundReason={setCancellationReason}
-              onConfirm={cancelAndRefund}
-            />
-          )}
-          {order.state === ORDER_STATE.DRAFT && (
-            <DropdownMenuItem asChild>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:hover:text-red-400"
+                    className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:text-red-400 dark:hover:text-red-400"
                   >
-                    {t('deleteDraft.button')}
+                    {t('create.cancelOrder')}
                   </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t('deleteDraft.title')}</AlertDialogTitle>
-                    <AlertDialogDescription>{t('deleteDraft.descriptionDraft')}</AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t('deleteDraft.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteDraftOrder()}>{t('deleteDraft.confirm')}</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+                </ConfirmationDialog>
+              </DropdownMenuItem>
+            )}
+            {(order.state === ORDER_STATE.PAYMENT_SETTLED ||
+              order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) && (
+              <CancelAndRefundDialog onConfirm={cancelAndRefund} />
+            )}
+            {order.state === ORDER_STATE.DRAFT && canDeleteOrder && (
+              <DropdownMenuItem asChild>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:hover:text-red-400"
+                    >
+                      {t('deleteDraft.button')}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t('deleteDraft.title')}</AlertDialogTitle>
+                      <AlertDialogDescription>{t('deleteDraft.descriptionDraft')}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>{t('deleteDraft.cancel')}</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteDraftOrder()}>
+                        {t('deleteDraft.confirm')}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 };

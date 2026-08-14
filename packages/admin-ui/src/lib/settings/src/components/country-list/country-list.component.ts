@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { GetCountryListDocument, TypedBaseListComponent } from '@deenruv/admin-ui/core';
+import { buildTokenizedSearchFilter, GetCountryListDocument, TypedBaseListComponent } from '@deenruv/admin-ui/core';
 import { gql } from 'apollo-angular';
 
 export const GET_COUNTRY_LIST = gql`
@@ -73,12 +73,11 @@ export class CountryListComponent extends TypedBaseListComponent<typeof GetCount
                 options: {
                     skip,
                     take,
-                    filter: {
-                        name: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['name'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

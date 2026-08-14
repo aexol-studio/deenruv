@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/method-modal-plugin",
-  "version": "1.0.17-dev.20",
+  "version": "1.0.17-dev.21",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "files": [
@@ -16,7 +16,7 @@
     "watch": "tsc --build --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server && zeus http://localhost:6100/admin-api ./src/plugin-ui"
+    "zeus": "zeus _ _ http://localhost:6100/admin-api ./src/plugin-server && zeus _ _ http://localhost:6100/admin-api ./src/plugin-ui"
   },
   "dependencies": {
     "@deenruv/common": "workspace:^",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",
+    "graphql-zeus": "7.2.1",
     "rimraf": "^5.0.10",
     "typescript": "5.3.3"
   }

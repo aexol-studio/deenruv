@@ -84,8 +84,8 @@ export const TaxRatesListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateTaxRate]}
-      deletePermissions={[Permission.DeleteTaxRate]}
+      createPermissions={[Permission.CreateTaxRate, Permission.CreateSettings]}
+      deletePermissions={[Permission.DeleteTaxRate, Permission.DeleteSettings]}
     />
   );
 };

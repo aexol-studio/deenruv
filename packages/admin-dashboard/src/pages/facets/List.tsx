@@ -80,8 +80,8 @@ export const FacetsListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateFacet]}
-      deletePermissions={[Permission.DeleteFacet]}
+      createPermissions={[Permission.CreateFacet, Permission.CreateCatalog]}
+      deletePermissions={[Permission.DeleteFacet, Permission.DeleteCatalog]}
     />
   );
 };

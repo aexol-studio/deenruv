@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { GetShippingMethodListDocument, TypedBaseListComponent } from '@deenruv/admin-ui/core';
+import {
+    buildTokenizedSearchFilter,
+    GetShippingMethodListDocument,
+    TypedBaseListComponent,
+} from '@deenruv/admin-ui/core';
 import { gql } from 'apollo-angular';
 
 export const GET_SHIPPING_METHOD_LIST = gql`
@@ -84,12 +88,11 @@ export class ShippingMethodListComponent
                 options: {
                     skip,
                     take,
-                    filter: {
-                        name: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['name'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

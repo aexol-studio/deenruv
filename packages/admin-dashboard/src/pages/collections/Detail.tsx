@@ -10,7 +10,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';
 import { CollectionStorefrontAction } from '@/pages/collections/_components/collectionStorefrontAction';
-import { ModelTypes } from '@deenruv/admin-types';
+import { ModelTypes, Permission } from '@deenruv/admin-types';
 
 type CreateCollectionInput = ModelTypes['CreateCollectionInput'];
 type FormDataType = Record<string, unknown>;
@@ -106,6 +106,11 @@ export const CollectionsDetailPage = () => {
         }}
         topActions={{
           inline: [<CollectionStorefrontAction key="collection-storefront-action" />],
+        }}
+        permissions={{
+          create: [Permission.CreateCollection, Permission.CreateCatalog],
+          edit: [Permission.UpdateCollection, Permission.UpdateCatalog],
+          delete: [Permission.DeleteCollection, Permission.DeleteCatalog],
         }}
       />
     </div>

@@ -91,9 +91,9 @@ export const TaxCategoriesDetailPage = () => {
           }),
         }}
         permissions={{
-          create: Permission.CreateTaxCategory,
-          edit: Permission.UpdateTaxCategory,
-          delete: Permission.DeleteTaxCategory,
+          create: [Permission.CreateTaxCategory, Permission.CreateSettings],
+          edit: [Permission.UpdateTaxCategory, Permission.UpdateSettings],
+          delete: [Permission.DeleteTaxCategory, Permission.DeleteSettings],
         }}
       />
     </div>

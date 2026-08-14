@@ -26,6 +26,8 @@ import { GlobalSearch } from '@/components/GlobalSearch.js';
 import { ContentAreaSkeleton } from '@/components/ContentAreaSkeleton.js';
 import { DeenruvDeveloperIndicator } from '@/DeenruvDeveloperIndicator.js';
 import { CurrencyCode, LanguageCode, Permission } from '@deenruv/admin-types';
+import { selectPreferredChannel } from '@/access/channel-selection.js';
+import { ErrorPage } from '@/pages/Custom404.js';
 
 const TAKE = 100;
 const getAllPaginatedCountries = async () => {
@@ -68,14 +70,17 @@ const getAllPaymentMethods = async () => {
 export const Root = ({ allPaths }: { allPaths: string[] }) => {
   const isLocalhost = window.location.hostname === 'localhost';
   const { t } = useTranslation('common');
-  const clearAdministratorAccess = useServer((p) => p.clearAdministratorAccess);
+  const failAdministratorAccess = useServer((p) => p.failAdministratorAccess);
+  const beginAdministratorAccessInitialization = useServer((p) => p.beginAdministratorAccessInitialization);
   const setAdministratorAccess = useServer((p) => p.setAdministratorAccess);
+  const setSelectedChannelPermissions = useServer((p) => p.setSelectedChannelPermissions);
   const setServerConfig = useServer((p) => p.setServerConfig);
   const setCountries = useServer((p) => p.setCountries);
   const setFulfillmentHandlers = useServer((p) => p.setFulfillmentHandlers);
   const setPaymentMethodsType = useServer((p) => p.setPaymentMethodsType);
   const fetchPendingJobs = useServer((p) => p.fetchPendingJobs);
   const loaded = useServer((p) => p.loaded);
+  const administratorAccessState = useServer((p) => p.administratorAccessState);
   const setLoaded = useServer((p) => p.setLoaded);
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
   const setLanguage = useSettings((p) => p.setLanguage);
@@ -92,6 +97,10 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const hasInitializedAdministratorAccess = useRef(false);
+
+  useEffect(() => {
+    setSelectedChannelPermissions(selectedChannel?.id);
+  }, [selectedChannel?.id, setSelectedChannelPermissions]);
 
   const managePageTitle = useCallback(() => {
     const pathname = location.pathname;
@@ -169,9 +178,9 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   }, [notifications.map((n) => n.id).join(','), loaded]);
 
   useEffect(() => {
-    if (hasInitializedAdministratorAccess.current) return;
+    if (administratorAccessState !== 'pending' || hasInitializedAdministratorAccess.current) return;
     hasInitializedAdministratorAccess.current = true;
-    clearAdministratorAccess();
+    beginAdministratorAccessInitialization();
     const init = async () => {
       const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
@@ -179,14 +188,12 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
       const roles = activeAdministratorResponse.activeAdministrator?.user.roles || [];
 
       if (!activeAdministratorResponse.activeAdministrator) {
-        clearAdministratorAccess();
+        failAdministratorAccess();
+        setLoaded(true);
         toast.error(t('setup.failedAdmin'));
         return;
       } else {
-        setAdministratorAccess(
-          activeAdministratorResponse.activeAdministrator,
-          Array.from(new Set(roles.flatMap((role) => role.permissions))),
-        );
+        let administratorChannelId = selectedChannel?.id;
         if ([Permission.ReadChannel].some((p) => roles.some((r) => r.permissions.includes(p)))) {
           const {
             channels: { items: allChannels = [] },
@@ -206,26 +213,24 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
             ],
           });
           setChannels(allChannels);
-          if (!channel) {
-            if (selectedChannel) {
-              const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
-              setSelectedChannel(foundChannel || allChannels[0]);
-            }
-            const existingChannel = allChannels.find(
-              (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
-            );
-            if (existingChannel) {
-              setSelectedChannel(existingChannel);
-            }
-            const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
-            setSelectedChannel(defaultChannel);
+          const preferredChannel = selectPreferredChannel(
+            allChannels,
+            selectedChannel,
+            window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+            DEFAULT_CHANNEL_CODE,
+          );
+          if (preferredChannel && preferredChannel.id !== channel?.id) {
+            setSelectedChannel(preferredChannel);
           }
+          administratorChannelId = preferredChannel?.id;
         } else {
           const possibleChannels = roles.flatMap((role) => role.channels);
           if (possibleChannels.length > 0) {
             setSelectedChannel(possibleChannels[0]);
+            administratorChannelId = possibleChannels[0].id;
           }
         }
+        setAdministratorAccess(activeAdministratorResponse.activeAdministrator, administratorChannelId);
       }
 
       // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
@@ -293,15 +298,24 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         await init();
       })
       .catch(() => {
-        clearAdministratorAccess();
+        failAdministratorAccess();
+        setLoaded(true);
       });
-  }, []);
+  }, [administratorAccessState]);
 
   return (
     <>
       <div className="flex max-h-screen w-full max-w-full overflow-hidden bg-background text-foreground antialiased">
-        <Menu>{loaded ? <Outlet /> : <ContentAreaSkeleton />}</Menu>
-        {loaded && (
+        <Menu>
+          {administratorAccessState === 'unavailable' ? (
+            <ErrorPage />
+          ) : administratorAccessState === 'pending' || !loaded ? (
+            <ContentAreaSkeleton />
+          ) : (
+            <Outlet />
+          )}
+        </Menu>
+        {loaded && administratorAccessState === 'ready' && (
           <>
             <GlobalSearch />
             <CanLeaveRouteDialog />

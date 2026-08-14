@@ -58,8 +58,8 @@ export const ShippingMethodsListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateShippingMethod]}
-      deletePermissions={[Permission.DeleteShippingMethod]}
+      createPermissions={[Permission.CreateShippingMethod, Permission.CreateSettings]}
+      deletePermissions={[Permission.DeleteShippingMethod, Permission.DeleteSettings]}
     />
   );
 };

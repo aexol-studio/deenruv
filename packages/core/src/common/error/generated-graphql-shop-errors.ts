@@ -7,10 +7,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
-  JSON: any;
-  Money: any;
-  Upload: any;
+  DateTime: unknown;
+  JSON: unknown;
+  Money: unknown;
+  Upload: unknown;
 };
 
 export class ErrorResult {

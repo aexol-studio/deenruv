@@ -56,8 +56,8 @@ export const CountriesListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateCountry]}
-      deletePermissions={[Permission.DeleteCountry]}
+      createPermissions={[Permission.CreateCountry, Permission.CreateSettings]}
+      deletePermissions={[Permission.DeleteCountry, Permission.DeleteSettings]}
     />
   );
 };

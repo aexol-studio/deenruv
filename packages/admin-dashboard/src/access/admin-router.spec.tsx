@@ -41,6 +41,7 @@ const createRouterForPermissions = (userPermissions: Permission[]) => {
     createAdminRouterRoutes({
       permittedRoutes,
       defaultRoute: getDefaultAdminRoute(permittedRoutes),
+      administratorAccessState: 'ready',
       rootElement: <div>Admin root</div>,
       errorElement: <div>Not found</div>,
     }),
@@ -87,6 +88,7 @@ describe('admin router route identity', () => {
     const [rootRoute] = createAdminRouterRoutes({
       permittedRoutes,
       defaultRoute,
+      administratorAccessState: 'ready',
       rootElement: <div>Admin root</div>,
       errorElement: <div>Not found</div>,
     });
@@ -113,6 +115,7 @@ describe('admin router route identity', () => {
     const [rootRoute] = createAdminRouterRoutes({
       permittedRoutes: [storefrontEditorRoute],
       defaultRoute: storefrontEditorRoute,
+      administratorAccessState: 'ready',
       rootElement: <div>Admin root</div>,
       errorElement: <div>Not found</div>,
     });
@@ -127,5 +130,92 @@ describe('admin router route identity', () => {
     expectRedirectTo(wildcardFallback?.element, storefrontEditorPath);
     expect(routeIds.every(Boolean)).toBe(true);
     expect(new Set(routeIds).size).toBe(routeIds.length);
+  });
+
+  it('preserves a deep-link pathname until administrator access is ready', () => {
+    const productsUrl = Routes.products.list;
+    const [unresolvedRootRoute] = createAdminRouterRoutes({
+      permittedRoutes: [],
+      administratorAccessState: 'pending',
+      rootElement: <div>Admin root</div>,
+      errorElement: <div>Not found</div>,
+    });
+    const unresolvedRouter = createMemoryRouter([unresolvedRootRoute], {
+      initialEntries: [productsUrl],
+    });
+
+    expect(unresolvedRouter.state.location.pathname).toBe(productsUrl);
+    expect(unresolvedRouter.state.matches.at(-1)?.route.id).toBe('admin.fallback.pending-access');
+    expect(unresolvedRootRoute.children?.some((route) => route.element && isValidElement(route.element))).toBe(false);
+
+    const productsRoute: AdminRouteDefinition = {
+      id: 'products.list',
+      path: Routes.products.list,
+      element: <div>Products</div>,
+      requiredPermissions: [Permission.ReadProduct],
+    };
+    const authorizedRoutes = getPermittedAdminRoutes([...routeDefinitions, productsRoute], [Permission.ReadProduct]);
+    const authorizedRouter = createMemoryRouter(
+      createAdminRouterRoutes({
+        permittedRoutes: authorizedRoutes,
+        defaultRoute: getDefaultAdminRoute(authorizedRoutes),
+        administratorAccessState: 'ready',
+        rootElement: <div>Admin root</div>,
+        errorElement: <div>Not found</div>,
+      }),
+      { initialEntries: [unresolvedRouter.state.location] },
+    );
+
+    expect(authorizedRouter.state.location.pathname).toBe(productsUrl);
+    expect(authorizedRouter.state.matches.at(-1)?.route.id).toBe(productsRoute.id);
+  });
+
+  it('adds the redirect fallback only after access resolves without the deep-link permission', () => {
+    const productsUrl = Routes.products.list;
+    const unresolvedRoutes = createAdminRouterRoutes({
+      permittedRoutes: [],
+      administratorAccessState: 'pending',
+      rootElement: <div>Admin root</div>,
+      errorElement: <div>Not found</div>,
+    });
+    const unresolvedWildcard = unresolvedRoutes[0].children?.find(
+      (route) => route.id === 'admin.fallback.pending-access',
+    );
+    const unauthorizedRoutes = createAdminRouterRoutes({
+      permittedRoutes: routeDefinitions,
+      defaultRoute: getDefaultAdminRoute(routeDefinitions),
+      administratorAccessState: 'ready',
+      rootElement: <div>Admin root</div>,
+      errorElement: <div>Not found</div>,
+    });
+    const unauthorizedWildcard = unauthorizedRoutes[0].children?.find(
+      (route) => route.id === 'admin.fallback.wildcard',
+    );
+
+    expect(createMemoryRouter(unresolvedRoutes, { initialEntries: [productsUrl] }).state.location.pathname).toBe(
+      productsUrl,
+    );
+    expect(unresolvedWildcard?.element).toBeNull();
+    expectRedirectTo(unauthorizedWildcard?.element, Routes.dashboard);
+  });
+
+  it('exposes only the explicit failure route when administrator access is unavailable', () => {
+    const errorElement = <div>Administrator unavailable</div>;
+    const [rootRoute] = createAdminRouterRoutes({
+      permittedRoutes: [],
+      administratorAccessState: 'unavailable',
+      rootElement: <div>Admin root</div>,
+      errorElement,
+    });
+    const children = rootRoute.children ?? [];
+
+    expect(children).toHaveLength(1);
+    expect(children[0]).toMatchObject({
+      id: 'admin.fallback.unavailable-access',
+      path: '*',
+      element: errorElement,
+    });
+    expect(children.some((route) => route.id === 'dashboard')).toBe(false);
+    expect(children.some((route) => route.id === 'admin.fallback.wildcard')).toBe(false);
   });
 });

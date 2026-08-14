@@ -30,6 +30,7 @@ import {
   DialogTrigger,
   Input,
   priceFormatter,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import {
@@ -51,11 +52,13 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { AddPaymentDialog } from './index.js';
 import { PAYMENT_STATE } from '@/graphql/base';
+import { Permission } from '@deenruv/admin-types';
 import { MetadataDisplay } from './PaymentMetadata.js';
 
 export const Payments: FC = () => {
   const { order, addPaymentToOrder, settlePayment, cancelPayment } = useOrder();
   const { t } = useTranslation('orders');
+  const canUpdateOrder = useServer((state) => state.userPermissions.includes(Permission.UpdateOrder));
   const [paymentToBeSettled, setPaymentToBeSettled] = useState('');
   const [expandedRefunds, setExpandedRefunds] = useState<string[]>([]);
 
@@ -127,25 +130,36 @@ export const Payments: FC = () => {
     setExpandedRefunds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
-  const [settleRefundTransactionId, setSettleRefundTransactionId] = useState<string | null>(null);
-  const settleRefund = async (id: string) => {
-    if (!settleRefundTransactionId) {
-      return;
-    }
-    const { settleRefund } = await apiClient('mutation')({
-      settleRefund: [
-        { input: { id, transactionId: settleRefundTransactionId } },
-        {
-          __typename: true,
-          '...on Refund': { id: true },
-          '...on RefundStateTransitionError': { errorCode: true, fromState: true, message: true },
-        },
-      ],
-    });
-    if (settleRefund.__typename === 'Refund') {
-      setSettleRefundTransactionId(null);
-    } else {
-      console.error(settleRefund);
+  const [settleRefundTransactionId, setSettleRefundTransactionId] = useState('');
+  const [refundToSettle, setRefundToSettle] = useState('');
+  const [settleRefundError, setSettleRefundError] = useState('');
+  const settleRefund = async () => {
+    const transactionId = settleRefundTransactionId.trim();
+    if (!transactionId) return setSettleRefundError(t('refunds.transactionRequired', 'Transaction ID is required'));
+    try {
+      const { settleRefund } = await apiClient('mutation')({
+        settleRefund: [
+          { input: { id: refundToSettle, transactionId } },
+          {
+            __typename: true,
+            '...on Refund': { id: true },
+            '...on RefundStateTransitionError': { errorCode: true, fromState: true, message: true },
+          },
+        ],
+      });
+      if (settleRefund.__typename === 'Refund') {
+        await useOrder.getState().fetchOrder(order.id);
+        await useOrder.getState().fetchOrderHistory();
+        setSettleRefundTransactionId('');
+        setRefundToSettle('');
+        setSettleRefundError('');
+      } else {
+        setSettleRefundError(settleRefund.message);
+      }
+    } catch (error) {
+      setSettleRefundError(
+        error instanceof Error ? error.message : t('refunds.settleError', 'Could not settle refund'),
+      );
     }
   };
 
@@ -155,7 +169,9 @@ export const Payments: FC = () => {
       description={t('payments.subTitle')}
       title={t('payments.title')}
       icon={<Wallet className="size-5 text-teal-500 dark:text-teal-400" />}
-      upperRight={<AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />}
+      upperRight={
+        canUpdateOrder ? <AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} /> : undefined
+      }
     >
       <Dialog open={!!paymentToBeSettled} onOpenChange={() => setPaymentToBeSettled('')}>
         <DialogContent className="max-w-md">
@@ -176,7 +192,11 @@ export const Payments: FC = () => {
             <DialogClose asChild>
               <Button variant="outline">{t('payments.settle.cancel', 'Cancel')}</Button>
             </DialogClose>
-            <Button variant="default" onClick={() => settlePayment({ id: paymentToBeSettled })} className="gap-2">
+            <Button
+              variant="default"
+              onClick={() => settlePayment({ id: paymentToBeSettled }).then(() => setPaymentToBeSettled(''))}
+              className="gap-2"
+            >
               <CheckCircle2 className="size-4" />
               {t('payments.settle.confirm', 'Confirm Settlement')}
             </Button>
@@ -199,7 +219,7 @@ export const Payments: FC = () => {
           </TableHeader>
           <TableBody>
             {payments?.length ? (
-              payments.map(({ amount, id, method, state, createdAt, metadata, refunds, transactionId }) => {
+              payments.map(({ amount, id, method, state, createdAt, metadata, refunds }) => {
                 const statusBadge = getStatusBadge(state);
                 const hasRefunds = refunds && refunds.length > 0;
                 const isRefundExpanded = expandedRefunds.includes(id);
@@ -260,30 +280,32 @@ export const Payments: FC = () => {
                         <MetadataDisplay metadata={metadata} />
                       </TableCell>
                       <TableCell className="py-3 text-end">
-                        <ContextMenu>
-                          {state !== PAYMENT_STATE.SETTLED && state !== PAYMENT_STATE.CANCELLED && (
-                            <DropdownMenuItem
-                              key={'set'}
-                              onClick={() => setPaymentToBeSettled(id)}
-                              className="flex cursor-pointer items-center gap-2"
-                            >
-                              <CheckCircle2 size={16} />
-                              {t('payments.settle.settle', 'Settle')}
-                            </DropdownMenuItem>
-                          )}
-                          {!hasRefunds && state !== PAYMENT_STATE.CANCELLED && (
-                            <ConfirmationDialog onConfirm={() => cancelPayment(id)}>
+                        {canUpdateOrder && (
+                          <ContextMenu>
+                            {state !== PAYMENT_STATE.SETTLED && state !== PAYMENT_STATE.CANCELLED && (
                               <DropdownMenuItem
-                                key={'cancel'}
-                                className="flex cursor-pointer items-center gap-2 text-red-500"
-                                onSelect={(e) => e.preventDefault()}
+                                key={'set'}
+                                onClick={() => setPaymentToBeSettled(id)}
+                                className="flex cursor-pointer items-center gap-2"
                               >
-                                <XCircle size={16} />
-                                {t('payments.cancel', 'Cancel')}
+                                <CheckCircle2 size={16} />
+                                {t('payments.settle.settle', 'Settle')}
                               </DropdownMenuItem>
-                            </ConfirmationDialog>
-                          )}
-                        </ContextMenu>
+                            )}
+                            {!hasRefunds && state !== PAYMENT_STATE.CANCELLED && (
+                              <ConfirmationDialog onConfirm={() => cancelPayment(id)}>
+                                <DropdownMenuItem
+                                  key={'cancel'}
+                                  className="flex cursor-pointer items-center gap-2 text-red-500"
+                                  onSelect={(e) => e.preventDefault()}
+                                >
+                                  <XCircle size={16} />
+                                  {t('payments.cancel', 'Cancel')}
+                                </DropdownMenuItem>
+                              </ConfirmationDialog>
+                            )}
+                          </ContextMenu>
+                        )}
                       </TableCell>
                     </TableRow>
                     {hasRefunds && isRefundExpanded && (
@@ -339,9 +361,15 @@ export const Payments: FC = () => {
                                           ))}
                                         </div>
                                       </TableCell>
-                                      {state === 'pending' && (
+                                      {state === 'pending' && canUpdateOrder && (
                                         <TableCell className="py-2">
-                                          <Dialog>
+                                          <Dialog
+                                            open={refundToSettle === refund.id}
+                                            onOpenChange={(nextOpen) => {
+                                              setRefundToSettle(nextOpen ? refund.id : '');
+                                              setSettleRefundError('');
+                                            }}
+                                          >
                                             <DialogTrigger asChild>
                                               <Button>Settle refund</Button>
                                             </DialogTrigger>
@@ -356,21 +384,22 @@ export const Payments: FC = () => {
                                               <div>
                                                 <Input
                                                   placeholder="Transaction ID"
-                                                  value={settleRefundTransactionId || ''}
+                                                  value={settleRefundTransactionId}
                                                   onChange={(e) => setSettleRefundTransactionId(e.target.value)}
                                                 />
                                               </div>
+                                              {settleRefundError && (
+                                                <p role="alert" className="text-sm text-destructive">
+                                                  {settleRefundError}
+                                                </p>
+                                              )}
                                               <DialogFooter>
                                                 <DialogClose asChild>
                                                   <Button variant="outline">
                                                     {t('payments.settle.cancel', 'Cancel')}
                                                   </Button>
                                                 </DialogClose>
-                                                <Button
-                                                  variant="default"
-                                                  onClick={() => settleRefund(refund.id)}
-                                                  className="gap-2"
-                                                >
+                                                <Button variant="default" onClick={settleRefund} className="gap-2">
                                                   <CheckCircle2 className="size-4" />
                                                   {t('payments.settle.confirm', 'Confirm Settlement')}
                                                 </Button>

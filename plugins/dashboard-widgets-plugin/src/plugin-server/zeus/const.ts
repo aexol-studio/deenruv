@@ -171,11 +171,23 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
+		getMerchantPlatformSettings:{
+
+		},
+		getMerchantPlatformInfo:{
+
+		},
+		getMerchantSyncHistory:{
+
+		},
 		chartMetric:{
 			input:"ChartMetricInput"
 		},
 		orderSummaryMetric:{
 			input:"OrderSummaryMetricInput"
+		},
+		getInpostOrganizations:{
+			input:"GetInpostOrganizationsInput"
 		},
 		metricSummary:{
 			input:"MetricSummaryInput"
@@ -658,6 +670,18 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		removeMembersFromZone:{
 
+		},
+		sendAllProductsToMerchantPlatform:{
+
+		},
+		saveMerchantPlatformSettings:{
+			input:"SaveMerchantPlatformSettingInput"
+		},
+		removeOrphanItems:{
+
+		},
+		setInpostShippingMethodConfig:{
+			input:"SetInpostShippingMethodConfigInput"
 		}
 	},
 	AdministratorListOptions:{
@@ -908,7 +932,8 @@ export const AllTypesProps: Record<string,any> = {
 		total:"NumberOperators",
 		totalWithTax:"NumberOperators",
 		_and:"OrderFilterParameter",
-		_or:"OrderFilterParameter"
+		_or:"OrderFilterParameter",
+		pickupPointId:"StringOperators"
 	},
 	OrderSortParameter:{
 		customerLastName:"SortOrder",
@@ -926,7 +951,8 @@ export const AllTypesProps: Record<string,any> = {
 		shipping:"SortOrder",
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
-		totalWithTax:"SortOrder"
+		totalWithTax:"SortOrder",
+		pickupPointId:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -937,7 +963,7 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	UpdateOrderInput:{
-		customFields:"JSON"
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	FulfillOrderInput:{
 		lines:"OrderLineInput",
@@ -984,7 +1010,8 @@ export const AllTypesProps: Record<string,any> = {
 		updateBillingAddress:"UpdateOrderAddressInput",
 		refund:"AdministratorRefundInput",
 		refunds:"AdministratorRefundInput",
-		options:"ModifyOrderOptions"
+		options:"ModifyOrderOptions",
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	AddItemInput:{
 
@@ -1113,7 +1140,8 @@ export const AllTypesProps: Record<string,any> = {
 		priceWithTax:"NumberOperators",
 		stockLevel:"StringOperators",
 		_and:"ProductVariantFilterParameter",
-		_or:"ProductVariantFilterParameter"
+		_or:"ProductVariantFilterParameter",
+		communicateID:"StringOperators"
 	},
 	ProductTranslationInput:{
 		languageCode:"LanguageCode",
@@ -1440,6 +1468,12 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
+	MerchantPlatformSettingInput:{
+
+	},
+	SaveMerchantPlatformSettingInput:{
+		entries:"MerchantPlatformSettingInput"
+	},
 	MetricRangeType: "enum" as const,
 	MetricIntervalType: "enum" as const,
 	ChartMetricType: "enum" as const,
@@ -1454,6 +1488,12 @@ export const AllTypesProps: Record<string,any> = {
 		range:"BetterMetricRangeInput",
 		interval:"MetricIntervalType",
 		types:"ChartMetricType"
+	},
+	SetInpostShippingMethodConfigInput:{
+
+	},
+	GetInpostOrganizationsInput:{
+
 	},
 	MetricInterval: "enum" as const,
 	MetricType: "enum" as const,
@@ -1566,7 +1606,8 @@ export const AllTypesProps: Record<string,any> = {
 		name:"SortOrder",
 		price:"SortOrder",
 		priceWithTax:"SortOrder",
-		stockLevel:"SortOrder"
+		stockLevel:"SortOrder",
+		communicateID:"SortOrder"
 	},
 	CountryFilterParameter:{
 		id:"IDOperators",
@@ -1894,6 +1935,9 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder"
 	},
+	UpdateOrderCustomFieldsInput:{
+
+	},
 	NativeAuthInput:{
 
 	},
@@ -1973,9 +2017,14 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
+		getMerchantPlatformSettings:"MerchantPlatformSettingsEntity",
+		getMerchantPlatformInfo:"MerchantPlatformInfo",
+		getMerchantSyncHistory:"MerchantSyncRun",
 		additionalOrderStates:"AdditionalOrderState",
 		chartMetric:"ChartMetrics",
 		orderSummaryMetric:"OrderSummaryMetrics",
+		getInpostConfig:"InpostConfig",
+		getInpostOrganizations:"InpostOrganizationResponse",
 		metricSummary:"MetricSummary"
 	},
 	Mutation:{
@@ -2095,7 +2144,7 @@ export const ReturnTypes: Record<string,any> = {
 		assignProductsToChannel:"Product",
 		removeProductsFromChannel:"Product",
 		assignProductVariantsToChannel:"ProductVariant",
-		removeProductVariantsFromChannel:"ProductVariant",
+		removeProductVariantsFromChannel:"ID",
 		createPromotion:"CreatePromotionResult",
 		updatePromotion:"UpdatePromotionResult",
 		deletePromotion:"DeletionResponse",
@@ -2141,7 +2190,11 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZone:"DeletionResponse",
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
-		removeMembersFromZone:"Zone"
+		removeMembersFromZone:"Zone",
+		sendAllProductsToMerchantPlatform:"Boolean",
+		saveMerchantPlatformSettings:"MerchantPlatformSettingsEntity",
+		removeOrphanItems:"Boolean",
+		setInpostShippingMethodConfig:"Boolean"
 	},
 	Administrator:{
 		id:"ID",
@@ -2402,7 +2455,7 @@ export const ReturnTypes: Record<string,any> = {
 		totalWithTax:"Money",
 		taxSummary:"OrderTaxSummary",
 		history:"HistoryEntryList",
-		customFields:"JSON"
+		customFields:"OrderCustomFields"
 	},
 	Fulfillment:{
 		nextStates:"String",
@@ -2414,7 +2467,7 @@ export const ReturnTypes: Record<string,any> = {
 		state:"String",
 		method:"String",
 		trackingCode:"String",
-		customFields:"JSON"
+		customFields:"FulfillmentCustomFields"
 	},
 	Payment:{
 		nextStates:"String",
@@ -2696,7 +2749,7 @@ export const ReturnTypes: Record<string,any> = {
 		options:"ProductOption",
 		facetValues:"FacetValue",
 		translations:"ProductVariantTranslation",
-		customFields:"JSON"
+		customFields:"ProductVariantCustomFields"
 	},
 	SearchResult:{
 		enabled:"Boolean",
@@ -3098,6 +3151,7 @@ export const ReturnTypes: Record<string,any> = {
 		"...on User": "User",
 		"...on AuthenticationMethod": "AuthenticationMethod",
 		"...on Zone": "Zone",
+		"...on MerchantPlatformSettingsEntity": "MerchantPlatformSettingsEntity",
 		id:"ID"
 	},
 	ErrorResult:{
@@ -3866,6 +3920,62 @@ export const ReturnTypes: Record<string,any> = {
 		members:"Region",
 		customFields:"JSON"
 	},
+	MerchantPlatformSetting:{
+		key:"String",
+		value:"String"
+	},
+	MerchantPlatformSettingsEntity:{
+		id:"ID",
+		platform:"String",
+		entries:"MerchantPlatformSetting"
+	},
+	MerchantPlatformInfo:{
+		isValidConnection:"Boolean",
+		productsCount:"Int",
+		connectionStatus:"String",
+		dataSourceVerified:"Boolean",
+		checkedAt:"DateTime",
+		latencyMs:"Int",
+		disapprovedProductsCount:"Int",
+		issuesCount:"Int",
+		lastError:"MerchantPlatformError",
+		issues:"MerchantProductIssue"
+	},
+	MerchantPlatformError:{
+		code:"String",
+		message:"String",
+		retryable:"Boolean"
+	},
+	MerchantProductIssue:{
+		offerId:"String",
+		code:"String",
+		description:"String",
+		severity:"String"
+	},
+	MerchantSyncItem:{
+		id:"ID",
+		offerId:"String",
+		operation:"String",
+		status:"String",
+		errorCode:"String",
+		errorMessage:"String",
+		attempts:"Int"
+	},
+	MerchantSyncRun:{
+		id:"ID",
+		createdAt:"DateTime",
+		platform:"String",
+		trigger:"String",
+		status:"String",
+		jobId:"String",
+		total:"Int",
+		succeeded:"Int",
+		failed:"Int",
+		errorSummary:"String",
+		startedAt:"DateTime",
+		finishedAt:"DateTime",
+		items:"MerchantSyncItem"
+	},
 	AdditionalOrderState:{
 		state:"String",
 		selectedByDefault:"Boolean"
@@ -3900,6 +4010,22 @@ export const ReturnTypes: Record<string,any> = {
 		value:"Float",
 		additionalData:"ChartEntryAdditionalData"
 	},
+	InpostConfig:{
+		shippingMethodId:"ID",
+		host:"String",
+		apiKey:"String",
+		geowidgetKey:"String",
+		inpostOrganization:"Int",
+		service:"String"
+	},
+	InpostOrganization:{
+		id:"Int",
+		name:"String",
+		services:"String"
+	},
+	InpostOrganizationResponse:{
+		items:"InpostOrganization"
+	},
 	MetricSummary:{
 		interval:"MetricInterval",
 		type:"MetricType",
@@ -3909,6 +4035,15 @@ export const ReturnTypes: Record<string,any> = {
 	MetricSummaryEntry:{
 		label:"String",
 		value:"Float"
+	},
+	FulfillmentCustomFields:{
+		inpostLabel:"Asset"
+	},
+	OrderCustomFields:{
+		pickupPointId:"String"
+	},
+	ProductVariantCustomFields:{
+		communicateID:"String"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",

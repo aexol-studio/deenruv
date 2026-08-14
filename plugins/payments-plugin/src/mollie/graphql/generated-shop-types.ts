@@ -1,11 +1,6 @@
 /* eslint-disable */
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -14,13 +9,13 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: { input: any; output: any; }
+  DateTime: { input: unknown; output: unknown; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: { input: any; output: any; }
+  JSON: { input: unknown; output: unknown; }
   /** The `Money` scalar type represents monetary values and supports signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
   Money: { input: number; output: number; }
   /** The `Upload` scalar type represents a file upload. */
-  Upload: { input: any; output: any; }
+  Upload: { input: unknown; output: unknown; }
 };
 
 export type ActiveOrderResult = NoActiveOrderError | Order;
@@ -939,7 +934,7 @@ export type Facet = Node & {
   __typename?: 'Facet';
   code: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<FacetCustomFields>;
   id: Scalars['ID']['output'];
   languageCode: LanguageCode;
   name: Scalars['String']['output'];
@@ -955,15 +950,25 @@ export type FacetValueListArgs = {
   options?: InputMaybe<FacetValueListOptions>;
 };
 
+export type FacetCustomFields = {
+  __typename?: 'FacetCustomFields';
+  colorsCollection?: Maybe<Scalars['Boolean']['output']>;
+  usedForColors?: Maybe<Scalars['Boolean']['output']>;
+  usedForProductCreations?: Maybe<Scalars['Boolean']['output']>;
+};
+
 export type FacetFilterParameter = {
   _and?: InputMaybe<Array<FacetFilterParameter>>;
   _or?: InputMaybe<Array<FacetFilterParameter>>;
   code?: InputMaybe<StringOperators>;
+  colorsCollection?: InputMaybe<BooleanOperators>;
   createdAt?: InputMaybe<DateOperators>;
   id?: InputMaybe<IdOperators>;
   languageCode?: InputMaybe<StringOperators>;
   name?: InputMaybe<StringOperators>;
   updatedAt?: InputMaybe<DateOperators>;
+  usedForColors?: InputMaybe<BooleanOperators>;
+  usedForProductCreations?: InputMaybe<BooleanOperators>;
 };
 
 export type FacetList = PaginatedList & {
@@ -987,10 +992,13 @@ export type FacetListOptions = {
 
 export type FacetSortParameter = {
   code?: InputMaybe<SortOrder>;
+  colorsCollection?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
+  usedForColors?: InputMaybe<SortOrder>;
+  usedForProductCreations?: InputMaybe<SortOrder>;
 };
 
 export type FacetTranslation = {
@@ -1006,7 +1014,7 @@ export type FacetValue = Node & {
   __typename?: 'FacetValue';
   code: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<FacetValueCustomFields>;
   facet: Facet;
   facetId: Scalars['ID']['output'];
   id: Scalars['ID']['output'];
@@ -1014,6 +1022,14 @@ export type FacetValue = Node & {
   name: Scalars['String']['output'];
   translations: Array<FacetValueTranslation>;
   updatedAt: Scalars['DateTime']['output'];
+};
+
+export type FacetValueCustomFields = {
+  __typename?: 'FacetValueCustomFields';
+  hexColor?: Maybe<Scalars['String']['output']>;
+  image?: Maybe<Asset>;
+  isHidden?: Maybe<Scalars['Boolean']['output']>;
+  isNew?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /**
@@ -1035,7 +1051,10 @@ export type FacetValueFilterParameter = {
   code?: InputMaybe<StringOperators>;
   createdAt?: InputMaybe<DateOperators>;
   facetId?: InputMaybe<IdOperators>;
+  hexColor?: InputMaybe<StringOperators>;
   id?: InputMaybe<IdOperators>;
+  isHidden?: InputMaybe<BooleanOperators>;
+  isNew?: InputMaybe<BooleanOperators>;
   languageCode?: InputMaybe<StringOperators>;
   name?: InputMaybe<StringOperators>;
   updatedAt?: InputMaybe<DateOperators>;
@@ -1074,7 +1093,11 @@ export type FacetValueSortParameter = {
   code?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   facetId?: InputMaybe<SortOrder>;
+  hexColor?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  image?: InputMaybe<SortOrder>;
+  isHidden?: InputMaybe<SortOrder>;
+  isNew?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
 };
@@ -1108,7 +1131,7 @@ export type FloatCustomFieldConfig = CustomField & {
 export type Fulfillment = Node & {
   __typename?: 'Fulfillment';
   createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<FulfillmentCustomFields>;
   id: Scalars['ID']['output'];
   lines: Array<FulfillmentLine>;
   method: Scalars['String']['output'];
@@ -1117,6 +1140,11 @@ export type Fulfillment = Node & {
   summary: Array<FulfillmentLine>;
   trackingCode?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
+};
+
+export type FulfillmentCustomFields = {
+  __typename?: 'FulfillmentCustomFields';
+  inpostLabel?: Maybe<Asset>;
 };
 
 export type FulfillmentLine = {
@@ -2055,7 +2083,7 @@ export type Order = Node & {
   couponCodes: Array<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<OrderCustomFields>;
   customer?: Maybe<Customer>;
   discounts: Array<Discount>;
   /** An array of all promotions excluded from the Order */
@@ -2072,6 +2100,7 @@ export type Order = Node & {
   payments?: Maybe<Array<Payment>>;
   /** Promotions applied to the order. Only gets populated after the payment process has completed. */
   promotions: Array<Promotion>;
+  realization?: Maybe<ShopOrderRealization>;
   shipping: Scalars['Money']['output'];
   shippingAddress?: Maybe<OrderAddress>;
   shippingLines: Array<ShippingLine>;
@@ -2124,6 +2153,11 @@ export type OrderAddress = {
   streetLine2?: Maybe<Scalars['String']['output']>;
 };
 
+export type OrderCustomFields = {
+  __typename?: 'OrderCustomFields';
+  pickupPointId?: Maybe<Scalars['String']['output']>;
+};
+
 export type OrderFilterParameter = {
   _and?: InputMaybe<Array<OrderFilterParameter>>;
   _or?: InputMaybe<Array<OrderFilterParameter>>;
@@ -2133,6 +2167,7 @@ export type OrderFilterParameter = {
   currencyCode?: InputMaybe<StringOperators>;
   id?: InputMaybe<IdOperators>;
   orderPlacedAt?: InputMaybe<DateOperators>;
+  pickupPointId?: InputMaybe<StringOperators>;
   shipping?: InputMaybe<NumberOperators>;
   shippingWithTax?: InputMaybe<NumberOperators>;
   state?: InputMaybe<StringOperators>;
@@ -2258,11 +2293,33 @@ export type OrderPaymentStateError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
+export type OrderRealization = {
+  __typename?: 'OrderRealization';
+  assetID: Scalars['ID']['output'];
+  color: Scalars['String']['output'];
+  finalPlannedAt?: Maybe<Scalars['String']['output']>;
+  key?: Maybe<Scalars['String']['output']>;
+  note?: Maybe<Scalars['String']['output']>;
+  orderID: Scalars['ID']['output'];
+  plannedAt: Scalars['String']['output'];
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export type OrderRealizationInput = {
+  assets: Array<RealizationAssetInput>;
+  color: Scalars['String']['input'];
+  finalPlannedAt: Scalars['String']['input'];
+  note: Scalars['String']['input'];
+  orderID: Scalars['String']['input'];
+  plannedAt: Scalars['String']['input'];
+};
+
 export type OrderSortParameter = {
   code?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   orderPlacedAt?: InputMaybe<SortOrder>;
+  pickupPointId?: InputMaybe<SortOrder>;
   shipping?: InputMaybe<SortOrder>;
   shippingWithTax?: InputMaybe<SortOrder>;
   state?: InputMaybe<SortOrder>;
@@ -2782,7 +2839,7 @@ export type ProductVariant = Node & {
   assets: Array<Asset>;
   createdAt: Scalars['DateTime']['output'];
   currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
+  customFields?: Maybe<ProductVariantCustomFields>;
   facetValues: Array<FacetValue>;
   featuredAsset?: Maybe<Asset>;
   id: Scalars['ID']['output'];
@@ -2801,9 +2858,15 @@ export type ProductVariant = Node & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type ProductVariantCustomFields = {
+  __typename?: 'ProductVariantCustomFields';
+  communicateID?: Maybe<Scalars['String']['output']>;
+};
+
 export type ProductVariantFilterParameter = {
   _and?: InputMaybe<Array<ProductVariantFilterParameter>>;
   _or?: InputMaybe<Array<ProductVariantFilterParameter>>;
+  communicateID?: InputMaybe<StringOperators>;
   createdAt?: InputMaybe<DateOperators>;
   currencyCode?: InputMaybe<StringOperators>;
   id?: InputMaybe<IdOperators>;
@@ -2837,6 +2900,7 @@ export type ProductVariantListOptions = {
 };
 
 export type ProductVariantSortParameter = {
+  communicateID?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   name?: InputMaybe<SortOrder>;
@@ -2942,6 +3006,7 @@ export type Query = {
   facetValues: FacetValueList;
   /** A list of Facets available to the shop */
   facets: FacetList;
+  inPostGeowidgetKey?: Maybe<Scalars['String']['output']>;
   /** Returns information about the current authenticated User */
   me?: Maybe<CurrentUser>;
   molliePaymentMethods: Array<MolliePaymentMethod>;
@@ -3022,6 +3087,12 @@ export type QueryProductsArgs = {
 
 export type QuerySearchArgs = {
   input: SearchInput;
+};
+
+export type RealizationAssetInput = {
+  id: Scalars['String']['input'];
+  orderLineID: Scalars['String']['input'];
+  preview: Scalars['String']['input'];
 };
 
 export type RefreshCustomerVerificationResult = NativeAuthStrategyError | Success;
@@ -3262,6 +3333,13 @@ export type ShippingMethodTranslation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type ShopOrderRealization = {
+  __typename?: 'ShopOrderRealization';
+  finalPlannedAt?: Maybe<Scalars['String']['output']>;
+  note?: Maybe<Scalars['String']['output']>;
+  plannedAt?: Maybe<Scalars['String']['output']>;
+};
+
 /** The price value where the result has a single price */
 export type SinglePrice = {
   __typename?: 'SinglePrice';
@@ -3433,8 +3511,12 @@ export type UpdateCustomerInput = {
 
 export type UpdateCustomerPasswordResult = InvalidCredentialsError | NativeAuthStrategyError | PasswordValidationError | Success;
 
+export type UpdateOrderCustomFieldsInput = {
+  pickupPointId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateOrderInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
+  customFields?: InputMaybe<UpdateOrderCustomFieldsInput>;
 };
 
 export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderMiddlewareError | OrderModificationError;

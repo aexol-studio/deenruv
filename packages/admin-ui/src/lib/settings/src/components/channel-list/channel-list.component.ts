@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { CHANNEL_FRAGMENT, GetChannelListDocument, TypedBaseListComponent } from '@deenruv/admin-ui/core';
+import {
+    buildTokenizedSearchFilter,
+    CHANNEL_FRAGMENT,
+    GetChannelListDocument,
+    TypedBaseListComponent,
+} from '@deenruv/admin-ui/core';
 import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
 import { gql } from 'apollo-angular';
 
@@ -63,12 +68,11 @@ export class ChannelListComponent
                 options: {
                     skip,
                     take,
-                    filter: {
-                        code: {
-                            contains: this.searchTermControl.value,
-                        },
-                        ...this.filters.createFilterInput(),
-                    },
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['code'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

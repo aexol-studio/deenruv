@@ -71,8 +71,8 @@ export const ZonesListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateZone]}
-      deletePermissions={[Permission.DeleteZone]}
+      createPermissions={[Permission.CreateZone, Permission.CreateSettings]}
+      deletePermissions={[Permission.DeleteZone, Permission.DeleteSettings]}
     />
   );
 };

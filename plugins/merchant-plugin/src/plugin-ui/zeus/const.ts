@@ -177,6 +177,15 @@ export const AllTypesProps: Record<string,any> = {
 		getMerchantPlatformInfo:{
 
 		},
+		getMerchantSyncHistory:{
+
+		},
+		chartMetric:{
+			input:"ChartMetricInput"
+		},
+		orderSummaryMetric:{
+			input:"OrderSummaryMetricInput"
+		},
 		getInpostOrganizations:{
 			input:"GetInpostOrganizationsInput"
 		},
@@ -1465,6 +1474,21 @@ export const AllTypesProps: Record<string,any> = {
 	SaveMerchantPlatformSettingInput:{
 		entries:"MerchantPlatformSettingInput"
 	},
+	MetricRangeType: "enum" as const,
+	MetricIntervalType: "enum" as const,
+	ChartMetricType: "enum" as const,
+	BetterMetricRangeInput:{
+		start:"DateTime",
+		end:"DateTime"
+	},
+	OrderSummaryMetricInput:{
+		range:"BetterMetricRangeInput"
+	},
+	ChartMetricInput:{
+		range:"BetterMetricRangeInput",
+		interval:"MetricIntervalType",
+		types:"ChartMetricType"
+	},
 	SetInpostShippingMethodConfigInput:{
 
 	},
@@ -1994,6 +2018,10 @@ export const ReturnTypes: Record<string,any> = {
 		zone:"Zone",
 		getMerchantPlatformSettings:"MerchantPlatformSettingsEntity",
 		getMerchantPlatformInfo:"MerchantPlatformInfo",
+		getMerchantSyncHistory:"MerchantSyncRun",
+		additionalOrderStates:"AdditionalOrderState",
+		chartMetric:"ChartMetrics",
+		orderSummaryMetric:"OrderSummaryMetrics",
 		getInpostConfig:"InpostConfig",
 		getInpostOrganizations:"InpostOrganizationResponse",
 		metricSummary:"MetricSummary"
@@ -3902,7 +3930,84 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	MerchantPlatformInfo:{
 		isValidConnection:"Boolean",
-		productsCount:"Int"
+		productsCount:"Int",
+		connectionStatus:"String",
+		dataSourceVerified:"Boolean",
+		checkedAt:"DateTime",
+		latencyMs:"Int",
+		disapprovedProductsCount:"Int",
+		issuesCount:"Int",
+		lastError:"MerchantPlatformError",
+		issues:"MerchantProductIssue"
+	},
+	MerchantPlatformError:{
+		code:"String",
+		message:"String",
+		retryable:"Boolean"
+	},
+	MerchantProductIssue:{
+		offerId:"String",
+		code:"String",
+		description:"String",
+		severity:"String"
+	},
+	MerchantSyncItem:{
+		id:"ID",
+		offerId:"String",
+		operation:"String",
+		status:"String",
+		errorCode:"String",
+		errorMessage:"String",
+		attempts:"Int"
+	},
+	MerchantSyncRun:{
+		id:"ID",
+		createdAt:"DateTime",
+		platform:"String",
+		trigger:"String",
+		status:"String",
+		jobId:"String",
+		total:"Int",
+		succeeded:"Int",
+		failed:"Int",
+		errorSummary:"String",
+		startedAt:"DateTime",
+		finishedAt:"DateTime",
+		items:"MerchantSyncItem"
+	},
+	AdditionalOrderState:{
+		state:"String",
+		selectedByDefault:"Boolean"
+	},
+	ChartDataType:{
+		type:"ChartMetricType",
+		title:"String",
+		entries:"ChartEntry"
+	},
+	ChartMetrics:{
+		data:"ChartDataType"
+	},
+	OrderSummaryMetrics:{
+		data:"OrderSummaryDataMetric"
+	},
+	OrderSummaryDataMetric:{
+		currencyCode:"CurrencyCode",
+		total:"Float",
+		totalWithTax:"Float",
+		orderCount:"Float",
+		averageOrderValue:"Float",
+		averageOrderValueWithTax:"Float",
+		productCount:"Float"
+	},
+	ChartEntryAdditionalData:{
+		id:"String",
+		name:"String",
+		quantity:"Float"
+	},
+	ChartEntry:{
+		intervalTick:"Int",
+		value:"Float",
+		additionalData:"ChartEntryAdditionalData"
 	},
 	InpostConfig:{
 		shippingMethodId:"ID",

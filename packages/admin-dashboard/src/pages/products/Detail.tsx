@@ -140,9 +140,9 @@ export const ProductsDetailPage = () => {
           inline: [<ProductStorefrontAction key="product-storefront-action" />],
         }}
         permissions={{
-          create: Permission.CreateProduct,
-          edit: Permission.UpdateProduct,
-          delete: Permission.DeleteProduct,
+          create: [Permission.CreateProduct, Permission.CreateCatalog],
+          edit: [Permission.UpdateProduct, Permission.UpdateCatalog],
+          delete: [Permission.DeleteProduct, Permission.DeleteCatalog],
         }}
       />
     </div>

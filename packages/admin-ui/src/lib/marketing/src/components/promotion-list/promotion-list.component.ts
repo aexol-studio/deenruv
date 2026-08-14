@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
     GetPromotionListDocument,
-    LogicalOperator,
+    buildTokenizedSearchFilter,
     PROMOTION_FRAGMENT,
     PromotionListOptions,
     PromotionSortParameter,
@@ -119,21 +119,14 @@ export class PromotionListComponent
         take: number,
         searchTerm: string | null,
     ): { options: PromotionListOptions } {
-        const filter = this.filters.createFilterInput();
+        const filter = buildTokenizedSearchFilter(searchTerm, ['couponCode', 'name'], this.filters.createFilterInput());
         const sort = this.sorts.createSortInput();
-        let filterOperator = LogicalOperator.AND;
-        if (searchTerm) {
-            filter.couponCode = { contains: searchTerm };
-            filter.name = { contains: searchTerm };
-            filterOperator = LogicalOperator.OR;
-        }
 
         return {
             options: {
                 skip,
                 take,
                 filter,
-                filterOperator,
                 sort,
             },
         };

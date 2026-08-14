@@ -38,6 +38,10 @@ import { ProductChannelEvent } from "../../event-bus/events/product-channel-even
 import { ProductEvent } from "../../event-bus/events/product-event";
 import { ProductOptionGroupChangeEvent } from "../../event-bus/events/product-option-group-change-event";
 import { CustomFieldRelationService } from "../helpers/custom-field-relation/custom-field-relation.service";
+import {
+  applyProductListSearch,
+  CatalogListOptions,
+} from "../helpers/catalog-list-search";
 import { ListQueryBuilder } from "../helpers/list-query-builder/list-query-builder";
 import { SlugValidator } from "../helpers/slug-validator/slug-validator";
 import { TranslatableSaver } from "../helpers/translatable-saver/translatable-saver";
@@ -82,7 +86,7 @@ export class ProductService {
 
   async findAll(
     ctx: RequestContext,
-    options?: ListQueryOptions<Product>,
+    options?: ListQueryOptions<Product> & CatalogListOptions,
     relations?: RelationPaths<Product>,
   ): Promise<PaginatedList<Translated<Product>>> {
     const effectiveRelations = relations || this.relations.slice();
@@ -105,27 +109,26 @@ export class ProductService {
       effectiveRelations.push("variants");
       customPropertyMap.sku = "variants.sku";
     }
-    return this.listQueryBuilder
-      .build(Product, options, {
-        relations: effectiveRelations,
-        channelId: ctx.channelId,
-        where: { deletedAt: IsNull() },
-        ctx,
-        customPropertyMap,
-      })
-      .getManyAndCount()
-      .then(async ([products, totalItems]) => {
-        const items = products.map((product) =>
-          this.translator.translate(product, ctx, [
-            "facetValues",
-            ["facetValues", "facet"],
-          ]),
-        );
-        return {
-          items,
-          totalItems,
-        };
-      });
+    const qb = this.listQueryBuilder.build(Product, options, {
+      relations: effectiveRelations,
+      channelId: ctx.channelId,
+      where: { deletedAt: IsNull() },
+      ctx,
+      customPropertyMap,
+    });
+    applyProductListSearch(qb, options?.searchTerm, ctx);
+    return qb.getManyAndCount().then(async ([products, totalItems]) => {
+      const items = products.map((product) =>
+        this.translator.translate(product, ctx, [
+          "facetValues",
+          ["facetValues", "facet"],
+        ]),
+      );
+      return {
+        items,
+        totalItems,
+      };
+    });
   }
 
   async findOne(

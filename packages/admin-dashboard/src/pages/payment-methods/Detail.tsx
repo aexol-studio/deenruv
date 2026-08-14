@@ -9,7 +9,7 @@ import {
   getMutation,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { ModelTypes } from '@deenruv/admin-types';
+import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { PaymentMethodDetailView } from '@/pages/payment-methods/_components/PaymentMethodDetailView.js';
 
 type FormDataType = Record<string, unknown>;
@@ -92,6 +92,11 @@ export const PaymentMethodsDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: [Permission.CreatePaymentMethod, Permission.CreateSettings],
+          edit: [Permission.UpdatePaymentMethod, Permission.UpdateSettings],
+          delete: [Permission.DeletePaymentMethod, Permission.DeleteSettings],
         }}
       />
     </div>

@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/przelewy24-plugin",
-  "version": "1.0.17-dev.20",
+  "version": "1.0.17-dev.21",
   "homepage": "https://deenruv.com/",
   "license": "MIT",
   "type": "module",
@@ -22,7 +22,7 @@
     "watch": "tsc --watch",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --td --es && zeus http://localhost:6100/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:6100/admin-api ./src/plugin-ui --td"
+    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --td --es && zeus http://localhost:6100/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:6100/admin-api ./src/plugin-ui --td && prettier --write ./src/plugin-server/zeus/*.ts ./src/plugin-server/ui/zeus/*.ts ./src/plugin-ui/zeus/*.ts"
   },
   "dependencies": {
     "@aexol/przelewy24-sdk": "^0.1.6",

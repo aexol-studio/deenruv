@@ -213,8 +213,8 @@ export const FacetsDetailView = () => {
               searchFields={['name']}
               tableId={tableId}
               noPaddings
-              createPermissions={[Permission.CreateFacet]}
-              deletePermissions={[Permission.DeleteFacet]}
+              createPermissions={[Permission.CreateFacet, Permission.CreateCatalog]}
+              deletePermissions={[Permission.DeleteFacet, Permission.DeleteCatalog]}
             />
           </CustomCard>
         )}

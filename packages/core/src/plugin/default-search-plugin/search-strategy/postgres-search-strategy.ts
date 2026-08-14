@@ -177,34 +177,31 @@ export class PostgresSearchStrategy implements SearchStrategy {
           .map((t) => `'${t}':*`)
           .join(" & ")
       : "";
+    const termLogicalOr = term
+      ? term
+          .trim()
+          .split(/\s+/g)
+          .map((t) => `'${t}':*`)
+          .join(" | ")
+      : "";
 
     qb.where("1 = 1");
     if (term && term.length > this.minTermLength) {
-      const minIfGrouped = (colName: string) =>
-        input.groupByProduct || forceGroup ? `MIN(${colName})` : colName;
-      qb.addSelect(
-        `
-                    (ts_rank_cd(to_tsvector(${minIfGrouped("si.sku")}), to_tsquery(:term)) * 10 +
-                    ts_rank_cd(to_tsvector(${minIfGrouped("si.productName")}), to_tsquery(:term)) * 2 +
-                    ts_rank_cd(to_tsvector(${minIfGrouped(
-                      "si.productVariantName",
-                    )}), to_tsquery(:term)) * 1.5 +
-                    ts_rank_cd(to_tsvector(${minIfGrouped("si.description")}), to_tsquery(:term)) * 1)
-                            `,
-        "score",
-      )
+      const rowScore = `
+                    (ts_rank_cd(to_tsvector(si.sku), to_tsquery(:rankTerm)) * 10 +
+                    ts_rank_cd(to_tsvector(si.productName), to_tsquery(:rankTerm)) * 2 +
+                    ts_rank_cd(to_tsvector(si.productVariantName), to_tsquery(:rankTerm)) * 1.5 +
+                    ts_rank_cd(to_tsvector(si.description), to_tsquery(:rankTerm)) * 1)`;
+      const score =
+        input.groupByProduct || forceGroup ? `MAX(${rowScore})` : rowScore;
+      qb.addSelect(score, "score")
         .andWhere(
-          new Brackets((qb1) => {
-            qb1
-              .where("to_tsvector(si.sku) @@ to_tsquery(:term)")
-              .orWhere("to_tsvector(si.productName) @@ to_tsquery(:term)")
-              .orWhere(
-                "to_tsvector(si.productVariantName) @@ to_tsquery(:term)",
-              )
-              .orWhere("to_tsvector(si.description) @@ to_tsquery(:term)");
-          }),
+          `(to_tsvector(si.sku) ||
+            to_tsvector(si.productName) ||
+            to_tsvector(si.productVariantName) ||
+            to_tsvector(si.description)) @@ to_tsquery(:term)`,
         )
-        .setParameters({ term: termLogicalAnd });
+        .setParameters({ term: termLogicalAnd, rankTerm: termLogicalOr });
     }
     if (input.inStock != null) {
       if (input.groupByProduct) {

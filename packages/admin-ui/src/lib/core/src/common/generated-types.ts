@@ -1,6946 +1,219 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-/** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: { input: any; output: any; }
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: { input: any; output: any; }
-  /** The `Money` scalar type represents monetary values and supports signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
-  Money: { input: number; output: number; }
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: { input: any; output: any; }
-};
+import type * as Types from './generated-schema-types';
 
-export type AddFulfillmentToOrderResult = CreateFulfillmentError | EmptyOrderLineSelectionError | Fulfillment | FulfillmentStateTransitionError | InsufficientStockOnHandError | InvalidFulfillmentHandlerError | ItemsAlreadyFulfilledError;
-
-export type AddItemInput = {
-  productVariantId: Scalars['ID']['input'];
-  quantity: Scalars['Int']['input'];
-};
-
-export type AddItemToDraftOrderInput = {
-  productVariantId: Scalars['ID']['input'];
-  quantity: Scalars['Int']['input'];
-};
-
-export type AddManualPaymentToOrderResult = ManualPaymentStateError | Order;
-
-export type AddNoteToCustomerInput = {
-  id: Scalars['ID']['input'];
-  isPublic: Scalars['Boolean']['input'];
-  note: Scalars['String']['input'];
-};
-
-export type AddNoteToOrderInput = {
-  id: Scalars['ID']['input'];
-  isPublic: Scalars['Boolean']['input'];
-  note: Scalars['String']['input'];
-};
-
-export type Address = Node & {
-  __typename?: 'Address';
-  city?: Maybe<Scalars['String']['output']>;
-  company?: Maybe<Scalars['String']['output']>;
-  country: Country;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  defaultBillingAddress?: Maybe<Scalars['Boolean']['output']>;
-  defaultShippingAddress?: Maybe<Scalars['Boolean']['output']>;
-  fullName?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  phoneNumber?: Maybe<Scalars['String']['output']>;
-  postalCode?: Maybe<Scalars['String']['output']>;
-  province?: Maybe<Scalars['String']['output']>;
-  streetLine1: Scalars['String']['output'];
-  streetLine2?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type AdjustDraftOrderLineInput = {
-  orderLineId: Scalars['ID']['input'];
-  quantity: Scalars['Int']['input'];
-};
-
-export type Adjustment = {
-  __typename?: 'Adjustment';
-  adjustmentSource: Scalars['String']['output'];
-  amount: Scalars['Money']['output'];
-  data?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  type: AdjustmentType;
-};
-
-export enum AdjustmentType {
-  DISTRIBUTED_ORDER_PROMOTION = 'DISTRIBUTED_ORDER_PROMOTION',
-  OTHER = 'OTHER',
-  PROMOTION = 'PROMOTION'
-}
-
-export type Administrator = Node & {
-  __typename?: 'Administrator';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  emailAddress: Scalars['String']['output'];
-  firstName: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  lastName: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-  user: User;
-};
-
-export type AdministratorFilterParameter = {
-  _and?: InputMaybe<Array<AdministratorFilterParameter>>;
-  _or?: InputMaybe<Array<AdministratorFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  emailAddress?: InputMaybe<StringOperators>;
-  firstName?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  lastName?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type AdministratorList = PaginatedList & {
-  __typename?: 'AdministratorList';
-  items: Array<Administrator>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type AdministratorListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<AdministratorFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<AdministratorSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type AdministratorPaymentInput = {
-  metadata?: InputMaybe<Scalars['JSON']['input']>;
-  paymentMethod?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AdministratorRefundInput = {
-  /**
-   * The amount to be refunded to this particular Payment. This was introduced in
-   * v2.2.0 as the preferred way to specify the refund amount. The `lines`, `shipping` and `adjustment`
-   * fields will be removed in a future version.
-   */
-  amount?: InputMaybe<Scalars['Money']['input']>;
-  paymentId: Scalars['ID']['input'];
-  reason?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AdministratorSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  emailAddress?: InputMaybe<SortOrder>;
-  firstName?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  lastName?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type Allocation = Node & StockMovement & {
-  __typename?: 'Allocation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  orderLine: OrderLine;
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-/** Returned if an attempting to refund an OrderItem which has already been refunded */
-export type AlreadyRefundedError = ErrorResult & {
-  __typename?: 'AlreadyRefundedError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  refundId: Scalars['ID']['output'];
-};
-
-export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order | OrderMiddlewareError;
-
-export type Asset = Node & {
-  __typename?: 'Asset';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  fileSize: Scalars['Int']['output'];
-  focalPoint?: Maybe<Coordinate>;
-  height: Scalars['Int']['output'];
-  id: Scalars['ID']['output'];
-  mimeType: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  preview: Scalars['String']['output'];
-  source: Scalars['String']['output'];
-  tags: Array<Tag>;
-  type: AssetType;
-  updatedAt: Scalars['DateTime']['output'];
-  width: Scalars['Int']['output'];
-};
-
-export type AssetFilterParameter = {
-  _and?: InputMaybe<Array<AssetFilterParameter>>;
-  _or?: InputMaybe<Array<AssetFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  fileSize?: InputMaybe<NumberOperators>;
-  height?: InputMaybe<NumberOperators>;
-  id?: InputMaybe<IdOperators>;
-  mimeType?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  preview?: InputMaybe<StringOperators>;
-  source?: InputMaybe<StringOperators>;
-  type?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-  width?: InputMaybe<NumberOperators>;
-};
-
-export type AssetList = PaginatedList & {
-  __typename?: 'AssetList';
-  items: Array<Asset>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type AssetListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<AssetFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<AssetSortParameter>;
-  tags?: InputMaybe<Array<Scalars['String']['input']>>;
-  tagsOperator?: InputMaybe<LogicalOperator>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type AssetSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  fileSize?: InputMaybe<SortOrder>;
-  height?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  mimeType?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  preview?: InputMaybe<SortOrder>;
-  source?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-  width?: InputMaybe<SortOrder>;
-};
-
-export enum AssetType {
-  BINARY = 'BINARY',
-  IMAGE = 'IMAGE',
-  VIDEO = 'VIDEO'
-}
-
-export type AssignAssetsToChannelInput = {
-  assetIds: Array<Scalars['ID']['input']>;
-  channelId: Scalars['ID']['input'];
-};
-
-export type AssignCollectionsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  collectionIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignFacetsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  facetIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignPaymentMethodsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  paymentMethodIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignProductVariantsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  priceFactor?: InputMaybe<Scalars['Float']['input']>;
-  productVariantIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignProductsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  priceFactor?: InputMaybe<Scalars['Float']['input']>;
-  productIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignPromotionsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  promotionIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignShippingMethodsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  shippingMethodIds: Array<Scalars['ID']['input']>;
-};
-
-export type AssignStockLocationsToChannelInput = {
-  channelId: Scalars['ID']['input'];
-  stockLocationIds: Array<Scalars['ID']['input']>;
-};
-
-export type AuthenticationInput = {
-  native?: InputMaybe<NativeAuthInput>;
-};
-
-export type AuthenticationMethod = Node & {
-  __typename?: 'AuthenticationMethod';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  strategy: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type AuthenticationResult = CurrentUser | InvalidCredentialsError;
-
-export type BooleanCustomFieldConfig = CustomField & {
-  __typename?: 'BooleanCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-/** Operators for filtering on a list of Boolean fields */
-export type BooleanListOperators = {
-  inList: Scalars['Boolean']['input'];
-};
-
-/** Operators for filtering on a Boolean field */
-export type BooleanOperators = {
-  eq?: InputMaybe<Scalars['Boolean']['input']>;
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** Returned if an attempting to cancel lines from an Order which is still active */
-export type CancelActiveOrderError = ErrorResult & {
-  __typename?: 'CancelActiveOrderError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  orderState: Scalars['String']['output'];
-};
-
-export type CancelOrderInput = {
-  /** Specify whether the shipping charges should also be cancelled. Defaults to false */
-  cancelShipping?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Optionally specify which OrderLines to cancel. If not provided, all OrderLines will be cancelled */
-  lines?: InputMaybe<Array<OrderLineInput>>;
-  /** The id of the order to be cancelled */
-  orderId: Scalars['ID']['input'];
-  reason?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CancelOrderResult = CancelActiveOrderError | EmptyOrderLineSelectionError | MultipleOrderError | Order | OrderStateTransitionError | QuantityTooGreatError;
-
-/** Returned if the Payment cancellation fails */
-export type CancelPaymentError = ErrorResult & {
-  __typename?: 'CancelPaymentError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  paymentErrorMessage: Scalars['String']['output'];
-};
-
-export type CancelPaymentResult = CancelPaymentError | Payment | PaymentStateTransitionError;
-
-export type Cancellation = Node & StockMovement & {
-  __typename?: 'Cancellation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  orderLine: OrderLine;
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type Channel = Node & {
-  __typename?: 'Channel';
-  availableCurrencyCodes: Array<CurrencyCode>;
-  availableLanguageCodes?: Maybe<Array<LanguageCode>>;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  /** @deprecated Use defaultCurrencyCode instead */
-  currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  defaultCurrencyCode: CurrencyCode;
-  defaultLanguageCode: LanguageCode;
-  defaultShippingZone?: Maybe<Zone>;
-  defaultTaxZone?: Maybe<Zone>;
-  id: Scalars['ID']['output'];
-  /** Not yet used - will be implemented in a future release. */
-  outOfStockThreshold?: Maybe<Scalars['Int']['output']>;
-  pricesIncludeTax: Scalars['Boolean']['output'];
-  seller?: Maybe<Seller>;
-  token: Scalars['String']['output'];
-  /** Not yet used - will be implemented in a future release. */
-  trackInventory?: Maybe<Scalars['Boolean']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-/**
- * Returned when the default LanguageCode of a Channel is no longer found in the `availableLanguages`
- * of the GlobalSettings
- */
-export type ChannelDefaultLanguageError = ErrorResult & {
-  __typename?: 'ChannelDefaultLanguageError';
-  channelCode: Scalars['String']['output'];
-  errorCode: ErrorCode;
-  language: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type ChannelFilterParameter = {
-  _and?: InputMaybe<Array<ChannelFilterParameter>>;
-  _or?: InputMaybe<Array<ChannelFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  currencyCode?: InputMaybe<StringOperators>;
-  defaultCurrencyCode?: InputMaybe<StringOperators>;
-  defaultLanguageCode?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  outOfStockThreshold?: InputMaybe<NumberOperators>;
-  pricesIncludeTax?: InputMaybe<BooleanOperators>;
-  token?: InputMaybe<StringOperators>;
-  trackInventory?: InputMaybe<BooleanOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type ChannelList = PaginatedList & {
-  __typename?: 'ChannelList';
-  items: Array<Channel>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type ChannelListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<ChannelFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<ChannelSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ChannelSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  outOfStockThreshold?: InputMaybe<SortOrder>;
-  token?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type Collection = Node & {
-  __typename?: 'Collection';
-  assets: Array<Asset>;
-  breadcrumbs: Array<CollectionBreadcrumb>;
-  children?: Maybe<Array<Collection>>;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  featuredAsset?: Maybe<Asset>;
-  filters: Array<ConfigurableOperation>;
-  id: Scalars['ID']['output'];
-  inheritFilters: Scalars['Boolean']['output'];
-  isPrivate: Scalars['Boolean']['output'];
-  languageCode?: Maybe<LanguageCode>;
-  name: Scalars['String']['output'];
-  parent?: Maybe<Collection>;
-  parentId: Scalars['ID']['output'];
-  position: Scalars['Int']['output'];
-  productVariants: ProductVariantList;
-  slug: Scalars['String']['output'];
-  translations: Array<CollectionTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-
-export type CollectionProductVariantsArgs = {
-  options?: InputMaybe<ProductVariantListOptions>;
-};
-
-export type CollectionBreadcrumb = {
-  __typename?: 'CollectionBreadcrumb';
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-};
-
-export type CollectionFilterParameter = {
-  _and?: InputMaybe<Array<CollectionFilterParameter>>;
-  _or?: InputMaybe<Array<CollectionFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  inheritFilters?: InputMaybe<BooleanOperators>;
-  isPrivate?: InputMaybe<BooleanOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  parentId?: InputMaybe<IdOperators>;
-  position?: InputMaybe<NumberOperators>;
-  slug?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type CollectionList = PaginatedList & {
-  __typename?: 'CollectionList';
-  items: Array<Collection>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type CollectionListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<CollectionFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<CollectionSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-  topLevelOnly?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/**
- * Which Collections are present in the products returned
- * by the search, and in what quantity.
- */
-export type CollectionResult = {
-  __typename?: 'CollectionResult';
-  collection: Collection;
-  count: Scalars['Int']['output'];
-};
-
-export type CollectionSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  parentId?: InputMaybe<SortOrder>;
-  position?: InputMaybe<SortOrder>;
-  slug?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type CollectionTranslation = {
-  __typename?: 'CollectionTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ConfigArg = {
-  __typename?: 'ConfigArg';
-  name: Scalars['String']['output'];
-  value: Scalars['String']['output'];
-};
-
-export type ConfigArgDefinition = {
-  __typename?: 'ConfigArgDefinition';
-  defaultValue?: Maybe<Scalars['JSON']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  label?: Maybe<Scalars['String']['output']>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  required: Scalars['Boolean']['output'];
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type ConfigArgInput = {
-  name: Scalars['String']['input'];
-  /** A JSON stringified representation of the actual value */
-  value: Scalars['String']['input'];
-};
-
-export type ConfigurableOperation = {
-  __typename?: 'ConfigurableOperation';
-  args: Array<ConfigArg>;
-  code: Scalars['String']['output'];
-};
-
-export type ConfigurableOperationDefinition = {
-  __typename?: 'ConfigurableOperationDefinition';
-  args: Array<ConfigArgDefinition>;
-  code: Scalars['String']['output'];
-  description: Scalars['String']['output'];
-};
-
-export type ConfigurableOperationInput = {
-  arguments: Array<ConfigArgInput>;
-  code: Scalars['String']['input'];
-};
-
-export type Coordinate = {
-  __typename?: 'Coordinate';
-  x: Scalars['Float']['output'];
-  y: Scalars['Float']['output'];
-};
-
-export type CoordinateInput = {
-  x: Scalars['Float']['input'];
-  y: Scalars['Float']['input'];
-};
-
-/**
- * A Country of the world which your shop operates in.
- *
- * The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" etc. This code is used in certain inputs such as
- * `UpdateAddressInput` and `CreateAddressInput` to specify the country.
- */
-export type Country = Node & Region & {
-  __typename?: 'Country';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  enabled: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  parent?: Maybe<Region>;
-  parentId?: Maybe<Scalars['ID']['output']>;
-  translations: Array<RegionTranslation>;
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type CountryFilterParameter = {
-  _and?: InputMaybe<Array<CountryFilterParameter>>;
-  _or?: InputMaybe<Array<CountryFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  id?: InputMaybe<IdOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  parentId?: InputMaybe<IdOperators>;
-  type?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type CountryList = PaginatedList & {
-  __typename?: 'CountryList';
-  items: Array<Country>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type CountryListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<CountryFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<CountrySortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type CountrySortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  parentId?: InputMaybe<SortOrder>;
-  type?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type CountryTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Returned if the provided coupon code is invalid */
-export type CouponCodeExpiredError = ErrorResult & {
-  __typename?: 'CouponCodeExpiredError';
-  couponCode: Scalars['String']['output'];
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned if the provided coupon code is invalid */
-export type CouponCodeInvalidError = ErrorResult & {
-  __typename?: 'CouponCodeInvalidError';
-  couponCode: Scalars['String']['output'];
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned if the provided coupon code is invalid */
-export type CouponCodeLimitError = ErrorResult & {
-  __typename?: 'CouponCodeLimitError';
-  couponCode: Scalars['String']['output'];
-  errorCode: ErrorCode;
-  limit: Scalars['Int']['output'];
-  message: Scalars['String']['output'];
-};
-
-/**
- * Input used to create an Address.
- *
- * The countryCode must correspond to a `code` property of a Country that has been defined in the
- * Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
- * If an invalid code is passed, the mutation will fail.
- */
-export type CreateAddressInput = {
-  city?: InputMaybe<Scalars['String']['input']>;
-  company?: InputMaybe<Scalars['String']['input']>;
-  countryCode: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  defaultBillingAddress?: InputMaybe<Scalars['Boolean']['input']>;
-  defaultShippingAddress?: InputMaybe<Scalars['Boolean']['input']>;
-  fullName?: InputMaybe<Scalars['String']['input']>;
-  phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  postalCode?: InputMaybe<Scalars['String']['input']>;
-  province?: InputMaybe<Scalars['String']['input']>;
-  streetLine1: Scalars['String']['input'];
-  streetLine2?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CreateAdministratorInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  emailAddress: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-  roleIds: Array<Scalars['ID']['input']>;
-};
-
-export type CreateAssetInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  file: Scalars['Upload']['input'];
-  tags?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-export type CreateAssetResult = Asset | MimeTypeError;
-
-export type CreateChannelInput = {
-  availableCurrencyCodes?: InputMaybe<Array<CurrencyCode>>;
-  availableLanguageCodes?: InputMaybe<Array<LanguageCode>>;
-  code: Scalars['String']['input'];
-  /** @deprecated Use defaultCurrencyCode instead */
-  currencyCode?: InputMaybe<CurrencyCode>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  defaultCurrencyCode?: InputMaybe<CurrencyCode>;
-  defaultLanguageCode: LanguageCode;
-  defaultShippingZoneId: Scalars['ID']['input'];
-  defaultTaxZoneId: Scalars['ID']['input'];
-  outOfStockThreshold?: InputMaybe<Scalars['Int']['input']>;
-  pricesIncludeTax: Scalars['Boolean']['input'];
-  sellerId?: InputMaybe<Scalars['ID']['input']>;
-  token: Scalars['String']['input'];
-  trackInventory?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type CreateChannelResult = Channel | LanguageNotAvailableError;
-
-export type CreateCollectionInput = {
-  assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  featuredAssetId?: InputMaybe<Scalars['ID']['input']>;
-  filters: Array<ConfigurableOperationInput>;
-  inheritFilters?: InputMaybe<Scalars['Boolean']['input']>;
-  isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
-  parentId?: InputMaybe<Scalars['ID']['input']>;
-  translations: Array<CreateCollectionTranslationInput>;
-};
-
-export type CreateCollectionTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description: Scalars['String']['input'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['input'];
-  slug: Scalars['String']['input'];
-};
-
-export type CreateCountryInput = {
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled: Scalars['Boolean']['input'];
-  translations: Array<CountryTranslationInput>;
-};
-
-export type CreateCustomerGroupInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  customerIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  name: Scalars['String']['input'];
-};
-
-export type CreateCustomerInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  emailAddress: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CreateCustomerResult = Customer | EmailAddressConflictError;
-
-export type CreateFacetInput = {
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  isPrivate: Scalars['Boolean']['input'];
-  translations: Array<FacetTranslationInput>;
-  values?: InputMaybe<Array<CreateFacetValueWithFacetInput>>;
-};
-
-export type CreateFacetValueInput = {
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  facetId: Scalars['ID']['input'];
-  translations: Array<FacetValueTranslationInput>;
-};
-
-export type CreateFacetValueWithFacetInput = {
-  code: Scalars['String']['input'];
-  translations: Array<FacetValueTranslationInput>;
-};
-
-/** Returned if an error is thrown in a FulfillmentHandler's createFulfillment method */
-export type CreateFulfillmentError = ErrorResult & {
-  __typename?: 'CreateFulfillmentError';
-  errorCode: ErrorCode;
-  fulfillmentHandlerError: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type CreateGroupOptionInput = {
-  code: Scalars['String']['input'];
-  translations: Array<ProductOptionGroupTranslationInput>;
-};
-
-export type CreatePaymentMethodInput = {
-  checker?: InputMaybe<ConfigurableOperationInput>;
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled: Scalars['Boolean']['input'];
-  handler: ConfigurableOperationInput;
-  translations: Array<PaymentMethodTranslationInput>;
-};
-
-export type CreateProductInput = {
-  assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  featuredAssetId?: InputMaybe<Scalars['ID']['input']>;
-  translations: Array<ProductTranslationInput>;
-};
-
-export type CreateProductOptionGroupInput = {
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  options: Array<CreateGroupOptionInput>;
-  translations: Array<ProductOptionGroupTranslationInput>;
-};
-
-export type CreateProductOptionInput = {
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  productOptionGroupId: Scalars['ID']['input'];
-  translations: Array<ProductOptionGroupTranslationInput>;
-};
-
-export type CreateProductVariantInput = {
-  assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  featuredAssetId?: InputMaybe<Scalars['ID']['input']>;
-  optionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  outOfStockThreshold?: InputMaybe<Scalars['Int']['input']>;
-  price?: InputMaybe<Scalars['Money']['input']>;
-  productId: Scalars['ID']['input'];
-  sku: Scalars['String']['input'];
-  stockLevels?: InputMaybe<Array<StockLevelInput>>;
-  stockOnHand?: InputMaybe<Scalars['Int']['input']>;
-  taxCategoryId?: InputMaybe<Scalars['ID']['input']>;
-  trackInventory?: InputMaybe<GlobalFlag>;
-  translations: Array<ProductVariantTranslationInput>;
-  useGlobalOutOfStockThreshold?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type CreateProductVariantOptionInput = {
-  code: Scalars['String']['input'];
-  optionGroupId: Scalars['ID']['input'];
-  translations: Array<ProductOptionTranslationInput>;
-};
-
-export type CreatePromotionInput = {
-  actions: Array<ConfigurableOperationInput>;
-  conditions: Array<ConfigurableOperationInput>;
-  couponCode?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled: Scalars['Boolean']['input'];
-  endsAt?: InputMaybe<Scalars['DateTime']['input']>;
-  perCustomerUsageLimit?: InputMaybe<Scalars['Int']['input']>;
-  startsAt?: InputMaybe<Scalars['DateTime']['input']>;
-  translations: Array<PromotionTranslationInput>;
-  usageLimit?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type CreatePromotionResult = MissingConditionsError | Promotion;
-
-export type CreateProvinceInput = {
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled: Scalars['Boolean']['input'];
-  translations: Array<ProvinceTranslationInput>;
-};
-
-export type CreateRoleInput = {
-  channelIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  code: Scalars['String']['input'];
-  description: Scalars['String']['input'];
-  permissions: Array<Permission>;
-};
-
-export type CreateSellerInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  name: Scalars['String']['input'];
-};
-
-export type CreateShippingMethodInput = {
-  calculator: ConfigurableOperationInput;
-  checker: ConfigurableOperationInput;
-  code: Scalars['String']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  fulfillmentHandler: Scalars['String']['input'];
-  translations: Array<ShippingMethodTranslationInput>;
-};
-
-export type CreateStockLocationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
-};
-
-export type CreateTagInput = {
-  value: Scalars['String']['input'];
-};
-
-export type CreateTaxCategoryInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  isDefault?: InputMaybe<Scalars['Boolean']['input']>;
-  name: Scalars['String']['input'];
-};
-
-export type CreateTaxRateInput = {
-  categoryId: Scalars['ID']['input'];
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  customerGroupId?: InputMaybe<Scalars['ID']['input']>;
-  enabled: Scalars['Boolean']['input'];
-  name: Scalars['String']['input'];
-  value: Scalars['Float']['input'];
-  zoneId: Scalars['ID']['input'];
-};
-
-export type CreateZoneInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  memberIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  name: Scalars['String']['input'];
-};
-
-/**
- * @description
- * ISO 4217 currency code
- *
- * @docsCategory common
- */
-export enum CurrencyCode {
-  /** United Arab Emirates dirham */
-  AED = 'AED',
-  /** Afghan afghani */
-  AFN = 'AFN',
-  /** Albanian lek */
-  ALL = 'ALL',
-  /** Armenian dram */
-  AMD = 'AMD',
-  /** Netherlands Antillean guilder */
-  ANG = 'ANG',
-  /** Angolan kwanza */
-  AOA = 'AOA',
-  /** Argentine peso */
-  ARS = 'ARS',
-  /** Australian dollar */
-  AUD = 'AUD',
-  /** Aruban florin */
-  AWG = 'AWG',
-  /** Azerbaijani manat */
-  AZN = 'AZN',
-  /** Bosnia and Herzegovina convertible mark */
-  BAM = 'BAM',
-  /** Barbados dollar */
-  BBD = 'BBD',
-  /** Bangladeshi taka */
-  BDT = 'BDT',
-  /** Bulgarian lev */
-  BGN = 'BGN',
-  /** Bahraini dinar */
-  BHD = 'BHD',
-  /** Burundian franc */
-  BIF = 'BIF',
-  /** Bermudian dollar */
-  BMD = 'BMD',
-  /** Brunei dollar */
-  BND = 'BND',
-  /** Boliviano */
-  BOB = 'BOB',
-  /** Brazilian real */
-  BRL = 'BRL',
-  /** Bahamian dollar */
-  BSD = 'BSD',
-  /** Bhutanese ngultrum */
-  BTN = 'BTN',
-  /** Botswana pula */
-  BWP = 'BWP',
-  /** Belarusian ruble */
-  BYN = 'BYN',
-  /** Belize dollar */
-  BZD = 'BZD',
-  /** Canadian dollar */
-  CAD = 'CAD',
-  /** Congolese franc */
-  CDF = 'CDF',
-  /** Swiss franc */
-  CHF = 'CHF',
-  /** Chilean peso */
-  CLP = 'CLP',
-  /** Renminbi (Chinese) yuan */
-  CNY = 'CNY',
-  /** Colombian peso */
-  COP = 'COP',
-  /** Costa Rican colon */
-  CRC = 'CRC',
-  /** Cuban convertible peso */
-  CUC = 'CUC',
-  /** Cuban peso */
-  CUP = 'CUP',
-  /** Cape Verde escudo */
-  CVE = 'CVE',
-  /** Czech koruna */
-  CZK = 'CZK',
-  /** Djiboutian franc */
-  DJF = 'DJF',
-  /** Danish krone */
-  DKK = 'DKK',
-  /** Dominican peso */
-  DOP = 'DOP',
-  /** Algerian dinar */
-  DZD = 'DZD',
-  /** Egyptian pound */
-  EGP = 'EGP',
-  /** Eritrean nakfa */
-  ERN = 'ERN',
-  /** Ethiopian birr */
-  ETB = 'ETB',
-  /** Euro */
-  EUR = 'EUR',
-  /** Fiji dollar */
-  FJD = 'FJD',
-  /** Falkland Islands pound */
-  FKP = 'FKP',
-  /** Pound sterling */
-  GBP = 'GBP',
-  /** Georgian lari */
-  GEL = 'GEL',
-  /** Ghanaian cedi */
-  GHS = 'GHS',
-  /** Gibraltar pound */
-  GIP = 'GIP',
-  /** Gambian dalasi */
-  GMD = 'GMD',
-  /** Guinean franc */
-  GNF = 'GNF',
-  /** Guatemalan quetzal */
-  GTQ = 'GTQ',
-  /** Guyanese dollar */
-  GYD = 'GYD',
-  /** Hong Kong dollar */
-  HKD = 'HKD',
-  /** Honduran lempira */
-  HNL = 'HNL',
-  /** Croatian kuna */
-  HRK = 'HRK',
-  /** Haitian gourde */
-  HTG = 'HTG',
-  /** Hungarian forint */
-  HUF = 'HUF',
-  /** Indonesian rupiah */
-  IDR = 'IDR',
-  /** Israeli new shekel */
-  ILS = 'ILS',
-  /** Indian rupee */
-  INR = 'INR',
-  /** Iraqi dinar */
-  IQD = 'IQD',
-  /** Iranian rial */
-  IRR = 'IRR',
-  /** Icelandic króna */
-  ISK = 'ISK',
-  /** Jamaican dollar */
-  JMD = 'JMD',
-  /** Jordanian dinar */
-  JOD = 'JOD',
-  /** Japanese yen */
-  JPY = 'JPY',
-  /** Kenyan shilling */
-  KES = 'KES',
-  /** Kyrgyzstani som */
-  KGS = 'KGS',
-  /** Cambodian riel */
-  KHR = 'KHR',
-  /** Comoro franc */
-  KMF = 'KMF',
-  /** North Korean won */
-  KPW = 'KPW',
-  /** South Korean won */
-  KRW = 'KRW',
-  /** Kuwaiti dinar */
-  KWD = 'KWD',
-  /** Cayman Islands dollar */
-  KYD = 'KYD',
-  /** Kazakhstani tenge */
-  KZT = 'KZT',
-  /** Lao kip */
-  LAK = 'LAK',
-  /** Lebanese pound */
-  LBP = 'LBP',
-  /** Sri Lankan rupee */
-  LKR = 'LKR',
-  /** Liberian dollar */
-  LRD = 'LRD',
-  /** Lesotho loti */
-  LSL = 'LSL',
-  /** Libyan dinar */
-  LYD = 'LYD',
-  /** Moroccan dirham */
-  MAD = 'MAD',
-  /** Moldovan leu */
-  MDL = 'MDL',
-  /** Malagasy ariary */
-  MGA = 'MGA',
-  /** Macedonian denar */
-  MKD = 'MKD',
-  /** Myanmar kyat */
-  MMK = 'MMK',
-  /** Mongolian tögrög */
-  MNT = 'MNT',
-  /** Macanese pataca */
-  MOP = 'MOP',
-  /** Mauritanian ouguiya */
-  MRU = 'MRU',
-  /** Mauritian rupee */
-  MUR = 'MUR',
-  /** Maldivian rufiyaa */
-  MVR = 'MVR',
-  /** Malawian kwacha */
-  MWK = 'MWK',
-  /** Mexican peso */
-  MXN = 'MXN',
-  /** Malaysian ringgit */
-  MYR = 'MYR',
-  /** Mozambican metical */
-  MZN = 'MZN',
-  /** Namibian dollar */
-  NAD = 'NAD',
-  /** Nigerian naira */
-  NGN = 'NGN',
-  /** Nicaraguan córdoba */
-  NIO = 'NIO',
-  /** Norwegian krone */
-  NOK = 'NOK',
-  /** Nepalese rupee */
-  NPR = 'NPR',
-  /** New Zealand dollar */
-  NZD = 'NZD',
-  /** Omani rial */
-  OMR = 'OMR',
-  /** Panamanian balboa */
-  PAB = 'PAB',
-  /** Peruvian sol */
-  PEN = 'PEN',
-  /** Papua New Guinean kina */
-  PGK = 'PGK',
-  /** Philippine peso */
-  PHP = 'PHP',
-  /** Pakistani rupee */
-  PKR = 'PKR',
-  /** Polish złoty */
-  PLN = 'PLN',
-  /** Paraguayan guaraní */
-  PYG = 'PYG',
-  /** Qatari riyal */
-  QAR = 'QAR',
-  /** Romanian leu */
-  RON = 'RON',
-  /** Serbian dinar */
-  RSD = 'RSD',
-  /** Russian ruble */
-  RUB = 'RUB',
-  /** Rwandan franc */
-  RWF = 'RWF',
-  /** Saudi riyal */
-  SAR = 'SAR',
-  /** Solomon Islands dollar */
-  SBD = 'SBD',
-  /** Seychelles rupee */
-  SCR = 'SCR',
-  /** Sudanese pound */
-  SDG = 'SDG',
-  /** Swedish krona/kronor */
-  SEK = 'SEK',
-  /** Singapore dollar */
-  SGD = 'SGD',
-  /** Saint Helena pound */
-  SHP = 'SHP',
-  /** Sierra Leonean leone */
-  SLL = 'SLL',
-  /** Somali shilling */
-  SOS = 'SOS',
-  /** Surinamese dollar */
-  SRD = 'SRD',
-  /** South Sudanese pound */
-  SSP = 'SSP',
-  /** São Tomé and Príncipe dobra */
-  STN = 'STN',
-  /** Salvadoran colón */
-  SVC = 'SVC',
-  /** Syrian pound */
-  SYP = 'SYP',
-  /** Swazi lilangeni */
-  SZL = 'SZL',
-  /** Thai baht */
-  THB = 'THB',
-  /** Tajikistani somoni */
-  TJS = 'TJS',
-  /** Turkmenistan manat */
-  TMT = 'TMT',
-  /** Tunisian dinar */
-  TND = 'TND',
-  /** Tongan paʻanga */
-  TOP = 'TOP',
-  /** Turkish lira */
-  TRY = 'TRY',
-  /** Trinidad and Tobago dollar */
-  TTD = 'TTD',
-  /** New Taiwan dollar */
-  TWD = 'TWD',
-  /** Tanzanian shilling */
-  TZS = 'TZS',
-  /** Ukrainian hryvnia */
-  UAH = 'UAH',
-  /** Ugandan shilling */
-  UGX = 'UGX',
-  /** United States dollar */
-  USD = 'USD',
-  /** Uruguayan peso */
-  UYU = 'UYU',
-  /** Uzbekistan som */
-  UZS = 'UZS',
-  /** Venezuelan bolívar soberano */
-  VES = 'VES',
-  /** Vietnamese đồng */
-  VND = 'VND',
-  /** Vanuatu vatu */
-  VUV = 'VUV',
-  /** Samoan tala */
-  WST = 'WST',
-  /** CFA franc BEAC */
-  XAF = 'XAF',
-  /** East Caribbean dollar */
-  XCD = 'XCD',
-  /** CFA franc BCEAO */
-  XOF = 'XOF',
-  /** CFP franc (franc Pacifique) */
-  XPF = 'XPF',
-  /** Yemeni rial */
-  YER = 'YER',
-  /** South African rand */
-  ZAR = 'ZAR',
-  /** Zambian kwacha */
-  ZMW = 'ZMW',
-  /** Zimbabwean dollar */
-  ZWL = 'ZWL'
-}
-
-export type CurrentUser = {
-  __typename?: 'CurrentUser';
-  channels: Array<CurrentUserChannel>;
-  id: Scalars['ID']['output'];
-  identifier: Scalars['String']['output'];
-};
-
-export type CurrentUserChannel = {
-  __typename?: 'CurrentUserChannel';
-  code: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  permissions: Array<Permission>;
-  token: Scalars['String']['output'];
-};
-
-export type CurrentUserChannelInput = {
-  code: Scalars['String']['input'];
-  id: Scalars['ID']['input'];
-  permissions: Array<Permission>;
-  token: Scalars['String']['input'];
-};
-
-export type CustomField = {
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type CustomFieldConfig = BooleanCustomFieldConfig | DateTimeCustomFieldConfig | FloatCustomFieldConfig | IntCustomFieldConfig | LocaleStringCustomFieldConfig | LocaleTextCustomFieldConfig | RelationCustomFieldConfig | StringCustomFieldConfig | TextCustomFieldConfig;
-
-/**
- * This type is deprecated in v2.2 in favor of the EntityCustomFields type,
- * which allows custom fields to be defined on user-supplies entities.
- */
-export type CustomFields = {
-  __typename?: 'CustomFields';
-  Address: Array<CustomFieldConfig>;
-  Administrator: Array<CustomFieldConfig>;
-  Asset: Array<CustomFieldConfig>;
-  Channel: Array<CustomFieldConfig>;
-  Collection: Array<CustomFieldConfig>;
-  Customer: Array<CustomFieldConfig>;
-  CustomerGroup: Array<CustomFieldConfig>;
-  Facet: Array<CustomFieldConfig>;
-  FacetValue: Array<CustomFieldConfig>;
-  Fulfillment: Array<CustomFieldConfig>;
-  GlobalSettings: Array<CustomFieldConfig>;
-  Order: Array<CustomFieldConfig>;
-  OrderLine: Array<CustomFieldConfig>;
-  PaymentMethod: Array<CustomFieldConfig>;
-  Product: Array<CustomFieldConfig>;
-  ProductOption: Array<CustomFieldConfig>;
-  ProductOptionGroup: Array<CustomFieldConfig>;
-  ProductVariant: Array<CustomFieldConfig>;
-  ProductVariantPrice: Array<CustomFieldConfig>;
-  Promotion: Array<CustomFieldConfig>;
-  Region: Array<CustomFieldConfig>;
-  Seller: Array<CustomFieldConfig>;
-  ShippingMethod: Array<CustomFieldConfig>;
-  StockLocation: Array<CustomFieldConfig>;
-  TaxCategory: Array<CustomFieldConfig>;
-  TaxRate: Array<CustomFieldConfig>;
-  User: Array<CustomFieldConfig>;
-  Zone: Array<CustomFieldConfig>;
-};
-
-export type Customer = Node & {
-  __typename?: 'Customer';
-  addresses?: Maybe<Array<Address>>;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  emailAddress: Scalars['String']['output'];
-  firstName: Scalars['String']['output'];
-  groups: Array<CustomerGroup>;
-  history: HistoryEntryList;
-  id: Scalars['ID']['output'];
-  lastName: Scalars['String']['output'];
-  orders: OrderList;
-  phoneNumber?: Maybe<Scalars['String']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-  user?: Maybe<User>;
-};
-
-
-export type CustomerHistoryArgs = {
-  options?: InputMaybe<HistoryEntryListOptions>;
-};
-
-
-export type CustomerOrdersArgs = {
-  options?: InputMaybe<OrderListOptions>;
-};
-
-export type CustomerFilterParameter = {
-  _and?: InputMaybe<Array<CustomerFilterParameter>>;
-  _or?: InputMaybe<Array<CustomerFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  emailAddress?: InputMaybe<StringOperators>;
-  firstName?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  lastName?: InputMaybe<StringOperators>;
-  phoneNumber?: InputMaybe<StringOperators>;
-  postalCode?: InputMaybe<StringOperators>;
-  title?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type CustomerGroup = Node & {
-  __typename?: 'CustomerGroup';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  customers: CustomerList;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-
-export type CustomerGroupCustomersArgs = {
-  options?: InputMaybe<CustomerListOptions>;
-};
-
-export type CustomerGroupFilterParameter = {
-  _and?: InputMaybe<Array<CustomerGroupFilterParameter>>;
-  _or?: InputMaybe<Array<CustomerGroupFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type CustomerGroupList = PaginatedList & {
-  __typename?: 'CustomerGroupList';
-  items: Array<CustomerGroup>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type CustomerGroupListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<CustomerGroupFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<CustomerGroupSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type CustomerGroupSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type CustomerList = PaginatedList & {
-  __typename?: 'CustomerList';
-  items: Array<Customer>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type CustomerListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<CustomerFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<CustomerSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type CustomerSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  emailAddress?: InputMaybe<SortOrder>;
-  firstName?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  lastName?: InputMaybe<SortOrder>;
-  phoneNumber?: InputMaybe<SortOrder>;
-  title?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-/** Operators for filtering on a list of Date fields */
-export type DateListOperators = {
-  inList: Scalars['DateTime']['input'];
-};
-
-/** Operators for filtering on a DateTime field */
-export type DateOperators = {
-  after?: InputMaybe<Scalars['DateTime']['input']>;
-  before?: InputMaybe<Scalars['DateTime']['input']>;
-  between?: InputMaybe<DateRange>;
-  eq?: InputMaybe<Scalars['DateTime']['input']>;
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type DateRange = {
-  end: Scalars['DateTime']['input'];
-  start: Scalars['DateTime']['input'];
-};
-
-/**
- * Expects the same validation formats as the `<input type="datetime-local">` HTML element.
- * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local#Additional_attributes
- */
-export type DateTimeCustomFieldConfig = CustomField & {
-  __typename?: 'DateTimeCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  max?: Maybe<Scalars['String']['output']>;
-  min?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  step?: Maybe<Scalars['Int']['output']>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type DeleteAssetInput = {
-  assetId: Scalars['ID']['input'];
-  deleteFromAllChannels?: InputMaybe<Scalars['Boolean']['input']>;
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type DeleteAssetsInput = {
-  assetIds: Array<Scalars['ID']['input']>;
-  deleteFromAllChannels?: InputMaybe<Scalars['Boolean']['input']>;
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type DeleteStockLocationInput = {
-  id: Scalars['ID']['input'];
-  transferToLocationId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-export type DeletionResponse = {
-  __typename?: 'DeletionResponse';
-  message?: Maybe<Scalars['String']['output']>;
-  result: DeletionResult;
-};
-
-export enum DeletionResult {
-  /** The entity was successfully deleted */
-  DELETED = 'DELETED',
-  /** Deletion did not take place, reason given in message */
-  NOT_DELETED = 'NOT_DELETED'
-}
-
-export type Discount = {
-  __typename?: 'Discount';
-  adjustmentSource: Scalars['String']['output'];
-  amount: Scalars['Money']['output'];
-  amountWithTax: Scalars['Money']['output'];
-  description: Scalars['String']['output'];
-  type: AdjustmentType;
-};
-
-export type DuplicateEntityError = ErrorResult & {
-  __typename?: 'DuplicateEntityError';
-  duplicationError: Scalars['String']['output'];
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type DuplicateEntityInput = {
-  duplicatorInput: ConfigurableOperationInput;
-  entityId: Scalars['ID']['input'];
-  entityName: Scalars['String']['input'];
-};
-
-export type DuplicateEntityResult = DuplicateEntityError | DuplicateEntitySuccess;
-
-export type DuplicateEntitySuccess = {
-  __typename?: 'DuplicateEntitySuccess';
-  newEntityId: Scalars['ID']['output'];
-};
-
-/** Returned when attempting to create a Customer with an email address already registered to an existing User. */
-export type EmailAddressConflictError = ErrorResult & {
-  __typename?: 'EmailAddressConflictError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned if no OrderLines have been specified for the operation */
-export type EmptyOrderLineSelectionError = ErrorResult & {
-  __typename?: 'EmptyOrderLineSelectionError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type EntityCustomFields = {
-  __typename?: 'EntityCustomFields';
-  customFields: Array<CustomFieldConfig>;
-  entityName: Scalars['String']['output'];
-};
-
-export type EntityDuplicatorDefinition = {
-  __typename?: 'EntityDuplicatorDefinition';
-  args: Array<ConfigArgDefinition>;
-  code: Scalars['String']['output'];
-  description: Scalars['String']['output'];
-  forEntities: Array<Scalars['String']['output']>;
-  requiresPermission: Array<Permission>;
-};
-
-export enum ErrorCode {
-  ALREADY_REFUNDED_ERROR = 'ALREADY_REFUNDED_ERROR',
-  CANCEL_ACTIVE_ORDER_ERROR = 'CANCEL_ACTIVE_ORDER_ERROR',
-  CANCEL_PAYMENT_ERROR = 'CANCEL_PAYMENT_ERROR',
-  CHANNEL_DEFAULT_LANGUAGE_ERROR = 'CHANNEL_DEFAULT_LANGUAGE_ERROR',
-  COUPON_CODE_EXPIRED_ERROR = 'COUPON_CODE_EXPIRED_ERROR',
-  COUPON_CODE_INVALID_ERROR = 'COUPON_CODE_INVALID_ERROR',
-  COUPON_CODE_LIMIT_ERROR = 'COUPON_CODE_LIMIT_ERROR',
-  CREATE_FULFILLMENT_ERROR = 'CREATE_FULFILLMENT_ERROR',
-  DUPLICATE_ENTITY_ERROR = 'DUPLICATE_ENTITY_ERROR',
-  EMAIL_ADDRESS_CONFLICT_ERROR = 'EMAIL_ADDRESS_CONFLICT_ERROR',
-  EMPTY_ORDER_LINE_SELECTION_ERROR = 'EMPTY_ORDER_LINE_SELECTION_ERROR',
-  FACET_IN_USE_ERROR = 'FACET_IN_USE_ERROR',
-  FULFILLMENT_STATE_TRANSITION_ERROR = 'FULFILLMENT_STATE_TRANSITION_ERROR',
-  GUEST_CHECKOUT_ERROR = 'GUEST_CHECKOUT_ERROR',
-  INELIGIBLE_SHIPPING_METHOD_ERROR = 'INELIGIBLE_SHIPPING_METHOD_ERROR',
-  INSUFFICIENT_STOCK_ERROR = 'INSUFFICIENT_STOCK_ERROR',
-  INSUFFICIENT_STOCK_ON_HAND_ERROR = 'INSUFFICIENT_STOCK_ON_HAND_ERROR',
-  INVALID_CREDENTIALS_ERROR = 'INVALID_CREDENTIALS_ERROR',
-  INVALID_FULFILLMENT_HANDLER_ERROR = 'INVALID_FULFILLMENT_HANDLER_ERROR',
-  ITEMS_ALREADY_FULFILLED_ERROR = 'ITEMS_ALREADY_FULFILLED_ERROR',
-  LANGUAGE_NOT_AVAILABLE_ERROR = 'LANGUAGE_NOT_AVAILABLE_ERROR',
-  MANUAL_PAYMENT_STATE_ERROR = 'MANUAL_PAYMENT_STATE_ERROR',
-  MIME_TYPE_ERROR = 'MIME_TYPE_ERROR',
-  MISSING_CONDITIONS_ERROR = 'MISSING_CONDITIONS_ERROR',
-  MULTIPLE_ORDER_ERROR = 'MULTIPLE_ORDER_ERROR',
-  NATIVE_AUTH_STRATEGY_ERROR = 'NATIVE_AUTH_STRATEGY_ERROR',
-  NEGATIVE_QUANTITY_ERROR = 'NEGATIVE_QUANTITY_ERROR',
-  NOTHING_TO_REFUND_ERROR = 'NOTHING_TO_REFUND_ERROR',
-  NO_ACTIVE_ORDER_ERROR = 'NO_ACTIVE_ORDER_ERROR',
-  NO_CHANGES_SPECIFIED_ERROR = 'NO_CHANGES_SPECIFIED_ERROR',
-  ORDER_LIMIT_ERROR = 'ORDER_LIMIT_ERROR',
-  ORDER_MIDDLEWARE_ERROR = 'ORDER_MIDDLEWARE_ERROR',
-  ORDER_MODIFICATION_ERROR = 'ORDER_MODIFICATION_ERROR',
-  ORDER_MODIFICATION_STATE_ERROR = 'ORDER_MODIFICATION_STATE_ERROR',
-  ORDER_STATE_TRANSITION_ERROR = 'ORDER_STATE_TRANSITION_ERROR',
-  PAYMENT_METHOD_MISSING_ERROR = 'PAYMENT_METHOD_MISSING_ERROR',
-  PAYMENT_ORDER_MISMATCH_ERROR = 'PAYMENT_ORDER_MISMATCH_ERROR',
-  PAYMENT_STATE_TRANSITION_ERROR = 'PAYMENT_STATE_TRANSITION_ERROR',
-  PRODUCT_OPTION_IN_USE_ERROR = 'PRODUCT_OPTION_IN_USE_ERROR',
-  QUANTITY_TOO_GREAT_ERROR = 'QUANTITY_TOO_GREAT_ERROR',
-  REFUND_AMOUNT_ERROR = 'REFUND_AMOUNT_ERROR',
-  REFUND_ORDER_STATE_ERROR = 'REFUND_ORDER_STATE_ERROR',
-  REFUND_PAYMENT_ID_MISSING_ERROR = 'REFUND_PAYMENT_ID_MISSING_ERROR',
-  REFUND_STATE_TRANSITION_ERROR = 'REFUND_STATE_TRANSITION_ERROR',
-  SETTLE_PAYMENT_ERROR = 'SETTLE_PAYMENT_ERROR',
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR'
-}
-
-export type ErrorResult = {
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type Facet = Node & {
-  __typename?: 'Facet';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  isPrivate: Scalars['Boolean']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  translations: Array<FacetTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-  /** Returns a paginated, sortable, filterable list of the Facet's values. Added in v2.1.0. */
-  valueList: FacetValueList;
-  values: Array<FacetValue>;
-};
-
-
-export type FacetValueListArgs = {
-  options?: InputMaybe<FacetValueListOptions>;
-};
-
-export type FacetFilterParameter = {
-  _and?: InputMaybe<Array<FacetFilterParameter>>;
-  _or?: InputMaybe<Array<FacetFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  isPrivate?: InputMaybe<BooleanOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type FacetInUseError = ErrorResult & {
-  __typename?: 'FacetInUseError';
-  errorCode: ErrorCode;
-  facetCode: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  productCount: Scalars['Int']['output'];
-  variantCount: Scalars['Int']['output'];
-};
-
-export type FacetList = PaginatedList & {
-  __typename?: 'FacetList';
-  items: Array<Facet>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type FacetListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<FacetFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<FacetSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type FacetSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type FacetTranslation = {
-  __typename?: 'FacetTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type FacetTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type FacetValue = Node & {
-  __typename?: 'FacetValue';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  facet: Facet;
-  facetId: Scalars['ID']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  translations: Array<FacetValueTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-/**
- * Used to construct boolean expressions for filtering search results
- * by FacetValue ID. Examples:
- *
- * * ID=1 OR ID=2: `{ facetValueFilters: [{ or: [1,2] }] }`
- * * ID=1 AND ID=2: `{ facetValueFilters: [{ and: 1 }, { and: 2 }] }`
- * * ID=1 AND (ID=2 OR ID=3): `{ facetValueFilters: [{ and: 1 }, { or: [2,3] }] }`
- */
-export type FacetValueFilterInput = {
-  and?: InputMaybe<Scalars['ID']['input']>;
-  or?: InputMaybe<Array<Scalars['ID']['input']>>;
-};
-
-export type FacetValueFilterParameter = {
-  _and?: InputMaybe<Array<FacetValueFilterParameter>>;
-  _or?: InputMaybe<Array<FacetValueFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  facetId?: InputMaybe<IdOperators>;
-  id?: InputMaybe<IdOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type FacetValueList = PaginatedList & {
-  __typename?: 'FacetValueList';
-  items: Array<FacetValue>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type FacetValueListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<FacetValueFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<FacetValueSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/**
- * Which FacetValues are present in the products returned
- * by the search, and in what quantity.
- */
-export type FacetValueResult = {
-  __typename?: 'FacetValueResult';
-  count: Scalars['Int']['output'];
-  facetValue: FacetValue;
-};
-
-export type FacetValueSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  facetId?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type FacetValueTranslation = {
-  __typename?: 'FacetValueTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type FacetValueTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type FloatCustomFieldConfig = CustomField & {
-  __typename?: 'FloatCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  max?: Maybe<Scalars['Float']['output']>;
-  min?: Maybe<Scalars['Float']['output']>;
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  step?: Maybe<Scalars['Float']['output']>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type FulfillOrderInput = {
-  handler: ConfigurableOperationInput;
-  lines: Array<OrderLineInput>;
-};
-
-export type Fulfillment = Node & {
-  __typename?: 'Fulfillment';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  lines: Array<FulfillmentLine>;
-  method: Scalars['String']['output'];
-  nextStates: Array<Scalars['String']['output']>;
-  state: Scalars['String']['output'];
-  /** @deprecated Use the `lines` field instead */
-  summary: Array<FulfillmentLine>;
-  trackingCode?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type FulfillmentLine = {
-  __typename?: 'FulfillmentLine';
-  fulfillment: Fulfillment;
-  fulfillmentId: Scalars['ID']['output'];
-  orderLine: OrderLine;
-  orderLineId: Scalars['ID']['output'];
-  quantity: Scalars['Int']['output'];
-};
-
-/** Returned when there is an error in transitioning the Fulfillment state */
-export type FulfillmentStateTransitionError = ErrorResult & {
-  __typename?: 'FulfillmentStateTransitionError';
-  errorCode: ErrorCode;
-  fromState: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  toState: Scalars['String']['output'];
-  transitionError: Scalars['String']['output'];
-};
-
-export enum GlobalFlag {
-  FALSE = 'FALSE',
-  INHERIT = 'INHERIT',
-  TRUE = 'TRUE'
-}
-
-export type GlobalSettings = {
-  __typename?: 'GlobalSettings';
-  availableLanguages: Array<LanguageCode>;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  outOfStockThreshold: Scalars['Int']['output'];
-  serverConfig: ServerConfig;
-  trackInventory: Scalars['Boolean']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-/** Returned when attempting to set the Customer on a guest checkout when the configured GuestCheckoutStrategy does not allow it. */
-export type GuestCheckoutError = ErrorResult & {
-  __typename?: 'GuestCheckoutError';
-  errorCode: ErrorCode;
-  errorDetail: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type HistoryEntry = Node & {
-  __typename?: 'HistoryEntry';
-  administrator?: Maybe<Administrator>;
-  createdAt: Scalars['DateTime']['output'];
-  data: Scalars['JSON']['output'];
-  id: Scalars['ID']['output'];
-  isPublic: Scalars['Boolean']['output'];
-  type: HistoryEntryType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type HistoryEntryFilterParameter = {
-  _and?: InputMaybe<Array<HistoryEntryFilterParameter>>;
-  _or?: InputMaybe<Array<HistoryEntryFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  isPublic?: InputMaybe<BooleanOperators>;
-  type?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type HistoryEntryList = PaginatedList & {
-  __typename?: 'HistoryEntryList';
-  items: Array<HistoryEntry>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type HistoryEntryListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<HistoryEntryFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<HistoryEntrySortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type HistoryEntrySortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export enum HistoryEntryType {
-  CUSTOMER_ADDED_TO_GROUP = 'CUSTOMER_ADDED_TO_GROUP',
-  CUSTOMER_ADDRESS_CREATED = 'CUSTOMER_ADDRESS_CREATED',
-  CUSTOMER_ADDRESS_DELETED = 'CUSTOMER_ADDRESS_DELETED',
-  CUSTOMER_ADDRESS_UPDATED = 'CUSTOMER_ADDRESS_UPDATED',
-  CUSTOMER_DETAIL_UPDATED = 'CUSTOMER_DETAIL_UPDATED',
-  CUSTOMER_EMAIL_UPDATE_REQUESTED = 'CUSTOMER_EMAIL_UPDATE_REQUESTED',
-  CUSTOMER_EMAIL_UPDATE_VERIFIED = 'CUSTOMER_EMAIL_UPDATE_VERIFIED',
-  CUSTOMER_NOTE = 'CUSTOMER_NOTE',
-  CUSTOMER_PASSWORD_RESET_REQUESTED = 'CUSTOMER_PASSWORD_RESET_REQUESTED',
-  CUSTOMER_PASSWORD_RESET_VERIFIED = 'CUSTOMER_PASSWORD_RESET_VERIFIED',
-  CUSTOMER_PASSWORD_UPDATED = 'CUSTOMER_PASSWORD_UPDATED',
-  CUSTOMER_REGISTERED = 'CUSTOMER_REGISTERED',
-  CUSTOMER_REMOVED_FROM_GROUP = 'CUSTOMER_REMOVED_FROM_GROUP',
-  CUSTOMER_VERIFIED = 'CUSTOMER_VERIFIED',
-  ORDER_CANCELLATION = 'ORDER_CANCELLATION',
-  ORDER_COUPON_APPLIED = 'ORDER_COUPON_APPLIED',
-  ORDER_COUPON_REMOVED = 'ORDER_COUPON_REMOVED',
-  ORDER_CUSTOMER_UPDATED = 'ORDER_CUSTOMER_UPDATED',
-  ORDER_FULFILLMENT = 'ORDER_FULFILLMENT',
-  ORDER_FULFILLMENT_TRANSITION = 'ORDER_FULFILLMENT_TRANSITION',
-  ORDER_MODIFIED = 'ORDER_MODIFIED',
-  ORDER_NOTE = 'ORDER_NOTE',
-  ORDER_PAYMENT_TRANSITION = 'ORDER_PAYMENT_TRANSITION',
-  ORDER_REFUND_TRANSITION = 'ORDER_REFUND_TRANSITION',
-  ORDER_STATE_TRANSITION = 'ORDER_STATE_TRANSITION'
-}
-
-/** Operators for filtering on a list of ID fields */
-export type IdListOperators = {
-  inList: Scalars['ID']['input'];
-};
-
-/** Operators for filtering on an ID field */
-export type IdOperators = {
-  eq?: InputMaybe<Scalars['String']['input']>;
-  in?: InputMaybe<Array<Scalars['String']['input']>>;
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  notEq?: InputMaybe<Scalars['String']['input']>;
-  notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-export type ImportInfo = {
-  __typename?: 'ImportInfo';
-  errors?: Maybe<Array<Scalars['String']['output']>>;
-  imported: Scalars['Int']['output'];
-  processed: Scalars['Int']['output'];
-};
-
-/** Returned when attempting to set a ShippingMethod for which the Order is not eligible */
-export type IneligibleShippingMethodError = ErrorResult & {
-  __typename?: 'IneligibleShippingMethodError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned when attempting to add more items to the Order than are available */
-export type InsufficientStockError = ErrorResult & {
-  __typename?: 'InsufficientStockError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  order: Order;
-  quantityAvailable: Scalars['Int']['output'];
-};
-
-/**
- * Returned if attempting to create a Fulfillment when there is insufficient
- * stockOnHand of a ProductVariant to satisfy the requested quantity.
- */
-export type InsufficientStockOnHandError = ErrorResult & {
-  __typename?: 'InsufficientStockOnHandError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  productVariantId: Scalars['ID']['output'];
-  productVariantName: Scalars['String']['output'];
-  stockOnHand: Scalars['Int']['output'];
-};
-
-export type IntCustomFieldConfig = CustomField & {
-  __typename?: 'IntCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  max?: Maybe<Scalars['Int']['output']>;
-  min?: Maybe<Scalars['Int']['output']>;
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  step?: Maybe<Scalars['Int']['output']>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-/** Returned if the user authentication credentials are not valid */
-export type InvalidCredentialsError = ErrorResult & {
-  __typename?: 'InvalidCredentialsError';
-  authenticationError: Scalars['String']['output'];
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned if the specified FulfillmentHandler code is not valid */
-export type InvalidFulfillmentHandlerError = ErrorResult & {
-  __typename?: 'InvalidFulfillmentHandlerError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned if the specified items are already part of a Fulfillment */
-export type ItemsAlreadyFulfilledError = ErrorResult & {
-  __typename?: 'ItemsAlreadyFulfilledError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type Job = Node & {
-  __typename?: 'Job';
-  attempts: Scalars['Int']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  data?: Maybe<Scalars['JSON']['output']>;
-  duration: Scalars['Int']['output'];
-  error?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  isSettled: Scalars['Boolean']['output'];
-  progress: Scalars['Float']['output'];
-  queueName: Scalars['String']['output'];
-  result?: Maybe<Scalars['JSON']['output']>;
-  retries: Scalars['Int']['output'];
-  settledAt?: Maybe<Scalars['DateTime']['output']>;
-  startedAt?: Maybe<Scalars['DateTime']['output']>;
-  state: JobState;
-};
-
-export type JobBufferSize = {
-  __typename?: 'JobBufferSize';
-  bufferId: Scalars['String']['output'];
-  size: Scalars['Int']['output'];
-};
-
-export type JobFilterParameter = {
-  _and?: InputMaybe<Array<JobFilterParameter>>;
-  _or?: InputMaybe<Array<JobFilterParameter>>;
-  attempts?: InputMaybe<NumberOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  duration?: InputMaybe<NumberOperators>;
-  id?: InputMaybe<IdOperators>;
-  isSettled?: InputMaybe<BooleanOperators>;
-  progress?: InputMaybe<NumberOperators>;
-  queueName?: InputMaybe<StringOperators>;
-  retries?: InputMaybe<NumberOperators>;
-  settledAt?: InputMaybe<DateOperators>;
-  startedAt?: InputMaybe<DateOperators>;
-  state?: InputMaybe<StringOperators>;
-};
-
-export type JobList = PaginatedList & {
-  __typename?: 'JobList';
-  items: Array<Job>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type JobListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<JobFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<JobSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type JobQueue = {
-  __typename?: 'JobQueue';
-  name: Scalars['String']['output'];
-  running: Scalars['Boolean']['output'];
-};
-
-export type JobSortParameter = {
-  attempts?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  duration?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  progress?: InputMaybe<SortOrder>;
-  queueName?: InputMaybe<SortOrder>;
-  retries?: InputMaybe<SortOrder>;
-  settledAt?: InputMaybe<SortOrder>;
-  startedAt?: InputMaybe<SortOrder>;
-};
-
-/**
- * @description
- * The state of a Job in the JobQueue
- *
- * @docsCategory common
- */
-export enum JobState {
-  CANCELLED = 'CANCELLED',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  PENDING = 'PENDING',
-  RETRYING = 'RETRYING',
-  RUNNING = 'RUNNING'
-}
-
-/**
- * @description
- * Languages in the form of a ISO 639-1 language code with optional
- * region or script modifier (e.g. de_AT). The selection available is based
- * on the [Unicode CLDR summary list](https://unicode-org.github.io/cldr-staging/charts/37/summary/root.html)
- * and includes the major spoken languages of the world and any widely-used variants.
- *
- * @docsCategory common
- */
-export enum LanguageCode {
-  /** Afrikaans */
-  af = 'af',
-  /** Akan */
-  ak = 'ak',
-  /** Amharic */
-  am = 'am',
-  /** Arabic */
-  ar = 'ar',
-  /** Assamese */
-  as = 'as',
-  /** Azerbaijani */
-  az = 'az',
-  /** Belarusian */
-  be = 'be',
-  /** Bulgarian */
-  bg = 'bg',
-  /** Bambara */
-  bm = 'bm',
-  /** Bangla */
-  bn = 'bn',
-  /** Tibetan */
-  bo = 'bo',
-  /** Breton */
-  br = 'br',
-  /** Bosnian */
-  bs = 'bs',
-  /** Catalan */
-  ca = 'ca',
-  /** Chechen */
-  ce = 'ce',
-  /** Corsican */
-  co = 'co',
-  /** Czech */
-  cs = 'cs',
-  /** Church Slavic */
-  cu = 'cu',
-  /** Welsh */
-  cy = 'cy',
-  /** Danish */
-  da = 'da',
-  /** German */
-  de = 'de',
-  /** Austrian German */
-  de_AT = 'de_AT',
-  /** Swiss High German */
-  de_CH = 'de_CH',
-  /** Dzongkha */
-  dz = 'dz',
-  /** Ewe */
-  ee = 'ee',
-  /** Greek */
-  el = 'el',
-  /** English */
-  en = 'en',
-  /** Australian English */
-  en_AU = 'en_AU',
-  /** Canadian English */
-  en_CA = 'en_CA',
-  /** British English */
-  en_GB = 'en_GB',
-  /** American English */
-  en_US = 'en_US',
-  /** Esperanto */
-  eo = 'eo',
-  /** Spanish */
-  es = 'es',
-  /** European Spanish */
-  es_ES = 'es_ES',
-  /** Mexican Spanish */
-  es_MX = 'es_MX',
-  /** Estonian */
-  et = 'et',
-  /** Basque */
-  eu = 'eu',
-  /** Persian */
-  fa = 'fa',
-  /** Dari */
-  fa_AF = 'fa_AF',
-  /** Fulah */
-  ff = 'ff',
-  /** Finnish */
-  fi = 'fi',
-  /** Faroese */
-  fo = 'fo',
-  /** French */
-  fr = 'fr',
-  /** Canadian French */
-  fr_CA = 'fr_CA',
-  /** Swiss French */
-  fr_CH = 'fr_CH',
-  /** Western Frisian */
-  fy = 'fy',
-  /** Irish */
-  ga = 'ga',
-  /** Scottish Gaelic */
-  gd = 'gd',
-  /** Galician */
-  gl = 'gl',
-  /** Gujarati */
-  gu = 'gu',
-  /** Manx */
-  gv = 'gv',
-  /** Hausa */
-  ha = 'ha',
-  /** Hebrew */
-  he = 'he',
-  /** Hindi */
-  hi = 'hi',
-  /** Croatian */
-  hr = 'hr',
-  /** Haitian Creole */
-  ht = 'ht',
-  /** Hungarian */
-  hu = 'hu',
-  /** Armenian */
-  hy = 'hy',
-  /** Interlingua */
-  ia = 'ia',
-  /** Indonesian */
-  id = 'id',
-  /** Igbo */
-  ig = 'ig',
-  /** Sichuan Yi */
-  ii = 'ii',
-  /** Icelandic */
-  is = 'is',
-  /** Italian */
-  it = 'it',
-  /** Japanese */
-  ja = 'ja',
-  /** Javanese */
-  jv = 'jv',
-  /** Georgian */
-  ka = 'ka',
-  /** Kikuyu */
-  ki = 'ki',
-  /** Kazakh */
-  kk = 'kk',
-  /** Kalaallisut */
-  kl = 'kl',
-  /** Khmer */
-  km = 'km',
-  /** Kannada */
-  kn = 'kn',
-  /** Korean */
-  ko = 'ko',
-  /** Kashmiri */
-  ks = 'ks',
-  /** Kurdish */
-  ku = 'ku',
-  /** Cornish */
-  kw = 'kw',
-  /** Kyrgyz */
-  ky = 'ky',
-  /** Latin */
-  la = 'la',
-  /** Luxembourgish */
-  lb = 'lb',
-  /** Ganda */
-  lg = 'lg',
-  /** Lingala */
-  ln = 'ln',
-  /** Lao */
-  lo = 'lo',
-  /** Lithuanian */
-  lt = 'lt',
-  /** Luba-Katanga */
-  lu = 'lu',
-  /** Latvian */
-  lv = 'lv',
-  /** Malagasy */
-  mg = 'mg',
-  /** Maori */
-  mi = 'mi',
-  /** Macedonian */
-  mk = 'mk',
-  /** Malayalam */
-  ml = 'ml',
-  /** Mongolian */
-  mn = 'mn',
-  /** Marathi */
-  mr = 'mr',
-  /** Malay */
-  ms = 'ms',
-  /** Maltese */
-  mt = 'mt',
-  /** Burmese */
-  my = 'my',
-  /** Norwegian Bokmål */
-  nb = 'nb',
-  /** North Ndebele */
-  nd = 'nd',
-  /** Nepali */
-  ne = 'ne',
-  /** Dutch */
-  nl = 'nl',
-  /** Flemish */
-  nl_BE = 'nl_BE',
-  /** Norwegian Nynorsk */
-  nn = 'nn',
-  /** Nyanja */
-  ny = 'ny',
-  /** Oromo */
-  om = 'om',
-  /** Odia */
-  or = 'or',
-  /** Ossetic */
-  os = 'os',
-  /** Punjabi */
-  pa = 'pa',
-  /** Polish */
-  pl = 'pl',
-  /** Pashto */
-  ps = 'ps',
-  /** Portuguese */
-  pt = 'pt',
-  /** Brazilian Portuguese */
-  pt_BR = 'pt_BR',
-  /** European Portuguese */
-  pt_PT = 'pt_PT',
-  /** Quechua */
-  qu = 'qu',
-  /** Romansh */
-  rm = 'rm',
-  /** Rundi */
-  rn = 'rn',
-  /** Romanian */
-  ro = 'ro',
-  /** Moldavian */
-  ro_MD = 'ro_MD',
-  /** Russian */
-  ru = 'ru',
-  /** Kinyarwanda */
-  rw = 'rw',
-  /** Sanskrit */
-  sa = 'sa',
-  /** Sindhi */
-  sd = 'sd',
-  /** Northern Sami */
-  se = 'se',
-  /** Sango */
-  sg = 'sg',
-  /** Sinhala */
-  si = 'si',
-  /** Slovak */
-  sk = 'sk',
-  /** Slovenian */
-  sl = 'sl',
-  /** Samoan */
-  sm = 'sm',
-  /** Shona */
-  sn = 'sn',
-  /** Somali */
-  so = 'so',
-  /** Albanian */
-  sq = 'sq',
-  /** Serbian */
-  sr = 'sr',
-  /** Southern Sotho */
-  st = 'st',
-  /** Sundanese */
-  su = 'su',
-  /** Swedish */
-  sv = 'sv',
-  /** Swahili */
-  sw = 'sw',
-  /** Congo Swahili */
-  sw_CD = 'sw_CD',
-  /** Tamil */
-  ta = 'ta',
-  /** Telugu */
-  te = 'te',
-  /** Tajik */
-  tg = 'tg',
-  /** Thai */
-  th = 'th',
-  /** Tigrinya */
-  ti = 'ti',
-  /** Turkmen */
-  tk = 'tk',
-  /** Tongan */
-  to = 'to',
-  /** Turkish */
-  tr = 'tr',
-  /** Tatar */
-  tt = 'tt',
-  /** Uyghur */
-  ug = 'ug',
-  /** Ukrainian */
-  uk = 'uk',
-  /** Urdu */
-  ur = 'ur',
-  /** Uzbek */
-  uz = 'uz',
-  /** Vietnamese */
-  vi = 'vi',
-  /** Volapük */
-  vo = 'vo',
-  /** Wolof */
-  wo = 'wo',
-  /** Xhosa */
-  xh = 'xh',
-  /** Yiddish */
-  yi = 'yi',
-  /** Yoruba */
-  yo = 'yo',
-  /** Chinese */
-  zh = 'zh',
-  /** Simplified Chinese */
-  zh_Hans = 'zh_Hans',
-  /** Traditional Chinese */
-  zh_Hant = 'zh_Hant',
-  /** Zulu */
-  zu = 'zu'
-}
-
-/** Returned if attempting to set a Channel's defaultLanguageCode to a language which is not enabled in GlobalSettings */
-export type LanguageNotAvailableError = ErrorResult & {
-  __typename?: 'LanguageNotAvailableError';
-  errorCode: ErrorCode;
-  languageCode: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type LocaleStringCustomFieldConfig = CustomField & {
-  __typename?: 'LocaleStringCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  length?: Maybe<Scalars['Int']['output']>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  pattern?: Maybe<Scalars['String']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type LocaleTextCustomFieldConfig = CustomField & {
-  __typename?: 'LocaleTextCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type LocalizedString = {
-  __typename?: 'LocalizedString';
-  languageCode: LanguageCode;
-  value: Scalars['String']['output'];
-};
-
-export enum LogicalOperator {
-  AND = 'AND',
-  OR = 'OR'
-}
-
-export type ManualPaymentInput = {
-  metadata?: InputMaybe<Scalars['JSON']['input']>;
-  method: Scalars['String']['input'];
-  orderId: Scalars['ID']['input'];
-  transactionId?: InputMaybe<Scalars['String']['input']>;
-};
-
-/**
- * Returned when a call to addManualPaymentToOrder is made but the Order
- * is not in the required state.
- */
-export type ManualPaymentStateError = ErrorResult & {
-  __typename?: 'ManualPaymentStateError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export enum MetricInterval {
-  Daily = 'Daily'
-}
-
-export type MetricSummary = {
-  __typename?: 'MetricSummary';
-  entries: Array<MetricSummaryEntry>;
-  interval: MetricInterval;
-  title: Scalars['String']['output'];
-  type: MetricType;
-};
-
-export type MetricSummaryEntry = {
-  __typename?: 'MetricSummaryEntry';
-  label: Scalars['String']['output'];
-  value: Scalars['Float']['output'];
-};
-
-export type MetricSummaryInput = {
-  interval: MetricInterval;
-  refresh?: InputMaybe<Scalars['Boolean']['input']>;
-  types: Array<MetricType>;
-};
-
-export enum MetricType {
-  AverageOrderValue = 'AverageOrderValue',
-  OrderCount = 'OrderCount',
-  OrderTotal = 'OrderTotal'
-}
-
-export type MimeTypeError = ErrorResult & {
-  __typename?: 'MimeTypeError';
-  errorCode: ErrorCode;
-  fileName: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  mimeType: Scalars['String']['output'];
-};
-
-/** Returned if a PromotionCondition has neither a couponCode nor any conditions set */
-export type MissingConditionsError = ErrorResult & {
-  __typename?: 'MissingConditionsError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type ModifyOrderInput = {
-  addItems?: InputMaybe<Array<AddItemInput>>;
-  adjustOrderLines?: InputMaybe<Array<OrderLineInput>>;
-  couponCodes?: InputMaybe<Array<Scalars['String']['input']>>;
-  dryRun: Scalars['Boolean']['input'];
-  note?: InputMaybe<Scalars['String']['input']>;
-  options?: InputMaybe<ModifyOrderOptions>;
-  orderId: Scalars['ID']['input'];
-  /**
-   * Deprecated in v2.2.0. Use `refunds` instead to allow multiple refunds to be
-   * applied in the case that multiple payment methods have been used on the order.
-   */
-  refund?: InputMaybe<AdministratorRefundInput>;
-  refunds?: InputMaybe<Array<AdministratorRefundInput>>;
-  /** Added in v2.2 */
-  shippingMethodIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  surcharges?: InputMaybe<Array<SurchargeInput>>;
-  updateBillingAddress?: InputMaybe<UpdateOrderAddressInput>;
-  updateShippingAddress?: InputMaybe<UpdateOrderAddressInput>;
-};
-
-export type ModifyOrderOptions = {
-  freezePromotions?: InputMaybe<Scalars['Boolean']['input']>;
-  recalculateShipping?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ModifyOrderResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | IneligibleShippingMethodError | InsufficientStockError | NegativeQuantityError | NoChangesSpecifiedError | Order | OrderLimitError | OrderModificationStateError | PaymentMethodMissingError | RefundPaymentIdMissingError;
-
-export type MoveCollectionInput = {
-  collectionId: Scalars['ID']['input'];
-  index: Scalars['Int']['input'];
-  parentId: Scalars['ID']['input'];
-};
-
-/** Returned if an operation has specified OrderLines from multiple Orders */
-export type MultipleOrderError = ErrorResult & {
-  __typename?: 'MultipleOrderError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  /** Add Customers to a CustomerGroup */
-  addCustomersToGroup: CustomerGroup;
-  addFulfillmentToOrder: AddFulfillmentToOrderResult;
-  /** Adds an item to the draft Order. */
-  addItemToDraftOrder: UpdateOrderItemsResult;
-  /**
-   * Used to manually create a new Payment against an Order.
-   * This can be used by an Administrator when an Order is in the ArrangingPayment state.
-   *
-   * It is also used when a completed Order
-   * has been modified (using `modifyOrder`) and the price has increased. The extra payment
-   * can then be manually arranged by the administrator, and the details used to create a new
-   * Payment.
-   */
-  addManualPaymentToOrder: AddManualPaymentToOrderResult;
-  /** Add members to a Zone */
-  addMembersToZone: Zone;
-  addNoteToCustomer: Customer;
-  addNoteToOrder: Order;
-  /** Add an OptionGroup to a Product */
-  addOptionGroupToProduct: Product;
-  /** Adjusts a draft OrderLine. If custom fields are defined on the OrderLine entity, a third argument 'customFields' of type `OrderLineCustomFieldsInput` will be available. */
-  adjustDraftOrderLine: UpdateOrderItemsResult;
-  /** Applies the given coupon code to the draft Order */
-  applyCouponCodeToDraftOrder: ApplyCouponCodeResult;
-  /** Assign assets to channel */
-  assignAssetsToChannel: Array<Asset>;
-  /** Assigns Collections to the specified Channel */
-  assignCollectionsToChannel: Array<Collection>;
-  /** Assigns Facets to the specified Channel */
-  assignFacetsToChannel: Array<Facet>;
-  /** Assigns PaymentMethods to the specified Channel */
-  assignPaymentMethodsToChannel: Array<PaymentMethod>;
-  /** Assigns ProductVariants to the specified Channel */
-  assignProductVariantsToChannel: Array<ProductVariant>;
-  /** Assigns all ProductVariants of Product to the specified Channel */
-  assignProductsToChannel: Array<Product>;
-  /** Assigns Promotions to the specified Channel */
-  assignPromotionsToChannel: Array<Promotion>;
-  /** Assign a Role to an Administrator */
-  assignRoleToAdministrator: Administrator;
-  /** Assigns ShippingMethods to the specified Channel */
-  assignShippingMethodsToChannel: Array<ShippingMethod>;
-  /** Assigns StockLocations to the specified Channel */
-  assignStockLocationsToChannel: Array<StockLocation>;
-  /** Authenticates the user using a named authentication strategy */
-  authenticate: AuthenticationResult;
-  cancelJob: Job;
-  cancelOrder: CancelOrderResult;
-  cancelPayment: CancelPaymentResult;
-  /** Create a new Administrator */
-  createAdministrator: Administrator;
-  /** Create a new Asset */
-  createAssets: Array<CreateAssetResult>;
-  /** Create a new Channel */
-  createChannel: CreateChannelResult;
-  /** Create a new Collection */
-  createCollection: Collection;
-  /** Create a new Country */
-  createCountry: Country;
-  /** Create a new Customer. If a password is provided, a new User will also be created an linked to the Customer. */
-  createCustomer: CreateCustomerResult;
-  /** Create a new Address and associate it with the Customer specified by customerId */
-  createCustomerAddress: Address;
-  /** Create a new CustomerGroup */
-  createCustomerGroup: CustomerGroup;
-  /** Creates a draft Order */
-  createDraftOrder: Order;
-  /** Create a new Facet */
-  createFacet: Facet;
-  /** Create one or more FacetValues */
-  createFacetValues: Array<FacetValue>;
-  /** Create existing PaymentMethod */
-  createPaymentMethod: PaymentMethod;
-  /** Create a new Product */
-  createProduct: Product;
-  /** Create a new ProductOption within a ProductOptionGroup */
-  createProductOption: ProductOption;
-  /** Create a new ProductOptionGroup */
-  createProductOptionGroup: ProductOptionGroup;
-  /** Create a set of ProductVariants based on the OptionGroups assigned to the given Product */
-  createProductVariants: Array<Maybe<ProductVariant>>;
-  createPromotion: CreatePromotionResult;
-  /** Create a new Province */
-  createProvince: Province;
-  /** Create a new Role */
-  createRole: Role;
-  /** Create a new Seller */
-  createSeller: Seller;
-  /** Create a new ShippingMethod */
-  createShippingMethod: ShippingMethod;
-  createStockLocation: StockLocation;
-  /** Create a new Tag */
-  createTag: Tag;
-  /** Create a new TaxCategory */
-  createTaxCategory: TaxCategory;
-  /** Create a new TaxRate */
-  createTaxRate: TaxRate;
-  /** Create a new Zone */
-  createZone: Zone;
-  /** Delete an Administrator */
-  deleteAdministrator: DeletionResponse;
-  /** Delete multiple Administrators */
-  deleteAdministrators: Array<DeletionResponse>;
-  /** Delete an Asset */
-  deleteAsset: DeletionResponse;
-  /** Delete multiple Assets */
-  deleteAssets: DeletionResponse;
-  /** Delete a Channel */
-  deleteChannel: DeletionResponse;
-  /** Delete multiple Channels */
-  deleteChannels: Array<DeletionResponse>;
-  /** Delete a Collection and all of its descendants */
-  deleteCollection: DeletionResponse;
-  /** Delete multiple Collections and all of their descendants */
-  deleteCollections: Array<DeletionResponse>;
-  /** Delete multiple Countries */
-  deleteCountries: Array<DeletionResponse>;
-  /** Delete a Country */
-  deleteCountry: DeletionResponse;
-  /** Delete a Customer */
-  deleteCustomer: DeletionResponse;
-  /** Update an existing Address */
-  deleteCustomerAddress: Success;
-  /** Delete a CustomerGroup */
-  deleteCustomerGroup: DeletionResponse;
-  /** Delete multiple CustomerGroups */
-  deleteCustomerGroups: Array<DeletionResponse>;
-  deleteCustomerNote: DeletionResponse;
-  /** Deletes Customers */
-  deleteCustomers: Array<DeletionResponse>;
-  /** Deletes a draft Order */
-  deleteDraftOrder: DeletionResponse;
-  /** Delete an existing Facet */
-  deleteFacet: DeletionResponse;
-  /** Delete one or more FacetValues */
-  deleteFacetValues: Array<DeletionResponse>;
-  /** Delete multiple existing Facets */
-  deleteFacets: Array<DeletionResponse>;
-  deleteOrderNote: DeletionResponse;
-  /** Delete a PaymentMethod */
-  deletePaymentMethod: DeletionResponse;
-  /** Delete multiple PaymentMethods */
-  deletePaymentMethods: Array<DeletionResponse>;
-  /** Delete a Product */
-  deleteProduct: DeletionResponse;
-  /** Delete a ProductOption */
-  deleteProductOption: DeletionResponse;
-  /** Delete a ProductVariant */
-  deleteProductVariant: DeletionResponse;
-  /** Delete multiple ProductVariants */
-  deleteProductVariants: Array<DeletionResponse>;
-  /** Delete multiple Products */
-  deleteProducts: Array<DeletionResponse>;
-  deletePromotion: DeletionResponse;
-  deletePromotions: Array<DeletionResponse>;
-  /** Delete a Province */
-  deleteProvince: DeletionResponse;
-  /** Delete an existing Role */
-  deleteRole: DeletionResponse;
-  /** Delete multiple Roles */
-  deleteRoles: Array<DeletionResponse>;
-  /** Delete a Seller */
-  deleteSeller: DeletionResponse;
-  /** Delete multiple Sellers */
-  deleteSellers: Array<DeletionResponse>;
-  /** Delete a ShippingMethod */
-  deleteShippingMethod: DeletionResponse;
-  /** Delete multiple ShippingMethods */
-  deleteShippingMethods: Array<DeletionResponse>;
-  deleteStockLocation: DeletionResponse;
-  deleteStockLocations: Array<DeletionResponse>;
-  /** Delete an existing Tag */
-  deleteTag: DeletionResponse;
-  /** Deletes multiple TaxCategories */
-  deleteTaxCategories: Array<DeletionResponse>;
-  /** Deletes a TaxCategory */
-  deleteTaxCategory: DeletionResponse;
-  /** Delete a TaxRate */
-  deleteTaxRate: DeletionResponse;
-  /** Delete multiple TaxRates */
-  deleteTaxRates: Array<DeletionResponse>;
-  /** Delete a Zone */
-  deleteZone: DeletionResponse;
-  /** Delete a Zone */
-  deleteZones: Array<DeletionResponse>;
-  /**
-   * Duplicate an existing entity using a specific EntityDuplicator.
-   * Since v2.2.0.
-   */
-  duplicateEntity: DuplicateEntityResult;
-  flushBufferedJobs: Success;
-  importProducts?: Maybe<ImportInfo>;
-  /**
-   * Authenticates the user using the native authentication strategy. This mutation is an alias for authenticate({ native: { ... }})
-   *
-   * The `rememberMe` option applies when using cookie-based sessions, and if `true` it will set the maxAge of the session cookie
-   * to 1 year.
-   */
-  login: NativeAuthenticationResult;
-  logout: Success;
-  /**
-   * Allows an Order to be modified after it has been completed by the Customer. The Order must first
-   * be in the `Modifying` state.
-   */
-  modifyOrder: ModifyOrderResult;
-  /** Move a Collection to a different parent or index */
-  moveCollection: Collection;
-  refundOrder: RefundOrderResult;
-  reindex: Job;
-  /** Removes Collections from the specified Channel */
-  removeCollectionsFromChannel: Array<Collection>;
-  /** Removes the given coupon code from the draft Order */
-  removeCouponCodeFromDraftOrder?: Maybe<Order>;
-  /** Remove Customers from a CustomerGroup */
-  removeCustomersFromGroup: CustomerGroup;
-  /** Remove an OrderLine from the draft Order */
-  removeDraftOrderLine: RemoveOrderItemsResult;
-  /** Removes Facets from the specified Channel */
-  removeFacetsFromChannel: Array<RemoveFacetFromChannelResult>;
-  /** Remove members from a Zone */
-  removeMembersFromZone: Zone;
-  /**
-   * Remove an OptionGroup from a Product. If the OptionGroup is in use by any ProductVariants
-   * the mutation will return a ProductOptionInUseError, and the OptionGroup will not be removed.
-   * Setting the `force` argument to `true` will override this and remove the OptionGroup anyway,
-   * as well as removing any of the group's options from the Product's ProductVariants.
-   */
-  removeOptionGroupFromProduct: RemoveOptionGroupFromProductResult;
-  /** Removes PaymentMethods from the specified Channel */
-  removePaymentMethodsFromChannel: Array<PaymentMethod>;
-  /** Removes ProductVariants from the specified Channel */
-  removeProductVariantsFromChannel: Array<Scalars['ID']['output']>;
-  /** Removes all ProductVariants of Product from the specified Channel */
-  removeProductsFromChannel: Array<Product>;
-  /** Removes Promotions from the specified Channel */
-  removePromotionsFromChannel: Array<Promotion>;
-  /** Remove all settled jobs in the given queues older than the given date. Returns the number of jobs deleted. */
-  removeSettledJobs: Scalars['Int']['output'];
-  /** Removes ShippingMethods from the specified Channel */
-  removeShippingMethodsFromChannel: Array<ShippingMethod>;
-  /** Removes StockLocations from the specified Channel */
-  removeStockLocationsFromChannel: Array<StockLocation>;
-  requestCompleted: Scalars['Int']['output'];
-  requestStarted: Scalars['Int']['output'];
-  runPendingSearchIndexUpdates: Success;
-  setActiveChannel: UserStatus;
-  setAsLoggedIn: UserStatus;
-  setAsLoggedOut: UserStatus;
-  setContentLanguage: LanguageCode;
-  setCustomerForDraftOrder: SetCustomerForDraftOrderResult;
-  setDisplayUiExtensionPoints: Scalars['Boolean']['output'];
-  /** Sets the billing address for a draft Order */
-  setDraftOrderBillingAddress: Order;
-  /** Allows any custom fields to be set for the active order */
-  setDraftOrderCustomFields: Order;
-  /** Sets the shipping address for a draft Order */
-  setDraftOrderShippingAddress: Order;
-  /** Sets the shipping method by id, which can be obtained with the `eligibleShippingMethodsForDraftOrder` query */
-  setDraftOrderShippingMethod: SetOrderShippingMethodResult;
-  setMainNavExpanded: Scalars['Boolean']['output'];
-  setOrderCustomFields?: Maybe<Order>;
-  /** Allows a different Customer to be assigned to an Order. Added in v2.2.0. */
-  setOrderCustomer?: Maybe<Order>;
-  setUiLanguage: LanguageCode;
-  setUiLocale?: Maybe<Scalars['String']['output']>;
-  setUiTheme: Scalars['String']['output'];
-  settlePayment: SettlePaymentResult;
-  settleRefund: SettleRefundResult;
-  /** Toggle exclusion of given promotion from the draft Order */
-  toggleExcludePromotionInOrder?: Maybe<Order>;
-  transitionFulfillmentToState: TransitionFulfillmentToStateResult;
-  transitionOrderToState?: Maybe<TransitionOrderToStateResult>;
-  transitionPaymentToState: TransitionPaymentToStateResult;
-  /** Update the active (currently logged-in) Administrator */
-  updateActiveAdministrator: Administrator;
-  /** Update an existing Administrator */
-  updateAdministrator: Administrator;
-  /** Update an existing Asset */
-  updateAsset: Asset;
-  /** Update an existing Channel */
-  updateChannel: UpdateChannelResult;
-  /** Update an existing Collection */
-  updateCollection: Collection;
-  /** Update an existing Country */
-  updateCountry: Country;
-  /** Update an existing Customer */
-  updateCustomer: UpdateCustomerResult;
-  /** Update an existing Address */
-  updateCustomerAddress: Address;
-  /** Update an existing CustomerGroup */
-  updateCustomerGroup: CustomerGroup;
-  updateCustomerNote: HistoryEntry;
-  /** Update an existing Facet */
-  updateFacet: Facet;
-  /** Update one or more FacetValues */
-  updateFacetValues: Array<FacetValue>;
-  updateGlobalSettings: UpdateGlobalSettingsResult;
-  updateOrderNote: HistoryEntry;
-  /** Update an existing PaymentMethod */
-  updatePaymentMethod: PaymentMethod;
-  /** Update an existing Product */
-  updateProduct: Product;
-  /** Create a new ProductOption within a ProductOptionGroup */
-  updateProductOption: ProductOption;
-  /** Update an existing ProductOptionGroup */
-  updateProductOptionGroup: ProductOptionGroup;
-  /** Update existing ProductVariants */
-  updateProductVariants: Array<Maybe<ProductVariant>>;
-  /** Update multiple existing Products */
-  updateProducts: Array<Product>;
-  updatePromotion: UpdatePromotionResult;
-  /** Update an existing Province */
-  updateProvince: Province;
-  /** Update an existing Role */
-  updateRole: Role;
-  /** Update an existing Seller */
-  updateSeller: Seller;
-  /** Update an existing ShippingMethod */
-  updateShippingMethod: ShippingMethod;
-  updateStockLocation: StockLocation;
-  /** Update an existing Tag */
-  updateTag: Tag;
-  /** Update an existing TaxCategory */
-  updateTaxCategory: TaxCategory;
-  /** Update an existing TaxRate */
-  updateTaxRate: TaxRate;
-  updateUserChannels: UserStatus;
-  /** Update an existing Zone */
-  updateZone: Zone;
-};
-
-
-export type MutationAddCustomersToGroupArgs = {
-  customerGroupId: Scalars['ID']['input'];
-  customerIds: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationAddFulfillmentToOrderArgs = {
-  input: FulfillOrderInput;
-};
-
-
-export type MutationAddItemToDraftOrderArgs = {
-  input: AddItemToDraftOrderInput;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationAddManualPaymentToOrderArgs = {
-  input: ManualPaymentInput;
-};
-
-
-export type MutationAddMembersToZoneArgs = {
-  memberIds: Array<Scalars['ID']['input']>;
-  zoneId: Scalars['ID']['input'];
-};
-
-
-export type MutationAddNoteToCustomerArgs = {
-  input: AddNoteToCustomerInput;
-};
-
-
-export type MutationAddNoteToOrderArgs = {
-  input: AddNoteToOrderInput;
-};
-
-
-export type MutationAddOptionGroupToProductArgs = {
-  optionGroupId: Scalars['ID']['input'];
-  productId: Scalars['ID']['input'];
-};
-
-
-export type MutationAdjustDraftOrderLineArgs = {
-  input: AdjustDraftOrderLineInput;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationApplyCouponCodeToDraftOrderArgs = {
-  couponCode: Scalars['String']['input'];
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationAssignAssetsToChannelArgs = {
-  input: AssignAssetsToChannelInput;
-};
-
-
-export type MutationAssignCollectionsToChannelArgs = {
-  input: AssignCollectionsToChannelInput;
-};
-
-
-export type MutationAssignFacetsToChannelArgs = {
-  input: AssignFacetsToChannelInput;
-};
-
-
-export type MutationAssignPaymentMethodsToChannelArgs = {
-  input: AssignPaymentMethodsToChannelInput;
-};
-
-
-export type MutationAssignProductVariantsToChannelArgs = {
-  input: AssignProductVariantsToChannelInput;
-};
-
-
-export type MutationAssignProductsToChannelArgs = {
-  input: AssignProductsToChannelInput;
-};
-
-
-export type MutationAssignPromotionsToChannelArgs = {
-  input: AssignPromotionsToChannelInput;
-};
-
-
-export type MutationAssignRoleToAdministratorArgs = {
-  administratorId: Scalars['ID']['input'];
-  roleId: Scalars['ID']['input'];
-};
-
-
-export type MutationAssignShippingMethodsToChannelArgs = {
-  input: AssignShippingMethodsToChannelInput;
-};
-
-
-export type MutationAssignStockLocationsToChannelArgs = {
-  input: AssignStockLocationsToChannelInput;
-};
-
-
-export type MutationAuthenticateArgs = {
-  input: AuthenticationInput;
-  rememberMe?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
-export type MutationCancelJobArgs = {
-  jobId: Scalars['ID']['input'];
-};
-
-
-export type MutationCancelOrderArgs = {
-  input: CancelOrderInput;
-};
-
-
-export type MutationCancelPaymentArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationCreateAdministratorArgs = {
-  input: CreateAdministratorInput;
-};
-
-
-export type MutationCreateAssetsArgs = {
-  input: Array<CreateAssetInput>;
-};
-
-
-export type MutationCreateChannelArgs = {
-  input: CreateChannelInput;
-};
-
-
-export type MutationCreateCollectionArgs = {
-  input: CreateCollectionInput;
-};
-
-
-export type MutationCreateCountryArgs = {
-  input: CreateCountryInput;
-};
-
-
-export type MutationCreateCustomerArgs = {
-  input: CreateCustomerInput;
-  password?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type MutationCreateCustomerAddressArgs = {
-  customerId: Scalars['ID']['input'];
-  input: CreateAddressInput;
-};
-
-
-export type MutationCreateCustomerGroupArgs = {
-  input: CreateCustomerGroupInput;
-};
-
-
-export type MutationCreateFacetArgs = {
-  input: CreateFacetInput;
-};
-
-
-export type MutationCreateFacetValuesArgs = {
-  input: Array<CreateFacetValueInput>;
-};
-
-
-export type MutationCreatePaymentMethodArgs = {
-  input: CreatePaymentMethodInput;
-};
-
-
-export type MutationCreateProductArgs = {
-  input: CreateProductInput;
-};
-
-
-export type MutationCreateProductOptionArgs = {
-  input: CreateProductOptionInput;
-};
-
-
-export type MutationCreateProductOptionGroupArgs = {
-  input: CreateProductOptionGroupInput;
-};
-
-
-export type MutationCreateProductVariantsArgs = {
-  input: Array<CreateProductVariantInput>;
-};
-
-
-export type MutationCreatePromotionArgs = {
-  input: CreatePromotionInput;
-};
-
-
-export type MutationCreateProvinceArgs = {
-  input: CreateProvinceInput;
-};
-
-
-export type MutationCreateRoleArgs = {
-  input: CreateRoleInput;
-};
-
-
-export type MutationCreateSellerArgs = {
-  input: CreateSellerInput;
-};
-
-
-export type MutationCreateShippingMethodArgs = {
-  input: CreateShippingMethodInput;
-};
-
-
-export type MutationCreateStockLocationArgs = {
-  input: CreateStockLocationInput;
-};
-
-
-export type MutationCreateTagArgs = {
-  input: CreateTagInput;
-};
-
-
-export type MutationCreateTaxCategoryArgs = {
-  input: CreateTaxCategoryInput;
-};
-
-
-export type MutationCreateTaxRateArgs = {
-  input: CreateTaxRateInput;
-};
-
-
-export type MutationCreateZoneArgs = {
-  input: CreateZoneInput;
-};
-
-
-export type MutationDeleteAdministratorArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteAdministratorsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteAssetArgs = {
-  input: DeleteAssetInput;
-};
-
-
-export type MutationDeleteAssetsArgs = {
-  input: DeleteAssetsInput;
-};
-
-
-export type MutationDeleteChannelArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteChannelsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteCollectionArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteCollectionsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteCountriesArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteCountryArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteCustomerArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteCustomerAddressArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteCustomerGroupArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteCustomerGroupsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteCustomerNoteArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteCustomersArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteDraftOrderArgs = {
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteFacetArgs = {
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteFacetValuesArgs = {
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteFacetsArgs = {
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteOrderNoteArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeletePaymentMethodArgs = {
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeletePaymentMethodsArgs = {
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteProductArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteProductOptionArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteProductVariantArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteProductVariantsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteProductsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeletePromotionArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeletePromotionsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteProvinceArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteRoleArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteRolesArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteSellerArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteSellersArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteShippingMethodArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteShippingMethodsArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteStockLocationArgs = {
-  input: DeleteStockLocationInput;
-};
-
-
-export type MutationDeleteStockLocationsArgs = {
-  input: Array<DeleteStockLocationInput>;
-};
-
-
-export type MutationDeleteTagArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteTaxCategoriesArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteTaxCategoryArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteTaxRateArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteTaxRatesArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDeleteZoneArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteZonesArgs = {
-  ids: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationDuplicateEntityArgs = {
-  input: DuplicateEntityInput;
-};
-
-
-export type MutationFlushBufferedJobsArgs = {
-  bufferIds?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-
-export type MutationImportProductsArgs = {
-  csvFile: Scalars['Upload']['input'];
-};
-
-
-export type MutationLoginArgs = {
-  password: Scalars['String']['input'];
-  rememberMe?: InputMaybe<Scalars['Boolean']['input']>;
-  username: Scalars['String']['input'];
-};
-
-
-export type MutationModifyOrderArgs = {
-  input: ModifyOrderInput;
-};
-
-
-export type MutationMoveCollectionArgs = {
-  input: MoveCollectionInput;
-};
-
-
-export type MutationRefundOrderArgs = {
-  input: RefundOrderInput;
-};
-
-
-export type MutationRemoveCollectionsFromChannelArgs = {
-  input: RemoveCollectionsFromChannelInput;
-};
-
-
-export type MutationRemoveCouponCodeFromDraftOrderArgs = {
-  couponCode: Scalars['String']['input'];
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationRemoveCustomersFromGroupArgs = {
-  customerGroupId: Scalars['ID']['input'];
-  customerIds: Array<Scalars['ID']['input']>;
-};
-
-
-export type MutationRemoveDraftOrderLineArgs = {
-  orderId: Scalars['ID']['input'];
-  orderLineId: Scalars['ID']['input'];
-};
-
-
-export type MutationRemoveFacetsFromChannelArgs = {
-  input: RemoveFacetsFromChannelInput;
-};
-
-
-export type MutationRemoveMembersFromZoneArgs = {
-  memberIds: Array<Scalars['ID']['input']>;
-  zoneId: Scalars['ID']['input'];
-};
-
-
-export type MutationRemoveOptionGroupFromProductArgs = {
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-  optionGroupId: Scalars['ID']['input'];
-  productId: Scalars['ID']['input'];
-};
-
-
-export type MutationRemovePaymentMethodsFromChannelArgs = {
-  input: RemovePaymentMethodsFromChannelInput;
-};
-
-
-export type MutationRemoveProductVariantsFromChannelArgs = {
-  input: RemoveProductVariantsFromChannelInput;
-};
-
-
-export type MutationRemoveProductsFromChannelArgs = {
-  input: RemoveProductsFromChannelInput;
-};
-
-
-export type MutationRemovePromotionsFromChannelArgs = {
-  input: RemovePromotionsFromChannelInput;
-};
-
-
-export type MutationRemoveSettledJobsArgs = {
-  olderThan?: InputMaybe<Scalars['DateTime']['input']>;
-  queueNames?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-
-export type MutationRemoveShippingMethodsFromChannelArgs = {
-  input: RemoveShippingMethodsFromChannelInput;
-};
-
-
-export type MutationRemoveStockLocationsFromChannelArgs = {
-  input: RemoveStockLocationsFromChannelInput;
-};
-
-
-export type MutationSetActiveChannelArgs = {
-  channelId: Scalars['ID']['input'];
-};
-
-
-export type MutationSetAsLoggedInArgs = {
-  input: UserStatusInput;
-};
-
-
-export type MutationSetContentLanguageArgs = {
-  languageCode: LanguageCode;
-};
-
-
-export type MutationSetCustomerForDraftOrderArgs = {
-  customerId?: InputMaybe<Scalars['ID']['input']>;
-  input?: InputMaybe<CreateCustomerInput>;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationSetDisplayUiExtensionPointsArgs = {
-  display: Scalars['Boolean']['input'];
-};
-
-
-export type MutationSetDraftOrderBillingAddressArgs = {
-  input: CreateAddressInput;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationSetDraftOrderCustomFieldsArgs = {
-  input: UpdateOrderInput;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationSetDraftOrderShippingAddressArgs = {
-  input: CreateAddressInput;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationSetDraftOrderShippingMethodArgs = {
-  orderId: Scalars['ID']['input'];
-  shippingMethodId: Scalars['ID']['input'];
-};
-
-
-export type MutationSetMainNavExpandedArgs = {
-  expanded: Scalars['Boolean']['input'];
-};
-
-
-export type MutationSetOrderCustomFieldsArgs = {
-  input: UpdateOrderInput;
-};
-
-
-export type MutationSetOrderCustomerArgs = {
-  input: SetOrderCustomerInput;
-};
-
-
-export type MutationSetUiLanguageArgs = {
-  languageCode: LanguageCode;
-};
-
-
-export type MutationSetUiLocaleArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type MutationSetUiThemeArgs = {
-  theme: Scalars['String']['input'];
-};
-
-
-export type MutationSettlePaymentArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationSettleRefundArgs = {
-  input: SettleRefundInput;
-};
-
-
-export type MutationToggleExcludePromotionInOrderArgs = {
-  orderId: Scalars['ID']['input'];
-  promotionId: Scalars['ID']['input'];
-};
-
-
-export type MutationTransitionFulfillmentToStateArgs = {
-  id: Scalars['ID']['input'];
-  state: Scalars['String']['input'];
-};
-
-
-export type MutationTransitionOrderToStateArgs = {
-  id: Scalars['ID']['input'];
-  state: Scalars['String']['input'];
-};
-
-
-export type MutationTransitionPaymentToStateArgs = {
-  id: Scalars['ID']['input'];
-  state: Scalars['String']['input'];
-};
-
-
-export type MutationUpdateActiveAdministratorArgs = {
-  input: UpdateActiveAdministratorInput;
-};
-
-
-export type MutationUpdateAdministratorArgs = {
-  input: UpdateAdministratorInput;
-};
-
-
-export type MutationUpdateAssetArgs = {
-  input: UpdateAssetInput;
-};
-
-
-export type MutationUpdateChannelArgs = {
-  input: UpdateChannelInput;
-};
-
-
-export type MutationUpdateCollectionArgs = {
-  input: UpdateCollectionInput;
-};
-
-
-export type MutationUpdateCountryArgs = {
-  input: UpdateCountryInput;
-};
-
-
-export type MutationUpdateCustomerArgs = {
-  input: UpdateCustomerInput;
-};
-
-
-export type MutationUpdateCustomerAddressArgs = {
-  input: UpdateAddressInput;
-};
-
-
-export type MutationUpdateCustomerGroupArgs = {
-  input: UpdateCustomerGroupInput;
-};
-
-
-export type MutationUpdateCustomerNoteArgs = {
-  input: UpdateCustomerNoteInput;
-};
-
-
-export type MutationUpdateFacetArgs = {
-  input: UpdateFacetInput;
-};
-
-
-export type MutationUpdateFacetValuesArgs = {
-  input: Array<UpdateFacetValueInput>;
-};
-
-
-export type MutationUpdateGlobalSettingsArgs = {
-  input: UpdateGlobalSettingsInput;
-};
-
-
-export type MutationUpdateOrderNoteArgs = {
-  input: UpdateOrderNoteInput;
-};
-
-
-export type MutationUpdatePaymentMethodArgs = {
-  input: UpdatePaymentMethodInput;
-};
-
-
-export type MutationUpdateProductArgs = {
-  input: UpdateProductInput;
-};
-
-
-export type MutationUpdateProductOptionArgs = {
-  input: UpdateProductOptionInput;
-};
-
-
-export type MutationUpdateProductOptionGroupArgs = {
-  input: UpdateProductOptionGroupInput;
-};
-
-
-export type MutationUpdateProductVariantsArgs = {
-  input: Array<UpdateProductVariantInput>;
-};
-
-
-export type MutationUpdateProductsArgs = {
-  input: Array<UpdateProductInput>;
-};
-
-
-export type MutationUpdatePromotionArgs = {
-  input: UpdatePromotionInput;
-};
-
-
-export type MutationUpdateProvinceArgs = {
-  input: UpdateProvinceInput;
-};
-
-
-export type MutationUpdateRoleArgs = {
-  input: UpdateRoleInput;
-};
-
-
-export type MutationUpdateSellerArgs = {
-  input: UpdateSellerInput;
-};
-
-
-export type MutationUpdateShippingMethodArgs = {
-  input: UpdateShippingMethodInput;
-};
-
-
-export type MutationUpdateStockLocationArgs = {
-  input: UpdateStockLocationInput;
-};
-
-
-export type MutationUpdateTagArgs = {
-  input: UpdateTagInput;
-};
-
-
-export type MutationUpdateTaxCategoryArgs = {
-  input: UpdateTaxCategoryInput;
-};
-
-
-export type MutationUpdateTaxRateArgs = {
-  input: UpdateTaxRateInput;
-};
-
-
-export type MutationUpdateUserChannelsArgs = {
-  channels: Array<CurrentUserChannelInput>;
-};
-
-
-export type MutationUpdateZoneArgs = {
-  input: UpdateZoneInput;
-};
-
-export type NativeAuthInput = {
-  password: Scalars['String']['input'];
-  username: Scalars['String']['input'];
-};
-
-/** Returned when attempting an operation that relies on the NativeAuthStrategy, if that strategy is not configured. */
-export type NativeAuthStrategyError = ErrorResult & {
-  __typename?: 'NativeAuthStrategyError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type NativeAuthenticationResult = CurrentUser | InvalidCredentialsError | NativeAuthStrategyError;
-
-/** Returned when attempting to set a negative OrderLine quantity. */
-export type NegativeQuantityError = ErrorResult & {
-  __typename?: 'NegativeQuantityError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type NetworkStatus = {
-  __typename?: 'NetworkStatus';
-  inFlightRequests: Scalars['Int']['output'];
-};
-
-/**
- * Returned when invoking a mutation which depends on there being an active Order on the
- * current session.
- */
-export type NoActiveOrderError = ErrorResult & {
-  __typename?: 'NoActiveOrderError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned when a call to modifyOrder fails to specify any changes */
-export type NoChangesSpecifiedError = ErrorResult & {
-  __typename?: 'NoChangesSpecifiedError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type Node = {
-  id: Scalars['ID']['output'];
-};
-
-/** Returned if an attempting to refund an Order but neither items nor shipping refund was specified */
-export type NothingToRefundError = ErrorResult & {
-  __typename?: 'NothingToRefundError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Operators for filtering on a list of Number fields */
-export type NumberListOperators = {
-  inList: Scalars['Float']['input'];
-};
-
-/** Operators for filtering on a Int or Float field */
-export type NumberOperators = {
-  between?: InputMaybe<NumberRange>;
-  eq?: InputMaybe<Scalars['Float']['input']>;
-  gt?: InputMaybe<Scalars['Float']['input']>;
-  gte?: InputMaybe<Scalars['Float']['input']>;
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  lt?: InputMaybe<Scalars['Float']['input']>;
-  lte?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type NumberRange = {
-  end: Scalars['Float']['input'];
-  start: Scalars['Float']['input'];
-};
-
-export type Order = Node & {
-  __typename?: 'Order';
-  /** An order is active as long as the payment process has not been completed */
-  active: Scalars['Boolean']['output'];
-  aggregateOrder?: Maybe<Order>;
-  aggregateOrderId?: Maybe<Scalars['ID']['output']>;
-  billingAddress?: Maybe<OrderAddress>;
-  channels: Array<Channel>;
-  /** A unique code for the Order */
-  code: Scalars['String']['output'];
-  /** An array of all coupon codes applied to the Order */
-  couponCodes: Array<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  customer?: Maybe<Customer>;
-  discounts: Array<Discount>;
-  /** An array of all promotions excluded from the Order */
-  excludedPromotionIds?: Maybe<Array<Scalars['String']['output']>>;
-  fulfillments?: Maybe<Array<Fulfillment>>;
-  history: HistoryEntryList;
-  id: Scalars['ID']['output'];
-  lines: Array<OrderLine>;
-  modifications: Array<OrderModification>;
-  nextStates: Array<Scalars['String']['output']>;
-  /**
-   * The date & time that the Order was placed, i.e. the Customer
-   * completed the checkout and the Order is no longer "active"
-   */
-  orderPlacedAt?: Maybe<Scalars['DateTime']['output']>;
-  payments?: Maybe<Array<Payment>>;
-  /** Promotions applied to the order. Only gets populated after the payment process has completed. */
-  promotions: Array<Promotion>;
-  sellerOrders?: Maybe<Array<Order>>;
-  shipping: Scalars['Money']['output'];
-  shippingAddress?: Maybe<OrderAddress>;
-  shippingLines: Array<ShippingLine>;
-  shippingWithTax: Scalars['Money']['output'];
-  state: Scalars['String']['output'];
-  /**
-   * The subTotal is the total of all OrderLines in the Order. This figure also includes any Order-level
-   * discounts which have been prorated (proportionally distributed) amongst the items of each OrderLine.
-   * To get a total of all OrderLines which does not account for prorated discounts, use the
-   * sum of `OrderLine.discountedLinePrice` values.
-   */
-  subTotal: Scalars['Money']['output'];
-  /** Same as subTotal, but inclusive of tax */
-  subTotalWithTax: Scalars['Money']['output'];
-  /**
-   * Surcharges are arbitrary modifications to the Order total which are neither
-   * ProductVariants nor discounts resulting from applied Promotions. For example,
-   * one-off discounts based on customer interaction, or surcharges based on payment
-   * methods.
-   */
-  surcharges: Array<Surcharge>;
-  /** A summary of the taxes being applied to this Order */
-  taxSummary: Array<OrderTaxSummary>;
-  /** Equal to subTotal plus shipping */
-  total: Scalars['Money']['output'];
-  totalQuantity: Scalars['Int']['output'];
-  /** The final payable amount. Equal to subTotalWithTax plus shippingWithTax */
-  totalWithTax: Scalars['Money']['output'];
-  type: OrderType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-
-export type OrderHistoryArgs = {
-  options?: InputMaybe<HistoryEntryListOptions>;
-};
-
-export type OrderAddress = {
-  __typename?: 'OrderAddress';
-  city?: Maybe<Scalars['String']['output']>;
-  company?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
-  countryCode?: Maybe<Scalars['String']['output']>;
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  fullName?: Maybe<Scalars['String']['output']>;
-  phoneNumber?: Maybe<Scalars['String']['output']>;
-  postalCode?: Maybe<Scalars['String']['output']>;
-  province?: Maybe<Scalars['String']['output']>;
-  streetLine1?: Maybe<Scalars['String']['output']>;
-  streetLine2?: Maybe<Scalars['String']['output']>;
-};
-
-export type OrderFilterParameter = {
-  _and?: InputMaybe<Array<OrderFilterParameter>>;
-  _or?: InputMaybe<Array<OrderFilterParameter>>;
-  active?: InputMaybe<BooleanOperators>;
-  aggregateOrderId?: InputMaybe<IdOperators>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  currencyCode?: InputMaybe<StringOperators>;
-  customerLastName?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  orderPlacedAt?: InputMaybe<DateOperators>;
-  shipping?: InputMaybe<NumberOperators>;
-  shippingWithTax?: InputMaybe<NumberOperators>;
-  state?: InputMaybe<StringOperators>;
-  subTotal?: InputMaybe<NumberOperators>;
-  subTotalWithTax?: InputMaybe<NumberOperators>;
-  total?: InputMaybe<NumberOperators>;
-  totalQuantity?: InputMaybe<NumberOperators>;
-  totalWithTax?: InputMaybe<NumberOperators>;
-  transactionId?: InputMaybe<StringOperators>;
-  type?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-/** Returned when the maximum order size limit has been reached. */
-export type OrderLimitError = ErrorResult & {
-  __typename?: 'OrderLimitError';
-  errorCode: ErrorCode;
-  maxItems: Scalars['Int']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type OrderLine = Node & {
-  __typename?: 'OrderLine';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  /** The price of the line including discounts, excluding tax */
-  discountedLinePrice: Scalars['Money']['output'];
-  /** The price of the line including discounts and tax */
-  discountedLinePriceWithTax: Scalars['Money']['output'];
-  /**
-   * The price of a single unit including discounts, excluding tax.
-   *
-   * If Order-level discounts have been applied, this will not be the
-   * actual taxable unit price (see `proratedUnitPrice`), but is generally the
-   * correct price to display to customers to avoid confusion
-   * about the internal handling of distributed Order-level discounts.
-   */
-  discountedUnitPrice: Scalars['Money']['output'];
-  /** The price of a single unit including discounts and tax */
-  discountedUnitPriceWithTax: Scalars['Money']['output'];
-  discounts: Array<Discount>;
-  featuredAsset?: Maybe<Asset>;
-  fulfillmentLines?: Maybe<Array<FulfillmentLine>>;
-  id: Scalars['ID']['output'];
-  /** The total price of the line excluding tax and discounts. */
-  linePrice: Scalars['Money']['output'];
-  /** The total price of the line including tax but excluding discounts. */
-  linePriceWithTax: Scalars['Money']['output'];
-  /** The total tax on this line */
-  lineTax: Scalars['Money']['output'];
-  order: Order;
-  /** The quantity at the time the Order was placed */
-  orderPlacedQuantity: Scalars['Int']['output'];
-  productVariant: ProductVariant;
-  /**
-   * The actual line price, taking into account both item discounts _and_ prorated (proportionally-distributed)
-   * Order-level discounts. This value is the true economic value of the OrderLine, and is used in tax
-   * and refund calculations.
-   */
-  proratedLinePrice: Scalars['Money']['output'];
-  /** The proratedLinePrice including tax */
-  proratedLinePriceWithTax: Scalars['Money']['output'];
-  /**
-   * The actual unit price, taking into account both item discounts _and_ prorated (proportionally-distributed)
-   * Order-level discounts. This value is the true economic value of the OrderItem, and is used in tax
-   * and refund calculations.
-   */
-  proratedUnitPrice: Scalars['Money']['output'];
-  /** The proratedUnitPrice including tax */
-  proratedUnitPriceWithTax: Scalars['Money']['output'];
-  /** The quantity of items purchased */
-  quantity: Scalars['Int']['output'];
-  taxLines: Array<TaxLine>;
-  taxRate: Scalars['Float']['output'];
-  /** The price of a single unit, excluding tax and discounts */
-  unitPrice: Scalars['Money']['output'];
-  /** Non-zero if the unitPrice has changed since it was initially added to Order */
-  unitPriceChangeSinceAdded: Scalars['Money']['output'];
-  /** The price of a single unit, including tax but excluding discounts */
-  unitPriceWithTax: Scalars['Money']['output'];
-  /** Non-zero if the unitPriceWithTax has changed since it was initially added to Order */
-  unitPriceWithTaxChangeSinceAdded: Scalars['Money']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type OrderLineInput = {
-  orderLineId: Scalars['ID']['input'];
-  quantity: Scalars['Int']['input'];
-};
-
-export type OrderList = PaginatedList & {
-  __typename?: 'OrderList';
-  items: Array<Order>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type OrderListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<OrderFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<OrderSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** Returned when an order operation is rejected by an OrderInterceptor method. */
-export type OrderMiddlewareError = ErrorResult & {
-  __typename?: 'OrderMiddlewareError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  middlewareError: Scalars['String']['output'];
-};
-
-export type OrderModification = Node & {
-  __typename?: 'OrderModification';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  isSettled: Scalars['Boolean']['output'];
-  lines: Array<OrderModificationLine>;
-  note: Scalars['String']['output'];
-  payment?: Maybe<Payment>;
-  priceChange: Scalars['Money']['output'];
-  refund?: Maybe<Refund>;
-  surcharges?: Maybe<Array<Surcharge>>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-/** Returned when attempting to modify the contents of an Order that is not in the `AddingItems` state. */
-export type OrderModificationError = ErrorResult & {
-  __typename?: 'OrderModificationError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type OrderModificationLine = {
-  __typename?: 'OrderModificationLine';
-  modification: OrderModification;
-  modificationId: Scalars['ID']['output'];
-  orderLine: OrderLine;
-  orderLineId: Scalars['ID']['output'];
-  quantity: Scalars['Int']['output'];
-};
-
-/** Returned when attempting to modify the contents of an Order that is not in the `Modifying` state. */
-export type OrderModificationStateError = ErrorResult & {
-  __typename?: 'OrderModificationStateError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type OrderProcessState = {
-  __typename?: 'OrderProcessState';
-  name: Scalars['String']['output'];
-  to: Array<Scalars['String']['output']>;
-};
-
-export type OrderSortParameter = {
-  aggregateOrderId?: InputMaybe<SortOrder>;
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  customerLastName?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  orderPlacedAt?: InputMaybe<SortOrder>;
-  shipping?: InputMaybe<SortOrder>;
-  shippingWithTax?: InputMaybe<SortOrder>;
-  state?: InputMaybe<SortOrder>;
-  subTotal?: InputMaybe<SortOrder>;
-  subTotalWithTax?: InputMaybe<SortOrder>;
-  total?: InputMaybe<SortOrder>;
-  totalQuantity?: InputMaybe<SortOrder>;
-  totalWithTax?: InputMaybe<SortOrder>;
-  transactionId?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-/** Returned if there is an error in transitioning the Order state */
-export type OrderStateTransitionError = ErrorResult & {
-  __typename?: 'OrderStateTransitionError';
-  errorCode: ErrorCode;
-  fromState: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  toState: Scalars['String']['output'];
-  transitionError: Scalars['String']['output'];
-};
-
-/**
- * A summary of the taxes being applied to this order, grouped
- * by taxRate.
- */
-export type OrderTaxSummary = {
-  __typename?: 'OrderTaxSummary';
-  /** A description of this tax */
-  description: Scalars['String']['output'];
-  /** The total net price of OrderLines to which this taxRate applies */
-  taxBase: Scalars['Money']['output'];
-  /** The taxRate as a percentage */
-  taxRate: Scalars['Float']['output'];
-  /** The total tax being applied to the Order at this taxRate */
-  taxTotal: Scalars['Money']['output'];
-};
-
-export enum OrderType {
-  Aggregate = 'Aggregate',
-  Regular = 'Regular',
-  Seller = 'Seller'
-}
-
-export type PaginatedList = {
-  items: Array<Node>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type Payment = Node & {
-  __typename?: 'Payment';
-  amount: Scalars['Money']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  errorMessage?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  metadata?: Maybe<Scalars['JSON']['output']>;
-  method: Scalars['String']['output'];
-  nextStates: Array<Scalars['String']['output']>;
-  refunds: Array<Refund>;
-  state: Scalars['String']['output'];
-  transactionId?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type PaymentMethod = Node & {
-  __typename?: 'PaymentMethod';
-  checker?: Maybe<ConfigurableOperation>;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  enabled: Scalars['Boolean']['output'];
-  handler: ConfigurableOperation;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  translations: Array<PaymentMethodTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type PaymentMethodFilterParameter = {
-  _and?: InputMaybe<Array<PaymentMethodFilterParameter>>;
-  _or?: InputMaybe<Array<PaymentMethodFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type PaymentMethodList = PaginatedList & {
-  __typename?: 'PaymentMethodList';
-  items: Array<PaymentMethod>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type PaymentMethodListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<PaymentMethodFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<PaymentMethodSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/**
- * Returned when a call to modifyOrder fails to include a paymentMethod even
- * though the price has increased as a result of the changes.
- */
-export type PaymentMethodMissingError = ErrorResult & {
-  __typename?: 'PaymentMethodMissingError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type PaymentMethodQuote = {
-  __typename?: 'PaymentMethodQuote';
-  code: Scalars['String']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  eligibilityMessage?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  isEligible: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-};
-
-export type PaymentMethodSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type PaymentMethodTranslation = {
-  __typename?: 'PaymentMethodTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type PaymentMethodTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Returned if an attempting to refund a Payment against OrderLines from a different Order */
-export type PaymentOrderMismatchError = ErrorResult & {
-  __typename?: 'PaymentOrderMismatchError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned when there is an error in transitioning the Payment state */
-export type PaymentStateTransitionError = ErrorResult & {
-  __typename?: 'PaymentStateTransitionError';
-  errorCode: ErrorCode;
-  fromState: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  toState: Scalars['String']['output'];
-  transitionError: Scalars['String']['output'];
-};
-
-/**
- * @description
- * Permissions for administrators and customers. Used to control access to
- * GraphQL resolvers via the {@link Allow} decorator.
- *
- * ## Understanding Permission.Owner
- *
- * `Permission.Owner` is a special permission which is used in some Deenruv resolvers to indicate that that resolver should only
- * be accessible to the "owner" of that resource.
- *
- * For example, the Shop API `activeCustomer` query resolver should only return the Customer object for the "owner" of that Customer, i.e.
- * based on the activeUserId of the current session. As a result, the resolver code looks like this:
- *
- * @example
- * ```TypeScript
- * \@Query()
- * \@Allow(Permission.Owner)
- * async activeCustomer(\@Ctx() ctx: RequestContext): Promise<Customer | undefined> {
- *   const userId = ctx.activeUserId;
- *   if (userId) {
- *     return this.customerService.findOneByUserId(ctx, userId);
- *   }
- * }
- * ```
- *
- * Here we can see that the "ownership" must be enforced by custom logic inside the resolver. Since "ownership" cannot be defined generally
- * nor statically encoded at build-time, any resolvers using `Permission.Owner` **must** include logic to enforce that only the owner
- * of the resource has access. If not, then it is the equivalent of using `Permission.Public`.
- *
- *
- * @docsCategory common
- */
-export enum Permission {
-  /** Authenticated means simply that the user is logged in */
-  Authenticated = 'Authenticated',
-  /** Grants permission to create Administrator */
-  CreateAdministrator = 'CreateAdministrator',
-  /** Grants permission to create Asset */
-  CreateAsset = 'CreateAsset',
-  /** Grants permission to create Products, Facets, Assets, Collections */
-  CreateCatalog = 'CreateCatalog',
-  /** Grants permission to create Channel */
-  CreateChannel = 'CreateChannel',
-  /** Grants permission to create Collection */
-  CreateCollection = 'CreateCollection',
-  /** Grants permission to create Country */
-  CreateCountry = 'CreateCountry',
-  /** Grants permission to create Customer */
-  CreateCustomer = 'CreateCustomer',
-  /** Grants permission to create CustomerGroup */
-  CreateCustomerGroup = 'CreateCustomerGroup',
-  /** Grants permission to create Facet */
-  CreateFacet = 'CreateFacet',
-  /** Grants permission to create Order */
-  CreateOrder = 'CreateOrder',
-  /** Grants permission to create PaymentMethod */
-  CreatePaymentMethod = 'CreatePaymentMethod',
-  /** Grants permission to create Product */
-  CreateProduct = 'CreateProduct',
-  /** Grants permission to create Promotion */
-  CreatePromotion = 'CreatePromotion',
-  /** Grants permission to create Seller */
-  CreateSeller = 'CreateSeller',
-  /** Grants permission to create PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings */
-  CreateSettings = 'CreateSettings',
-  /** Grants permission to create ShippingMethod */
-  CreateShippingMethod = 'CreateShippingMethod',
-  /** Grants permission to create StockLocation */
-  CreateStockLocation = 'CreateStockLocation',
-  /** Grants permission to create System */
-  CreateSystem = 'CreateSystem',
-  /** Grants permission to create Tag */
-  CreateTag = 'CreateTag',
-  /** Grants permission to create TaxCategory */
-  CreateTaxCategory = 'CreateTaxCategory',
-  /** Grants permission to create TaxRate */
-  CreateTaxRate = 'CreateTaxRate',
-  /** Grants permission to create Zone */
-  CreateZone = 'CreateZone',
-  /** Grants permission to delete Administrator */
-  DeleteAdministrator = 'DeleteAdministrator',
-  /** Grants permission to delete Asset */
-  DeleteAsset = 'DeleteAsset',
-  /** Grants permission to delete Products, Facets, Assets, Collections */
-  DeleteCatalog = 'DeleteCatalog',
-  /** Grants permission to delete Channel */
-  DeleteChannel = 'DeleteChannel',
-  /** Grants permission to delete Collection */
-  DeleteCollection = 'DeleteCollection',
-  /** Grants permission to delete Country */
-  DeleteCountry = 'DeleteCountry',
-  /** Grants permission to delete Customer */
-  DeleteCustomer = 'DeleteCustomer',
-  /** Grants permission to delete CustomerGroup */
-  DeleteCustomerGroup = 'DeleteCustomerGroup',
-  /** Grants permission to delete Facet */
-  DeleteFacet = 'DeleteFacet',
-  /** Grants permission to delete Order */
-  DeleteOrder = 'DeleteOrder',
-  /** Grants permission to delete PaymentMethod */
-  DeletePaymentMethod = 'DeletePaymentMethod',
-  /** Grants permission to delete Product */
-  DeleteProduct = 'DeleteProduct',
-  /** Grants permission to delete Promotion */
-  DeletePromotion = 'DeletePromotion',
-  /** Grants permission to delete Seller */
-  DeleteSeller = 'DeleteSeller',
-  /** Grants permission to delete PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings */
-  DeleteSettings = 'DeleteSettings',
-  /** Grants permission to delete ShippingMethod */
-  DeleteShippingMethod = 'DeleteShippingMethod',
-  /** Grants permission to delete StockLocation */
-  DeleteStockLocation = 'DeleteStockLocation',
-  /** Grants permission to delete System */
-  DeleteSystem = 'DeleteSystem',
-  /** Grants permission to delete Tag */
-  DeleteTag = 'DeleteTag',
-  /** Grants permission to delete TaxCategory */
-  DeleteTaxCategory = 'DeleteTaxCategory',
-  /** Grants permission to delete TaxRate */
-  DeleteTaxRate = 'DeleteTaxRate',
-  /** Grants permission to delete Zone */
-  DeleteZone = 'DeleteZone',
-  /** Owner means the user owns this entity, e.g. a Customer's own Order */
-  Owner = 'Owner',
-  Placeholder = 'Placeholder',
-  /** Public means any unauthenticated user may perform the operation */
-  Public = 'Public',
-  /** Grants permission to read Administrator */
-  ReadAdministrator = 'ReadAdministrator',
-  /** Grants permission to read Asset */
-  ReadAsset = 'ReadAsset',
-  /** Grants permission to read Products, Facets, Assets, Collections */
-  ReadCatalog = 'ReadCatalog',
-  /** Grants permission to read Channel */
-  ReadChannel = 'ReadChannel',
-  /** Grants permission to read Collection */
-  ReadCollection = 'ReadCollection',
-  /** Grants permission to read Country */
-  ReadCountry = 'ReadCountry',
-  /** Grants permission to read Customer */
-  ReadCustomer = 'ReadCustomer',
-  /** Grants permission to read CustomerGroup */
-  ReadCustomerGroup = 'ReadCustomerGroup',
-  /** Grants permission to read Facet */
-  ReadFacet = 'ReadFacet',
-  /** Grants permission to read Order */
-  ReadOrder = 'ReadOrder',
-  /** Grants permission to read PaymentMethod */
-  ReadPaymentMethod = 'ReadPaymentMethod',
-  /** Grants permission to read Product */
-  ReadProduct = 'ReadProduct',
-  /** Grants permission to read Promotion */
-  ReadPromotion = 'ReadPromotion',
-  /** Grants permission to read Seller */
-  ReadSeller = 'ReadSeller',
-  /** Grants permission to read PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings */
-  ReadSettings = 'ReadSettings',
-  /** Grants permission to read ShippingMethod */
-  ReadShippingMethod = 'ReadShippingMethod',
-  /** Grants permission to read StockLocation */
-  ReadStockLocation = 'ReadStockLocation',
-  /** Grants permission to read System */
-  ReadSystem = 'ReadSystem',
-  /** Grants permission to read Tag */
-  ReadTag = 'ReadTag',
-  /** Grants permission to read TaxCategory */
-  ReadTaxCategory = 'ReadTaxCategory',
-  /** Grants permission to read TaxRate */
-  ReadTaxRate = 'ReadTaxRate',
-  /** Grants permission to read Zone */
-  ReadZone = 'ReadZone',
-  /** SuperAdmin has unrestricted access to all operations */
-  SuperAdmin = 'SuperAdmin',
-  /** Grants permission to update Administrator */
-  UpdateAdministrator = 'UpdateAdministrator',
-  /** Grants permission to update Asset */
-  UpdateAsset = 'UpdateAsset',
-  /** Grants permission to update Products, Facets, Assets, Collections */
-  UpdateCatalog = 'UpdateCatalog',
-  /** Grants permission to update Channel */
-  UpdateChannel = 'UpdateChannel',
-  /** Grants permission to update Collection */
-  UpdateCollection = 'UpdateCollection',
-  /** Grants permission to update Country */
-  UpdateCountry = 'UpdateCountry',
-  /** Grants permission to update Customer */
-  UpdateCustomer = 'UpdateCustomer',
-  /** Grants permission to update CustomerGroup */
-  UpdateCustomerGroup = 'UpdateCustomerGroup',
-  /** Grants permission to update Facet */
-  UpdateFacet = 'UpdateFacet',
-  /** Grants permission to update GlobalSettings */
-  UpdateGlobalSettings = 'UpdateGlobalSettings',
-  /** Grants permission to update Order */
-  UpdateOrder = 'UpdateOrder',
-  /** Grants permission to update PaymentMethod */
-  UpdatePaymentMethod = 'UpdatePaymentMethod',
-  /** Grants permission to update Product */
-  UpdateProduct = 'UpdateProduct',
-  /** Grants permission to update Promotion */
-  UpdatePromotion = 'UpdatePromotion',
-  /** Grants permission to update Seller */
-  UpdateSeller = 'UpdateSeller',
-  /** Grants permission to update PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings */
-  UpdateSettings = 'UpdateSettings',
-  /** Grants permission to update ShippingMethod */
-  UpdateShippingMethod = 'UpdateShippingMethod',
-  /** Grants permission to update StockLocation */
-  UpdateStockLocation = 'UpdateStockLocation',
-  /** Grants permission to update System */
-  UpdateSystem = 'UpdateSystem',
-  /** Grants permission to update Tag */
-  UpdateTag = 'UpdateTag',
-  /** Grants permission to update TaxCategory */
-  UpdateTaxCategory = 'UpdateTaxCategory',
-  /** Grants permission to update TaxRate */
-  UpdateTaxRate = 'UpdateTaxRate',
-  /** Grants permission to update Zone */
-  UpdateZone = 'UpdateZone'
-}
-
-export type PermissionDefinition = {
-  __typename?: 'PermissionDefinition';
-  assignable: Scalars['Boolean']['output'];
-  description: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-};
-
-export type PreviewCollectionVariantsInput = {
-  filters: Array<ConfigurableOperationInput>;
-  inheritFilters: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-/** The price range where the result has more than one price */
-export type PriceRange = {
-  __typename?: 'PriceRange';
-  max: Scalars['Money']['output'];
-  min: Scalars['Money']['output'];
-};
-
-export type Product = Node & {
-  __typename?: 'Product';
-  assets: Array<Asset>;
-  channels: Array<Channel>;
-  collections: Array<Collection>;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  enabled: Scalars['Boolean']['output'];
-  facetValues: Array<FacetValue>;
-  featuredAsset?: Maybe<Asset>;
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  optionGroups: Array<ProductOptionGroup>;
-  slug: Scalars['String']['output'];
-  translations: Array<ProductTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-  /** Returns a paginated, sortable, filterable list of ProductVariants */
-  variantList: ProductVariantList;
-  /** Returns all ProductVariants */
-  variants: Array<ProductVariant>;
-};
-
-
-export type ProductVariantListArgs = {
-  options?: InputMaybe<ProductVariantListOptions>;
-};
-
-export type ProductFilterParameter = {
-  _and?: InputMaybe<Array<ProductFilterParameter>>;
-  _or?: InputMaybe<Array<ProductFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  facetValueId?: InputMaybe<IdOperators>;
-  id?: InputMaybe<IdOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  sku?: InputMaybe<StringOperators>;
-  slug?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type ProductList = PaginatedList & {
-  __typename?: 'ProductList';
-  items: Array<Product>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type ProductListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<ProductFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<ProductSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ProductOption = Node & {
-  __typename?: 'ProductOption';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  group: ProductOptionGroup;
-  groupId: Scalars['ID']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  translations: Array<ProductOptionTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProductOptionGroup = Node & {
-  __typename?: 'ProductOptionGroup';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  options: Array<ProductOption>;
-  translations: Array<ProductOptionGroupTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProductOptionGroupTranslation = {
-  __typename?: 'ProductOptionGroupTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProductOptionGroupTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductOptionInUseError = ErrorResult & {
-  __typename?: 'ProductOptionInUseError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  optionGroupCode: Scalars['String']['output'];
-  productVariantCount: Scalars['Int']['output'];
-};
-
-export type ProductOptionTranslation = {
-  __typename?: 'ProductOptionTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProductOptionTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  slug?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type ProductTranslation = {
-  __typename?: 'ProductTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProductTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductVariant = Node & {
-  __typename?: 'ProductVariant';
-  assets: Array<Asset>;
-  channels: Array<Channel>;
-  createdAt: Scalars['DateTime']['output'];
-  currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  enabled: Scalars['Boolean']['output'];
-  facetValues: Array<FacetValue>;
-  featuredAsset?: Maybe<Asset>;
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  options: Array<ProductOption>;
-  outOfStockThreshold: Scalars['Int']['output'];
-  price: Scalars['Money']['output'];
-  priceWithTax: Scalars['Money']['output'];
-  prices: Array<ProductVariantPrice>;
-  product: Product;
-  productId: Scalars['ID']['output'];
-  sku: Scalars['String']['output'];
-  /** @deprecated use stockLevels */
-  stockAllocated: Scalars['Int']['output'];
-  stockLevel: Scalars['String']['output'];
-  stockLevels: Array<StockLevel>;
-  stockMovements: StockMovementList;
-  /** @deprecated use stockLevels */
-  stockOnHand: Scalars['Int']['output'];
-  taxCategory: TaxCategory;
-  taxRateApplied: TaxRate;
-  trackInventory: GlobalFlag;
-  translations: Array<ProductVariantTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-  useGlobalOutOfStockThreshold: Scalars['Boolean']['output'];
-};
-
-
-export type ProductVariantStockMovementsArgs = {
-  options?: InputMaybe<StockMovementListOptions>;
-};
-
-export type ProductVariantFilterParameter = {
-  _and?: InputMaybe<Array<ProductVariantFilterParameter>>;
-  _or?: InputMaybe<Array<ProductVariantFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  currencyCode?: InputMaybe<StringOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  facetValueId?: InputMaybe<IdOperators>;
-  id?: InputMaybe<IdOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  outOfStockThreshold?: InputMaybe<NumberOperators>;
-  price?: InputMaybe<NumberOperators>;
-  priceWithTax?: InputMaybe<NumberOperators>;
-  productId?: InputMaybe<IdOperators>;
-  sku?: InputMaybe<StringOperators>;
-  stockAllocated?: InputMaybe<NumberOperators>;
-  stockLevel?: InputMaybe<StringOperators>;
-  stockOnHand?: InputMaybe<NumberOperators>;
-  trackInventory?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-  useGlobalOutOfStockThreshold?: InputMaybe<BooleanOperators>;
-};
-
-export type ProductVariantList = PaginatedList & {
-  __typename?: 'ProductVariantList';
-  items: Array<ProductVariant>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type ProductVariantListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<ProductVariantFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<ProductVariantSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ProductVariantPrice = {
-  __typename?: 'ProductVariantPrice';
-  currencyCode: CurrencyCode;
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  price: Scalars['Money']['output'];
-};
-
-/**
- * Used to set up update the price of a ProductVariant in a particular Channel.
- * If the `delete` flag is `true`, the price will be deleted for the given Channel.
- */
-export type ProductVariantPriceInput = {
-  currencyCode: CurrencyCode;
-  delete?: InputMaybe<Scalars['Boolean']['input']>;
-  price: Scalars['Money']['input'];
-};
-
-export type ProductVariantSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  outOfStockThreshold?: InputMaybe<SortOrder>;
-  price?: InputMaybe<SortOrder>;
-  priceWithTax?: InputMaybe<SortOrder>;
-  productId?: InputMaybe<SortOrder>;
-  sku?: InputMaybe<SortOrder>;
-  stockAllocated?: InputMaybe<SortOrder>;
-  stockLevel?: InputMaybe<SortOrder>;
-  stockOnHand?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type ProductVariantTranslation = {
-  __typename?: 'ProductVariantTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProductVariantTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Promotion = Node & {
-  __typename?: 'Promotion';
-  actions: Array<ConfigurableOperation>;
-  conditions: Array<ConfigurableOperation>;
-  couponCode?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  enabled: Scalars['Boolean']['output'];
-  endsAt?: Maybe<Scalars['DateTime']['output']>;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  perCustomerUsageLimit?: Maybe<Scalars['Int']['output']>;
-  startsAt?: Maybe<Scalars['DateTime']['output']>;
-  translations: Array<PromotionTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-  usageLimit?: Maybe<Scalars['Int']['output']>;
-};
-
-export type PromotionFilterParameter = {
-  _and?: InputMaybe<Array<PromotionFilterParameter>>;
-  _or?: InputMaybe<Array<PromotionFilterParameter>>;
-  couponCode?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  endsAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  perCustomerUsageLimit?: InputMaybe<NumberOperators>;
-  startsAt?: InputMaybe<DateOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-  usageLimit?: InputMaybe<NumberOperators>;
-};
-
-export type PromotionList = PaginatedList & {
-  __typename?: 'PromotionList';
-  items: Array<Promotion>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type PromotionListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<PromotionFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<PromotionSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type PromotionSortParameter = {
-  couponCode?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  endsAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  perCustomerUsageLimit?: InputMaybe<SortOrder>;
-  startsAt?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-  usageLimit?: InputMaybe<SortOrder>;
-};
-
-export type PromotionTranslation = {
-  __typename?: 'PromotionTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type PromotionTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Province = Node & Region & {
-  __typename?: 'Province';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  enabled: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  parent?: Maybe<Region>;
-  parentId?: Maybe<Scalars['ID']['output']>;
-  translations: Array<RegionTranslation>;
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ProvinceFilterParameter = {
-  _and?: InputMaybe<Array<ProvinceFilterParameter>>;
-  _or?: InputMaybe<Array<ProvinceFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  id?: InputMaybe<IdOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  parentId?: InputMaybe<IdOperators>;
-  type?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type ProvinceList = PaginatedList & {
-  __typename?: 'ProvinceList';
-  items: Array<Province>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type ProvinceListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<ProvinceFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<ProvinceSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ProvinceSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  parentId?: InputMaybe<SortOrder>;
-  type?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type ProvinceTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Returned if the specified quantity of an OrderLine is greater than the number of items in that line */
-export type QuantityTooGreatError = ErrorResult & {
-  __typename?: 'QuantityTooGreatError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-export type Query = {
-  __typename?: 'Query';
-  activeAdministrator?: Maybe<Administrator>;
-  activeChannel: Channel;
-  administrator?: Maybe<Administrator>;
-  administrators: AdministratorList;
-  /** Get a single Asset by id */
-  asset?: Maybe<Asset>;
-  /** Get a list of Assets */
-  assets: AssetList;
-  channel?: Maybe<Channel>;
-  channels: ChannelList;
-  /** Get a Collection either by id or slug. If neither id nor slug is specified, an error will result. */
-  collection?: Maybe<Collection>;
-  collectionFilters: Array<ConfigurableOperationDefinition>;
-  collections: CollectionList;
-  countries: CountryList;
-  country?: Maybe<Country>;
-  customer?: Maybe<Customer>;
-  customerGroup?: Maybe<CustomerGroup>;
-  customerGroups: CustomerGroupList;
-  customers: CustomerList;
-  /** Returns a list of eligible shipping methods for the draft Order */
-  eligibleShippingMethodsForDraftOrder: Array<ShippingMethodQuote>;
-  /** Returns all configured EntityDuplicators. */
-  entityDuplicators: Array<EntityDuplicatorDefinition>;
-  facet?: Maybe<Facet>;
-  facetValues: FacetValueList;
-  facets: FacetList;
-  fulfillmentHandlers: Array<ConfigurableOperationDefinition>;
-  globalSettings: GlobalSettings;
-  job?: Maybe<Job>;
-  jobBufferSize: Array<JobBufferSize>;
-  jobQueues: Array<JobQueue>;
-  jobs: JobList;
-  jobsById: Array<Job>;
-  me?: Maybe<CurrentUser>;
-  /** Get metrics for the given interval and metric types. */
-  metricSummary: Array<MetricSummary>;
-  networkStatus: NetworkStatus;
-  order?: Maybe<Order>;
-  orders: OrderList;
-  paymentMethod?: Maybe<PaymentMethod>;
-  paymentMethodEligibilityCheckers: Array<ConfigurableOperationDefinition>;
-  paymentMethodHandlers: Array<ConfigurableOperationDefinition>;
-  paymentMethods: PaymentMethodList;
-  pendingSearchIndexUpdates: Scalars['Int']['output'];
-  /** Used for real-time previews of the contents of a Collection */
-  previewCollectionVariants: ProductVariantList;
-  /** Get a Product either by id or slug. If neither id nor slug is specified, an error will result. */
-  product?: Maybe<Product>;
-  productOptionGroup?: Maybe<ProductOptionGroup>;
-  productOptionGroups: Array<ProductOptionGroup>;
-  /** Get a ProductVariant by id */
-  productVariant?: Maybe<ProductVariant>;
-  /** List ProductVariants either all or for the specific product. */
-  productVariants: ProductVariantList;
-  /** List Products */
-  products: ProductList;
-  promotion?: Maybe<Promotion>;
-  promotionActions: Array<ConfigurableOperationDefinition>;
-  promotionConditions: Array<ConfigurableOperationDefinition>;
-  promotions: PromotionList;
-  province?: Maybe<Province>;
-  provinces: ProvinceList;
-  role?: Maybe<Role>;
-  roles: RoleList;
-  search: SearchResponse;
-  seller?: Maybe<Seller>;
-  sellers: SellerList;
-  shippingCalculators: Array<ConfigurableOperationDefinition>;
-  shippingEligibilityCheckers: Array<ConfigurableOperationDefinition>;
-  shippingMethod?: Maybe<ShippingMethod>;
-  shippingMethods: ShippingMethodList;
-  stockLocation?: Maybe<StockLocation>;
-  stockLocations: StockLocationList;
-  tag: Tag;
-  tags: TagList;
-  taxCategories: TaxCategoryList;
-  taxCategory?: Maybe<TaxCategory>;
-  taxRate?: Maybe<TaxRate>;
-  taxRates: TaxRateList;
-  testEligibleShippingMethods: Array<ShippingMethodQuote>;
-  testShippingMethod: TestShippingMethodResult;
-  uiState: UiState;
-  userStatus: UserStatus;
-  zone?: Maybe<Zone>;
-  zones: ZoneList;
-};
-
-
-export type QueryAdministratorArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryAdministratorsArgs = {
-  options?: InputMaybe<AdministratorListOptions>;
-};
-
-
-export type QueryAssetArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryAssetsArgs = {
-  options?: InputMaybe<AssetListOptions>;
-};
-
-
-export type QueryChannelArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryChannelsArgs = {
-  options?: InputMaybe<ChannelListOptions>;
-};
-
-
-export type QueryCollectionArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryCollectionsArgs = {
-  options?: InputMaybe<CollectionListOptions>;
-};
-
-
-export type QueryCountriesArgs = {
-  options?: InputMaybe<CountryListOptions>;
-};
-
-
-export type QueryCountryArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryCustomerArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryCustomerGroupArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryCustomerGroupsArgs = {
-  options?: InputMaybe<CustomerGroupListOptions>;
-};
-
-
-export type QueryCustomersArgs = {
-  options?: InputMaybe<CustomerListOptions>;
-};
-
-
-export type QueryEligibleShippingMethodsForDraftOrderArgs = {
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type QueryFacetArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryFacetValuesArgs = {
-  options?: InputMaybe<FacetValueListOptions>;
-};
-
-
-export type QueryFacetsArgs = {
-  options?: InputMaybe<FacetListOptions>;
-};
-
-
-export type QueryJobArgs = {
-  jobId: Scalars['ID']['input'];
-};
-
-
-export type QueryJobBufferSizeArgs = {
-  bufferIds?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-
-export type QueryJobsArgs = {
-  options?: InputMaybe<JobListOptions>;
-};
-
-
-export type QueryJobsByIdArgs = {
-  jobIds: Array<Scalars['ID']['input']>;
-};
-
-
-export type QueryMetricSummaryArgs = {
-  input?: InputMaybe<MetricSummaryInput>;
-};
-
-
-export type QueryOrderArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryOrdersArgs = {
-  options?: InputMaybe<OrderListOptions>;
-};
-
-
-export type QueryPaymentMethodArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryPaymentMethodsArgs = {
-  options?: InputMaybe<PaymentMethodListOptions>;
-};
-
-
-export type QueryPreviewCollectionVariantsArgs = {
-  input: PreviewCollectionVariantsInput;
-  options?: InputMaybe<ProductVariantListOptions>;
-};
-
-
-export type QueryProductArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryProductOptionGroupArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryProductOptionGroupsArgs = {
-  filterTerm?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryProductVariantArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryProductVariantsArgs = {
-  options?: InputMaybe<ProductVariantListOptions>;
-  productId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryProductsArgs = {
-  options?: InputMaybe<ProductListOptions>;
-};
-
-
-export type QueryPromotionArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryPromotionsArgs = {
-  options?: InputMaybe<PromotionListOptions>;
-};
-
-
-export type QueryProvinceArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryProvincesArgs = {
-  options?: InputMaybe<ProvinceListOptions>;
-};
-
-
-export type QueryRoleArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryRolesArgs = {
-  options?: InputMaybe<RoleListOptions>;
-};
-
-
-export type QuerySearchArgs = {
-  input: SearchInput;
-};
-
-
-export type QuerySellerArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QuerySellersArgs = {
-  options?: InputMaybe<SellerListOptions>;
-};
-
-
-export type QueryShippingMethodArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryShippingMethodsArgs = {
-  options?: InputMaybe<ShippingMethodListOptions>;
-};
-
-
-export type QueryStockLocationArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryStockLocationsArgs = {
-  options?: InputMaybe<StockLocationListOptions>;
-};
-
-
-export type QueryTagArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryTagsArgs = {
-  options?: InputMaybe<TagListOptions>;
-};
-
-
-export type QueryTaxCategoriesArgs = {
-  options?: InputMaybe<TaxCategoryListOptions>;
-};
-
-
-export type QueryTaxCategoryArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryTaxRateArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryTaxRatesArgs = {
-  options?: InputMaybe<TaxRateListOptions>;
-};
-
-
-export type QueryTestEligibleShippingMethodsArgs = {
-  input: TestEligibleShippingMethodsInput;
-};
-
-
-export type QueryTestShippingMethodArgs = {
-  input: TestShippingMethodInput;
-};
-
-
-export type QueryZoneArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryZonesArgs = {
-  options?: InputMaybe<ZoneListOptions>;
-};
-
-export type Refund = Node & {
-  __typename?: 'Refund';
-  adjustment: Scalars['Money']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  items: Scalars['Money']['output'];
-  lines: Array<RefundLine>;
-  metadata?: Maybe<Scalars['JSON']['output']>;
-  method?: Maybe<Scalars['String']['output']>;
-  paymentId: Scalars['ID']['output'];
-  reason?: Maybe<Scalars['String']['output']>;
-  shipping: Scalars['Money']['output'];
-  state: Scalars['String']['output'];
-  total: Scalars['Money']['output'];
-  transactionId?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-/** Returned if `amount` is greater than the maximum un-refunded amount of the Payment */
-export type RefundAmountError = ErrorResult & {
-  __typename?: 'RefundAmountError';
-  errorCode: ErrorCode;
-  maximumRefundable: Scalars['Int']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type RefundLine = {
-  __typename?: 'RefundLine';
-  orderLine: OrderLine;
-  orderLineId: Scalars['ID']['output'];
-  quantity: Scalars['Int']['output'];
-  refund: Refund;
-  refundId: Scalars['ID']['output'];
-};
-
-export type RefundOrderInput = {
-  adjustment: Scalars['Money']['input'];
-  /**
-   * If an amount is specified, this value will be used to create a Refund rather than calculating the
-   * amount automatically. This was added in v2.2 and will be the preferred way to specify the refund
-   * amount in the future. The `lines`, `shipping` and `adjustment` fields will likely be removed in a future
-   * version.
-   */
-  amount?: InputMaybe<Scalars['Money']['input']>;
-  lines: Array<OrderLineInput>;
-  paymentId: Scalars['ID']['input'];
-  reason?: InputMaybe<Scalars['String']['input']>;
-  shipping: Scalars['Money']['input'];
-};
-
-export type RefundOrderResult = AlreadyRefundedError | MultipleOrderError | NothingToRefundError | OrderStateTransitionError | PaymentOrderMismatchError | QuantityTooGreatError | Refund | RefundAmountError | RefundOrderStateError | RefundStateTransitionError;
-
-/** Returned if an attempting to refund an Order which is not in the expected state */
-export type RefundOrderStateError = ErrorResult & {
-  __typename?: 'RefundOrderStateError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  orderState: Scalars['String']['output'];
-};
-
-/**
- * Returned when a call to modifyOrder fails to include a refundPaymentId even
- * though the price has decreased as a result of the changes.
- */
-export type RefundPaymentIdMissingError = ErrorResult & {
-  __typename?: 'RefundPaymentIdMissingError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-};
-
-/** Returned when there is an error in transitioning the Refund state */
-export type RefundStateTransitionError = ErrorResult & {
-  __typename?: 'RefundStateTransitionError';
-  errorCode: ErrorCode;
-  fromState: Scalars['String']['output'];
-  message: Scalars['String']['output'];
-  toState: Scalars['String']['output'];
-  transitionError: Scalars['String']['output'];
-};
-
-export type Region = {
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  enabled: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  parent?: Maybe<Region>;
-  parentId?: Maybe<Scalars['ID']['output']>;
-  translations: Array<RegionTranslation>;
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type RegionTranslation = {
-  __typename?: 'RegionTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type RelationCustomFieldConfig = CustomField & {
-  __typename?: 'RelationCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  entity: Scalars['String']['output'];
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  scalarFields: Array<Scalars['String']['output']>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type Release = Node & StockMovement & {
-  __typename?: 'Release';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type RemoveCollectionsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  collectionIds: Array<Scalars['ID']['input']>;
-};
-
-export type RemoveFacetFromChannelResult = Facet | FacetInUseError;
-
-export type RemoveFacetsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  facetIds: Array<Scalars['ID']['input']>;
-  force?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type RemoveOptionGroupFromProductResult = Product | ProductOptionInUseError;
-
-export type RemoveOrderItemsResult = Order | OrderMiddlewareError | OrderModificationError;
-
-export type RemovePaymentMethodsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  paymentMethodIds: Array<Scalars['ID']['input']>;
-};
-
-export type RemoveProductVariantsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  productVariantIds: Array<Scalars['ID']['input']>;
-};
-
-export type RemoveProductsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  productIds: Array<Scalars['ID']['input']>;
-};
-
-export type RemovePromotionsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  promotionIds: Array<Scalars['ID']['input']>;
-};
-
-export type RemoveShippingMethodsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  shippingMethodIds: Array<Scalars['ID']['input']>;
-};
-
-export type RemoveStockLocationsFromChannelInput = {
-  channelId: Scalars['ID']['input'];
-  stockLocationIds: Array<Scalars['ID']['input']>;
-};
-
-export type Return = Node & StockMovement & {
-  __typename?: 'Return';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type Role = Node & {
-  __typename?: 'Role';
-  channels: Array<Channel>;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  permissions: Array<Permission>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type RoleFilterParameter = {
-  _and?: InputMaybe<Array<RoleFilterParameter>>;
-  _or?: InputMaybe<Array<RoleFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type RoleList = PaginatedList & {
-  __typename?: 'RoleList';
-  items: Array<Role>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type RoleListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<RoleFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<RoleSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type RoleSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type Sale = Node & StockMovement & {
-  __typename?: 'Sale';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type SearchInput = {
-  collectionId?: InputMaybe<Scalars['ID']['input']>;
-  collectionSlug?: InputMaybe<Scalars['String']['input']>;
-  facetValueFilters?: InputMaybe<Array<FacetValueFilterInput>>;
-  /** @deprecated Use `facetValueFilters` instead */
-  facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  /** @deprecated Use `facetValueFilters` instead */
-  facetValueOperator?: InputMaybe<LogicalOperator>;
-  groupByProduct?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<SearchResultSortParameter>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  term?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SearchReindexResponse = {
-  __typename?: 'SearchReindexResponse';
-  success: Scalars['Boolean']['output'];
-};
-
-export type SearchResponse = {
-  __typename?: 'SearchResponse';
-  collections: Array<CollectionResult>;
-  facetValues: Array<FacetValueResult>;
-  items: Array<SearchResult>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type SearchResult = {
-  __typename?: 'SearchResult';
-  /** An array of ids of the Channels in which this result appears */
-  channelIds: Array<Scalars['ID']['output']>;
-  /** An array of ids of the Collections in which this result appears */
-  collectionIds: Array<Scalars['ID']['output']>;
-  currencyCode: CurrencyCode;
-  description: Scalars['String']['output'];
-  enabled: Scalars['Boolean']['output'];
-  facetIds: Array<Scalars['ID']['output']>;
-  facetValueIds: Array<Scalars['ID']['output']>;
-  price: SearchResultPrice;
-  priceWithTax: SearchResultPrice;
-  productAsset?: Maybe<SearchResultAsset>;
-  productId: Scalars['ID']['output'];
-  productName: Scalars['String']['output'];
-  productVariantAsset?: Maybe<SearchResultAsset>;
-  productVariantId: Scalars['ID']['output'];
-  productVariantName: Scalars['String']['output'];
-  /** A relevance score for the result. Differs between database implementations */
-  score: Scalars['Float']['output'];
-  sku: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-};
-
-export type SearchResultAsset = {
-  __typename?: 'SearchResultAsset';
-  focalPoint?: Maybe<Coordinate>;
-  id: Scalars['ID']['output'];
-  preview: Scalars['String']['output'];
-};
-
-/** The price of a search result product, either as a range or as a single price */
-export type SearchResultPrice = PriceRange | SinglePrice;
-
-export type SearchResultSortParameter = {
-  name?: InputMaybe<SortOrder>;
-  price?: InputMaybe<SortOrder>;
-};
-
-export type Seller = Node & {
-  __typename?: 'Seller';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type SellerFilterParameter = {
-  _and?: InputMaybe<Array<SellerFilterParameter>>;
-  _or?: InputMaybe<Array<SellerFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type SellerList = PaginatedList & {
-  __typename?: 'SellerList';
-  items: Array<Seller>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type SellerListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<SellerFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<SellerSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type SellerSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type ServerConfig = {
-  __typename?: 'ServerConfig';
-  /**
-   * This field is deprecated in v2.2 in favor of the entityCustomFields field,
-   * which allows custom fields to be defined on user-supplies entities.
-   */
-  customFieldConfig: CustomFields;
-  entityCustomFields: Array<EntityCustomFields>;
-  moneyStrategyPrecision: Scalars['Int']['output'];
-  orderProcess: Array<OrderProcessState>;
-  permissions: Array<PermissionDefinition>;
-  permittedAssetTypes: Array<Scalars['String']['output']>;
-};
-
-export type SetCustomerForDraftOrderResult = EmailAddressConflictError | Order;
-
-export type SetOrderCustomerInput = {
-  customerId: Scalars['ID']['input'];
-  note?: InputMaybe<Scalars['String']['input']>;
-  orderId: Scalars['ID']['input'];
-};
-
-export type SetOrderShippingMethodResult = IneligibleShippingMethodError | NoActiveOrderError | Order | OrderModificationError;
-
-/** Returned if the Payment settlement fails */
-export type SettlePaymentError = ErrorResult & {
-  __typename?: 'SettlePaymentError';
-  errorCode: ErrorCode;
-  message: Scalars['String']['output'];
-  paymentErrorMessage: Scalars['String']['output'];
-};
-
-export type SettlePaymentResult = OrderStateTransitionError | Payment | PaymentStateTransitionError | SettlePaymentError;
-
-export type SettleRefundInput = {
-  id: Scalars['ID']['input'];
-  transactionId: Scalars['String']['input'];
-};
-
-export type SettleRefundResult = Refund | RefundStateTransitionError;
-
-export type ShippingLine = {
-  __typename?: 'ShippingLine';
-  discountedPrice: Scalars['Money']['output'];
-  discountedPriceWithTax: Scalars['Money']['output'];
-  discounts: Array<Discount>;
-  id: Scalars['ID']['output'];
-  price: Scalars['Money']['output'];
-  priceWithTax: Scalars['Money']['output'];
-  shippingMethod: ShippingMethod;
-};
-
-export type ShippingMethod = Node & {
-  __typename?: 'ShippingMethod';
-  calculator: ConfigurableOperation;
-  checker: ConfigurableOperation;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  fulfillmentHandlerCode: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  translations: Array<ShippingMethodTranslation>;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ShippingMethodFilterParameter = {
-  _and?: InputMaybe<Array<ShippingMethodFilterParameter>>;
-  _or?: InputMaybe<Array<ShippingMethodFilterParameter>>;
-  code?: InputMaybe<StringOperators>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  fulfillmentHandlerCode?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  languageCode?: InputMaybe<StringOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type ShippingMethodList = PaginatedList & {
-  __typename?: 'ShippingMethodList';
-  items: Array<ShippingMethod>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type ShippingMethodListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<ShippingMethodFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<ShippingMethodSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ShippingMethodQuote = {
-  __typename?: 'ShippingMethodQuote';
-  code: Scalars['String']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  /** Any optional metadata returned by the ShippingCalculator in the ShippingCalculationResult */
-  metadata?: Maybe<Scalars['JSON']['output']>;
-  name: Scalars['String']['output'];
-  price: Scalars['Money']['output'];
-  priceWithTax: Scalars['Money']['output'];
-};
-
-export type ShippingMethodSortParameter = {
-  code?: InputMaybe<SortOrder>;
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  fulfillmentHandlerCode?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type ShippingMethodTranslation = {
-  __typename?: 'ShippingMethodTranslation';
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ShippingMethodTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** The price value where the result has a single price */
-export type SinglePrice = {
-  __typename?: 'SinglePrice';
-  value: Scalars['Money']['output'];
-};
-
-export enum SortOrder {
-  ASC = 'ASC',
-  DESC = 'DESC'
-}
-
-export type StockAdjustment = Node & StockMovement & {
-  __typename?: 'StockAdjustment';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type StockLevel = Node & {
-  __typename?: 'StockLevel';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  stockAllocated: Scalars['Int']['output'];
-  stockLocation: StockLocation;
-  stockLocationId: Scalars['ID']['output'];
-  stockOnHand: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type StockLevelInput = {
-  stockLocationId: Scalars['ID']['input'];
-  stockOnHand: Scalars['Int']['input'];
-};
-
-export type StockLocation = Node & {
-  __typename?: 'StockLocation';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type StockLocationFilterParameter = {
-  _and?: InputMaybe<Array<StockLocationFilterParameter>>;
-  _or?: InputMaybe<Array<StockLocationFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  description?: InputMaybe<StringOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type StockLocationList = PaginatedList & {
-  __typename?: 'StockLocationList';
-  items: Array<StockLocation>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type StockLocationListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<StockLocationFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<StockLocationSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type StockLocationSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  description?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type StockMovement = {
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  productVariant: ProductVariant;
-  quantity: Scalars['Int']['output'];
-  type: StockMovementType;
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type StockMovementItem = Allocation | Cancellation | Release | Return | Sale | StockAdjustment;
-
-export type StockMovementList = {
-  __typename?: 'StockMovementList';
-  items: Array<StockMovementItem>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type StockMovementListOptions = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  type?: InputMaybe<StockMovementType>;
-};
-
-export enum StockMovementType {
-  ADJUSTMENT = 'ADJUSTMENT',
-  ALLOCATION = 'ALLOCATION',
-  CANCELLATION = 'CANCELLATION',
-  RELEASE = 'RELEASE',
-  RETURN = 'RETURN',
-  SALE = 'SALE'
-}
-
-export type StringCustomFieldConfig = CustomField & {
-  __typename?: 'StringCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  length?: Maybe<Scalars['Int']['output']>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  options?: Maybe<Array<StringFieldOption>>;
-  pattern?: Maybe<Scalars['String']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type StringFieldOption = {
-  __typename?: 'StringFieldOption';
-  label?: Maybe<Array<LocalizedString>>;
-  value: Scalars['String']['output'];
-};
-
-/** Operators for filtering on a list of String fields */
-export type StringListOperators = {
-  inList: Scalars['String']['input'];
-};
-
-/** Operators for filtering on a String field */
-export type StringOperators = {
-  contains?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
-  in?: InputMaybe<Array<Scalars['String']['input']>>;
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  notContains?: InputMaybe<Scalars['String']['input']>;
-  notEq?: InputMaybe<Scalars['String']['input']>;
-  notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  regex?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Indicates that an operation succeeded, where we do not want to return any more specific information. */
-export type Success = {
-  __typename?: 'Success';
-  success: Scalars['Boolean']['output'];
-};
-
-export type Surcharge = Node & {
-  __typename?: 'Surcharge';
-  createdAt: Scalars['DateTime']['output'];
-  description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  price: Scalars['Money']['output'];
-  priceWithTax: Scalars['Money']['output'];
-  sku?: Maybe<Scalars['String']['output']>;
-  taxLines: Array<TaxLine>;
-  taxRate: Scalars['Float']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type SurchargeInput = {
-  description: Scalars['String']['input'];
-  price: Scalars['Money']['input'];
-  priceIncludesTax: Scalars['Boolean']['input'];
-  sku?: InputMaybe<Scalars['String']['input']>;
-  taxDescription?: InputMaybe<Scalars['String']['input']>;
-  taxRate?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type Tag = Node & {
-  __typename?: 'Tag';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-  value: Scalars['String']['output'];
-};
-
-export type TagFilterParameter = {
-  _and?: InputMaybe<Array<TagFilterParameter>>;
-  _or?: InputMaybe<Array<TagFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-  value?: InputMaybe<StringOperators>;
-};
-
-export type TagList = PaginatedList & {
-  __typename?: 'TagList';
-  items: Array<Tag>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type TagListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<TagFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<TagSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type TagSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-  value?: InputMaybe<SortOrder>;
-};
-
-export type TaxCategory = Node & {
-  __typename?: 'TaxCategory';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  isDefault: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type TaxCategoryFilterParameter = {
-  _and?: InputMaybe<Array<TaxCategoryFilterParameter>>;
-  _or?: InputMaybe<Array<TaxCategoryFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  isDefault?: InputMaybe<BooleanOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type TaxCategoryList = PaginatedList & {
-  __typename?: 'TaxCategoryList';
-  items: Array<TaxCategory>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type TaxCategoryListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<TaxCategoryFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<TaxCategorySortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type TaxCategorySortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
-export type TaxLine = {
-  __typename?: 'TaxLine';
-  description: Scalars['String']['output'];
-  taxRate: Scalars['Float']['output'];
-};
-
-export type TaxRate = Node & {
-  __typename?: 'TaxRate';
-  category: TaxCategory;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  customerGroup?: Maybe<CustomerGroup>;
-  enabled: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-  value: Scalars['Float']['output'];
-  zone: Zone;
-};
-
-export type TaxRateFilterParameter = {
-  _and?: InputMaybe<Array<TaxRateFilterParameter>>;
-  _or?: InputMaybe<Array<TaxRateFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  enabled?: InputMaybe<BooleanOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-  value?: InputMaybe<NumberOperators>;
-};
-
-export type TaxRateList = PaginatedList & {
-  __typename?: 'TaxRateList';
-  items: Array<TaxRate>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type TaxRateListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<TaxRateFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<TaxRateSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type TaxRateSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-  value?: InputMaybe<SortOrder>;
-};
-
-export type TestEligibleShippingMethodsInput = {
-  lines: Array<TestShippingMethodOrderLineInput>;
-  shippingAddress: CreateAddressInput;
-};
-
-export type TestShippingMethodInput = {
-  calculator: ConfigurableOperationInput;
-  checker: ConfigurableOperationInput;
-  lines: Array<TestShippingMethodOrderLineInput>;
-  shippingAddress: CreateAddressInput;
-};
-
-export type TestShippingMethodOrderLineInput = {
-  productVariantId: Scalars['ID']['input'];
-  quantity: Scalars['Int']['input'];
-};
-
-export type TestShippingMethodQuote = {
-  __typename?: 'TestShippingMethodQuote';
-  metadata?: Maybe<Scalars['JSON']['output']>;
-  price: Scalars['Money']['output'];
-  priceWithTax: Scalars['Money']['output'];
-};
-
-export type TestShippingMethodResult = {
-  __typename?: 'TestShippingMethodResult';
-  eligible: Scalars['Boolean']['output'];
-  quote?: Maybe<TestShippingMethodQuote>;
-};
-
-export type TextCustomFieldConfig = CustomField & {
-  __typename?: 'TextCustomFieldConfig';
-  description?: Maybe<Array<LocalizedString>>;
-  internal?: Maybe<Scalars['Boolean']['output']>;
-  label?: Maybe<Array<LocalizedString>>;
-  list: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  nullable?: Maybe<Scalars['Boolean']['output']>;
-  readonly?: Maybe<Scalars['Boolean']['output']>;
-  requiresPermission?: Maybe<Array<Permission>>;
-  type: Scalars['String']['output'];
-  ui?: Maybe<Scalars['JSON']['output']>;
-};
-
-export type TransitionFulfillmentToStateResult = Fulfillment | FulfillmentStateTransitionError;
-
-export type TransitionOrderToStateResult = Order | OrderStateTransitionError;
-
-export type TransitionPaymentToStateResult = Payment | PaymentStateTransitionError;
-
-export type UiState = {
-  __typename?: 'UiState';
-  contentLanguage: LanguageCode;
-  displayUiExtensionPoints: Scalars['Boolean']['output'];
-  language: LanguageCode;
-  locale?: Maybe<Scalars['String']['output']>;
-  mainNavExpanded: Scalars['Boolean']['output'];
-  theme: Scalars['String']['output'];
-};
-
-export type UpdateActiveAdministratorInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  emailAddress?: InputMaybe<Scalars['String']['input']>;
-  firstName?: InputMaybe<Scalars['String']['input']>;
-  lastName?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
-};
-
-/**
- * Input used to update an Address.
- *
- * The countryCode must correspond to a `code` property of a Country that has been defined in the
- * Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
- * If an invalid code is passed, the mutation will fail.
- */
-export type UpdateAddressInput = {
-  city?: InputMaybe<Scalars['String']['input']>;
-  company?: InputMaybe<Scalars['String']['input']>;
-  countryCode?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  defaultBillingAddress?: InputMaybe<Scalars['Boolean']['input']>;
-  defaultShippingAddress?: InputMaybe<Scalars['Boolean']['input']>;
-  fullName?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  postalCode?: InputMaybe<Scalars['String']['input']>;
-  province?: InputMaybe<Scalars['String']['input']>;
-  streetLine1?: InputMaybe<Scalars['String']['input']>;
-  streetLine2?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateAdministratorInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  emailAddress?: InputMaybe<Scalars['String']['input']>;
-  firstName?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  lastName?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
-  roleIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-};
-
-export type UpdateAssetInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  focalPoint?: InputMaybe<CoordinateInput>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  tags?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-export type UpdateChannelInput = {
-  availableCurrencyCodes?: InputMaybe<Array<CurrencyCode>>;
-  availableLanguageCodes?: InputMaybe<Array<LanguageCode>>;
-  code?: InputMaybe<Scalars['String']['input']>;
-  /** @deprecated Use defaultCurrencyCode instead */
-  currencyCode?: InputMaybe<CurrencyCode>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  defaultCurrencyCode?: InputMaybe<CurrencyCode>;
-  defaultLanguageCode?: InputMaybe<LanguageCode>;
-  defaultShippingZoneId?: InputMaybe<Scalars['ID']['input']>;
-  defaultTaxZoneId?: InputMaybe<Scalars['ID']['input']>;
-  id: Scalars['ID']['input'];
-  outOfStockThreshold?: InputMaybe<Scalars['Int']['input']>;
-  pricesIncludeTax?: InputMaybe<Scalars['Boolean']['input']>;
-  sellerId?: InputMaybe<Scalars['ID']['input']>;
-  token?: InputMaybe<Scalars['String']['input']>;
-  trackInventory?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type UpdateChannelResult = Channel | LanguageNotAvailableError;
-
-export type UpdateCollectionInput = {
-  assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  featuredAssetId?: InputMaybe<Scalars['ID']['input']>;
-  filters?: InputMaybe<Array<ConfigurableOperationInput>>;
-  id: Scalars['ID']['input'];
-  inheritFilters?: InputMaybe<Scalars['Boolean']['input']>;
-  isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
-  parentId?: InputMaybe<Scalars['ID']['input']>;
-  translations?: InputMaybe<Array<UpdateCollectionTranslationInput>>;
-};
-
-export type UpdateCollectionTranslationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
-  languageCode: LanguageCode;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateCountryInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<CountryTranslationInput>>;
-};
-
-export type UpdateCustomerGroupInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateCustomerInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  emailAddress?: InputMaybe<Scalars['String']['input']>;
-  firstName?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  lastName?: InputMaybe<Scalars['String']['input']>;
-  phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateCustomerNoteInput = {
-  note: Scalars['String']['input'];
-  noteId: Scalars['ID']['input'];
-};
-
-export type UpdateCustomerResult = Customer | EmailAddressConflictError;
-
-export type UpdateFacetInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  isPrivate?: InputMaybe<Scalars['Boolean']['input']>;
-  translations?: InputMaybe<Array<FacetTranslationInput>>;
-};
-
-export type UpdateFacetValueInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<FacetValueTranslationInput>>;
-};
-
-export type UpdateGlobalSettingsInput = {
-  availableLanguages?: InputMaybe<Array<LanguageCode>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  outOfStockThreshold?: InputMaybe<Scalars['Int']['input']>;
-  trackInventory?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type UpdateGlobalSettingsResult = ChannelDefaultLanguageError | GlobalSettings;
-
-export type UpdateOrderAddressInput = {
-  city?: InputMaybe<Scalars['String']['input']>;
-  company?: InputMaybe<Scalars['String']['input']>;
-  countryCode?: InputMaybe<Scalars['String']['input']>;
-  fullName?: InputMaybe<Scalars['String']['input']>;
-  phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  postalCode?: InputMaybe<Scalars['String']['input']>;
-  province?: InputMaybe<Scalars['String']['input']>;
-  streetLine1?: InputMaybe<Scalars['String']['input']>;
-  streetLine2?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateOrderInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-};
-
-export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderMiddlewareError | OrderModificationError;
-
-export type UpdateOrderNoteInput = {
-  isPublic?: InputMaybe<Scalars['Boolean']['input']>;
-  note?: InputMaybe<Scalars['String']['input']>;
-  noteId: Scalars['ID']['input'];
-};
-
-export type UpdatePaymentMethodInput = {
-  checker?: InputMaybe<ConfigurableOperationInput>;
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  handler?: InputMaybe<ConfigurableOperationInput>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<PaymentMethodTranslationInput>>;
-};
-
-export type UpdateProductInput = {
-  assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  featuredAssetId?: InputMaybe<Scalars['ID']['input']>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<ProductTranslationInput>>;
-};
-
-export type UpdateProductOptionGroupInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<ProductOptionGroupTranslationInput>>;
-};
-
-export type UpdateProductOptionInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<ProductOptionGroupTranslationInput>>;
-};
-
-export type UpdateProductVariantInput = {
-  assetIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  facetValueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  featuredAssetId?: InputMaybe<Scalars['ID']['input']>;
-  id: Scalars['ID']['input'];
-  optionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  outOfStockThreshold?: InputMaybe<Scalars['Int']['input']>;
-  /** Sets the price for the ProductVariant in the Channel's default currency */
-  price?: InputMaybe<Scalars['Money']['input']>;
-  /** Allows multiple prices to be set for the ProductVariant in different currencies. */
-  prices?: InputMaybe<Array<ProductVariantPriceInput>>;
-  sku?: InputMaybe<Scalars['String']['input']>;
-  stockLevels?: InputMaybe<Array<StockLevelInput>>;
-  stockOnHand?: InputMaybe<Scalars['Int']['input']>;
-  taxCategoryId?: InputMaybe<Scalars['ID']['input']>;
-  trackInventory?: InputMaybe<GlobalFlag>;
-  translations?: InputMaybe<Array<ProductVariantTranslationInput>>;
-  useGlobalOutOfStockThreshold?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type UpdatePromotionInput = {
-  actions?: InputMaybe<Array<ConfigurableOperationInput>>;
-  conditions?: InputMaybe<Array<ConfigurableOperationInput>>;
-  couponCode?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  endsAt?: InputMaybe<Scalars['DateTime']['input']>;
-  id: Scalars['ID']['input'];
-  perCustomerUsageLimit?: InputMaybe<Scalars['Int']['input']>;
-  startsAt?: InputMaybe<Scalars['DateTime']['input']>;
-  translations?: InputMaybe<Array<PromotionTranslationInput>>;
-  usageLimit?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type UpdatePromotionResult = MissingConditionsError | Promotion;
-
-export type UpdateProvinceInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  id: Scalars['ID']['input'];
-  translations?: InputMaybe<Array<ProvinceTranslationInput>>;
-};
-
-export type UpdateRoleInput = {
-  channelIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  code?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  permissions?: InputMaybe<Array<Permission>>;
-};
-
-export type UpdateSellerInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateShippingMethodInput = {
-  calculator?: InputMaybe<ConfigurableOperationInput>;
-  checker?: InputMaybe<ConfigurableOperationInput>;
-  code?: InputMaybe<Scalars['String']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  fulfillmentHandler?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  translations: Array<ShippingMethodTranslationInput>;
-};
-
-export type UpdateStockLocationInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateTagInput = {
-  id: Scalars['ID']['input'];
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateTaxCategoryInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  isDefault?: InputMaybe<Scalars['Boolean']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateTaxRateInput = {
-  categoryId?: InputMaybe<Scalars['ID']['input']>;
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  customerGroupId?: InputMaybe<Scalars['ID']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['Float']['input']>;
-  zoneId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-export type UpdateZoneInput = {
-  customFields?: InputMaybe<Scalars['JSON']['input']>;
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type User = Node & {
-  __typename?: 'User';
-  authenticationMethods: Array<AuthenticationMethod>;
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  identifier: Scalars['String']['output'];
-  lastLogin?: Maybe<Scalars['DateTime']['output']>;
-  roles: Array<Role>;
-  updatedAt: Scalars['DateTime']['output'];
-  verified: Scalars['Boolean']['output'];
-};
-
-export type UserStatus = {
-  __typename?: 'UserStatus';
-  activeChannelId?: Maybe<Scalars['ID']['output']>;
-  administratorId?: Maybe<Scalars['ID']['output']>;
-  channels: Array<CurrentUserChannel>;
-  isLoggedIn: Scalars['Boolean']['output'];
-  loginTime: Scalars['String']['output'];
-  permissions: Array<Permission>;
-  username: Scalars['String']['output'];
-};
-
-export type UserStatusInput = {
-  activeChannelId: Scalars['ID']['input'];
-  administratorId: Scalars['ID']['input'];
-  channels: Array<CurrentUserChannelInput>;
-  loginTime: Scalars['String']['input'];
-  username: Scalars['String']['input'];
-};
-
-export type Zone = Node & {
-  __typename?: 'Zone';
-  createdAt: Scalars['DateTime']['output'];
-  customFields?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  members: Array<Region>;
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
-
-export type ZoneFilterParameter = {
-  _and?: InputMaybe<Array<ZoneFilterParameter>>;
-  _or?: InputMaybe<Array<ZoneFilterParameter>>;
-  createdAt?: InputMaybe<DateOperators>;
-  id?: InputMaybe<IdOperators>;
-  name?: InputMaybe<StringOperators>;
-  updatedAt?: InputMaybe<DateOperators>;
-};
-
-export type ZoneList = PaginatedList & {
-  __typename?: 'ZoneList';
-  items: Array<Zone>;
-  totalItems: Scalars['Int']['output'];
-};
-
-export type ZoneListOptions = {
-  /** Allows the results to be filtered */
-  filter?: InputMaybe<ZoneFilterParameter>;
-  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-  filterOperator?: InputMaybe<LogicalOperator>;
-  /** Skips the first n results, for use in pagination */
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  /** Specifies which properties to sort the results by */
-  sort?: InputMaybe<ZoneSortParameter>;
-  /** Takes n results, for use in pagination */
-  take?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ZoneSortParameter = {
-  createdAt?: InputMaybe<SortOrder>;
-  id?: InputMaybe<SortOrder>;
-  name?: InputMaybe<SortOrder>;
-  updatedAt?: InputMaybe<SortOrder>;
-};
-
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+export * from './generated-schema-types';
 export type AssetDetailQueryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type AssetDetailQueryQuery = { asset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
+export type AssetDetailQueryQuery = { asset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
 export type GetProductsWithFacetValuesByIdsQueryVariables = Exact<{
-  ids: Array<Scalars['String']['input']> | Scalars['String']['input'];
+  ids: Array<string> | string;
 }>;
 
 
 export type GetProductsWithFacetValuesByIdsQuery = { products: { __typename?: 'ProductList', items: Array<{ __typename?: 'Product', id: string, name: string, facetValues: Array<{ __typename?: 'FacetValue', id: string, name: string, code: string, facet: { __typename?: 'Facet', id: string, name: string, code: string } }> }> } };
 
 export type GetVariantsWithFacetValuesByIdsQueryVariables = Exact<{
-  ids: Array<Scalars['String']['input']> | Scalars['String']['input'];
+  ids: Array<string> | string;
 }>;
 
 
 export type GetVariantsWithFacetValuesByIdsQuery = { productVariants: { __typename?: 'ProductVariantList', items: Array<{ __typename?: 'ProductVariant', id: string, name: string, sku: string, facetValues: Array<{ __typename?: 'FacetValue', id: string, name: string, code: string, facet: { __typename?: 'Facet', id: string, name: string, code: string } }> }> } };
 
 export type UpdateProductsBulkMutationVariables = Exact<{
-  input: Array<UpdateProductInput> | UpdateProductInput;
+  input: Array<Types.UpdateProductInput> | Types.UpdateProductInput;
 }>;
 
 
 export type UpdateProductsBulkMutation = { updateProducts: Array<{ __typename?: 'Product', id: string, name: string, facetValues: Array<{ __typename?: 'FacetValue', id: string, name: string, code: string }> }> };
 
 export type UpdateVariantsBulkMutationVariables = Exact<{
-  input: Array<UpdateProductVariantInput> | UpdateProductVariantInput;
+  input: Array<Types.UpdateProductVariantInput> | Types.UpdateProductVariantInput;
 }>;
 
 
 export type UpdateVariantsBulkMutation = { updateProductVariants: Array<{ __typename?: 'ProductVariant', id: string, name: string, facetValues: Array<{ __typename?: 'FacetValue', id: string, name: string, code: string }> } | null> };
 
 export type CollectionDetailQueryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type CollectionDetailQueryQuery = { collection?: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode?: LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, parent?: { __typename?: 'Collection', id: string, name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, name: string }> | null } | null };
+export type CollectionDetailQueryQuery = { collection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode: Types.LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, parent: { __typename?: 'Collection', id: string, name: string } | null, children: Array<{ __typename?: 'Collection', id: string, name: string }> | null } | null };
 
 export type GetFacetDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  facetValueListOptions?: InputMaybe<FacetValueListOptions>;
+  id: string | number;
+  facetValueListOptions?: Types.FacetValueListOptions | null | undefined;
 }>;
 
 
-export type GetFacetDetailQuery = { facet?: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: LanguageCode, name: string }>, valueList: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } } | null };
+export type GetFacetDetailQuery = { facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, valueList: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } } | null };
 
 export type GetFacetListQueryVariables = Exact<{
-  options?: InputMaybe<FacetListOptions>;
-  facetValueListOptions?: InputMaybe<FacetValueListOptions>;
+  options?: Types.FacetListOptions | null | undefined;
+  facetValueListOptions?: Types.FacetValueListOptions | null | undefined;
 }>;
 
 
-export type GetFacetListQuery = { facets: { __typename?: 'FacetList', totalItems: number, items: Array<{ __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: LanguageCode, name: string }>, valueList: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } }> } };
+export type GetFacetListQuery = { facets: { __typename?: 'FacetList', totalItems: number, items: Array<{ __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, valueList: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } }> } };
 
 export type GetProductDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductDetailQuery = { product?: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, description: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null };
+export type GetProductDetailQuery = { product: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, description: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null };
 
-export type ProductListQueryProductFragmentFragment = { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } };
+export type ProductListQueryProductFragmentFragment = { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } };
 
 export type ProductListQueryQueryVariables = Exact<{
-  options?: InputMaybe<ProductListOptions>;
+  options?: Types.ProductListOptions | null | undefined;
 }>;
 
 
-export type ProductListQueryQuery = { products: { __typename?: 'ProductList', totalItems: number, items: Array<{ __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } }> } };
+export type ProductListQueryQuery = { products: { __typename?: 'ProductList', totalItems: number, items: Array<{ __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } }> } };
 
-export type ProductVariantDetailQueryProductVariantFragmentFragment = { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, prices: Array<{ __typename?: 'ProductVariantPrice', price: number, currencyCode: CurrencyCode }>, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockOnHand: number, stockAllocated: number, stockLocationId: string, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }>, product: { __typename?: 'Product', id: string, name: string, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }> } };
+export type ProductVariantDetailQueryProductVariantFragmentFragment = { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, prices: Array<{ __typename?: 'ProductVariantPrice', price: number, currencyCode: Types.CurrencyCode }>, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockOnHand: number, stockAllocated: number, stockLocationId: string, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }>, product: { __typename?: 'Product', id: string, name: string, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }> } };
 
 export type GetProductVariantDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductVariantDetailQuery = { productVariant?: { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, prices: Array<{ __typename?: 'ProductVariantPrice', price: number, currencyCode: CurrencyCode }>, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockOnHand: number, stockAllocated: number, stockLocationId: string, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }>, product: { __typename?: 'Product', id: string, name: string, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }> } } | null, stockLocations: { __typename?: 'StockLocationList', items: Array<{ __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string }> }, taxCategories: { __typename?: 'TaxCategoryList', totalItems: number, items: Array<{ __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean }> }, activeChannel: { __typename?: 'Channel', id: string, availableCurrencyCodes: Array<CurrencyCode>, defaultCurrencyCode: CurrencyCode } };
+export type GetProductVariantDetailQuery = { productVariant: { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, prices: Array<{ __typename?: 'ProductVariantPrice', price: number, currencyCode: Types.CurrencyCode }>, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockOnHand: number, stockAllocated: number, stockLocationId: string, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }>, product: { __typename?: 'Product', id: string, name: string, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }> } } | null, stockLocations: { __typename?: 'StockLocationList', items: Array<{ __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string }> }, taxCategories: { __typename?: 'TaxCategoryList', totalItems: number, items: Array<{ __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean }> }, activeChannel: { __typename?: 'Channel', id: string, availableCurrencyCodes: Array<Types.CurrencyCode>, defaultCurrencyCode: Types.CurrencyCode } };
 
 export type ProductVariantUpdateMutationMutationVariables = Exact<{
-  input: Array<UpdateProductVariantInput> | UpdateProductVariantInput;
+  input: Array<Types.UpdateProductVariantInput> | Types.UpdateProductVariantInput;
 }>;
 
 
-export type ProductVariantUpdateMutationMutation = { updateProductVariants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, prices: Array<{ __typename?: 'ProductVariantPrice', price: number, currencyCode: CurrencyCode }>, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockOnHand: number, stockAllocated: number, stockLocationId: string, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }>, product: { __typename?: 'Product', id: string, name: string, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }> } } | null> };
+export type ProductVariantUpdateMutationMutation = { updateProductVariants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, prices: Array<{ __typename?: 'ProductVariantPrice', price: number, currencyCode: Types.CurrencyCode }>, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockOnHand: number, stockAllocated: number, stockLocationId: string, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }>, product: { __typename?: 'Product', id: string, name: string, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }> } } | null> };
 
-export type ProductVariantListQueryProductVariantFragmentFragment = { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
+export type ProductVariantListQueryProductVariantFragmentFragment = { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
 export type ProductVariantListQueryQueryVariables = Exact<{
-  options: ProductVariantListOptions;
+  options: Types.ProductVariantListOptions;
 }>;
 
 
-export type ProductVariantListQueryQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } };
+export type ProductVariantListQueryQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } };
 
 export type GetProductVariantsQuickJumpQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductVariantsQuickJumpQuery = { product?: { __typename?: 'Product', id: string, variants: Array<{ __typename?: 'ProductVariant', id: string, name: string, sku: string }> } | null };
+export type GetProductVariantsQuickJumpQuery = { product: { __typename?: 'Product', id: string, variants: Array<{ __typename?: 'ProductVariant', id: string, name: string, sku: string }> } | null };
 
-export type RoleFragment = { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> };
+export type RoleFragment = { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> };
 
-export type AdministratorFragment = { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } };
+export type AdministratorFragment = { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } };
 
 export type GetActiveAdministratorQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetActiveAdministratorQuery = { activeAdministrator?: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } | null };
+export type GetActiveAdministratorQuery = { activeAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } | null };
 
 export type CreateAdministratorMutationVariables = Exact<{
-  input: CreateAdministratorInput;
+  input: Types.CreateAdministratorInput;
 }>;
 
 
-export type CreateAdministratorMutation = { createAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
+export type CreateAdministratorMutation = { createAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
 
 export type UpdateAdministratorMutationVariables = Exact<{
-  input: UpdateAdministratorInput;
+  input: Types.UpdateAdministratorInput;
 }>;
 
 
-export type UpdateAdministratorMutation = { updateAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
+export type UpdateAdministratorMutation = { updateAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
 
 export type UpdateActiveAdministratorMutationVariables = Exact<{
-  input: UpdateActiveAdministratorInput;
+  input: Types.UpdateActiveAdministratorInput;
 }>;
 
 
-export type UpdateActiveAdministratorMutation = { updateActiveAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
+export type UpdateActiveAdministratorMutation = { updateActiveAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
 
 export type DeleteAdministratorMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteAdministratorMutation = { deleteAdministrator: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteAdministratorMutation = { deleteAdministrator: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteAdministratorsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteAdministratorsMutation = { deleteAdministrators: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteAdministratorsMutation = { deleteAdministrators: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type GetRolesQueryVariables = Exact<{
-  options?: InputMaybe<RoleListOptions>;
+  options?: Types.RoleListOptions | null | undefined;
 }>;
 
 
-export type GetRolesQuery = { roles: { __typename?: 'RoleList', totalItems: number, items: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } };
+export type GetRolesQuery = { roles: { __typename?: 'RoleList', totalItems: number, items: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } };
 
 export type CreateRoleMutationVariables = Exact<{
-  input: CreateRoleInput;
+  input: Types.CreateRoleInput;
 }>;
 
 
-export type CreateRoleMutation = { createRole: { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> } };
+export type CreateRoleMutation = { createRole: { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> } };
 
 export type UpdateRoleMutationVariables = Exact<{
-  input: UpdateRoleInput;
+  input: Types.UpdateRoleInput;
 }>;
 
 
-export type UpdateRoleMutation = { updateRole: { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> } };
+export type UpdateRoleMutation = { updateRole: { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> } };
 
 export type DeleteRoleMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteRoleMutation = { deleteRole: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteRoleMutation = { deleteRole: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteRolesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteRolesMutation = { deleteRoles: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteRolesMutation = { deleteRoles: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type AssignRoleToAdministratorMutationVariables = Exact<{
-  administratorId: Scalars['ID']['input'];
-  roleId: Scalars['ID']['input'];
+  administratorId: string | number;
+  roleId: string | number;
 }>;
 
 
-export type AssignRoleToAdministratorMutation = { assignRoleToAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
+export type AssignRoleToAdministratorMutation = { assignRoleToAdministrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } };
 
-export type CurrentUserFragment = { __typename?: 'CurrentUser', id: string, identifier: string, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> };
+export type CurrentUserFragment = { __typename: 'CurrentUser', id: string, identifier: string, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> };
 
 export type AttemptLoginMutationVariables = Exact<{
-  username: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-  rememberMe: Scalars['Boolean']['input'];
+  username: string;
+  password: string;
+  rememberMe: boolean;
 }>;
 
 
-export type AttemptLoginMutation = { login: { __typename?: 'CurrentUser', id: string, identifier: string, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } | { __typename?: 'InvalidCredentialsError', errorCode: ErrorCode, message: string } | { __typename?: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } };
+export type AttemptLoginMutation = { login:
+    | { __typename: 'CurrentUser', id: string, identifier: string, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> }
+    | { __typename: 'InvalidCredentialsError', errorCode: Types.ErrorCode, message: string }
+    | { __typename: 'NativeAuthStrategyError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -6950,7 +223,7 @@ export type LogOutMutation = { logout: { __typename?: 'Success', success: boolea
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { me?: { __typename?: 'CurrentUser', id: string, identifier: string, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } | null };
+export type GetCurrentUserQuery = { me: { __typename: 'CurrentUser', id: string, identifier: string, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> } | null };
 
 export type RequestStartedMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -6962,58 +235,58 @@ export type RequestCompletedMutationVariables = Exact<{ [key: string]: never; }>
 
 export type RequestCompletedMutation = { requestCompleted: number };
 
-export type UserStatusFragment = { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> };
+export type UserStatusFragment = { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> };
 
 export type SetAsLoggedInMutationVariables = Exact<{
-  input: UserStatusInput;
+  input: Types.UserStatusInput;
 }>;
 
 
-export type SetAsLoggedInMutation = { setAsLoggedIn: { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } };
+export type SetAsLoggedInMutation = { setAsLoggedIn: { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> } };
 
 export type SetAsLoggedOutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SetAsLoggedOutMutation = { setAsLoggedOut: { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } };
+export type SetAsLoggedOutMutation = { setAsLoggedOut: { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> } };
 
 export type SetUiLanguageMutationVariables = Exact<{
-  languageCode: LanguageCode;
-  locale?: InputMaybe<Scalars['String']['input']>;
+  languageCode: Types.LanguageCode;
+  locale?: string | null | undefined;
 }>;
 
 
-export type SetUiLanguageMutation = { setUiLanguage: LanguageCode, setUiLocale?: string | null };
+export type SetUiLanguageMutation = { setUiLanguage: Types.LanguageCode, setUiLocale: string | null };
 
 export type SetUiLocaleMutationVariables = Exact<{
-  locale?: InputMaybe<Scalars['String']['input']>;
+  locale?: string | null | undefined;
 }>;
 
 
-export type SetUiLocaleMutation = { setUiLocale?: string | null };
+export type SetUiLocaleMutation = { setUiLocale: string | null };
 
 export type SetDisplayUiExtensionPointsMutationVariables = Exact<{
-  display: Scalars['Boolean']['input'];
+  display: boolean;
 }>;
 
 
 export type SetDisplayUiExtensionPointsMutation = { setDisplayUiExtensionPoints: boolean };
 
 export type SetMainNavExpandedMutationVariables = Exact<{
-  expanded: Scalars['Boolean']['input'];
+  expanded: boolean;
 }>;
 
 
 export type SetMainNavExpandedMutation = { setMainNavExpanded: boolean };
 
 export type SetContentLanguageMutationVariables = Exact<{
-  languageCode: LanguageCode;
+  languageCode: Types.LanguageCode;
 }>;
 
 
-export type SetContentLanguageMutation = { setContentLanguage: LanguageCode };
+export type SetContentLanguageMutation = { setContentLanguage: Types.LanguageCode };
 
 export type SetUiThemeMutationVariables = Exact<{
-  theme: Scalars['String']['input'];
+  theme: string;
 }>;
 
 
@@ -7022,937 +295,1062 @@ export type SetUiThemeMutation = { setUiTheme: string };
 export type GetNetworkStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNetworkStatusQuery = { networkStatus: { __typename?: 'NetworkStatus', inFlightRequests: number } };
+export type GetNetworkStatusQuery = { networkStatus: { __typename: 'NetworkStatus', inFlightRequests: number } };
 
 export type GetUserStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserStatusQuery = { userStatus: { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } };
+export type GetUserStatusQuery = { userStatus: { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> } };
 
 export type GetUiStateQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUiStateQuery = { uiState: { __typename?: 'UiState', language: LanguageCode, locale?: string | null, contentLanguage: LanguageCode, theme: string, displayUiExtensionPoints: boolean, mainNavExpanded: boolean } };
+export type GetUiStateQuery = { uiState: { __typename: 'UiState', language: Types.LanguageCode, locale?: string | null, contentLanguage: Types.LanguageCode, theme: string, displayUiExtensionPoints: boolean, mainNavExpanded: boolean } };
 
 export type GetClientStateQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetClientStateQuery = { networkStatus: { __typename?: 'NetworkStatus', inFlightRequests: number }, userStatus: { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> }, uiState: { __typename?: 'UiState', language: LanguageCode, locale?: string | null, contentLanguage: LanguageCode, theme: string, displayUiExtensionPoints: boolean, mainNavExpanded: boolean } };
+export type GetClientStateQuery = { networkStatus: { __typename: 'NetworkStatus', inFlightRequests: number }, userStatus: { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> }, uiState: { __typename: 'UiState', language: Types.LanguageCode, locale: string | null, contentLanguage: Types.LanguageCode, theme: string, displayUiExtensionPoints: boolean, mainNavExpanded: boolean } };
 
 export type SetActiveChannelMutationVariables = Exact<{
-  channelId: Scalars['ID']['input'];
+  channelId: string | number;
 }>;
 
 
-export type SetActiveChannelMutation = { setActiveChannel: { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } };
+export type SetActiveChannelMutation = { setActiveChannel: { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> } };
 
 export type UpdateUserChannelsMutationVariables = Exact<{
-  channels: Array<CurrentUserChannelInput> | CurrentUserChannelInput;
+  channels: Array<Types.CurrentUserChannelInput> | Types.CurrentUserChannelInput;
 }>;
 
 
-export type UpdateUserChannelsMutation = { updateUserChannels: { __typename?: 'UserStatus', administratorId?: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId?: string | null, permissions: Array<Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Permission> }> } };
+export type UpdateUserChannelsMutation = { updateUserChannels: { __typename: 'UserStatus', administratorId: string | null, username: string, isLoggedIn: boolean, loginTime: string, activeChannelId: string | null, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'CurrentUserChannel', id: string, code: string, token: string, permissions: Array<Types.Permission> }> } };
 
 export type GetCollectionFiltersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCollectionFiltersQuery = { collectionFilters: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }> };
+export type GetCollectionFiltersQuery = { collectionFilters: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }> };
 
-export type CollectionFragment = { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode?: LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, parent?: { __typename?: 'Collection', id: string, name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, name: string }> | null };
+export type CollectionFragment = { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode: Types.LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, parent: { __typename?: 'Collection', id: string, name: string } | null, children: Array<{ __typename?: 'Collection', id: string, name: string }> | null };
 
-export type CollectionForListFragment = { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, position: number, isPrivate: boolean, parentId: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, children?: Array<{ __typename?: 'Collection', id: string }> | null };
+export type CollectionForListFragment = { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, position: number, isPrivate: boolean, parentId: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, children: Array<{ __typename?: 'Collection', id: string }> | null };
 
 export type GetCollectionListQueryVariables = Exact<{
-  options?: InputMaybe<CollectionListOptions>;
+  options?: Types.CollectionListOptions | null | undefined;
 }>;
 
 
-export type GetCollectionListQuery = { collections: { __typename?: 'CollectionList', totalItems: number, items: Array<{ __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, position: number, isPrivate: boolean, parentId: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, children?: Array<{ __typename?: 'Collection', id: string }> | null }> } };
+export type GetCollectionListQuery = { collections: { __typename?: 'CollectionList', totalItems: number, items: Array<{ __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, position: number, isPrivate: boolean, parentId: string, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, children: Array<{ __typename?: 'Collection', id: string }> | null }> } };
 
 export type CreateCollectionMutationVariables = Exact<{
-  input: CreateCollectionInput;
+  input: Types.CreateCollectionInput;
 }>;
 
 
-export type CreateCollectionMutation = { createCollection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode?: LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, parent?: { __typename?: 'Collection', id: string, name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, name: string }> | null } };
+export type CreateCollectionMutation = { createCollection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode: Types.LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, parent: { __typename?: 'Collection', id: string, name: string } | null, children: Array<{ __typename?: 'Collection', id: string, name: string }> | null } };
 
 export type UpdateCollectionMutationVariables = Exact<{
-  input: UpdateCollectionInput;
+  input: Types.UpdateCollectionInput;
 }>;
 
 
-export type UpdateCollectionMutation = { updateCollection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode?: LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, parent?: { __typename?: 'Collection', id: string, name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, name: string }> | null } };
+export type UpdateCollectionMutation = { updateCollection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode: Types.LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, parent: { __typename?: 'Collection', id: string, name: string } | null, children: Array<{ __typename?: 'Collection', id: string, name: string }> | null } };
 
 export type MoveCollectionMutationVariables = Exact<{
-  input: MoveCollectionInput;
+  input: Types.MoveCollectionInput;
 }>;
 
 
-export type MoveCollectionMutation = { moveCollection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode?: LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, parent?: { __typename?: 'Collection', id: string, name: string } | null, children?: Array<{ __typename?: 'Collection', id: string, name: string }> | null } };
+export type MoveCollectionMutation = { moveCollection: { __typename?: 'Collection', id: string, createdAt: any, updatedAt: any, name: string, slug: string, description: string, isPrivate: boolean, languageCode: Types.LanguageCode | null, inheritFilters: boolean, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, filters: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'CollectionTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, parent: { __typename?: 'Collection', id: string, name: string } | null, children: Array<{ __typename?: 'Collection', id: string, name: string }> | null } };
 
 export type DeleteCollectionMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteCollectionMutation = { deleteCollection: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteCollectionMutation = { deleteCollection: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteCollectionsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteCollectionsMutation = { deleteCollections: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteCollectionsMutation = { deleteCollections: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type GetCollectionContentsQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  options?: InputMaybe<ProductVariantListOptions>;
+  id: string | number;
+  options?: Types.ProductVariantListOptions | null | undefined;
 }>;
 
 
-export type GetCollectionContentsQuery = { collection?: { __typename?: 'Collection', id: string, name: string, productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, name: string, sku: string }> } } | null };
+export type GetCollectionContentsQuery = { collection: { __typename?: 'Collection', id: string, name: string, productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, name: string, sku: string }> } } | null };
 
 export type PreviewCollectionContentsQueryVariables = Exact<{
-  input: PreviewCollectionVariantsInput;
-  options?: InputMaybe<ProductVariantListOptions>;
+  input: Types.PreviewCollectionVariantsInput;
+  options?: Types.ProductVariantListOptions | null | undefined;
 }>;
 
 
 export type PreviewCollectionContentsQuery = { previewCollectionVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, name: string, sku: string }> } };
 
 export type AssignCollectionsToChannelMutationVariables = Exact<{
-  input: AssignCollectionsToChannelInput;
+  input: Types.AssignCollectionsToChannelInput;
 }>;
 
 
 export type AssignCollectionsToChannelMutation = { assignCollectionsToChannel: Array<{ __typename?: 'Collection', id: string, name: string }> };
 
 export type RemoveCollectionsFromChannelMutationVariables = Exact<{
-  input: RemoveCollectionsFromChannelInput;
+  input: Types.RemoveCollectionsFromChannelInput;
 }>;
 
 
 export type RemoveCollectionsFromChannelMutation = { removeCollectionsFromChannel: Array<{ __typename?: 'Collection', id: string, name: string }> };
 
-export type AddressFragment = { __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } };
+export type AddressFragment = { __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } };
 
-export type CustomerFragment = { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, phoneNumber?: string | null, emailAddress: string, user?: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin?: any | null } | null, addresses?: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null };
+export type CustomerFragment = { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, phoneNumber: string | null, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin: any } | null, addresses: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null };
 
 export type CustomerGroupFragment = { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type GetCustomerListQueryVariables = Exact<{
-  options?: InputMaybe<CustomerListOptions>;
+  options?: Types.CustomerListOptions | null | undefined;
 }>;
 
 
-export type GetCustomerListQuery = { customers: { __typename?: 'CustomerList', totalItems: number, items: Array<{ __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, emailAddress: string, user?: { __typename?: 'User', id: string, verified: boolean } | null }> } };
+export type GetCustomerListQuery = { customers: { __typename?: 'CustomerList', totalItems: number, items: Array<{ __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, verified: boolean } | null }> } };
 
 export type CreateCustomerMutationVariables = Exact<{
-  input: CreateCustomerInput;
-  password?: InputMaybe<Scalars['String']['input']>;
+  input: Types.CreateCustomerInput;
+  password?: string | null | undefined;
 }>;
 
 
-export type CreateCustomerMutation = { createCustomer: { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, phoneNumber?: string | null, emailAddress: string, user?: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin?: any | null } | null, addresses?: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null } | { __typename?: 'EmailAddressConflictError', errorCode: ErrorCode, message: string } };
+export type CreateCustomerMutation = { createCustomer:
+    | { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, phoneNumber: string | null, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin: any } | null, addresses: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null }
+    | { __typename?: 'EmailAddressConflictError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type UpdateCustomerMutationVariables = Exact<{
-  input: UpdateCustomerInput;
+  input: Types.UpdateCustomerInput;
 }>;
 
 
-export type UpdateCustomerMutation = { updateCustomer: { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, phoneNumber?: string | null, emailAddress: string, user?: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin?: any | null } | null, addresses?: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null } | { __typename?: 'EmailAddressConflictError', errorCode: ErrorCode, message: string } };
+export type UpdateCustomerMutation = { updateCustomer:
+    | { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, phoneNumber: string | null, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin: any } | null, addresses: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null }
+    | { __typename?: 'EmailAddressConflictError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type DeleteCustomerMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteCustomerMutation = { deleteCustomer: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteCustomerMutation = { deleteCustomer: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteCustomersMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteCustomersMutation = { deleteCustomers: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteCustomersMutation = { deleteCustomers: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type CreateCustomerAddressMutationVariables = Exact<{
-  customerId: Scalars['ID']['input'];
-  input: CreateAddressInput;
+  customerId: string | number;
+  input: Types.CreateAddressInput;
 }>;
 
 
-export type CreateCustomerAddressMutation = { createCustomerAddress: { __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } } };
+export type CreateCustomerAddressMutation = { createCustomerAddress: { __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } } };
 
 export type UpdateCustomerAddressMutationVariables = Exact<{
-  input: UpdateAddressInput;
+  input: Types.UpdateAddressInput;
 }>;
 
 
-export type UpdateCustomerAddressMutation = { updateCustomerAddress: { __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } } };
+export type UpdateCustomerAddressMutation = { updateCustomerAddress: { __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } } };
 
 export type DeleteCustomerAddressMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
 export type DeleteCustomerAddressMutation = { deleteCustomerAddress: { __typename?: 'Success', success: boolean } };
 
 export type CreateCustomerGroupMutationVariables = Exact<{
-  input: CreateCustomerGroupInput;
+  input: Types.CreateCustomerGroupInput;
 }>;
 
 
 export type CreateCustomerGroupMutation = { createCustomerGroup: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string } };
 
 export type UpdateCustomerGroupMutationVariables = Exact<{
-  input: UpdateCustomerGroupInput;
+  input: Types.UpdateCustomerGroupInput;
 }>;
 
 
 export type UpdateCustomerGroupMutation = { updateCustomerGroup: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string } };
 
 export type DeleteCustomerGroupMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteCustomerGroupMutation = { deleteCustomerGroup: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteCustomerGroupMutation = { deleteCustomerGroup: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteCustomerGroupsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteCustomerGroupsMutation = { deleteCustomerGroups: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteCustomerGroupsMutation = { deleteCustomerGroups: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type GetCustomerGroupsQueryVariables = Exact<{
-  options?: InputMaybe<CustomerGroupListOptions>;
+  options?: Types.CustomerGroupListOptions | null | undefined;
 }>;
 
 
 export type GetCustomerGroupsQuery = { customerGroups: { __typename?: 'CustomerGroupList', totalItems: number, items: Array<{ __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string }> } };
 
 export type GetCustomerGroupWithCustomersQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  options?: InputMaybe<CustomerListOptions>;
+  id: string | number;
+  options?: Types.CustomerListOptions | null | undefined;
 }>;
 
 
-export type GetCustomerGroupWithCustomersQuery = { customerGroup?: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string, customers: { __typename?: 'CustomerList', totalItems: number, items: Array<{ __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, emailAddress: string, firstName: string, lastName: string, user?: { __typename?: 'User', id: string } | null }> } } | null };
+export type GetCustomerGroupWithCustomersQuery = { customerGroup: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string, customers: { __typename?: 'CustomerList', totalItems: number, items: Array<{ __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, emailAddress: string, firstName: string, lastName: string, user: { __typename?: 'User', id: string } | null }> } } | null };
 
 export type AddCustomersToGroupMutationVariables = Exact<{
-  groupId: Scalars['ID']['input'];
-  customerIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  groupId: string | number;
+  customerIds: Array<string | number> | string | number;
 }>;
 
 
 export type AddCustomersToGroupMutation = { addCustomersToGroup: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string } };
 
 export type RemoveCustomersFromGroupMutationVariables = Exact<{
-  groupId: Scalars['ID']['input'];
-  customerIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  groupId: string | number;
+  customerIds: Array<string | number> | string | number;
 }>;
 
 
 export type RemoveCustomersFromGroupMutation = { removeCustomersFromGroup: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string } };
 
 export type GetCustomerHistoryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  options?: InputMaybe<HistoryEntryListOptions>;
+  id: string | number;
+  options?: Types.HistoryEntryListOptions | null | undefined;
 }>;
 
 
-export type GetCustomerHistoryQuery = { customer?: { __typename?: 'Customer', id: string, history: { __typename?: 'HistoryEntryList', totalItems: number, items: Array<{ __typename?: 'HistoryEntry', id: string, type: HistoryEntryType, createdAt: any, isPublic: boolean, data: any, administrator?: { __typename?: 'Administrator', id: string, firstName: string, lastName: string } | null }> } } | null };
+export type GetCustomerHistoryQuery = { customer: { __typename?: 'Customer', id: string, history: { __typename?: 'HistoryEntryList', totalItems: number, items: Array<{ __typename?: 'HistoryEntry', id: string, type: Types.HistoryEntryType, createdAt: any, isPublic: boolean, data: any, administrator: { __typename?: 'Administrator', id: string, firstName: string, lastName: string } | null }> } } | null };
 
 export type AddNoteToCustomerMutationVariables = Exact<{
-  input: AddNoteToCustomerInput;
+  input: Types.AddNoteToCustomerInput;
 }>;
 
 
 export type AddNoteToCustomerMutation = { addNoteToCustomer: { __typename?: 'Customer', id: string } };
 
 export type UpdateCustomerNoteMutationVariables = Exact<{
-  input: UpdateCustomerNoteInput;
+  input: Types.UpdateCustomerNoteInput;
 }>;
 
 
 export type UpdateCustomerNoteMutation = { updateCustomerNote: { __typename?: 'HistoryEntry', id: string, data: any, isPublic: boolean } };
 
 export type DeleteCustomerNoteMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteCustomerNoteMutation = { deleteCustomerNote: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteCustomerNoteMutation = { deleteCustomerNote: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
-export type FacetValueFragment = { __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } };
+export type FacetValueFragment = { __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } };
 
-export type FacetWithValuesFragment = { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: LanguageCode, name: string }>, values: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> };
+export type FacetWithValuesFragment = { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, values: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> };
 
-export type FacetWithValueListFragment = { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: LanguageCode, name: string }>, valueList: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
+export type FacetWithValueListFragment = { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, valueList: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
 
 export type CreateFacetMutationVariables = Exact<{
-  input: CreateFacetInput;
+  input: Types.CreateFacetInput;
 }>;
 
 
-export type CreateFacetMutation = { createFacet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: LanguageCode, name: string }>, values: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
+export type CreateFacetMutation = { createFacet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, values: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
 
 export type UpdateFacetMutationVariables = Exact<{
-  input: UpdateFacetInput;
+  input: Types.UpdateFacetInput;
 }>;
 
 
-export type UpdateFacetMutation = { updateFacet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: LanguageCode, name: string }>, values: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
+export type UpdateFacetMutation = { updateFacet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, isPrivate: boolean, code: string, name: string, translations: Array<{ __typename?: 'FacetTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, values: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
 
 export type DeleteFacetMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  force?: InputMaybe<Scalars['Boolean']['input']>;
+  id: string | number;
+  force?: boolean | null | undefined;
 }>;
 
 
-export type DeleteFacetMutation = { deleteFacet: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteFacetMutation = { deleteFacet: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteFacetsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
-  force?: InputMaybe<Scalars['Boolean']['input']>;
+  ids: Array<string | number> | string | number;
+  force?: boolean | null | undefined;
 }>;
 
 
-export type DeleteFacetsMutation = { deleteFacets: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteFacetsMutation = { deleteFacets: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type CreateFacetValuesMutationVariables = Exact<{
-  input: Array<CreateFacetValueInput> | CreateFacetValueInput;
+  input: Array<Types.CreateFacetValueInput> | Types.CreateFacetValueInput;
 }>;
 
 
-export type CreateFacetValuesMutation = { createFacetValues: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> };
+export type CreateFacetValuesMutation = { createFacetValues: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> };
 
 export type UpdateFacetValuesMutationVariables = Exact<{
-  input: Array<UpdateFacetValueInput> | UpdateFacetValueInput;
+  input: Array<Types.UpdateFacetValueInput> | Types.UpdateFacetValueInput;
 }>;
 
 
-export type UpdateFacetValuesMutation = { updateFacetValues: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> };
+export type UpdateFacetValuesMutation = { updateFacetValues: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> };
 
 export type DeleteFacetValuesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
-  force?: InputMaybe<Scalars['Boolean']['input']>;
+  ids: Array<string | number> | string | number;
+  force?: boolean | null | undefined;
 }>;
 
 
-export type DeleteFacetValuesMutation = { deleteFacetValues: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteFacetValuesMutation = { deleteFacetValues: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type GetFacetValueListQueryVariables = Exact<{
-  options?: InputMaybe<FacetValueListOptions>;
+  options?: Types.FacetValueListOptions | null | undefined;
 }>;
 
 
-export type GetFacetValueListQuery = { facetValues: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
+export type GetFacetValueListQuery = { facetValues: { __typename?: 'FacetValueList', totalItems: number, items: Array<{ __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'FacetValueTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } }> } };
 
 export type AssignFacetsToChannelMutationVariables = Exact<{
-  input: AssignFacetsToChannelInput;
+  input: Types.AssignFacetsToChannelInput;
 }>;
 
 
 export type AssignFacetsToChannelMutation = { assignFacetsToChannel: Array<{ __typename?: 'Facet', id: string }> };
 
 export type RemoveFacetsFromChannelMutationVariables = Exact<{
-  input: RemoveFacetsFromChannelInput;
+  input: Types.RemoveFacetsFromChannelInput;
 }>;
 
 
-export type RemoveFacetsFromChannelMutation = { removeFacetsFromChannel: Array<{ __typename?: 'Facet', id: string } | { __typename?: 'FacetInUseError', errorCode: ErrorCode, message: string, variantCount: number, productCount: number }> };
+export type RemoveFacetsFromChannelMutation = { removeFacetsFromChannel: Array<
+    | { __typename?: 'Facet', id: string }
+    | { __typename?: 'FacetInUseError', errorCode: Types.ErrorCode, message: string, variantCount: number, productCount: number }
+  > };
 
-export type DiscountFragment = { __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType };
+export type DiscountFragment = { __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType };
 
-export type PaymentFragment = { __typename?: 'Payment', id: string, transactionId?: string | null, amount: number, method: string, state: string, metadata?: any | null };
+export type PaymentFragment = { __typename?: 'Payment', id: string, transactionId: string | null, amount: number, method: string, state: string, metadata: any };
 
-export type RefundFragment = { __typename?: 'Refund', id: string, state: string, items: number, shipping: number, adjustment: number, transactionId?: string | null, paymentId: string };
+export type RefundFragment = { __typename?: 'Refund', id: string, state: string, items: number, shipping: number, adjustment: number, transactionId: string | null, paymentId: string };
 
-export type OrderAddressFragment = { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null };
+export type OrderAddressFragment = { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null };
 
-export type OrderFragment = { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, orderPlacedAt?: any | null, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: CurrencyCode, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> };
+export type OrderFragment = { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, orderPlacedAt: any, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> };
 
-export type FulfillmentFragment = { __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> };
+export type FulfillmentFragment = { __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> };
 
-export type PaymentWithRefundsFragment = { __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> };
+export type PaymentWithRefundsFragment = { __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> };
 
-export type OrderLineFragment = { __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null };
+export type OrderLineFragment = { __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null };
 
-export type OrderDetailFragment = { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> };
+export type OrderDetailFragment = { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> };
 
 export type GetOrderListQueryVariables = Exact<{
-  options?: InputMaybe<OrderListOptions>;
+  options?: Types.OrderListOptions | null | undefined;
 }>;
 
 
-export type GetOrderListQuery = { orders: { __typename?: 'OrderList', totalItems: number, items: Array<{ __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, orderPlacedAt?: any | null, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: CurrencyCode, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> }> } };
+export type GetOrderListQuery = { orders: { __typename?: 'OrderList', totalItems: number, items: Array<{ __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, orderPlacedAt: any, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> }> } };
 
 export type GetOrderQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetOrderQuery = { order?: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | null };
+export type GetOrderQuery = { order: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | null };
 
 export type SettlePaymentMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type SettlePaymentMutation = { settlePayment: { __typename?: 'OrderStateTransitionError', transitionError: string, errorCode: ErrorCode, message: string } | { __typename?: 'Payment', id: string, transactionId?: string | null, amount: number, method: string, state: string, metadata?: any | null } | { __typename?: 'PaymentStateTransitionError', transitionError: string, errorCode: ErrorCode, message: string } | { __typename?: 'SettlePaymentError', paymentErrorMessage: string, errorCode: ErrorCode, message: string } };
+export type SettlePaymentMutation = { settlePayment:
+    | { __typename?: 'OrderStateTransitionError', transitionError: string, errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Payment', id: string, transactionId: string | null, amount: number, method: string, state: string, metadata: any }
+    | { __typename?: 'PaymentStateTransitionError', transitionError: string, errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'SettlePaymentError', paymentErrorMessage: string, errorCode: Types.ErrorCode, message: string }
+   };
 
 export type CancelPaymentMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type CancelPaymentMutation = { cancelPayment: { __typename?: 'CancelPaymentError', paymentErrorMessage: string, errorCode: ErrorCode, message: string } | { __typename?: 'Payment', id: string, transactionId?: string | null, amount: number, method: string, state: string, metadata?: any | null } | { __typename?: 'PaymentStateTransitionError', transitionError: string, errorCode: ErrorCode, message: string } };
+export type CancelPaymentMutation = { cancelPayment:
+    | { __typename?: 'CancelPaymentError', paymentErrorMessage: string, errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Payment', id: string, transactionId: string | null, amount: number, method: string, state: string, metadata: any }
+    | { __typename?: 'PaymentStateTransitionError', transitionError: string, errorCode: Types.ErrorCode, message: string }
+   };
 
 export type TransitionPaymentToStateMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  state: Scalars['String']['input'];
+  id: string | number;
+  state: string;
 }>;
 
 
-export type TransitionPaymentToStateMutation = { transitionPaymentToState: { __typename?: 'Payment', id: string, transactionId?: string | null, amount: number, method: string, state: string, metadata?: any | null } | { __typename?: 'PaymentStateTransitionError', transitionError: string, errorCode: ErrorCode, message: string } };
+export type TransitionPaymentToStateMutation = { transitionPaymentToState:
+    | { __typename?: 'Payment', id: string, transactionId: string | null, amount: number, method: string, state: string, metadata: any }
+    | { __typename?: 'PaymentStateTransitionError', transitionError: string, errorCode: Types.ErrorCode, message: string }
+   };
 
 export type CreateFulfillmentMutationVariables = Exact<{
-  input: FulfillOrderInput;
+  input: Types.FulfillOrderInput;
 }>;
 
 
-export type CreateFulfillmentMutation = { addFulfillmentToOrder: { __typename?: 'CreateFulfillmentError', errorCode: ErrorCode, message: string, fulfillmentHandlerError: string } | { __typename?: 'EmptyOrderLineSelectionError', errorCode: ErrorCode, message: string } | { __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> } | { __typename?: 'FulfillmentStateTransitionError', errorCode: ErrorCode, message: string, transitionError: string } | { __typename?: 'InsufficientStockOnHandError', errorCode: ErrorCode, message: string } | { __typename?: 'InvalidFulfillmentHandlerError', errorCode: ErrorCode, message: string } | { __typename?: 'ItemsAlreadyFulfilledError', errorCode: ErrorCode, message: string } };
+export type CreateFulfillmentMutation = { addFulfillmentToOrder:
+    | { __typename?: 'CreateFulfillmentError', errorCode: Types.ErrorCode, message: string, fulfillmentHandlerError: string }
+    | { __typename?: 'EmptyOrderLineSelectionError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }
+    | { __typename?: 'FulfillmentStateTransitionError', errorCode: Types.ErrorCode, message: string, transitionError: string }
+    | { __typename?: 'InsufficientStockOnHandError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'InvalidFulfillmentHandlerError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'ItemsAlreadyFulfilledError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type CancelOrderMutationVariables = Exact<{
-  input: CancelOrderInput;
+  input: Types.CancelOrderInput;
 }>;
 
 
-export type CancelOrderMutation = { cancelOrder: { __typename?: 'CancelActiveOrderError', errorCode: ErrorCode, message: string } | { __typename?: 'EmptyOrderLineSelectionError', errorCode: ErrorCode, message: string } | { __typename?: 'MultipleOrderError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderStateTransitionError', errorCode: ErrorCode, message: string } | { __typename?: 'QuantityTooGreatError', errorCode: ErrorCode, message: string } };
+export type CancelOrderMutation = { cancelOrder:
+    | { __typename?: 'CancelActiveOrderError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'EmptyOrderLineSelectionError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'MultipleOrderError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderStateTransitionError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'QuantityTooGreatError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type RefundOrderMutationVariables = Exact<{
-  input: RefundOrderInput;
+  input: Types.RefundOrderInput;
 }>;
 
 
-export type RefundOrderMutation = { refundOrder: { __typename?: 'AlreadyRefundedError', errorCode: ErrorCode, message: string } | { __typename?: 'MultipleOrderError', errorCode: ErrorCode, message: string } | { __typename?: 'NothingToRefundError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderStateTransitionError', errorCode: ErrorCode, message: string } | { __typename?: 'PaymentOrderMismatchError', errorCode: ErrorCode, message: string } | { __typename?: 'QuantityTooGreatError', errorCode: ErrorCode, message: string } | { __typename?: 'Refund', id: string, state: string, items: number, shipping: number, adjustment: number, transactionId?: string | null, paymentId: string } | { __typename?: 'RefundAmountError', errorCode: ErrorCode, message: string } | { __typename?: 'RefundOrderStateError', errorCode: ErrorCode, message: string } | { __typename?: 'RefundStateTransitionError', errorCode: ErrorCode, message: string } };
+export type RefundOrderMutation = { refundOrder:
+    | { __typename?: 'AlreadyRefundedError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'MultipleOrderError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'NothingToRefundError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderStateTransitionError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'PaymentOrderMismatchError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'QuantityTooGreatError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Refund', id: string, state: string, items: number, shipping: number, adjustment: number, transactionId: string | null, paymentId: string }
+    | { __typename?: 'RefundAmountError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'RefundOrderStateError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'RefundStateTransitionError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type SettleRefundMutationVariables = Exact<{
-  input: SettleRefundInput;
+  input: Types.SettleRefundInput;
 }>;
 
 
-export type SettleRefundMutation = { settleRefund: { __typename?: 'Refund', id: string, state: string, items: number, shipping: number, adjustment: number, transactionId?: string | null, paymentId: string } | { __typename?: 'RefundStateTransitionError', errorCode: ErrorCode, message: string } };
+export type SettleRefundMutation = { settleRefund:
+    | { __typename?: 'Refund', id: string, state: string, items: number, shipping: number, adjustment: number, transactionId: string | null, paymentId: string }
+    | { __typename?: 'RefundStateTransitionError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type GetOrderHistoryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  options?: InputMaybe<HistoryEntryListOptions>;
+  id: string | number;
+  options?: Types.HistoryEntryListOptions | null | undefined;
 }>;
 
 
-export type GetOrderHistoryQuery = { order?: { __typename?: 'Order', id: string, history: { __typename?: 'HistoryEntryList', totalItems: number, items: Array<{ __typename?: 'HistoryEntry', id: string, type: HistoryEntryType, createdAt: any, isPublic: boolean, data: any, administrator?: { __typename?: 'Administrator', id: string, firstName: string, lastName: string } | null }> } } | null };
+export type GetOrderHistoryQuery = { order: { __typename?: 'Order', id: string, history: { __typename?: 'HistoryEntryList', totalItems: number, items: Array<{ __typename?: 'HistoryEntry', id: string, type: Types.HistoryEntryType, createdAt: any, isPublic: boolean, data: any, administrator: { __typename?: 'Administrator', id: string, firstName: string, lastName: string } | null }> } } | null };
 
 export type AddNoteToOrderMutationVariables = Exact<{
-  input: AddNoteToOrderInput;
+  input: Types.AddNoteToOrderInput;
 }>;
 
 
 export type AddNoteToOrderMutation = { addNoteToOrder: { __typename?: 'Order', id: string } };
 
 export type UpdateOrderNoteMutationVariables = Exact<{
-  input: UpdateOrderNoteInput;
+  input: Types.UpdateOrderNoteInput;
 }>;
 
 
 export type UpdateOrderNoteMutation = { updateOrderNote: { __typename?: 'HistoryEntry', id: string, data: any, isPublic: boolean } };
 
 export type DeleteOrderNoteMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteOrderNoteMutation = { deleteOrderNote: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteOrderNoteMutation = { deleteOrderNote: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type TransitionOrderToStateMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  state: Scalars['String']['input'];
+  id: string | number;
+  state: string;
 }>;
 
 
-export type TransitionOrderToStateMutation = { transitionOrderToState?: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, orderPlacedAt?: any | null, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: CurrencyCode, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> } | { __typename?: 'OrderStateTransitionError', transitionError: string, errorCode: ErrorCode, message: string } | null };
+export type TransitionOrderToStateMutation = { transitionOrderToState:
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, orderPlacedAt: any, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> }
+    | { __typename?: 'OrderStateTransitionError', transitionError: string, errorCode: Types.ErrorCode, message: string }
+   | null };
 
 export type UpdateOrderCustomFieldsMutationVariables = Exact<{
-  input: UpdateOrderInput;
+  input: Types.UpdateOrderInput;
 }>;
 
 
-export type UpdateOrderCustomFieldsMutation = { setOrderCustomFields?: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, orderPlacedAt?: any | null, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: CurrencyCode, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> } | null };
+export type UpdateOrderCustomFieldsMutation = { setOrderCustomFields: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, orderPlacedAt: any, code: string, state: string, nextStates: Array<string>, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, shippingLines: Array<{ __typename?: 'ShippingLine', shippingMethod: { __typename?: 'ShippingMethod', name: string } }> } | null };
 
 export type TransitionFulfillmentToStateMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  state: Scalars['String']['input'];
+  id: string | number;
+  state: string;
 }>;
 
 
-export type TransitionFulfillmentToStateMutation = { transitionFulfillmentToState: { __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> } | { __typename?: 'FulfillmentStateTransitionError', transitionError: string, errorCode: ErrorCode, message: string } };
+export type TransitionFulfillmentToStateMutation = { transitionFulfillmentToState:
+    | { __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }
+    | { __typename?: 'FulfillmentStateTransitionError', transitionError: string, errorCode: Types.ErrorCode, message: string }
+   };
 
 export type ModifyOrderMutationVariables = Exact<{
-  input: ModifyOrderInput;
+  input: Types.ModifyOrderInput;
 }>;
 
 
-export type ModifyOrderMutation = { modifyOrder: { __typename?: 'CouponCodeExpiredError', errorCode: ErrorCode, message: string } | { __typename?: 'CouponCodeInvalidError', errorCode: ErrorCode, message: string } | { __typename?: 'CouponCodeLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'IneligibleShippingMethodError', errorCode: ErrorCode, message: string } | { __typename?: 'InsufficientStockError', errorCode: ErrorCode, message: string } | { __typename?: 'NegativeQuantityError', errorCode: ErrorCode, message: string } | { __typename?: 'NoChangesSpecifiedError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationStateError', errorCode: ErrorCode, message: string } | { __typename?: 'PaymentMethodMissingError', errorCode: ErrorCode, message: string } | { __typename?: 'RefundPaymentIdMissingError', errorCode: ErrorCode, message: string } };
+export type ModifyOrderMutation = { modifyOrder:
+    | { __typename?: 'CouponCodeExpiredError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'CouponCodeInvalidError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'CouponCodeLimitError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'IneligibleShippingMethodError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'InsufficientStockError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'NegativeQuantityError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'NoChangesSpecifiedError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderLimitError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderModificationStateError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'PaymentMethodMissingError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'RefundPaymentIdMissingError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type AddManualPaymentMutationVariables = Exact<{
-  input: ManualPaymentInput;
+  input: Types.ManualPaymentInput;
 }>;
 
 
-export type AddManualPaymentMutation = { addManualPaymentToOrder: { __typename?: 'ManualPaymentStateError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
+export type AddManualPaymentMutation = { addManualPaymentToOrder:
+    | { __typename?: 'ManualPaymentStateError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+   };
 
 export type CreateDraftOrderMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateDraftOrderMutation = { createDraftOrder: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
+export type CreateDraftOrderMutation = { createDraftOrder: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
 
 export type DeleteDraftOrderMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
+  orderId: string | number;
 }>;
 
 
-export type DeleteDraftOrderMutation = { deleteDraftOrder: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteDraftOrderMutation = { deleteDraftOrder: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type AddItemToDraftOrderMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  input: AddItemToDraftOrderInput;
+  orderId: string | number;
+  input: Types.AddItemToDraftOrderInput;
 }>;
 
 
-export type AddItemToDraftOrderMutation = { addItemToDraftOrder: { __typename?: 'InsufficientStockError', errorCode: ErrorCode, message: string } | { __typename?: 'NegativeQuantityError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderMiddlewareError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
+export type AddItemToDraftOrderMutation = { addItemToDraftOrder:
+    | { __typename?: 'InsufficientStockError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'NegativeQuantityError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderLimitError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderMiddlewareError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderModificationError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type AdjustDraftOrderLineMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  input: AdjustDraftOrderLineInput;
+  orderId: string | number;
+  input: Types.AdjustDraftOrderLineInput;
 }>;
 
 
-export type AdjustDraftOrderLineMutation = { adjustDraftOrderLine: { __typename?: 'InsufficientStockError', errorCode: ErrorCode, message: string } | { __typename?: 'NegativeQuantityError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderMiddlewareError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
+export type AdjustDraftOrderLineMutation = { adjustDraftOrderLine:
+    | { __typename?: 'InsufficientStockError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'NegativeQuantityError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderLimitError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderMiddlewareError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderModificationError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type RemoveDraftOrderLineMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  orderLineId: Scalars['ID']['input'];
+  orderId: string | number;
+  orderLineId: string | number;
 }>;
 
 
-export type RemoveDraftOrderLineMutation = { removeDraftOrderLine: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderMiddlewareError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
+export type RemoveDraftOrderLineMutation = { removeDraftOrderLine:
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderMiddlewareError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'OrderModificationError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type SetCustomerForDraftOrderMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  customerId?: InputMaybe<Scalars['ID']['input']>;
-  input?: InputMaybe<CreateCustomerInput>;
+  orderId: string | number;
+  customerId?: string | number | null | undefined;
+  input?: Types.CreateCustomerInput | null | undefined;
 }>;
 
 
-export type SetCustomerForDraftOrderMutation = { setCustomerForDraftOrder: { __typename?: 'EmailAddressConflictError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
+export type SetCustomerForDraftOrderMutation = { setCustomerForDraftOrder:
+    | { __typename?: 'EmailAddressConflictError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+   };
 
 export type SetDraftOrderShippingAddressMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  input: CreateAddressInput;
+  orderId: string | number;
+  input: Types.CreateAddressInput;
 }>;
 
 
-export type SetDraftOrderShippingAddressMutation = { setDraftOrderShippingAddress: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
+export type SetDraftOrderShippingAddressMutation = { setDraftOrderShippingAddress: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
 
 export type SetDraftOrderBillingAddressMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  input: CreateAddressInput;
+  orderId: string | number;
+  input: Types.CreateAddressInput;
 }>;
 
 
-export type SetDraftOrderBillingAddressMutation = { setDraftOrderBillingAddress: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
+export type SetDraftOrderBillingAddressMutation = { setDraftOrderBillingAddress: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> } };
 
 export type ApplyCouponCodeToDraftOrderMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  couponCode: Scalars['String']['input'];
+  orderId: string | number;
+  couponCode: string;
 }>;
 
 
-export type ApplyCouponCodeToDraftOrderMutation = { applyCouponCodeToDraftOrder: { __typename?: 'CouponCodeExpiredError', errorCode: ErrorCode, message: string } | { __typename?: 'CouponCodeInvalidError', errorCode: ErrorCode, message: string } | { __typename?: 'CouponCodeLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderMiddlewareError', errorCode: ErrorCode, message: string } };
+export type ApplyCouponCodeToDraftOrderMutation = { applyCouponCodeToDraftOrder:
+    | { __typename?: 'CouponCodeExpiredError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'CouponCodeInvalidError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'CouponCodeLimitError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderMiddlewareError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type RemoveCouponCodeFromDraftOrderMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  couponCode: Scalars['String']['input'];
+  orderId: string | number;
+  couponCode: string;
 }>;
 
 
-export type RemoveCouponCodeFromDraftOrderMutation = { removeCouponCodeFromDraftOrder?: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | null };
+export type RemoveCouponCodeFromDraftOrderMutation = { removeCouponCodeFromDraftOrder: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | null };
 
 export type DraftOrderEligibleShippingMethodsQueryVariables = Exact<{
-  orderId: Scalars['ID']['input'];
+  orderId: string | number;
 }>;
 
 
-export type DraftOrderEligibleShippingMethodsQuery = { eligibleShippingMethodsForDraftOrder: Array<{ __typename?: 'ShippingMethodQuote', id: string, name: string, code: string, description: string, price: number, priceWithTax: number, metadata?: any | null }> };
+export type DraftOrderEligibleShippingMethodsQuery = { eligibleShippingMethodsForDraftOrder: Array<{ __typename?: 'ShippingMethodQuote', id: string, name: string, code: string, description: string, price: number, priceWithTax: number, metadata: any }> };
 
 export type SetDraftOrderShippingMethodMutationVariables = Exact<{
-  orderId: Scalars['ID']['input'];
-  shippingMethodId: Scalars['ID']['input'];
+  orderId: string | number;
+  shippingMethodId: string | number;
 }>;
 
 
-export type SetDraftOrderShippingMethodMutation = { setDraftOrderShippingMethod: { __typename?: 'IneligibleShippingMethodError', errorCode: ErrorCode, message: string } | { __typename?: 'NoActiveOrderError', errorCode: ErrorCode, message: string } | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
+export type SetDraftOrderShippingMethodMutation = { setDraftOrderShippingMethod:
+    | { __typename?: 'IneligibleShippingMethodError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'NoActiveOrderError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> }
+    | { __typename?: 'OrderModificationError', errorCode: Types.ErrorCode, message: string }
+   };
 
-export type AssetFragment = { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null };
+export type AssetFragment = { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null };
 
 export type TagFragment = { __typename?: 'Tag', id: string, value: string };
 
-export type ProductOptionGroupFragment = { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> };
+export type ProductOptionGroupFragment = { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> };
 
-export type ProductOptionFragment = { __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> };
+export type ProductOptionFragment = { __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> };
 
-export type ProductVariantFragment = { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> };
+export type ProductVariantFragment = { __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> };
 
-export type ProductDetailFragment = { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, description: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> };
+export type ProductDetailFragment = { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, description: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> };
 
-export type ProductOptionGroupWithOptionsFragment = { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, name: string }>, options: Array<{ __typename?: 'ProductOption', id: string, languageCode: LanguageCode, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionTranslation', name: string }> }> };
+export type ProductOptionGroupWithOptionsFragment = { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, name: string }>, options: Array<{ __typename?: 'ProductOption', id: string, languageCode: Types.LanguageCode, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionTranslation', name: string }> }> };
 
 export type UpdateProductMutationVariables = Exact<{
-  input: UpdateProductInput;
-  variantListOptions?: InputMaybe<ProductVariantListOptions>;
+  input: Types.UpdateProductInput;
+  variantListOptions?: Types.ProductVariantListOptions | null | undefined;
 }>;
 
 
-export type UpdateProductMutation = { updateProduct: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, description: string, variantList: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> }, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } };
+export type UpdateProductMutation = { updateProduct: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, description: string, variantList: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> }, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } };
 
 export type CreateProductMutationVariables = Exact<{
-  input: CreateProductInput;
-  variantListOptions?: InputMaybe<ProductVariantListOptions>;
+  input: Types.CreateProductInput;
+  variantListOptions?: Types.ProductVariantListOptions | null | undefined;
 }>;
 
 
-export type CreateProductMutation = { createProduct: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, description: string, variantList: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> }, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } };
+export type CreateProductMutation = { createProduct: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, description: string, variantList: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> }, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } };
 
 export type DeleteProductMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteProductMutation = { deleteProduct: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteProductMutation = { deleteProduct: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteProductsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteProductsMutation = { deleteProducts: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteProductsMutation = { deleteProducts: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type CreateProductVariantsMutationVariables = Exact<{
-  input: Array<CreateProductVariantInput> | CreateProductVariantInput;
+  input: Array<Types.CreateProductVariantInput> | Types.CreateProductVariantInput;
 }>;
 
 
-export type CreateProductVariantsMutation = { createProductVariants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null> };
+export type CreateProductVariantsMutation = { createProductVariants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null> };
 
 export type UpdateProductVariantsMutationVariables = Exact<{
-  input: Array<UpdateProductVariantInput> | UpdateProductVariantInput;
+  input: Array<Types.UpdateProductVariantInput> | Types.UpdateProductVariantInput;
 }>;
 
 
-export type UpdateProductVariantsMutation = { updateProductVariants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null> };
+export type UpdateProductVariantsMutation = { updateProductVariants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null> };
 
 export type CreateProductOptionGroupMutationVariables = Exact<{
-  input: CreateProductOptionGroupInput;
+  input: Types.CreateProductOptionGroupInput;
 }>;
 
 
-export type CreateProductOptionGroupMutation = { createProductOptionGroup: { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, name: string }>, options: Array<{ __typename?: 'ProductOption', id: string, languageCode: LanguageCode, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionTranslation', name: string }> }> } };
+export type CreateProductOptionGroupMutation = { createProductOptionGroup: { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, name: string }>, options: Array<{ __typename?: 'ProductOption', id: string, languageCode: Types.LanguageCode, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionTranslation', name: string }> }> } };
 
 export type GetProductOptionGroupQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductOptionGroupQuery = { productOptionGroup?: { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, name: string }>, options: Array<{ __typename?: 'ProductOption', id: string, languageCode: LanguageCode, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionTranslation', name: string }> }> } | null };
+export type GetProductOptionGroupQuery = { productOptionGroup: { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, name: string }>, options: Array<{ __typename?: 'ProductOption', id: string, languageCode: Types.LanguageCode, name: string, code: string, translations: Array<{ __typename?: 'ProductOptionTranslation', name: string }> }> } | null };
 
 export type AddOptionToGroupMutationVariables = Exact<{
-  input: CreateProductOptionInput;
+  input: Types.CreateProductOptionInput;
 }>;
 
 
 export type AddOptionToGroupMutation = { createProductOption: { __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, name: string, code: string, groupId: string } };
 
 export type AddOptionGroupToProductMutationVariables = Exact<{
-  productId: Scalars['ID']['input'];
-  optionGroupId: Scalars['ID']['input'];
+  productId: string | number;
+  optionGroupId: string | number;
 }>;
 
 
 export type AddOptionGroupToProductMutation = { addOptionGroupToProduct: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string }> }> } };
 
 export type RemoveOptionGroupFromProductMutationVariables = Exact<{
-  productId: Scalars['ID']['input'];
-  optionGroupId: Scalars['ID']['input'];
-  force?: InputMaybe<Scalars['Boolean']['input']>;
+  productId: string | number;
+  optionGroupId: string | number;
+  force?: boolean | null | undefined;
 }>;
 
 
-export type RemoveOptionGroupFromProductMutation = { removeOptionGroupFromProduct: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string }> }> } | { __typename?: 'ProductOptionInUseError', errorCode: ErrorCode, message: string } };
+export type RemoveOptionGroupFromProductMutation = { removeOptionGroupFromProduct:
+    | { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string }> }> }
+    | { __typename?: 'ProductOptionInUseError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type GetProductWithVariantsQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  variantListOptions?: InputMaybe<ProductVariantListOptions>;
+  id: string | number;
+  variantListOptions?: Types.ProductVariantListOptions | null | undefined;
 }>;
 
 
-export type GetProductWithVariantsQuery = { product?: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, description: string, variantList: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> }, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null };
+export type GetProductWithVariantsQuery = { product: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, description: string, variantList: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> }, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductTranslation', id: string, languageCode: Types.LanguageCode, name: string, slug: string, description: string }>, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> } | null };
 
 export type GetProductSimpleQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductSimpleQuery = { product?: { __typename?: 'Product', id: string, name: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null };
+export type GetProductSimpleQuery = { product: { __typename?: 'Product', id: string, name: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null } | null };
 
-export type ProductForListFragment = { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } };
+export type ProductForListFragment = { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } };
 
 export type GetProductListQueryVariables = Exact<{
-  options?: InputMaybe<ProductListOptions>;
+  options?: Types.ProductListOptions | null | undefined;
 }>;
 
 
-export type GetProductListQuery = { products: { __typename?: 'ProductList', totalItems: number, items: Array<{ __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } }> } };
+export type GetProductListQuery = { products: { __typename?: 'ProductList', totalItems: number, items: Array<{ __typename?: 'Product', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, slug: string, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, variantList: { __typename?: 'ProductVariantList', totalItems: number } }> } };
 
 export type GetProductOptionGroupsQueryVariables = Exact<{
-  filterTerm?: InputMaybe<Scalars['String']['input']>;
+  filterTerm?: string | null | undefined;
 }>;
 
 
-export type GetProductOptionGroupsQuery = { productOptionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, languageCode: LanguageCode, code: string, name: string }> }> };
+export type GetProductOptionGroupsQuery = { productOptionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, languageCode: Types.LanguageCode, code: string, name: string }> }> };
 
 export type GetAssetListQueryVariables = Exact<{
-  options?: InputMaybe<AssetListOptions>;
+  options?: Types.AssetListOptions | null | undefined;
 }>;
 
 
-export type GetAssetListQuery = { assets: { __typename?: 'AssetList', totalItems: number, items: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }> } };
+export type GetAssetListQuery = { assets: { __typename?: 'AssetList', totalItems: number, items: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }> } };
 
 export type GetAssetQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetAssetQuery = { asset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
+export type GetAssetQuery = { asset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
 export type CreateAssetsMutationVariables = Exact<{
-  input: Array<CreateAssetInput> | CreateAssetInput;
+  input: Array<Types.CreateAssetInput> | Types.CreateAssetInput;
 }>;
 
 
-export type CreateAssetsMutation = { createAssets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | { __typename?: 'MimeTypeError', message: string }> };
+export type CreateAssetsMutation = { createAssets: Array<
+    | { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }
+    | { __typename?: 'MimeTypeError', message: string }
+  > };
 
 export type UpdateAssetMutationVariables = Exact<{
-  input: UpdateAssetInput;
+  input: Types.UpdateAssetInput;
 }>;
 
 
-export type UpdateAssetMutation = { updateAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } };
+export type UpdateAssetMutation = { updateAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } };
 
 export type DeleteAssetsMutationVariables = Exact<{
-  input: DeleteAssetsInput;
+  input: Types.DeleteAssetsInput;
 }>;
 
 
-export type DeleteAssetsMutation = { deleteAssets: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteAssetsMutation = { deleteAssets: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type SearchProductsQueryVariables = Exact<{
-  input: SearchInput;
+  input: Types.SearchInput;
 }>;
 
 
-export type SearchProductsQuery = { search: { __typename?: 'SearchResponse', totalItems: number, items: Array<{ __typename?: 'SearchResult', enabled: boolean, productId: string, productName: string, slug: string, currencyCode: CurrencyCode, productVariantId: string, productVariantName: string, sku: string, channelIds: Array<string>, priceWithTax: { __typename?: 'PriceRange', min: number, max: number } | { __typename?: 'SinglePrice', value: number }, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, productVariantAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }>, facetValues: Array<{ __typename?: 'FacetValueResult', count: number, facetValue: { __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, name: string, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } } }> } };
+export type SearchProductsQuery = { search: { __typename?: 'SearchResponse', totalItems: number, items: Array<{ __typename?: 'SearchResult', enabled: boolean, productId: string, productName: string, slug: string, currencyCode: Types.CurrencyCode, productVariantId: string, productVariantName: string, sku: string, channelIds: Array<string>, priceWithTax:
+        | { __typename?: 'PriceRange', min: number, max: number }
+        | { __typename?: 'SinglePrice', value: number }
+      , productAsset: { __typename?: 'SearchResultAsset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, productVariantAsset: { __typename?: 'SearchResultAsset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null }>, facetValues: Array<{ __typename?: 'FacetValueResult', count: number, facetValue: { __typename?: 'FacetValue', id: string, createdAt: any, updatedAt: any, name: string, facet: { __typename?: 'Facet', id: string, createdAt: any, updatedAt: any, name: string } } }> } };
 
 export type ProductSelectorSearchQueryVariables = Exact<{
-  term: Scalars['String']['input'];
-  take: Scalars['Int']['input'];
+  term: string;
+  take: number;
 }>;
 
 
-export type ProductSelectorSearchQuery = { search: { __typename?: 'SearchResponse', items: Array<{ __typename?: 'SearchResult', productVariantId: string, productVariantName: string, sku: string, productAsset?: { __typename?: 'SearchResultAsset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, price: { __typename?: 'PriceRange' } | { __typename?: 'SinglePrice', value: number }, priceWithTax: { __typename?: 'PriceRange' } | { __typename?: 'SinglePrice', value: number } }> } };
+export type ProductSelectorSearchQuery = { search: { __typename?: 'SearchResponse', items: Array<{ __typename?: 'SearchResult', productVariantId: string, productVariantName: string, sku: string, productAsset: { __typename?: 'SearchResultAsset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, price:
+        | { __typename?: 'PriceRange' }
+        | { __typename?: 'SinglePrice', value: number }
+      , priceWithTax:
+        | { __typename?: 'PriceRange' }
+        | { __typename?: 'SinglePrice', value: number }
+       }> } };
 
 export type UpdateProductOptionGroupMutationVariables = Exact<{
-  input: UpdateProductOptionGroupInput;
+  input: Types.UpdateProductOptionGroupInput;
 }>;
 
 
-export type UpdateProductOptionGroupMutation = { updateProductOptionGroup: { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> } };
+export type UpdateProductOptionGroupMutation = { updateProductOptionGroup: { __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> } };
 
 export type UpdateProductOptionMutationVariables = Exact<{
-  input: UpdateProductOptionInput;
+  input: Types.UpdateProductOptionInput;
 }>;
 
 
-export type UpdateProductOptionMutation = { updateProductOption: { __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> } };
+export type UpdateProductOptionMutation = { updateProductOption: { __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> } };
 
 export type DeleteProductOptionMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteProductOptionMutation = { deleteProductOption: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteProductOptionMutation = { deleteProductOption: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteProductVariantMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteProductVariantMutation = { deleteProductVariant: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteProductVariantMutation = { deleteProductVariant: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteProductVariantsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteProductVariantsMutation = { deleteProductVariants: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteProductVariantsMutation = { deleteProductVariants: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type GetProductVariantOptionsQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductVariantOptionsQuery = { product?: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, name: string, languageCode: LanguageCode, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: LanguageCode, name: string }> }>, variants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, name: string, sku: string, price: number, priceWithTax: number, currencyCode: CurrencyCode, stockOnHand: number, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, name: string, code: string, groupId: string }> }> } | null };
+export type GetProductVariantOptionsQuery = { product: { __typename?: 'Product', id: string, createdAt: any, updatedAt: any, name: string, languageCode: Types.LanguageCode, optionGroups: Array<{ __typename?: 'ProductOptionGroup', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, translations: Array<{ __typename?: 'ProductOptionGroupTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, variants: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, name: string, sku: string, price: number, priceWithTax: number, currencyCode: Types.CurrencyCode, stockOnHand: number, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, name: string, code: string, groupId: string }> }> } | null };
 
 export type AssignProductsToChannelMutationVariables = Exact<{
-  input: AssignProductsToChannelInput;
+  input: Types.AssignProductsToChannelInput;
 }>;
 
 
 export type AssignProductsToChannelMutation = { assignProductsToChannel: Array<{ __typename?: 'Product', id: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> };
 
 export type AssignVariantsToChannelMutationVariables = Exact<{
-  input: AssignProductVariantsToChannelInput;
+  input: Types.AssignProductVariantsToChannelInput;
 }>;
 
 
 export type AssignVariantsToChannelMutation = { assignProductVariantsToChannel: Array<{ __typename?: 'ProductVariant', id: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> };
 
 export type RemoveProductsFromChannelMutationVariables = Exact<{
-  input: RemoveProductsFromChannelInput;
+  input: Types.RemoveProductsFromChannelInput;
 }>;
 
 
 export type RemoveProductsFromChannelMutation = { removeProductsFromChannel: Array<{ __typename?: 'Product', id: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> };
 
 export type RemoveVariantsFromChannelMutationVariables = Exact<{
-  input: RemoveProductVariantsFromChannelInput;
+  input: Types.RemoveProductVariantsFromChannelInput;
 }>;
 
 
 export type RemoveVariantsFromChannelMutation = { removeProductVariantsFromChannel: Array<string> };
 
 export type GetProductVariantQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetProductVariantQuery = { productVariant?: { __typename?: 'ProductVariant', id: string, name: string, sku: string, stockOnHand: number, stockAllocated: number, stockLevel: string, useGlobalOutOfStockThreshold: boolean, price: number, priceWithTax: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, product: { __typename?: 'Product', id: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } } | null };
+export type GetProductVariantQuery = { productVariant?: { __typename?: 'ProductVariant', id: string, name: string, sku: string, stockOnHand: number, stockAllocated: number, stockLevel: string, useGlobalOutOfStockThreshold: boolean, price: number, priceWithTax: number, featuredAsset: { __typename?: 'Asset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, product: { __typename?: 'Product', id: string, featuredAsset: { __typename?: 'Asset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null } } | null };
 
 export type GetProductVariantListSimpleQueryVariables = Exact<{
-  options: ProductVariantListOptions;
-  productId?: InputMaybe<Scalars['ID']['input']>;
+  options: Types.ProductVariantListOptions;
+  productId?: string | number | null | undefined;
 }>;
 
 
-export type GetProductVariantListSimpleQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, name: string, sku: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, product: { __typename?: 'Product', id: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null } }> } };
+export type GetProductVariantListSimpleQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, name: string, sku: string, featuredAsset: { __typename?: 'Asset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, product: { __typename?: 'Product', id: string, featuredAsset: { __typename?: 'Asset', id: string, preview: string, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null } }> } };
 
 export type GetProductVariantListForProductQueryVariables = Exact<{
-  options: ProductVariantListOptions;
-  productId?: InputMaybe<Scalars['ID']['input']>;
+  options: Types.ProductVariantListOptions;
+  productId?: string | number | null | undefined;
 }>;
 
 
-export type GetProductVariantListForProductQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> } };
+export type GetProductVariantListForProductQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, stockOnHand: number, stockAllocated: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, taxRateApplied: { __typename?: 'TaxRate', id: string, name: string, value: number }, taxCategory: { __typename?: 'TaxCategory', id: string, name: string }, options: Array<{ __typename?: 'ProductOption', id: string, createdAt: any, updatedAt: any, code: string, languageCode: Types.LanguageCode, name: string, groupId: string, translations: Array<{ __typename?: 'ProductOptionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }>, facetValues: Array<{ __typename?: 'FacetValue', id: string, code: string, name: string, facet: { __typename?: 'Facet', id: string, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null, assets: Array<{ __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null }>, translations: Array<{ __typename?: 'ProductVariantTranslation', id: string, languageCode: Types.LanguageCode, name: string }>, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> } };
 
 export type GetProductVariantListQueryVariables = Exact<{
-  options: ProductVariantListOptions;
+  options: Types.ProductVariantListOptions;
 }>;
 
 
-export type GetProductVariantListQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } };
+export type GetProductVariantListQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } };
 
 export type GetTagListQueryVariables = Exact<{
-  options?: InputMaybe<TagListOptions>;
+  options?: Types.TagListOptions | null | undefined;
 }>;
 
 
 export type GetTagListQuery = { tags: { __typename?: 'TagList', totalItems: number, items: Array<{ __typename?: 'Tag', id: string, value: string }> } };
 
 export type GetTagQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
 export type GetTagQuery = { tag: { __typename?: 'Tag', id: string, value: string } };
 
 export type CreateTagMutationVariables = Exact<{
-  input: CreateTagInput;
+  input: Types.CreateTagInput;
 }>;
 
 
 export type CreateTagMutation = { createTag: { __typename?: 'Tag', id: string, value: string } };
 
 export type UpdateTagMutationVariables = Exact<{
-  input: UpdateTagInput;
+  input: Types.UpdateTagInput;
 }>;
 
 
 export type UpdateTagMutation = { updateTag: { __typename?: 'Tag', id: string, value: string } };
 
 export type DeleteTagMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteTagMutation = { deleteTag: { __typename?: 'DeletionResponse', message?: string | null, result: DeletionResult } };
+export type DeleteTagMutation = { deleteTag: { __typename?: 'DeletionResponse', message: string | null, result: Types.DeletionResult } };
 
-export type PromotionFragment = { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode?: string | null, perCustomerUsageLimit?: number | null, usageLimit?: number | null, startsAt?: any | null, endsAt?: any | null, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> };
+export type PromotionFragment = { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode: string | null, perCustomerUsageLimit: number | null, usageLimit: number | null, startsAt: any, endsAt: any, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> };
 
 export type GetAdjustmentOperationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAdjustmentOperationsQuery = { promotionConditions: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }>, promotionActions: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }> };
+export type GetAdjustmentOperationsQuery = { promotionConditions: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }>, promotionActions: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }> };
 
 export type CreatePromotionMutationVariables = Exact<{
-  input: CreatePromotionInput;
+  input: Types.CreatePromotionInput;
 }>;
 
 
-export type CreatePromotionMutation = { createPromotion: { __typename?: 'MissingConditionsError', errorCode: ErrorCode, message: string } | { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode?: string | null, perCustomerUsageLimit?: number | null, usageLimit?: number | null, startsAt?: any | null, endsAt?: any | null, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> } };
+export type CreatePromotionMutation = { createPromotion:
+    | { __typename?: 'MissingConditionsError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode: string | null, perCustomerUsageLimit: number | null, usageLimit: number | null, startsAt: any, endsAt: any, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> }
+   };
 
 export type UpdatePromotionMutationVariables = Exact<{
-  input: UpdatePromotionInput;
+  input: Types.UpdatePromotionInput;
 }>;
 
 
-export type UpdatePromotionMutation = { updatePromotion: { __typename?: 'MissingConditionsError' } | { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode?: string | null, perCustomerUsageLimit?: number | null, usageLimit?: number | null, startsAt?: any | null, endsAt?: any | null, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> } };
+export type UpdatePromotionMutation = { updatePromotion:
+    | { __typename?: 'MissingConditionsError' }
+    | { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode: string | null, perCustomerUsageLimit: number | null, usageLimit: number | null, startsAt: any, endsAt: any, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> }
+   };
 
 export type DeletePromotionMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeletePromotionMutation = { deletePromotion: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeletePromotionMutation = { deletePromotion: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeletePromotionsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeletePromotionsMutation = { deletePromotions: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeletePromotionsMutation = { deletePromotions: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
-export type CountryFragment = { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> };
+export type CountryFragment = { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> };
 
 export type GetAvailableCountriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -7960,375 +1358,432 @@ export type GetAvailableCountriesQueryVariables = Exact<{ [key: string]: never; 
 export type GetAvailableCountriesQuery = { countries: { __typename?: 'CountryList', items: Array<{ __typename?: 'Country', id: string, code: string, name: string, enabled: boolean }> } };
 
 export type CreateCountryMutationVariables = Exact<{
-  input: CreateCountryInput;
+  input: Types.CreateCountryInput;
 }>;
 
 
-export type CreateCountryMutation = { createCountry: { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } };
+export type CreateCountryMutation = { createCountry: { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> } };
 
 export type UpdateCountryMutationVariables = Exact<{
-  input: UpdateCountryInput;
+  input: Types.UpdateCountryInput;
 }>;
 
 
-export type UpdateCountryMutation = { updateCountry: { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } };
+export type UpdateCountryMutation = { updateCountry: { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> } };
 
 export type DeleteCountryMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteCountryMutation = { deleteCountry: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteCountryMutation = { deleteCountry: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteCountriesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteCountriesMutation = { deleteCountries: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteCountriesMutation = { deleteCountries: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
-export type ZoneFragment = { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | { __typename?: 'Province' }> };
+export type ZoneFragment = { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+    | { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }
+    | { __typename?: 'Province' }
+  > };
 
 export type GetZoneQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetZoneQuery = { zone?: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | { __typename?: 'Province' }> } | null };
+export type GetZoneQuery = { zone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+      | { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }
+      | { __typename?: 'Province' }
+    > } | null };
 
 export type CreateZoneMutationVariables = Exact<{
-  input: CreateZoneInput;
+  input: Types.CreateZoneInput;
 }>;
 
 
-export type CreateZoneMutation = { createZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | { __typename?: 'Province' }> } };
+export type CreateZoneMutation = { createZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+      | { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }
+      | { __typename?: 'Province' }
+    > } };
 
 export type UpdateZoneMutationVariables = Exact<{
-  input: UpdateZoneInput;
+  input: Types.UpdateZoneInput;
 }>;
 
 
-export type UpdateZoneMutation = { updateZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | { __typename?: 'Province' }> } };
+export type UpdateZoneMutation = { updateZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+      | { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }
+      | { __typename?: 'Province' }
+    > } };
 
 export type DeleteZoneMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteZoneMutation = { deleteZone: { __typename?: 'DeletionResponse', message?: string | null, result: DeletionResult } };
+export type DeleteZoneMutation = { deleteZone: { __typename?: 'DeletionResponse', message: string | null, result: Types.DeletionResult } };
 
 export type DeleteZonesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteZonesMutation = { deleteZones: Array<{ __typename?: 'DeletionResponse', message?: string | null, result: DeletionResult }> };
+export type DeleteZonesMutation = { deleteZones: Array<{ __typename?: 'DeletionResponse', message: string | null, result: Types.DeletionResult }> };
 
 export type AddMembersToZoneMutationVariables = Exact<{
-  zoneId: Scalars['ID']['input'];
-  memberIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  zoneId: string | number;
+  memberIds: Array<string | number> | string | number;
 }>;
 
 
-export type AddMembersToZoneMutation = { addMembersToZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | { __typename?: 'Province' }> } };
+export type AddMembersToZoneMutation = { addMembersToZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+      | { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }
+      | { __typename?: 'Province' }
+    > } };
 
 export type RemoveMembersFromZoneMutationVariables = Exact<{
-  zoneId: Scalars['ID']['input'];
-  memberIds: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  zoneId: string | number;
+  memberIds: Array<string | number> | string | number;
 }>;
 
 
-export type RemoveMembersFromZoneMutation = { removeMembersFromZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | { __typename?: 'Province' }> } };
+export type RemoveMembersFromZoneMutation = { removeMembersFromZone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+      | { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> }
+      | { __typename?: 'Province' }
+    > } };
 
 export type TaxCategoryFragment = { __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean };
 
 export type GetTaxCategoriesQueryVariables = Exact<{
-  options?: InputMaybe<TaxCategoryListOptions>;
+  options?: Types.TaxCategoryListOptions | null | undefined;
 }>;
 
 
 export type GetTaxCategoriesQuery = { taxCategories: { __typename?: 'TaxCategoryList', totalItems: number, items: Array<{ __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean }> } };
 
 export type CreateTaxCategoryMutationVariables = Exact<{
-  input: CreateTaxCategoryInput;
+  input: Types.CreateTaxCategoryInput;
 }>;
 
 
 export type CreateTaxCategoryMutation = { createTaxCategory: { __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean } };
 
 export type UpdateTaxCategoryMutationVariables = Exact<{
-  input: UpdateTaxCategoryInput;
+  input: Types.UpdateTaxCategoryInput;
 }>;
 
 
 export type UpdateTaxCategoryMutation = { updateTaxCategory: { __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean } };
 
 export type DeleteTaxCategoryMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteTaxCategoryMutation = { deleteTaxCategory: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteTaxCategoryMutation = { deleteTaxCategory: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteTaxCategoriesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteTaxCategoriesMutation = { deleteTaxCategories: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteTaxCategoriesMutation = { deleteTaxCategories: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
-export type TaxRateFragment = { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup?: { __typename?: 'CustomerGroup', id: string, name: string } | null };
+export type TaxRateFragment = { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup: { __typename?: 'CustomerGroup', id: string, name: string } | null };
 
 export type GetTaxRateListSimpleQueryVariables = Exact<{
-  options?: InputMaybe<TaxRateListOptions>;
+  options?: Types.TaxRateListOptions | null | undefined;
 }>;
 
 
 export type GetTaxRateListSimpleQuery = { taxRates: { __typename?: 'TaxRateList', totalItems: number, items: Array<{ __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string } }> } };
 
 export type CreateTaxRateMutationVariables = Exact<{
-  input: CreateTaxRateInput;
+  input: Types.CreateTaxRateInput;
 }>;
 
 
-export type CreateTaxRateMutation = { createTaxRate: { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup?: { __typename?: 'CustomerGroup', id: string, name: string } | null } };
+export type CreateTaxRateMutation = { createTaxRate: { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup: { __typename?: 'CustomerGroup', id: string, name: string } | null } };
 
 export type UpdateTaxRateMutationVariables = Exact<{
-  input: UpdateTaxRateInput;
+  input: Types.UpdateTaxRateInput;
 }>;
 
 
-export type UpdateTaxRateMutation = { updateTaxRate: { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup?: { __typename?: 'CustomerGroup', id: string, name: string } | null } };
+export type UpdateTaxRateMutation = { updateTaxRate: { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup: { __typename?: 'CustomerGroup', id: string, name: string } | null } };
 
 export type DeleteTaxRateMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteTaxRateMutation = { deleteTaxRate: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteTaxRateMutation = { deleteTaxRate: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteTaxRatesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteTaxRatesMutation = { deleteTaxRates: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteTaxRatesMutation = { deleteTaxRates: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
-export type ChannelFragment = { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null };
+export type ChannelFragment = { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null };
 
 export type SellerFragment = { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type GetChannelsQueryVariables = Exact<{
-  options?: InputMaybe<ChannelListOptions>;
+  options?: Types.ChannelListOptions | null | undefined;
 }>;
 
 
-export type GetChannelsQuery = { channels: { __typename?: 'ChannelList', totalItems: number, items: Array<{ __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null }> } };
+export type GetChannelsQuery = { channels: { __typename?: 'ChannelList', totalItems: number, items: Array<{ __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null }> } };
 
 export type GetSellersQueryVariables = Exact<{
-  options?: InputMaybe<SellerListOptions>;
+  options?: Types.SellerListOptions | null | undefined;
 }>;
 
 
 export type GetSellersQuery = { sellers: { __typename?: 'SellerList', totalItems: number, items: Array<{ __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string }> } };
 
 export type CreateSellerMutationVariables = Exact<{
-  input: CreateSellerInput;
+  input: Types.CreateSellerInput;
 }>;
 
 
 export type CreateSellerMutation = { createSeller: { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string } };
 
 export type UpdateSellerMutationVariables = Exact<{
-  input: UpdateSellerInput;
+  input: Types.UpdateSellerInput;
 }>;
 
 
 export type UpdateSellerMutation = { updateSeller: { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string } };
 
 export type DeleteSellerMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteSellerMutation = { deleteSeller: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteSellerMutation = { deleteSeller: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteSellersMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteSellersMutation = { deleteSellers: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteSellersMutation = { deleteSellers: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type GetActiveChannelQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetActiveChannelQuery = { activeChannel: { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null } };
+export type GetActiveChannelQuery = { activeChannel: { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null } };
 
 export type CreateChannelMutationVariables = Exact<{
-  input: CreateChannelInput;
+  input: Types.CreateChannelInput;
 }>;
 
 
-export type CreateChannelMutation = { createChannel: { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null } | { __typename?: 'LanguageNotAvailableError', errorCode: ErrorCode, message: string } };
+export type CreateChannelMutation = { createChannel:
+    | { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null }
+    | { __typename?: 'LanguageNotAvailableError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type UpdateChannelMutationVariables = Exact<{
-  input: UpdateChannelInput;
+  input: Types.UpdateChannelInput;
 }>;
 
 
-export type UpdateChannelMutation = { updateChannel: { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null } | { __typename?: 'LanguageNotAvailableError', errorCode: ErrorCode, message: string } };
+export type UpdateChannelMutation = { updateChannel:
+    | { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null }
+    | { __typename?: 'LanguageNotAvailableError', errorCode: Types.ErrorCode, message: string }
+   };
 
 export type DeleteChannelMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteChannelMutation = { deleteChannel: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteChannelMutation = { deleteChannel: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteChannelsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteChannelsMutation = { deleteChannels: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteChannelsMutation = { deleteChannels: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
-export type PaymentMethodFragment = { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }>, checker?: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } };
+export type PaymentMethodFragment = { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }>, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } };
 
 export type GetPaymentMethodOperationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPaymentMethodOperationsQuery = { paymentMethodEligibilityCheckers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }>, paymentMethodHandlers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }> };
+export type GetPaymentMethodOperationsQuery = { paymentMethodEligibilityCheckers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }>, paymentMethodHandlers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }> };
 
 export type CreatePaymentMethodMutationVariables = Exact<{
-  input: CreatePaymentMethodInput;
+  input: Types.CreatePaymentMethodInput;
 }>;
 
 
-export type CreatePaymentMethodMutation = { createPaymentMethod: { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }>, checker?: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } } };
+export type CreatePaymentMethodMutation = { createPaymentMethod: { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }>, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } } };
 
 export type UpdatePaymentMethodMutationVariables = Exact<{
-  input: UpdatePaymentMethodInput;
+  input: Types.UpdatePaymentMethodInput;
 }>;
 
 
-export type UpdatePaymentMethodMutation = { updatePaymentMethod: { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }>, checker?: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } } };
+export type UpdatePaymentMethodMutation = { updatePaymentMethod: { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }>, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } } };
 
 export type DeletePaymentMethodMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-  force?: InputMaybe<Scalars['Boolean']['input']>;
+  id: string | number;
+  force?: boolean | null | undefined;
 }>;
 
 
-export type DeletePaymentMethodMutation = { deletePaymentMethod: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeletePaymentMethodMutation = { deletePaymentMethod: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeletePaymentMethodsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
-  force?: InputMaybe<Scalars['Boolean']['input']>;
+  ids: Array<string | number> | string | number;
+  force?: boolean | null | undefined;
 }>;
 
 
-export type DeletePaymentMethodsMutation = { deletePaymentMethods: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeletePaymentMethodsMutation = { deletePaymentMethods: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
-export type GlobalSettingsFragment = { __typename?: 'GlobalSettings', id: string, availableLanguages: Array<LanguageCode>, trackInventory: boolean, outOfStockThreshold: number, serverConfig: { __typename?: 'ServerConfig', permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string }> } };
+export type GlobalSettingsFragment = { __typename?: 'GlobalSettings', id: string, availableLanguages: Array<Types.LanguageCode>, trackInventory: boolean, outOfStockThreshold: number, serverConfig: { __typename?: 'ServerConfig', permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string }> } };
 
 export type GetGlobalSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetGlobalSettingsQuery = { globalSettings: { __typename?: 'GlobalSettings', id: string, availableLanguages: Array<LanguageCode>, trackInventory: boolean, outOfStockThreshold: number, serverConfig: { __typename?: 'ServerConfig', permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string }> } } };
+export type GetGlobalSettingsQuery = { globalSettings: { __typename?: 'GlobalSettings', id: string, availableLanguages: Array<Types.LanguageCode>, trackInventory: boolean, outOfStockThreshold: number, serverConfig: { __typename?: 'ServerConfig', permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string }> } } };
 
 export type UpdateGlobalSettingsMutationVariables = Exact<{
-  input: UpdateGlobalSettingsInput;
+  input: Types.UpdateGlobalSettingsInput;
 }>;
 
 
-export type UpdateGlobalSettingsMutation = { updateGlobalSettings: { __typename?: 'ChannelDefaultLanguageError', errorCode: ErrorCode, message: string } | { __typename?: 'GlobalSettings', id: string, availableLanguages: Array<LanguageCode>, trackInventory: boolean, outOfStockThreshold: number, serverConfig: { __typename?: 'ServerConfig', permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string }> } } };
+export type UpdateGlobalSettingsMutation = { updateGlobalSettings:
+    | { __typename?: 'ChannelDefaultLanguageError', errorCode: Types.ErrorCode, message: string }
+    | { __typename?: 'GlobalSettings', id: string, availableLanguages: Array<Types.LanguageCode>, trackInventory: boolean, outOfStockThreshold: number, serverConfig: { __typename?: 'ServerConfig', permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string }> } }
+   };
 
-type CustomFieldConfig_BooleanCustomFieldConfig_Fragment = { __typename?: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_BooleanCustomFieldConfig_Fragment = { __typename: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_DateTimeCustomFieldConfig_Fragment = { __typename?: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_DateTimeCustomFieldConfig_Fragment = { __typename: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_FloatCustomFieldConfig_Fragment = { __typename?: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_FloatCustomFieldConfig_Fragment = { __typename: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_IntCustomFieldConfig_Fragment = { __typename?: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_IntCustomFieldConfig_Fragment = { __typename: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_LocaleStringCustomFieldConfig_Fragment = { __typename?: 'LocaleStringCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_LocaleStringCustomFieldConfig_Fragment = { __typename: 'LocaleStringCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_LocaleTextCustomFieldConfig_Fragment = { __typename?: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_LocaleTextCustomFieldConfig_Fragment = { __typename: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_RelationCustomFieldConfig_Fragment = { __typename?: 'RelationCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_RelationCustomFieldConfig_Fragment = { __typename: 'RelationCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_StringCustomFieldConfig_Fragment = { __typename?: 'StringCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_StringCustomFieldConfig_Fragment = { __typename: 'StringCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFieldConfig_TextCustomFieldConfig_Fragment = { __typename?: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFieldConfig_TextCustomFieldConfig_Fragment = { __typename: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type CustomFieldConfigFragment = CustomFieldConfig_BooleanCustomFieldConfig_Fragment | CustomFieldConfig_DateTimeCustomFieldConfig_Fragment | CustomFieldConfig_FloatCustomFieldConfig_Fragment | CustomFieldConfig_IntCustomFieldConfig_Fragment | CustomFieldConfig_LocaleStringCustomFieldConfig_Fragment | CustomFieldConfig_LocaleTextCustomFieldConfig_Fragment | CustomFieldConfig_RelationCustomFieldConfig_Fragment | CustomFieldConfig_StringCustomFieldConfig_Fragment | CustomFieldConfig_TextCustomFieldConfig_Fragment;
+export type CustomFieldConfigFragment =
+  | CustomFieldConfig_BooleanCustomFieldConfig_Fragment
+  | CustomFieldConfig_DateTimeCustomFieldConfig_Fragment
+  | CustomFieldConfig_FloatCustomFieldConfig_Fragment
+  | CustomFieldConfig_IntCustomFieldConfig_Fragment
+  | CustomFieldConfig_LocaleStringCustomFieldConfig_Fragment
+  | CustomFieldConfig_LocaleTextCustomFieldConfig_Fragment
+  | CustomFieldConfig_RelationCustomFieldConfig_Fragment
+  | CustomFieldConfig_StringCustomFieldConfig_Fragment
+  | CustomFieldConfig_TextCustomFieldConfig_Fragment
+;
 
-export type StringCustomFieldFragment = { __typename?: 'StringCustomFieldConfig', pattern?: string | null, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, options?: Array<{ __typename?: 'StringFieldOption', value: string, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null }> | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type StringCustomFieldFragment = { __typename: 'StringCustomFieldConfig', pattern: string | null, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, options: Array<{ __typename?: 'StringFieldOption', value: string, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }> | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type LocaleStringCustomFieldFragment = { __typename?: 'LocaleStringCustomFieldConfig', pattern?: string | null, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type LocaleStringCustomFieldFragment = { __typename: 'LocaleStringCustomFieldConfig', pattern: string | null, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type TextCustomFieldFragment = { __typename?: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type TextCustomFieldFragment = { __typename: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type LocaleTextCustomFieldFragment = { __typename?: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type LocaleTextCustomFieldFragment = { __typename: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type BooleanCustomFieldFragment = { __typename?: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type BooleanCustomFieldFragment = { __typename: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type IntCustomFieldFragment = { __typename?: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, intMin?: number | null, intMax?: number | null, intStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type IntCustomFieldFragment = { __typename: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, intMin: number | null, intMax: number | null, intStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type FloatCustomFieldFragment = { __typename?: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, floatMin?: number | null, floatMax?: number | null, floatStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type FloatCustomFieldFragment = { __typename: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, floatMin: number | null, floatMax: number | null, floatStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type DateTimeCustomFieldFragment = { __typename?: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, datetimeMin?: string | null, datetimeMax?: string | null, datetimeStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type DateTimeCustomFieldFragment = { __typename: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, datetimeMin: string | null, datetimeMax: string | null, datetimeStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type RelationCustomFieldFragment = { __typename?: 'RelationCustomFieldConfig', entity: string, scalarFields: Array<string>, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+export type RelationCustomFieldFragment = { __typename: 'RelationCustomFieldConfig', entity: string, scalarFields: Array<string>, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_BooleanCustomFieldConfig_Fragment = { __typename?: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_BooleanCustomFieldConfig_Fragment = { __typename: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_DateTimeCustomFieldConfig_Fragment = { __typename?: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, datetimeMin?: string | null, datetimeMax?: string | null, datetimeStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_DateTimeCustomFieldConfig_Fragment = { __typename: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, datetimeMin: string | null, datetimeMax: string | null, datetimeStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_FloatCustomFieldConfig_Fragment = { __typename?: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, floatMin?: number | null, floatMax?: number | null, floatStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_FloatCustomFieldConfig_Fragment = { __typename: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, floatMin: number | null, floatMax: number | null, floatStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_IntCustomFieldConfig_Fragment = { __typename?: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, intMin?: number | null, intMax?: number | null, intStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_IntCustomFieldConfig_Fragment = { __typename: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, intMin: number | null, intMax: number | null, intStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_LocaleStringCustomFieldConfig_Fragment = { __typename?: 'LocaleStringCustomFieldConfig', pattern?: string | null, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_LocaleStringCustomFieldConfig_Fragment = { __typename: 'LocaleStringCustomFieldConfig', pattern: string | null, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_LocaleTextCustomFieldConfig_Fragment = { __typename?: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_LocaleTextCustomFieldConfig_Fragment = { __typename: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_RelationCustomFieldConfig_Fragment = { __typename?: 'RelationCustomFieldConfig', entity: string, scalarFields: Array<string>, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_RelationCustomFieldConfig_Fragment = { __typename: 'RelationCustomFieldConfig', entity: string, scalarFields: Array<string>, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_StringCustomFieldConfig_Fragment = { __typename?: 'StringCustomFieldConfig', pattern?: string | null, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, options?: Array<{ __typename?: 'StringFieldOption', value: string, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null }> | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_StringCustomFieldConfig_Fragment = { __typename: 'StringCustomFieldConfig', pattern: string | null, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, options: Array<{ __typename?: 'StringFieldOption', value: string, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }> | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-type CustomFields_TextCustomFieldConfig_Fragment = { __typename?: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null };
+type CustomFields_TextCustomFieldConfig_Fragment = { __typename: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null };
 
-export type CustomFieldsFragment = CustomFields_BooleanCustomFieldConfig_Fragment | CustomFields_DateTimeCustomFieldConfig_Fragment | CustomFields_FloatCustomFieldConfig_Fragment | CustomFields_IntCustomFieldConfig_Fragment | CustomFields_LocaleStringCustomFieldConfig_Fragment | CustomFields_LocaleTextCustomFieldConfig_Fragment | CustomFields_RelationCustomFieldConfig_Fragment | CustomFields_StringCustomFieldConfig_Fragment | CustomFields_TextCustomFieldConfig_Fragment;
+export type CustomFieldsFragment =
+  | CustomFields_BooleanCustomFieldConfig_Fragment
+  | CustomFields_DateTimeCustomFieldConfig_Fragment
+  | CustomFields_FloatCustomFieldConfig_Fragment
+  | CustomFields_IntCustomFieldConfig_Fragment
+  | CustomFields_LocaleStringCustomFieldConfig_Fragment
+  | CustomFields_LocaleTextCustomFieldConfig_Fragment
+  | CustomFields_RelationCustomFieldConfig_Fragment
+  | CustomFields_StringCustomFieldConfig_Fragment
+  | CustomFields_TextCustomFieldConfig_Fragment
+;
 
 export type GetServerConfigQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetServerConfigQuery = { globalSettings: { __typename?: 'GlobalSettings', id: string, serverConfig: { __typename?: 'ServerConfig', moneyStrategyPrecision: number, permittedAssetTypes: Array<string>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string, to: Array<string> }>, permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, entityCustomFields: Array<{ __typename?: 'EntityCustomFields', entityName: string, customFields: Array<{ __typename?: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, datetimeMin?: string | null, datetimeMax?: string | null, datetimeStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, floatMin?: number | null, floatMax?: number | null, floatStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, intMin?: number | null, intMax?: number | null, intStep?: number | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'LocaleStringCustomFieldConfig', pattern?: string | null, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'RelationCustomFieldConfig', entity: string, scalarFields: Array<string>, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'StringCustomFieldConfig', pattern?: string | null, name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, options?: Array<{ __typename?: 'StringFieldOption', value: string, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null }> | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null } | { __typename?: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly?: boolean | null, nullable?: boolean | null, requiresPermission?: Array<Permission> | null, ui?: any | null, description?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null, label?: Array<{ __typename?: 'LocalizedString', languageCode: LanguageCode, value: string }> | null }> }> } } };
+export type GetServerConfigQuery = { globalSettings: { __typename?: 'GlobalSettings', id: string, serverConfig: { __typename?: 'ServerConfig', moneyStrategyPrecision: number, permittedAssetTypes: Array<string>, orderProcess: Array<{ __typename?: 'OrderProcessState', name: string, to: Array<string> }>, permissions: Array<{ __typename?: 'PermissionDefinition', name: string, description: string, assignable: boolean }>, entityCustomFields: Array<{ __typename?: 'EntityCustomFields', entityName: string, customFields: Array<
+          | { __typename: 'BooleanCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'DateTimeCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, datetimeMin: string | null, datetimeMax: string | null, datetimeStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'FloatCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, floatMin: number | null, floatMax: number | null, floatStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'IntCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, intMin: number | null, intMax: number | null, intStep: number | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'LocaleStringCustomFieldConfig', pattern: string | null, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'LocaleTextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'RelationCustomFieldConfig', entity: string, scalarFields: Array<string>, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'StringCustomFieldConfig', pattern: string | null, name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, options: Array<{ __typename?: 'StringFieldOption', value: string, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }> | null, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+          | { __typename: 'TextCustomFieldConfig', name: string, type: string, list: boolean, readonly: boolean | null, nullable: boolean | null, requiresPermission: Array<Types.Permission> | null, ui: any, description: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null, label: Array<{ __typename?: 'LocalizedString', languageCode: Types.LanguageCode, value: string }> | null }
+        > }> } } };
 
-export type JobInfoFragment = { __typename?: 'Job', id: string, createdAt: any, startedAt?: any | null, settledAt?: any | null, queueName: string, state: JobState, isSettled: boolean, progress: number, duration: number, data?: any | null, result?: any | null, error?: any | null, retries: number, attempts: number };
+export type JobInfoFragment = { __typename?: 'Job', id: string, createdAt: any, startedAt: any, settledAt: any, queueName: string, state: Types.JobState, isSettled: boolean, progress: number, duration: number, data: any, result: any, error: any, retries: number, attempts: number };
 
 export type GetJobInfoQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetJobInfoQuery = { job?: { __typename?: 'Job', id: string, createdAt: any, startedAt?: any | null, settledAt?: any | null, queueName: string, state: JobState, isSettled: boolean, progress: number, duration: number, data?: any | null, result?: any | null, error?: any | null, retries: number, attempts: number } | null };
+export type GetJobInfoQuery = { job: { __typename?: 'Job', id: string, createdAt: any, startedAt: any, settledAt: any, queueName: string, state: Types.JobState, isSettled: boolean, progress: number, duration: number, data: any, result: any, error: any, retries: number, attempts: number } | null };
 
 export type GetAllJobsQueryVariables = Exact<{
-  options?: InputMaybe<JobListOptions>;
+  options?: Types.JobListOptions | null | undefined;
 }>;
 
 
-export type GetAllJobsQuery = { jobs: { __typename?: 'JobList', totalItems: number, items: Array<{ __typename?: 'Job', id: string, createdAt: any, startedAt?: any | null, settledAt?: any | null, queueName: string, state: JobState, isSettled: boolean, progress: number, duration: number, data?: any | null, result?: any | null, error?: any | null, retries: number, attempts: number }> } };
+export type GetAllJobsQuery = { jobs: { __typename?: 'JobList', totalItems: number, items: Array<{ __typename?: 'Job', id: string, createdAt: any, startedAt: any, settledAt: any, queueName: string, state: Types.JobState, isSettled: boolean, progress: number, duration: number, data: any, result: any, error: any, retries: number, attempts: number }> } };
 
 export type GetJobsByIdQueryVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type GetJobsByIdQuery = { jobsById: Array<{ __typename?: 'Job', id: string, createdAt: any, startedAt?: any | null, settledAt?: any | null, queueName: string, state: JobState, isSettled: boolean, progress: number, duration: number, data?: any | null, result?: any | null, error?: any | null, retries: number, attempts: number }> };
+export type GetJobsByIdQuery = { jobsById: Array<{ __typename?: 'Job', id: string, createdAt: any, startedAt: any, settledAt: any, queueName: string, state: Types.JobState, isSettled: boolean, progress: number, duration: number, data: any, result: any, error: any, retries: number, attempts: number }> };
 
 export type GetJobQueueListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8336,16 +1791,16 @@ export type GetJobQueueListQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetJobQueueListQuery = { jobQueues: Array<{ __typename?: 'JobQueue', name: string, running: boolean }> };
 
 export type CancelJobMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type CancelJobMutation = { cancelJob: { __typename?: 'Job', id: string, createdAt: any, startedAt?: any | null, settledAt?: any | null, queueName: string, state: JobState, isSettled: boolean, progress: number, duration: number, data?: any | null, result?: any | null, error?: any | null, retries: number, attempts: number } };
+export type CancelJobMutation = { cancelJob: { __typename?: 'Job', id: string, createdAt: any, startedAt: any, settledAt: any, queueName: string, state: Types.JobState, isSettled: boolean, progress: number, duration: number, data: any, result: any, error: any, retries: number, attempts: number } };
 
 export type ReindexMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReindexMutation = { reindex: { __typename?: 'Job', id: string, createdAt: any, startedAt?: any | null, settledAt?: any | null, queueName: string, state: JobState, isSettled: boolean, progress: number, duration: number, data?: any | null, result?: any | null, error?: any | null, retries: number, attempts: number } };
+export type ReindexMutation = { reindex: { __typename?: 'Job', id: string, createdAt: any, startedAt: any, settledAt: any, queueName: string, state: Types.JobState, isSettled: boolean, progress: number, duration: number, data: any, result: any, error: any, retries: number, attempts: number } };
 
 export type GetPendingSearchIndexUpdatesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8359,368 +1814,420 @@ export type RunPendingSearchIndexUpdatesMutation = { runPendingSearchIndexUpdate
 
 export type ConfigurableOperationFragment = { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> };
 
-export type ConfigurableOperationDefFragment = { __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> };
+export type ConfigurableOperationDefFragment = { __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> };
 
-type ErrorResult_AlreadyRefundedError_Fragment = { __typename?: 'AlreadyRefundedError', errorCode: ErrorCode, message: string };
+type ErrorResult_AlreadyRefundedError_Fragment = { __typename?: 'AlreadyRefundedError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_CancelActiveOrderError_Fragment = { __typename?: 'CancelActiveOrderError', errorCode: ErrorCode, message: string };
+type ErrorResult_CancelActiveOrderError_Fragment = { __typename?: 'CancelActiveOrderError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_CancelPaymentError_Fragment = { __typename?: 'CancelPaymentError', errorCode: ErrorCode, message: string };
+type ErrorResult_CancelPaymentError_Fragment = { __typename?: 'CancelPaymentError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_ChannelDefaultLanguageError_Fragment = { __typename?: 'ChannelDefaultLanguageError', errorCode: ErrorCode, message: string };
+type ErrorResult_ChannelDefaultLanguageError_Fragment = { __typename?: 'ChannelDefaultLanguageError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_CouponCodeExpiredError_Fragment = { __typename?: 'CouponCodeExpiredError', errorCode: ErrorCode, message: string };
+type ErrorResult_CouponCodeExpiredError_Fragment = { __typename?: 'CouponCodeExpiredError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_CouponCodeInvalidError_Fragment = { __typename?: 'CouponCodeInvalidError', errorCode: ErrorCode, message: string };
+type ErrorResult_CouponCodeInvalidError_Fragment = { __typename?: 'CouponCodeInvalidError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_CouponCodeLimitError_Fragment = { __typename?: 'CouponCodeLimitError', errorCode: ErrorCode, message: string };
+type ErrorResult_CouponCodeLimitError_Fragment = { __typename?: 'CouponCodeLimitError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_CreateFulfillmentError_Fragment = { __typename?: 'CreateFulfillmentError', errorCode: ErrorCode, message: string };
+type ErrorResult_CreateFulfillmentError_Fragment = { __typename?: 'CreateFulfillmentError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_DuplicateEntityError_Fragment = { __typename?: 'DuplicateEntityError', errorCode: ErrorCode, message: string };
+type ErrorResult_DuplicateEntityError_Fragment = { __typename: 'DuplicateEntityError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_EmailAddressConflictError_Fragment = { __typename?: 'EmailAddressConflictError', errorCode: ErrorCode, message: string };
+type ErrorResult_EmailAddressConflictError_Fragment = { __typename?: 'EmailAddressConflictError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_EmptyOrderLineSelectionError_Fragment = { __typename?: 'EmptyOrderLineSelectionError', errorCode: ErrorCode, message: string };
+type ErrorResult_EmptyOrderLineSelectionError_Fragment = { __typename?: 'EmptyOrderLineSelectionError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_FacetInUseError_Fragment = { __typename?: 'FacetInUseError', errorCode: ErrorCode, message: string };
+type ErrorResult_FacetInUseError_Fragment = { __typename?: 'FacetInUseError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_FulfillmentStateTransitionError_Fragment = { __typename?: 'FulfillmentStateTransitionError', errorCode: ErrorCode, message: string };
+type ErrorResult_FulfillmentStateTransitionError_Fragment = { __typename?: 'FulfillmentStateTransitionError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_GuestCheckoutError_Fragment = { __typename?: 'GuestCheckoutError', errorCode: ErrorCode, message: string };
+type ErrorResult_GuestCheckoutError_Fragment = { __typename?: 'GuestCheckoutError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_IneligibleShippingMethodError_Fragment = { __typename?: 'IneligibleShippingMethodError', errorCode: ErrorCode, message: string };
+type ErrorResult_IneligibleShippingMethodError_Fragment = { __typename?: 'IneligibleShippingMethodError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_InsufficientStockError_Fragment = { __typename?: 'InsufficientStockError', errorCode: ErrorCode, message: string };
+type ErrorResult_InsufficientStockError_Fragment = { __typename?: 'InsufficientStockError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_InsufficientStockOnHandError_Fragment = { __typename?: 'InsufficientStockOnHandError', errorCode: ErrorCode, message: string };
+type ErrorResult_InsufficientStockOnHandError_Fragment = { __typename?: 'InsufficientStockOnHandError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_InvalidCredentialsError_Fragment = { __typename?: 'InvalidCredentialsError', errorCode: ErrorCode, message: string };
+type ErrorResult_InvalidCredentialsError_Fragment = { __typename: 'InvalidCredentialsError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_InvalidFulfillmentHandlerError_Fragment = { __typename?: 'InvalidFulfillmentHandlerError', errorCode: ErrorCode, message: string };
+type ErrorResult_InvalidFulfillmentHandlerError_Fragment = { __typename?: 'InvalidFulfillmentHandlerError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_ItemsAlreadyFulfilledError_Fragment = { __typename?: 'ItemsAlreadyFulfilledError', errorCode: ErrorCode, message: string };
+type ErrorResult_ItemsAlreadyFulfilledError_Fragment = { __typename?: 'ItemsAlreadyFulfilledError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_LanguageNotAvailableError_Fragment = { __typename?: 'LanguageNotAvailableError', errorCode: ErrorCode, message: string };
+type ErrorResult_LanguageNotAvailableError_Fragment = { __typename?: 'LanguageNotAvailableError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_ManualPaymentStateError_Fragment = { __typename?: 'ManualPaymentStateError', errorCode: ErrorCode, message: string };
+type ErrorResult_ManualPaymentStateError_Fragment = { __typename?: 'ManualPaymentStateError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_MimeTypeError_Fragment = { __typename?: 'MimeTypeError', errorCode: ErrorCode, message: string };
+type ErrorResult_MimeTypeError_Fragment = { __typename?: 'MimeTypeError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_MissingConditionsError_Fragment = { __typename?: 'MissingConditionsError', errorCode: ErrorCode, message: string };
+type ErrorResult_MissingConditionsError_Fragment = { __typename?: 'MissingConditionsError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_MultipleOrderError_Fragment = { __typename?: 'MultipleOrderError', errorCode: ErrorCode, message: string };
+type ErrorResult_MultipleOrderError_Fragment = { __typename?: 'MultipleOrderError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_NativeAuthStrategyError_Fragment = { __typename?: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string };
+type ErrorResult_NativeAuthStrategyError_Fragment = { __typename: 'NativeAuthStrategyError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_NegativeQuantityError_Fragment = { __typename?: 'NegativeQuantityError', errorCode: ErrorCode, message: string };
+type ErrorResult_NegativeQuantityError_Fragment = { __typename?: 'NegativeQuantityError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_NoActiveOrderError_Fragment = { __typename?: 'NoActiveOrderError', errorCode: ErrorCode, message: string };
+type ErrorResult_NoActiveOrderError_Fragment = { __typename?: 'NoActiveOrderError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_NoChangesSpecifiedError_Fragment = { __typename?: 'NoChangesSpecifiedError', errorCode: ErrorCode, message: string };
+type ErrorResult_NoChangesSpecifiedError_Fragment = { __typename?: 'NoChangesSpecifiedError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_NothingToRefundError_Fragment = { __typename?: 'NothingToRefundError', errorCode: ErrorCode, message: string };
+type ErrorResult_NothingToRefundError_Fragment = { __typename?: 'NothingToRefundError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_OrderLimitError_Fragment = { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string };
+type ErrorResult_OrderLimitError_Fragment = { __typename?: 'OrderLimitError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_OrderMiddlewareError_Fragment = { __typename?: 'OrderMiddlewareError', errorCode: ErrorCode, message: string };
+type ErrorResult_OrderMiddlewareError_Fragment = { __typename?: 'OrderMiddlewareError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_OrderModificationError_Fragment = { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string };
+type ErrorResult_OrderModificationError_Fragment = { __typename?: 'OrderModificationError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_OrderModificationStateError_Fragment = { __typename?: 'OrderModificationStateError', errorCode: ErrorCode, message: string };
+type ErrorResult_OrderModificationStateError_Fragment = { __typename?: 'OrderModificationStateError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_OrderStateTransitionError_Fragment = { __typename?: 'OrderStateTransitionError', errorCode: ErrorCode, message: string };
+type ErrorResult_OrderStateTransitionError_Fragment = { __typename?: 'OrderStateTransitionError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_PaymentMethodMissingError_Fragment = { __typename?: 'PaymentMethodMissingError', errorCode: ErrorCode, message: string };
+type ErrorResult_PaymentMethodMissingError_Fragment = { __typename?: 'PaymentMethodMissingError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_PaymentOrderMismatchError_Fragment = { __typename?: 'PaymentOrderMismatchError', errorCode: ErrorCode, message: string };
+type ErrorResult_PaymentOrderMismatchError_Fragment = { __typename?: 'PaymentOrderMismatchError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_PaymentStateTransitionError_Fragment = { __typename?: 'PaymentStateTransitionError', errorCode: ErrorCode, message: string };
+type ErrorResult_PaymentStateTransitionError_Fragment = { __typename?: 'PaymentStateTransitionError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_ProductOptionInUseError_Fragment = { __typename?: 'ProductOptionInUseError', errorCode: ErrorCode, message: string };
+type ErrorResult_ProductOptionInUseError_Fragment = { __typename?: 'ProductOptionInUseError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_QuantityTooGreatError_Fragment = { __typename?: 'QuantityTooGreatError', errorCode: ErrorCode, message: string };
+type ErrorResult_QuantityTooGreatError_Fragment = { __typename?: 'QuantityTooGreatError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_RefundAmountError_Fragment = { __typename?: 'RefundAmountError', errorCode: ErrorCode, message: string };
+type ErrorResult_RefundAmountError_Fragment = { __typename?: 'RefundAmountError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_RefundOrderStateError_Fragment = { __typename?: 'RefundOrderStateError', errorCode: ErrorCode, message: string };
+type ErrorResult_RefundOrderStateError_Fragment = { __typename?: 'RefundOrderStateError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_RefundPaymentIdMissingError_Fragment = { __typename?: 'RefundPaymentIdMissingError', errorCode: ErrorCode, message: string };
+type ErrorResult_RefundPaymentIdMissingError_Fragment = { __typename?: 'RefundPaymentIdMissingError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_RefundStateTransitionError_Fragment = { __typename?: 'RefundStateTransitionError', errorCode: ErrorCode, message: string };
+type ErrorResult_RefundStateTransitionError_Fragment = { __typename?: 'RefundStateTransitionError', errorCode: Types.ErrorCode, message: string };
 
-type ErrorResult_SettlePaymentError_Fragment = { __typename?: 'SettlePaymentError', errorCode: ErrorCode, message: string };
+type ErrorResult_SettlePaymentError_Fragment = { __typename?: 'SettlePaymentError', errorCode: Types.ErrorCode, message: string };
 
-export type ErrorResultFragment = ErrorResult_AlreadyRefundedError_Fragment | ErrorResult_CancelActiveOrderError_Fragment | ErrorResult_CancelPaymentError_Fragment | ErrorResult_ChannelDefaultLanguageError_Fragment | ErrorResult_CouponCodeExpiredError_Fragment | ErrorResult_CouponCodeInvalidError_Fragment | ErrorResult_CouponCodeLimitError_Fragment | ErrorResult_CreateFulfillmentError_Fragment | ErrorResult_DuplicateEntityError_Fragment | ErrorResult_EmailAddressConflictError_Fragment | ErrorResult_EmptyOrderLineSelectionError_Fragment | ErrorResult_FacetInUseError_Fragment | ErrorResult_FulfillmentStateTransitionError_Fragment | ErrorResult_GuestCheckoutError_Fragment | ErrorResult_IneligibleShippingMethodError_Fragment | ErrorResult_InsufficientStockError_Fragment | ErrorResult_InsufficientStockOnHandError_Fragment | ErrorResult_InvalidCredentialsError_Fragment | ErrorResult_InvalidFulfillmentHandlerError_Fragment | ErrorResult_ItemsAlreadyFulfilledError_Fragment | ErrorResult_LanguageNotAvailableError_Fragment | ErrorResult_ManualPaymentStateError_Fragment | ErrorResult_MimeTypeError_Fragment | ErrorResult_MissingConditionsError_Fragment | ErrorResult_MultipleOrderError_Fragment | ErrorResult_NativeAuthStrategyError_Fragment | ErrorResult_NegativeQuantityError_Fragment | ErrorResult_NoActiveOrderError_Fragment | ErrorResult_NoChangesSpecifiedError_Fragment | ErrorResult_NothingToRefundError_Fragment | ErrorResult_OrderLimitError_Fragment | ErrorResult_OrderMiddlewareError_Fragment | ErrorResult_OrderModificationError_Fragment | ErrorResult_OrderModificationStateError_Fragment | ErrorResult_OrderStateTransitionError_Fragment | ErrorResult_PaymentMethodMissingError_Fragment | ErrorResult_PaymentOrderMismatchError_Fragment | ErrorResult_PaymentStateTransitionError_Fragment | ErrorResult_ProductOptionInUseError_Fragment | ErrorResult_QuantityTooGreatError_Fragment | ErrorResult_RefundAmountError_Fragment | ErrorResult_RefundOrderStateError_Fragment | ErrorResult_RefundPaymentIdMissingError_Fragment | ErrorResult_RefundStateTransitionError_Fragment | ErrorResult_SettlePaymentError_Fragment;
+export type ErrorResultFragment =
+  | ErrorResult_AlreadyRefundedError_Fragment
+  | ErrorResult_CancelActiveOrderError_Fragment
+  | ErrorResult_CancelPaymentError_Fragment
+  | ErrorResult_ChannelDefaultLanguageError_Fragment
+  | ErrorResult_CouponCodeExpiredError_Fragment
+  | ErrorResult_CouponCodeInvalidError_Fragment
+  | ErrorResult_CouponCodeLimitError_Fragment
+  | ErrorResult_CreateFulfillmentError_Fragment
+  | ErrorResult_DuplicateEntityError_Fragment
+  | ErrorResult_EmailAddressConflictError_Fragment
+  | ErrorResult_EmptyOrderLineSelectionError_Fragment
+  | ErrorResult_FacetInUseError_Fragment
+  | ErrorResult_FulfillmentStateTransitionError_Fragment
+  | ErrorResult_GuestCheckoutError_Fragment
+  | ErrorResult_IneligibleShippingMethodError_Fragment
+  | ErrorResult_InsufficientStockError_Fragment
+  | ErrorResult_InsufficientStockOnHandError_Fragment
+  | ErrorResult_InvalidCredentialsError_Fragment
+  | ErrorResult_InvalidFulfillmentHandlerError_Fragment
+  | ErrorResult_ItemsAlreadyFulfilledError_Fragment
+  | ErrorResult_LanguageNotAvailableError_Fragment
+  | ErrorResult_ManualPaymentStateError_Fragment
+  | ErrorResult_MimeTypeError_Fragment
+  | ErrorResult_MissingConditionsError_Fragment
+  | ErrorResult_MultipleOrderError_Fragment
+  | ErrorResult_NativeAuthStrategyError_Fragment
+  | ErrorResult_NegativeQuantityError_Fragment
+  | ErrorResult_NoActiveOrderError_Fragment
+  | ErrorResult_NoChangesSpecifiedError_Fragment
+  | ErrorResult_NothingToRefundError_Fragment
+  | ErrorResult_OrderLimitError_Fragment
+  | ErrorResult_OrderMiddlewareError_Fragment
+  | ErrorResult_OrderModificationError_Fragment
+  | ErrorResult_OrderModificationStateError_Fragment
+  | ErrorResult_OrderStateTransitionError_Fragment
+  | ErrorResult_PaymentMethodMissingError_Fragment
+  | ErrorResult_PaymentOrderMismatchError_Fragment
+  | ErrorResult_PaymentStateTransitionError_Fragment
+  | ErrorResult_ProductOptionInUseError_Fragment
+  | ErrorResult_QuantityTooGreatError_Fragment
+  | ErrorResult_RefundAmountError_Fragment
+  | ErrorResult_RefundOrderStateError_Fragment
+  | ErrorResult_RefundPaymentIdMissingError_Fragment
+  | ErrorResult_RefundStateTransitionError_Fragment
+  | ErrorResult_SettlePaymentError_Fragment
+;
 
-export type ShippingMethodFragment = { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> };
+export type ShippingMethodFragment = { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> };
 
 export type GetShippingMethodOperationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetShippingMethodOperationsQuery = { shippingEligibilityCheckers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }>, shippingCalculators: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }>, fulfillmentHandlers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }> };
+export type GetShippingMethodOperationsQuery = { shippingEligibilityCheckers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }>, shippingCalculators: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }>, fulfillmentHandlers: Array<{ __typename?: 'ConfigurableOperationDefinition', code: string, description: string, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }> };
 
 export type CreateShippingMethodMutationVariables = Exact<{
-  input: CreateShippingMethodInput;
+  input: Types.CreateShippingMethodInput;
 }>;
 
 
-export type CreateShippingMethodMutation = { createShippingMethod: { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> } };
+export type CreateShippingMethodMutation = { createShippingMethod: { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> } };
 
 export type UpdateShippingMethodMutationVariables = Exact<{
-  input: UpdateShippingMethodInput;
+  input: Types.UpdateShippingMethodInput;
 }>;
 
 
-export type UpdateShippingMethodMutation = { updateShippingMethod: { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> } };
+export type UpdateShippingMethodMutation = { updateShippingMethod: { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> } };
 
 export type DeleteShippingMethodMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type DeleteShippingMethodMutation = { deleteShippingMethod: { __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null } };
+export type DeleteShippingMethodMutation = { deleteShippingMethod: { __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null } };
 
 export type DeleteShippingMethodsMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+  ids: Array<string | number> | string | number;
 }>;
 
 
-export type DeleteShippingMethodsMutation = { deleteShippingMethods: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteShippingMethodsMutation = { deleteShippingMethods: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type TestShippingMethodQueryVariables = Exact<{
-  input: TestShippingMethodInput;
+  input: Types.TestShippingMethodInput;
 }>;
 
 
-export type TestShippingMethodQuery = { testShippingMethod: { __typename?: 'TestShippingMethodResult', eligible: boolean, quote?: { __typename?: 'TestShippingMethodQuote', price: number, priceWithTax: number, metadata?: any | null } | null } };
+export type TestShippingMethodQuery = { testShippingMethod: { __typename?: 'TestShippingMethodResult', eligible: boolean, quote: { __typename?: 'TestShippingMethodQuote', price: number, priceWithTax: number, metadata: any } | null } };
 
 export type TestEligibleShippingMethodsQueryVariables = Exact<{
-  input: TestEligibleShippingMethodsInput;
+  input: Types.TestEligibleShippingMethodsInput;
 }>;
 
 
-export type TestEligibleShippingMethodsQuery = { testEligibleShippingMethods: Array<{ __typename?: 'ShippingMethodQuote', id: string, name: string, code: string, description: string, price: number, priceWithTax: number, metadata?: any | null }> };
+export type TestEligibleShippingMethodsQuery = { testEligibleShippingMethods: Array<{ __typename?: 'ShippingMethodQuote', id: string, name: string, code: string, description: string, price: number, priceWithTax: number, metadata: any }> };
 
 export type AssetPreviewQueryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type AssetPreviewQueryQuery = { asset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
+export type AssetPreviewQueryQuery = { asset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
 export type GetEntityDuplicatorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetEntityDuplicatorsQuery = { entityDuplicators: Array<{ __typename?: 'EntityDuplicatorDefinition', code: string, description: string, forEntities: Array<string>, requiresPermission: Array<Permission>, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue?: any | null, list: boolean, ui?: any | null, label?: string | null, description?: string | null }> }> };
+export type GetEntityDuplicatorsQuery = { entityDuplicators: Array<{ __typename?: 'EntityDuplicatorDefinition', code: string, description: string, forEntities: Array<string>, requiresPermission: Array<Types.Permission>, args: Array<{ __typename?: 'ConfigArgDefinition', name: string, type: string, required: boolean, defaultValue: any, list: boolean, ui: any, label: string | null, description: string | null }> }> };
 
 export type DuplicateEntityMutationVariables = Exact<{
-  input: DuplicateEntityInput;
+  input: Types.DuplicateEntityInput;
 }>;
 
 
-export type DuplicateEntityMutation = { duplicateEntity: { __typename?: 'DuplicateEntityError', errorCode: ErrorCode, message: string, duplicationError: string } | { __typename?: 'DuplicateEntitySuccess', newEntityId: string } };
+export type DuplicateEntityMutation = { duplicateEntity:
+    | { __typename: 'DuplicateEntityError', errorCode: Types.ErrorCode, message: string, duplicationError: string }
+    | { __typename: 'DuplicateEntitySuccess', newEntityId: string }
+   };
 
 export type GetProductVariantsForMultiSelectorQueryVariables = Exact<{
-  options: ProductVariantListOptions;
+  options: Types.ProductVariantListOptions;
 }>;
 
 
-export type GetProductVariantsForMultiSelectorQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, enabled: boolean, languageCode: LanguageCode, name: string, price: number, currencyCode: CurrencyCode, priceWithTax: number, trackInventory: GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } };
+export type GetProductVariantsForMultiSelectorQuery = { productVariants: { __typename?: 'ProductVariantList', totalItems: number, items: Array<{ __typename?: 'ProductVariant', id: string, createdAt: any, updatedAt: any, productId: string, enabled: boolean, languageCode: Types.LanguageCode, name: string, price: number, currencyCode: Types.CurrencyCode, priceWithTax: number, trackInventory: Types.GlobalFlag, outOfStockThreshold: number, useGlobalOutOfStockThreshold: boolean, sku: string, stockLevels: Array<{ __typename?: 'StockLevel', id: string, createdAt: any, updatedAt: any, stockLocationId: string, stockOnHand: number, stockAllocated: number, stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string } }>, featuredAsset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null }> } };
 
 export type GetZoneSelectorListQueryVariables = Exact<{
-  options?: InputMaybe<ZoneListOptions>;
+  options?: Types.ZoneListOptions | null | undefined;
 }>;
 
 
 export type GetZoneSelectorListQuery = { zones: { __typename?: 'ZoneList', totalItems: number, items: Array<{ __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string }> } };
 
 export type RelationAssetInputQueryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type RelationAssetInputQueryQuery = { asset?: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint?: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
+export type RelationAssetInputQueryQuery = { asset: { __typename?: 'Asset', id: string, createdAt: any, updatedAt: any, name: string, fileSize: number, mimeType: string, type: Types.AssetType, preview: string, source: string, width: number, height: number, tags: Array<{ __typename?: 'Tag', id: string, value: string }>, focalPoint: { __typename?: 'Coordinate', x: number, y: number } | null } | null };
 
 export type CustomerDetailQueryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  orderListOptions?: InputMaybe<OrderListOptions>;
+  id: string | number;
+  orderListOptions?: Types.OrderListOptions | null | undefined;
 }>;
 
 
-export type CustomerDetailQueryQuery = { customer?: { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, phoneNumber?: string | null, emailAddress: string, groups: Array<{ __typename?: 'CustomerGroup', id: string, name: string }>, orders: { __typename?: 'OrderList', totalItems: number, items: Array<{ __typename?: 'Order', id: string, code: string, type: OrderType, state: string, total: number, totalWithTax: number, currencyCode: CurrencyCode, createdAt: any, updatedAt: any, orderPlacedAt?: any | null }> }, user?: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin?: any | null } | null, addresses?: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null } | null };
+export type CustomerDetailQueryQuery = { customer: { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, phoneNumber: string | null, emailAddress: string, groups: Array<{ __typename?: 'CustomerGroup', id: string, name: string }>, orders: { __typename?: 'OrderList', totalItems: number, items: Array<{ __typename?: 'Order', id: string, code: string, type: Types.OrderType, state: string, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, createdAt: any, updatedAt: any, orderPlacedAt: any }> }, user: { __typename?: 'User', id: string, identifier: string, verified: boolean, lastLogin: any } | null, addresses: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null } | null };
 
 export type GetCustomerGroupDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetCustomerGroupDetailQuery = { customerGroup?: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string } | null };
+export type GetCustomerGroupDetailQuery = { customerGroup: { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string } | null };
 
 export type CustomerGroupDetailFragment = { __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type GetCustomerGroupListQueryVariables = Exact<{
-  options?: InputMaybe<CustomerGroupListOptions>;
+  options?: Types.CustomerGroupListOptions | null | undefined;
 }>;
 
 
 export type GetCustomerGroupListQuery = { customerGroups: { __typename?: 'CustomerGroupList', totalItems: number, items: Array<{ __typename?: 'CustomerGroup', id: string, createdAt: any, updatedAt: any, name: string }> } };
 
 export type CustomerListQueryQueryVariables = Exact<{
-  options?: InputMaybe<CustomerListOptions>;
+  options?: Types.CustomerListOptions | null | undefined;
 }>;
 
 
-export type CustomerListQueryQuery = { customers: { __typename?: 'CustomerList', totalItems: number, items: Array<{ __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, emailAddress: string, user?: { __typename?: 'User', id: string, verified: boolean } | null }> } };
+export type CustomerListQueryQuery = { customers: { __typename?: 'CustomerList', totalItems: number, items: Array<{ __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, verified: boolean } | null }> } };
 
-export type CustomerListItemFragment = { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title?: string | null, firstName: string, lastName: string, emailAddress: string, user?: { __typename?: 'User', id: string, verified: boolean } | null };
+export type CustomerListItemFragment = { __typename?: 'Customer', id: string, createdAt: any, updatedAt: any, title: string | null, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, verified: boolean } | null };
 
 export type GetLatestOrdersQueryVariables = Exact<{
-  options?: InputMaybe<OrderListOptions>;
+  options?: Types.OrderListOptions | null | undefined;
 }>;
 
 
-export type GetLatestOrdersQuery = { orders: { __typename?: 'OrderList', items: Array<{ __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, orderPlacedAt?: any | null, code: string, state: string, total: number, totalWithTax: number, currencyCode: CurrencyCode, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null }> } };
+export type GetLatestOrdersQuery = { orders: { __typename?: 'OrderList', items: Array<{ __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, orderPlacedAt: any, code: string, state: string, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null }> } };
 
 export type GetOrderChartDataQueryVariables = Exact<{
-  refresh?: InputMaybe<Scalars['Boolean']['input']>;
-  types: Array<MetricType> | MetricType;
+  refresh?: boolean | null | undefined;
+  types: Array<Types.MetricType> | Types.MetricType;
 }>;
 
 
-export type GetOrderChartDataQuery = { metricSummary: Array<{ __typename?: 'MetricSummary', interval: MetricInterval, type: MetricType, entries: Array<{ __typename?: 'MetricSummaryEntry', label: string, value: number }> }> };
+export type GetOrderChartDataQuery = { metricSummary: Array<{ __typename?: 'MetricSummary', interval: Types.MetricInterval, type: Types.MetricType, entries: Array<{ __typename?: 'MetricSummaryEntry', label: string, value: number }> }> };
 
 export type GetOrderSummaryQueryVariables = Exact<{
-  start: Scalars['DateTime']['input'];
-  end: Scalars['DateTime']['input'];
+  start: any;
+  end: any;
 }>;
 
 
-export type GetOrderSummaryQuery = { orders: { __typename?: 'OrderList', totalItems: number, items: Array<{ __typename?: 'Order', id: string, totalWithTax: number, currencyCode: CurrencyCode }> } };
+export type GetOrderSummaryQuery = { orders: { __typename?: 'OrderList', totalItems: number, items: Array<{ __typename?: 'Order', id: string, totalWithTax: number, currencyCode: Types.CurrencyCode }> } };
 
 export type GetPromotionDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetPromotionDetailQuery = { promotion?: { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode?: string | null, perCustomerUsageLimit?: number | null, usageLimit?: number | null, startsAt?: any | null, endsAt?: any | null, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> } | null };
+export type GetPromotionDetailQuery = { promotion: { __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode: string | null, perCustomerUsageLimit: number | null, usageLimit: number | null, startsAt: any, endsAt: any, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> } | null };
 
 export type AssignPromotionsToChannelMutationVariables = Exact<{
-  input: AssignPromotionsToChannelInput;
+  input: Types.AssignPromotionsToChannelInput;
 }>;
 
 
 export type AssignPromotionsToChannelMutation = { assignPromotionsToChannel: Array<{ __typename?: 'Promotion', id: string, name: string }> };
 
 export type RemovePromotionsFromChannelMutationVariables = Exact<{
-  input: RemovePromotionsFromChannelInput;
+  input: Types.RemovePromotionsFromChannelInput;
 }>;
 
 
 export type RemovePromotionsFromChannelMutation = { removePromotionsFromChannel: Array<{ __typename?: 'Promotion', id: string, name: string }> };
 
 export type GetPromotionListQueryVariables = Exact<{
-  options?: InputMaybe<PromotionListOptions>;
+  options?: Types.PromotionListOptions | null | undefined;
 }>;
 
 
-export type GetPromotionListQuery = { promotions: { __typename?: 'PromotionList', totalItems: number, items: Array<{ __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode?: string | null, perCustomerUsageLimit?: number | null, usageLimit?: number | null, startsAt?: any | null, endsAt?: any | null, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> }> } };
+export type GetPromotionListQuery = { promotions: { __typename?: 'PromotionList', totalItems: number, items: Array<{ __typename?: 'Promotion', id: string, createdAt: any, updatedAt: any, name: string, description: string, enabled: boolean, couponCode: string | null, perCustomerUsageLimit: number | null, usageLimit: number | null, startsAt: any, endsAt: any, conditions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, actions: Array<{ __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }>, translations: Array<{ __typename?: 'PromotionTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> }> } };
 
 export type GetAddManualPaymentMethodListQueryVariables = Exact<{
-  options: PaymentMethodListOptions;
+  options: Types.PaymentMethodListOptions;
 }>;
 
 
 export type GetAddManualPaymentMethodListQuery = { paymentMethods: { __typename?: 'PaymentMethodList', totalItems: number, items: Array<{ __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean }> } };
 
 export type GetCouponCodeSelectorPromotionListQueryVariables = Exact<{
-  options?: InputMaybe<PromotionListOptions>;
+  options?: Types.PromotionListOptions | null | undefined;
 }>;
 
 
-export type GetCouponCodeSelectorPromotionListQuery = { promotions: { __typename?: 'PromotionList', totalItems: number, items: Array<{ __typename?: 'Promotion', id: string, name: string, couponCode?: string | null }> } };
+export type GetCouponCodeSelectorPromotionListQuery = { promotions: { __typename?: 'PromotionList', totalItems: number, items: Array<{ __typename?: 'Promotion', id: string, name: string, couponCode: string | null }> } };
 
 export type OrderDetailQueryQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type OrderDetailQueryQuery = { order?: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder?: { __typename?: 'Order', id: string, code: string } | null, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset?: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, fulfillmentLines?: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku?: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode?: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, billingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, company?: string | null, streetLine1?: string | null, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, country?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, payments?: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId?: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage?: string | null, metadata?: any | null, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason?: string | null, transactionId?: string | null, method?: string | null, metadata?: any | null, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments?: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode?: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment?: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund?: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges?: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | null };
+export type OrderDetailQueryQuery = { order: { __typename?: 'Order', id: string, createdAt: any, updatedAt: any, type: Types.OrderType, code: string, state: string, nextStates: Array<string>, active: boolean, couponCodes: Array<string>, subTotal: number, subTotalWithTax: number, total: number, totalWithTax: number, currencyCode: Types.CurrencyCode, shipping: number, shippingWithTax: number, aggregateOrder: { __typename?: 'Order', id: string, code: string } | null, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, channels: Array<{ __typename?: 'Channel', id: string, code: string }> }> | null, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string } | null, lines: Array<{ __typename?: 'OrderLine', id: string, createdAt: any, updatedAt: any, unitPrice: number, unitPriceWithTax: number, proratedUnitPrice: number, proratedUnitPriceWithTax: number, quantity: number, orderPlacedQuantity: number, linePrice: number, lineTax: number, linePriceWithTax: number, discountedLinePrice: number, discountedLinePriceWithTax: number, featuredAsset: { __typename?: 'Asset', preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, sku: string, trackInventory: Types.GlobalFlag, stockOnHand: number }, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, fulfillmentLines: Array<{ __typename?: 'FulfillmentLine', fulfillmentId: string, quantity: number }> | null }>, surcharges: Array<{ __typename?: 'Surcharge', id: string, sku: string | null, description: string, price: number, priceWithTax: number, taxRate: number }>, discounts: Array<{ __typename?: 'Discount', adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: Types.AdjustmentType }>, promotions: Array<{ __typename?: 'Promotion', id: string, couponCode: string | null }>, shippingLines: Array<{ __typename?: 'ShippingLine', id: string, discountedPriceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, code: string, name: string, fulfillmentHandlerCode: string, description: string } }>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxBase: number, taxRate: number, taxTotal: number }>, shippingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, billingAddress: { __typename?: 'OrderAddress', fullName: string | null, company: string | null, streetLine1: string | null, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, country: string | null, countryCode: string | null, phoneNumber: string | null } | null, payments: Array<{ __typename?: 'Payment', id: string, createdAt: any, transactionId: string | null, amount: number, method: string, state: string, nextStates: Array<string>, errorMessage: string | null, metadata: any, refunds: Array<{ __typename?: 'Refund', id: string, createdAt: any, state: string, items: number, adjustment: number, total: number, paymentId: string, reason: string | null, transactionId: string | null, method: string | null, metadata: any, lines: Array<{ __typename?: 'RefundLine', orderLineId: string, quantity: number }> }> }> | null, fulfillments: Array<{ __typename?: 'Fulfillment', id: string, state: string, nextStates: Array<string>, createdAt: any, updatedAt: any, method: string, trackingCode: string | null, lines: Array<{ __typename?: 'FulfillmentLine', orderLineId: string, quantity: number }> }> | null, modifications: Array<{ __typename?: 'OrderModification', id: string, createdAt: any, isSettled: boolean, priceChange: number, note: string, payment: { __typename?: 'Payment', id: string, amount: number } | null, lines: Array<{ __typename?: 'OrderModificationLine', orderLineId: string, quantity: number }>, refund: { __typename?: 'Refund', id: string, paymentId: string, total: number } | null, surcharges: Array<{ __typename?: 'Surcharge', id: string }> | null }> } | null };
 
 export type SetOrderCustomerMutationVariables = Exact<{
-  input: SetOrderCustomerInput;
+  input: Types.SetOrderCustomerInput;
 }>;
 
 
-export type SetOrderCustomerMutation = { setOrderCustomer?: { __typename?: 'Order', id: string, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null } | null };
+export type SetOrderCustomerMutation = { setOrderCustomer: { __typename?: 'Order', id: string, customer: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null } | null };
 
 export type GetCustomerAddressesQueryVariables = Exact<{
-  customerId: Scalars['ID']['input'];
+  customerId: string | number;
 }>;
 
 
-export type GetCustomerAddressesQuery = { customer?: { __typename?: 'Customer', id: string, addresses?: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName?: string | null, company?: string | null, streetLine1: string, streetLine2?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, phoneNumber?: string | null, defaultShippingAddress?: boolean | null, defaultBillingAddress?: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null } | null };
+export type GetCustomerAddressesQuery = { customer: { __typename?: 'Customer', id: string, addresses: Array<{ __typename?: 'Address', id: string, createdAt: any, updatedAt: any, fullName: string | null, company: string | null, streetLine1: string, streetLine2: string | null, city: string | null, province: string | null, postalCode: string | null, phoneNumber: string | null, defaultShippingAddress: boolean | null, defaultBillingAddress: boolean | null, country: { __typename?: 'Country', id: string, code: string, name: string } }> | null } | null };
 
 export type GetSellerOrdersQueryVariables = Exact<{
-  orderId: Scalars['ID']['input'];
+  orderId: string | number;
 }>;
 
 
-export type GetSellerOrdersQuery = { order?: { __typename?: 'Order', id: string, sellerOrders?: Array<{ __typename?: 'Order', id: string, code: string, state: string, orderPlacedAt?: any | null, currencyCode: CurrencyCode, totalWithTax: number, channels: Array<{ __typename?: 'Channel', id: string, code: string, seller?: { __typename?: 'Seller', id: string, name: string } | null }> }> | null } | null };
+export type GetSellerOrdersQuery = { order: { __typename?: 'Order', id: string, sellerOrders: Array<{ __typename?: 'Order', id: string, code: string, state: string, orderPlacedAt: any, currencyCode: Types.CurrencyCode, totalWithTax: number, channels: Array<{ __typename?: 'Channel', id: string, code: string, seller: { __typename?: 'Seller', id: string, name: string } | null }> }> | null } | null };
 
 export type GetOrderStateQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetOrderStateQuery = { order?: { __typename?: 'Order', id: string, state: string } | null };
+export type GetOrderStateQuery = { order: { __typename?: 'Order', id: string, state: string } | null };
 
 export type GetZoneMembersQueryVariables = Exact<{
-  zoneId: Scalars['ID']['input'];
+  zoneId: string | number;
 }>;
 
 
-export type GetZoneMembersQuery = { zone?: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<{ __typename?: 'Country', createdAt: any, updatedAt: any, id: string, name: string, code: string, enabled: boolean } | { __typename?: 'Province', createdAt: any, updatedAt: any, id: string, name: string, code: string, enabled: boolean }> } | null };
+export type GetZoneMembersQuery = { zone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string, members: Array<
+      | { __typename?: 'Country', createdAt: any, updatedAt: any, id: string, name: string, code: string, enabled: boolean }
+      | { __typename?: 'Province', createdAt: any, updatedAt: any, id: string, name: string, code: string, enabled: boolean }
+    > } | null };
 
 export type GetAdministratorDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetAdministratorDetailQuery = { administrator?: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } | null };
+export type GetAdministratorDetailQuery = { administrator: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } } | null };
 
 export type GetAdministratorListQueryVariables = Exact<{
-  options?: InputMaybe<AdministratorListOptions>;
+  options?: Types.AdministratorListOptions | null | undefined;
 }>;
 
 
-export type GetAdministratorListQuery = { administrators: { __typename?: 'AdministratorList', totalItems: number, items: Array<{ __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string }> } }> } };
+export type GetAdministratorListQuery = { administrators: { __typename?: 'AdministratorList', totalItems: number, items: Array<{ __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string }> } }> } };
 
-export type AdministratorListItemFragment = { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin?: any | null, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string }> } };
+export type AdministratorListItemFragment = { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, identifier: string, lastLogin: any, roles: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string }> } };
 
 export type GetChannelDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetChannelDetailQuery = { channel?: { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null } | null };
+export type GetChannelDetailQuery = { channel: { __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null } | null };
 
 export type GetChannelListQueryVariables = Exact<{
-  options?: InputMaybe<ChannelListOptions>;
+  options?: Types.ChannelListOptions | null | undefined;
 }>;
 
 
-export type GetChannelListQuery = { channels: { __typename?: 'ChannelList', totalItems: number, items: Array<{ __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<CurrencyCode>, availableLanguageCodes?: Array<LanguageCode> | null, defaultCurrencyCode: CurrencyCode, defaultLanguageCode: LanguageCode, defaultShippingZone?: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone?: { __typename?: 'Zone', id: string, name: string } | null, seller?: { __typename?: 'Seller', id: string, name: string } | null }> } };
+export type GetChannelListQuery = { channels: { __typename?: 'ChannelList', totalItems: number, items: Array<{ __typename?: 'Channel', id: string, createdAt: any, updatedAt: any, code: string, token: string, pricesIncludeTax: boolean, availableCurrencyCodes: Array<Types.CurrencyCode>, availableLanguageCodes: Array<Types.LanguageCode> | null, defaultCurrencyCode: Types.CurrencyCode, defaultLanguageCode: Types.LanguageCode, defaultShippingZone: { __typename?: 'Zone', id: string, name: string } | null, defaultTaxZone: { __typename?: 'Zone', id: string, name: string } | null, seller: { __typename?: 'Seller', id: string, name: string } | null }> } };
 
 export type GetCountryDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetCountryDetailQuery = { country?: { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: LanguageCode, name: string }> } | null };
+export type GetCountryDetailQuery = { country: { __typename?: 'Country', id: string, createdAt: any, updatedAt: any, code: string, name: string, enabled: boolean, translations: Array<{ __typename?: 'RegionTranslation', id: string, languageCode: Types.LanguageCode, name: string }> } | null };
 
 export type GetCountryListQueryVariables = Exact<{
-  options?: InputMaybe<CountryListOptions>;
+  options?: Types.CountryListOptions | null | undefined;
 }>;
 
 
@@ -8731,33 +2238,33 @@ export type CountryListItemFragment = { __typename?: 'Country', id: string, crea
 export type GetGlobalSettingsDetailQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetGlobalSettingsDetailQuery = { globalSettings: { __typename?: 'GlobalSettings', id: string, createdAt: any, updatedAt: any, availableLanguages: Array<LanguageCode>, trackInventory: boolean, outOfStockThreshold: number } };
+export type GetGlobalSettingsDetailQuery = { globalSettings: { __typename?: 'GlobalSettings', id: string, createdAt: any, updatedAt: any, availableLanguages: Array<Types.LanguageCode>, trackInventory: boolean, outOfStockThreshold: number } };
 
-export type GlobalSettingsDetailFragment = { __typename?: 'GlobalSettings', id: string, createdAt: any, updatedAt: any, availableLanguages: Array<LanguageCode>, trackInventory: boolean, outOfStockThreshold: number };
+export type GlobalSettingsDetailFragment = { __typename?: 'GlobalSettings', id: string, createdAt: any, updatedAt: any, availableLanguages: Array<Types.LanguageCode>, trackInventory: boolean, outOfStockThreshold: number };
 
 export type GetPaymentMethodDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetPaymentMethodDetailQuery = { paymentMethod?: { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }>, checker?: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } } | null };
+export type GetPaymentMethodDetailQuery = { paymentMethod: { __typename?: 'PaymentMethod', id: string, createdAt: any, updatedAt: any, name: string, code: string, description: string, enabled: boolean, translations: Array<{ __typename?: 'PaymentMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }>, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } | null, handler: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> } } | null };
 
 export type AssignPaymentMethodsToChannelMutationVariables = Exact<{
-  input: AssignPaymentMethodsToChannelInput;
+  input: Types.AssignPaymentMethodsToChannelInput;
 }>;
 
 
 export type AssignPaymentMethodsToChannelMutation = { assignPaymentMethodsToChannel: Array<{ __typename?: 'PaymentMethod', id: string, name: string }> };
 
 export type RemovePaymentMethodsFromChannelMutationVariables = Exact<{
-  input: RemovePaymentMethodsFromChannelInput;
+  input: Types.RemovePaymentMethodsFromChannelInput;
 }>;
 
 
 export type RemovePaymentMethodsFromChannelMutation = { removePaymentMethodsFromChannel: Array<{ __typename?: 'PaymentMethod', id: string, name: string }> };
 
 export type GetPaymentMethodListQueryVariables = Exact<{
-  options: PaymentMethodListOptions;
+  options: Types.PaymentMethodListOptions;
 }>;
 
 
@@ -8768,35 +2275,35 @@ export type PaymentMethodListItemFragment = { __typename?: 'PaymentMethod', id: 
 export type GetProfileDetailQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProfileDetailQuery = { activeAdministrator?: { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, lastLogin?: any | null, verified: boolean } } | null };
+export type GetProfileDetailQuery = { activeAdministrator: Types.Administrator & { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, lastLogin: any, verified: boolean } } | null };
 
-export type ProfileDetailFragment = { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, lastLogin?: any | null, verified: boolean } };
+export type ProfileDetailFragment = { __typename?: 'Administrator', id: string, createdAt: any, updatedAt: any, firstName: string, lastName: string, emailAddress: string, user: { __typename?: 'User', id: string, lastLogin: any, verified: boolean } };
 
 export type GetRoleDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetRoleDetailQuery = { role?: { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> } | null };
+export type GetRoleDetailQuery = { role: { __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> } | null };
 
 export type GetRoleListQueryVariables = Exact<{
-  options?: InputMaybe<RoleListOptions>;
+  options?: Types.RoleListOptions | null | undefined;
 }>;
 
 
-export type GetRoleListQuery = { roles: { __typename?: 'RoleList', totalItems: number, items: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } };
+export type GetRoleListQuery = { roles: { __typename?: 'RoleList', totalItems: number, items: Array<{ __typename?: 'Role', id: string, createdAt: any, updatedAt: any, code: string, description: string, permissions: Array<Types.Permission>, channels: Array<{ __typename?: 'Channel', id: string, code: string, token: string }> }> } };
 
 export type GetSellerDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetSellerDetailQuery = { seller?: { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string } | null };
+export type GetSellerDetailQuery = { seller: { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string } | null };
 
 export type SellerDetailFragment = { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type GetSellerListQueryVariables = Exact<{
-  options?: InputMaybe<SellerListOptions>;
+  options?: Types.SellerListOptions | null | undefined;
 }>;
 
 
@@ -8805,28 +2312,28 @@ export type GetSellerListQuery = { sellers: { __typename?: 'SellerList', totalIt
 export type SellerListItemFragment = { __typename?: 'Seller', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type GetShippingMethodDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetShippingMethodDetailQuery = { shippingMethod?: { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: LanguageCode, name: string, description: string }> } | null };
+export type GetShippingMethodDetailQuery = { shippingMethod: { __typename?: 'ShippingMethod', id: string, createdAt: any, updatedAt: any, code: string, name: string, description: string, fulfillmentHandlerCode: string, checker: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, calculator: { __typename?: 'ConfigurableOperation', code: string, args: Array<{ __typename?: 'ConfigArg', name: string, value: string }> }, translations: Array<{ __typename?: 'ShippingMethodTranslation', id: string, languageCode: Types.LanguageCode, name: string, description: string }> } | null };
 
 export type AssignShippingMethodsToChannelMutationVariables = Exact<{
-  input: AssignShippingMethodsToChannelInput;
+  input: Types.AssignShippingMethodsToChannelInput;
 }>;
 
 
 export type AssignShippingMethodsToChannelMutation = { assignShippingMethodsToChannel: Array<{ __typename?: 'ShippingMethod', id: string, name: string }> };
 
 export type RemoveShippingMethodsFromChannelMutationVariables = Exact<{
-  input: RemoveShippingMethodsFromChannelInput;
+  input: Types.RemoveShippingMethodsFromChannelInput;
 }>;
 
 
 export type RemoveShippingMethodsFromChannelMutation = { removeShippingMethodsFromChannel: Array<{ __typename?: 'ShippingMethod', id: string, name: string }> };
 
 export type GetShippingMethodListQueryVariables = Exact<{
-  options?: InputMaybe<ShippingMethodListOptions>;
+  options?: Types.ShippingMethodListOptions | null | undefined;
 }>;
 
 
@@ -8837,49 +2344,49 @@ export type ShippingMethodListItemFragment = { __typename?: 'ShippingMethod', id
 export type StockLocationDetailFragment = { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string };
 
 export type GetStockLocationDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetStockLocationDetailQuery = { stockLocation?: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string } | null };
+export type GetStockLocationDetailQuery = { stockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string } | null };
 
 export type CreateStockLocationMutationVariables = Exact<{
-  input: CreateStockLocationInput;
+  input: Types.CreateStockLocationInput;
 }>;
 
 
 export type CreateStockLocationMutation = { createStockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string } };
 
 export type UpdateStockLocationMutationVariables = Exact<{
-  input: UpdateStockLocationInput;
+  input: Types.UpdateStockLocationInput;
 }>;
 
 
 export type UpdateStockLocationMutation = { updateStockLocation: { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string } };
 
 export type DeleteStockLocationsMutationVariables = Exact<{
-  input: Array<DeleteStockLocationInput> | DeleteStockLocationInput;
+  input: Array<Types.DeleteStockLocationInput> | Types.DeleteStockLocationInput;
 }>;
 
 
-export type DeleteStockLocationsMutation = { deleteStockLocations: Array<{ __typename?: 'DeletionResponse', result: DeletionResult, message?: string | null }> };
+export type DeleteStockLocationsMutation = { deleteStockLocations: Array<{ __typename?: 'DeletionResponse', result: Types.DeletionResult, message: string | null }> };
 
 export type AssignStockLocationsToChannelMutationVariables = Exact<{
-  input: AssignStockLocationsToChannelInput;
+  input: Types.AssignStockLocationsToChannelInput;
 }>;
 
 
 export type AssignStockLocationsToChannelMutation = { assignStockLocationsToChannel: Array<{ __typename?: 'StockLocation', id: string, name: string }> };
 
 export type RemoveStockLocationsFromChannelMutationVariables = Exact<{
-  input: RemoveStockLocationsFromChannelInput;
+  input: Types.RemoveStockLocationsFromChannelInput;
 }>;
 
 
 export type RemoveStockLocationsFromChannelMutation = { removeStockLocationsFromChannel: Array<{ __typename?: 'StockLocation', id: string, name: string }> };
 
 export type GetStockLocationListQueryVariables = Exact<{
-  options?: InputMaybe<StockLocationListOptions>;
+  options?: Types.StockLocationListOptions | null | undefined;
 }>;
 
 
@@ -8888,44 +2395,44 @@ export type GetStockLocationListQuery = { stockLocations: { __typename?: 'StockL
 export type StockLocationListItemFragment = { __typename?: 'StockLocation', id: string, createdAt: any, updatedAt: any, name: string, description: string };
 
 export type GetTaxCategoryDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetTaxCategoryDetailQuery = { taxCategory?: { __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean } | null };
+export type GetTaxCategoryDetailQuery = { taxCategory: { __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean } | null };
 
 export type GetTaxCategoryListQueryVariables = Exact<{
-  options?: InputMaybe<TaxCategoryListOptions>;
+  options?: Types.TaxCategoryListOptions | null | undefined;
 }>;
 
 
 export type GetTaxCategoryListQuery = { taxCategories: { __typename?: 'TaxCategoryList', totalItems: number, items: Array<{ __typename?: 'TaxCategory', id: string, createdAt: any, updatedAt: any, name: string, isDefault: boolean }> } };
 
 export type GetTaxRateDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetTaxRateDetailQuery = { taxRate?: { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup?: { __typename?: 'CustomerGroup', id: string, name: string } | null } | null };
+export type GetTaxRateDetailQuery = { taxRate: { __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup: { __typename?: 'CustomerGroup', id: string, name: string } | null } | null };
 
 export type GetTaxRateListQueryVariables = Exact<{
-  options?: InputMaybe<TaxRateListOptions>;
+  options?: Types.TaxRateListOptions | null | undefined;
 }>;
 
 
-export type GetTaxRateListQuery = { taxRates: { __typename?: 'TaxRateList', totalItems: number, items: Array<{ __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup?: { __typename?: 'CustomerGroup', id: string, name: string } | null }> } };
+export type GetTaxRateListQuery = { taxRates: { __typename?: 'TaxRateList', totalItems: number, items: Array<{ __typename?: 'TaxRate', id: string, createdAt: any, updatedAt: any, name: string, enabled: boolean, value: number, category: { __typename?: 'TaxCategory', id: string, name: string }, zone: { __typename?: 'Zone', id: string, name: string }, customerGroup: { __typename?: 'CustomerGroup', id: string, name: string } | null }> } };
 
 export type GetZoneDetailQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
-export type GetZoneDetailQuery = { zone?: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string } | null };
+export type GetZoneDetailQuery = { zone: { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string } | null };
 
 export type ZoneDetailFragment = { __typename?: 'Zone', id: string, createdAt: any, updatedAt: any, name: string };
 
 export type GetZoneListQueryVariables = Exact<{
-  options?: InputMaybe<ZoneListOptions>;
+  options?: Types.ZoneListOptions | null | undefined;
 }>;
 
 

@@ -8,6 +8,9 @@ import {
   API_PORT,
   SHOP_API_PATH,
 } from "@deenruv/common/lib/shared-constants";
+import { CopyOrderPlugin } from "@deenruv/copy-order-plugin";
+import { CronJobsPlugin } from "@deenruv/cronjobs-plugin";
+import { FacetHarmonicaServerPlugin } from "@deenruv/facet-harmonica-plugin";
 import {
   DeenruvConfig,
   DefaultAssetNamingStrategy,
@@ -18,6 +21,7 @@ import {
   TypeORMHealthCheckStrategy,
 } from "@deenruv/core";
 import { DashboardWidgetsPlugin } from "@deenruv/dashboard-widgets-plugin";
+import { InRealizationPlugin } from "@deenruv/in-realization-plugin";
 import { InpostPlugin } from "@deenruv/inpost-plugin";
 import { BullMQJobQueuePlugin } from "@deenruv/job-queue-plugin/package/bullmq";
 import {
@@ -37,6 +41,7 @@ import {
   TranslatorService,
 } from "@deenruv/core";
 import { customAdminUi } from "compile-admin-ui.js";
+import { s3Client } from "./client-s3.js";
 
 interface ProductData extends ProductVariant {
   communicateID: string;
@@ -297,12 +302,22 @@ export const devConfig: DeenruvConfig = {
   shippingOptions: {},
   customFields: {},
   plugins: [
+    CopyOrderPlugin.init({}),
+    CronJobsPlugin.init({ controllerAuthToken: "dev-cronjobs-token" }),
+    FacetHarmonicaServerPlugin.init({}),
     MerchantPlugin.init({
       strategy: new MerchantExportStrategy({
         host_url: HOST,
       }),
     }),
     DashboardWidgetsPlugin.init({}),
+    InRealizationPlugin.init({
+      s3: {
+        client: s3Client,
+        bucket: "deenruv-asset-bucket",
+        expiresIn: 3600,
+      },
+    }),
     InpostPlugin.init({}),
     // Przelewy24Plugin.init({}),
     AdminUiPlugin.init({

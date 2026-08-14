@@ -11,6 +11,7 @@ import {
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ZoneDetailView } from '@/pages/zones/_components/ZoneDetailView.js';
+import { Permission } from '@deenruv/admin-types';
 
 const CreateZoneMutation = getMutation('createZone');
 const EditZoneMutation = getMutation('updateZone');
@@ -114,6 +115,11 @@ export const ZonesDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: [Permission.CreateZone, Permission.CreateSettings],
+          edit: [Permission.UpdateZone, Permission.UpdateSettings],
+          delete: [Permission.DeleteZone, Permission.DeleteSettings],
         }}
       />
     </div>

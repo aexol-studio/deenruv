@@ -169,6 +169,7 @@
       "Fulfillment",
       "HistoryEntry",
       "Job",
+      "MerchantPlatformSettingsEntity",
       "Order",
       "OrderLine",
       "OrderModification",

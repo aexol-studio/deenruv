@@ -78,23 +78,11 @@ export class ProductVariantListComponent
             document: ProductVariantListQueryDocument,
             getItems: data => data.productVariants,
             setVariables: (skip, take) => {
-                const searchTerm = this.searchTermControl.value;
+                const searchTerm = this.searchTermControl.value?.trim().replace(/\s+/g, ' ') || undefined;
                 const filterParam: ProductVariantFilterParameter = { _and: [] };
                 const filterInput = this.filters.createFilterInput();
                 if (Object.keys(filterInput).length) {
                     filterParam._and?.push(filterInput);
-                }
-                if (searchTerm) {
-                    filterParam._and?.push({
-                        _or: [
-                            {
-                                name: { contains: searchTerm },
-                            },
-                            {
-                                sku: { contains: searchTerm },
-                            },
-                        ],
-                    });
                 }
                 if (this.productId) {
                     filterParam._and?.push({
@@ -108,6 +96,8 @@ export class ProductVariantListComponent
                         skip,
                         take,
                         filter: filterParam,
+                        filterOperator: LogicalOperator.AND,
+                        searchTerm,
                         sort: this.sorts.createSortInput(),
                     },
                 };

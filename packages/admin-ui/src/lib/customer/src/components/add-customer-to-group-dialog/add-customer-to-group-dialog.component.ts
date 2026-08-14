@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import {
     DataService,
     Dialog,
+    buildTokenizedSearchFilter,
     GetCustomerGroupsQuery,
+    GetCustomerListDocument,
     GetCustomerListQuery,
     ItemOf,
 } from '@deenruv/admin-ui/core';
@@ -36,8 +38,14 @@ export class AddCustomerToGroupDialogComponent implements Dialog<string[]>, OnIn
     ngOnInit() {
         const customerResult$ = this.fetchGroupMembers$.pipe(
             switchMap(({ skip, take, filterTerm }) =>
-                this.dataService.customer
-                    .getCustomerList(take, skip, filterTerm)
+                this.dataService
+                    .query(GetCustomerListDocument, {
+                        options: {
+                            take,
+                            skip,
+                            filter: buildTokenizedSearchFilter(filterTerm, ['emailAddress', 'lastName']),
+                        },
+                    })
                     .mapStream(res => res.customers),
             ),
         );

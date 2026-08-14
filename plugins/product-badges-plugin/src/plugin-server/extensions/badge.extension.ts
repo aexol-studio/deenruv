@@ -1,5 +1,31 @@
 import { gql } from "graphql-tag";
 import graphql from "graphql";
+import type { ID, LanguageCode } from "@deenruv/core";
+
+export interface BadgeTranslationInput {
+  languageCode: LanguageCode;
+  name: string;
+}
+
+export interface CreateBadgeInput {
+  productId: ID;
+  color: string;
+  translations?: BadgeTranslationInput[] | null;
+}
+
+export interface EditBadgeInput {
+  id: ID;
+  color?: string | null;
+  translations?: BadgeTranslationInput[] | null;
+}
+
+export interface RemoveBadgeInput {
+  id: ID;
+}
+
+export interface GetProductBadgesInput {
+  productId: ID;
+}
 
 const base = gql`
   extend type Product {

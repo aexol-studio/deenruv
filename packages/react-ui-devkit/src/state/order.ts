@@ -19,6 +19,16 @@ import { create } from "zustand";
 import { ServerConfigType } from "@/selectors/BaseSelectors.js";
 import { OrderDetailSelector, OrderDetailType } from "@/selectors/index.js";
 import { ORDER_STATE } from "@/utils/order_state.js";
+import {
+  assertMutationSuccess,
+  buildCancellationMutationInput,
+  buildRefundMutationInputs,
+  executeCancellationAndRefunds,
+  getOrderRefundOutcome,
+  RefundAllocation,
+} from "./order-refund.js";
+
+export * from "./order-refund.js";
 
 export type UnknownObject = Record<string, unknown>;
 
@@ -120,7 +130,7 @@ interface Actions {
     object2?: UnknownObject,
   ) => ModifyOrderChanges;
   addPaymentToOrder: (input: ResolverInputTypes["ManualPaymentInput"]) => void;
-  settlePayment: (input: { id: string }) => void;
+  settlePayment: (input: { id: string }) => Promise<{ id: string } | void>;
   cancelPayment: (id: string) => void;
   cancelFulfillment: (id: string) => void;
   initializeOrderCustomFields(serverConfig: ServerConfigType): void;
@@ -140,16 +150,21 @@ interface Actions {
     noOrderRefetch?: boolean,
   ) => Promise<{ id: string } | void>;
   refundOrder: (
-    input: Omit<ModelTypes["RefundOrderInput"], "paymentId">,
+    input: ModelTypes["RefundOrderInput"],
+    noOrderRefetch?: boolean,
   ) => Promise<{ id: string } | void>;
   cancelAndRefundOrder: (input: {
     cancelShipping: boolean;
-    amount: number;
-    lines: { orderLineId: string; quantity: number }[];
+    cancelLines: { orderLineId: string; quantity: number }[];
+    refundLines: { orderLineId: string; quantity: number }[];
+    allocations: RefundAllocation[];
     reason: string;
     shipping: number;
     adjustment: number;
-  }) => Promise<{ id: string } | void>;
+  }) => Promise<{
+    id: string;
+    outcome: "cancellation" | "refund" | "combined";
+  } | void>;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -175,6 +190,18 @@ const cancelFulfillmentMutation = (id: string) =>
   });
 
 const TAKE = 100;
+const mutationError = (
+  result: { __typename?: string; message?: string },
+  successType: string,
+) => {
+  try {
+    assertMutationSuccess(result, successType);
+  } catch (cause) {
+    const error = cause instanceof Error ? cause : new Error("Mutation failed");
+    toast.error(error.message);
+    throw error;
+  }
+};
 const getAllOrderHistory = async (id: string) => {
   let history: OrderHistoryEntryType[] = [];
   let totalItems = 0;
@@ -757,14 +784,10 @@ export const useOrder = create<Order & Actions>()((set, get) => {
           },
         ],
       });
-
-      // if (settlePayment.__typename !== 'Payment') {
-      //     toast.error(`${settlePayment.message}`, { position: 'top-center' });
-      //     return;
-      // }
-
-      fetchOrder(order.id);
-      fetchOrderHistory();
+      mutationError(settlePayment, "Payment");
+      if (settlePayment.__typename !== "Payment") return;
+      await Promise.all([fetchOrder(order.id), fetchOrderHistory()]);
+      return { id: settlePayment.id };
     },
     changeOrderState: async (newState: ORDER_STATE) => {
       const { order, fetchOrder, fetchOrderHistory } = get();
@@ -797,7 +820,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
       noOrderRefetch?: boolean,
     ) => {
       const { order, fetchOrder, fetchOrderHistory } = get();
-      if (!order || !order.payments?.length) return;
+      if (!order) return;
 
       return apiClient("mutation")({
         cancelOrder: [
@@ -832,57 +855,106 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             },
           },
         ],
-      }).then((resp) => {
-        if (!noOrderRefetch && resp.cancelOrder?.__typename === "Order") {
-          fetchOrder(order?.id);
-          fetchOrderHistory();
-        }
+      }).then(async (resp) => {
+        mutationError(resp.cancelOrder, "Order");
+        if (resp.cancelOrder.__typename !== "Order") return;
+        if (!noOrderRefetch)
+          await Promise.all([fetchOrder(order.id), fetchOrderHistory()]);
+        return { id: resp.cancelOrder.id };
       });
     },
     refundOrder: async (
-      input: Omit<ModelTypes["RefundOrderInput"], "paymentId">,
+      input: ModelTypes["RefundOrderInput"],
+      noOrderRefetch?: boolean,
     ) => {
       const { order, fetchOrder, fetchOrderHistory } = get();
-      if (!order || !order.payments?.length) return;
-
-      const paymentId = order.payments[order.payments?.length - 1].id;
+      if (!order || !input.paymentId)
+        throw new Error("A payment is required for a refund");
 
       return apiClient("mutation")({
         refundOrder: [
           {
             input: {
-              paymentId,
               ...input,
             },
           },
           {
-            "...on Refund": { id: true },
+            "...on Refund": { id: true, state: true },
+            "...on QuantityTooGreatError": { message: true },
+            "...on NothingToRefundError": { message: true },
+            "...on OrderStateTransitionError": { message: true },
+            "...on MultipleOrderError": { message: true },
+            "...on PaymentOrderMismatchError": { message: true },
+            "...on RefundOrderStateError": { message: true },
+            "...on AlreadyRefundedError": { message: true },
+            "...on RefundStateTransitionError": { message: true },
+            "...on RefundAmountError": { message: true },
             __typename: true,
           },
         ],
-      }).then((resp) => {
-        if (resp.refundOrder?.__typename === "Refund") {
-          fetchOrder(order?.id);
-          fetchOrderHistory();
+      }).then(async (resp) => {
+        mutationError(resp.refundOrder, "Refund");
+        if (resp.refundOrder.__typename !== "Refund") return;
+        if (resp.refundOrder.state === "Failed") {
+          const error = new Error("The refund failed");
+          toast.error(error.message);
+          throw error;
         }
+        if (!noOrderRefetch)
+          await Promise.all([fetchOrder(order.id), fetchOrderHistory()]);
+        return { id: resp.refundOrder.id };
       });
     },
     cancelAndRefundOrder: async (input: {
       cancelShipping: boolean;
-      amount: number;
-      lines: { orderLineId: string; quantity: number }[];
+      cancelLines: { orderLineId: string; quantity: number }[];
+      refundLines: { orderLineId: string; quantity: number }[];
+      allocations: RefundAllocation[];
       reason: string;
       shipping: number;
       adjustment: number;
     }) => {
-      const { order, cancelOrder, refundOrder } = get();
-      if (!order || !order.payments?.length) return;
-      const { adjustment, amount, cancelShipping, lines, reason, shipping } =
-        input;
-
-      return cancelOrder({ cancelShipping, lines, reason }, true).then(() =>
-        refundOrder({ adjustment, lines, shipping, amount, reason }),
-      );
+      const { order, cancelOrder, refundOrder, fetchOrder, fetchOrderHistory } =
+        get();
+      if (!order) return;
+      const {
+        adjustment,
+        allocations,
+        cancelShipping,
+        cancelLines,
+        reason,
+        refundLines,
+        shipping,
+      } = input;
+      const results = await executeCancellationAndRefunds({
+        cancel:
+          cancelLines.length > 0
+            ? () =>
+                cancelOrder(
+                  buildCancellationMutationInput({
+                    cancelShipping,
+                    cancelLines,
+                    reason,
+                  }),
+                  true,
+                )
+            : undefined,
+        refunds: buildRefundMutationInputs({
+          allocations,
+          refundLines,
+          reason,
+          shipping,
+          adjustment,
+        }).map((refundInput) => () => refundOrder(refundInput, true)),
+      });
+      await Promise.all([fetchOrder(order.id), fetchOrderHistory()]);
+      return {
+        id: results.at(-1)?.id ?? order.id,
+        outcome: getOrderRefundOutcome({
+          hasCancellation: cancelLines.length > 0 || cancelShipping,
+          hasRefund: allocations.length > 0,
+        }),
+      };
     },
   };
 });

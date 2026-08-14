@@ -99,18 +99,8 @@ export class ProductListComponent
             document: ProductListQueryDocument,
             getItems: data => data.products,
             setVariables: (skip, take) => {
-                const searchTerm = this.searchTermControl.value;
-                let filterInput = this.filters.createFilterInput();
-                if (searchTerm) {
-                    filterInput = {
-                        name: {
-                            contains: searchTerm,
-                        },
-                        sku: {
-                            contains: searchTerm,
-                        },
-                    };
-                }
+                const searchTerm = this.searchTermControl.value?.trim().replace(/\s+/g, ' ') || undefined;
+                const filterInput = this.filters.createFilterInput();
                 return {
                     options: {
                         skip,
@@ -118,7 +108,8 @@ export class ProductListComponent
                         filter: {
                             ...(filterInput ?? {}),
                         },
-                        filterOperator: searchTerm ? LogicalOperator.OR : LogicalOperator.AND,
+                        filterOperator: LogicalOperator.AND,
+                        searchTerm,
                         sort: this.sorts.createSortInput(),
                     },
                 };

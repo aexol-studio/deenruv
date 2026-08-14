@@ -299,8 +299,8 @@ export const CollectionsListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateCollection]}
-      deletePermissions={[Permission.DeleteCollection]}
+      createPermissions={[Permission.CreateCollection, Permission.CreateCatalog]}
+      deletePermissions={[Permission.DeleteCollection, Permission.DeleteCatalog]}
     />
   );
 };

@@ -1,3 +1,5 @@
+import { scalars } from "@deenruv/admin-types";
+
 import { FromSelector, Selector } from "../zeus";
 
 export const PredictionSelector = Selector("PredictionResult")({
@@ -20,9 +22,11 @@ export const ReplicateEntityListSelector = Selector("ReplicateEntityList")({
 
 export type ReplicatePredictionListType = FromSelector<
   typeof PredictionSelector,
-  "PredictionResult"
+  "PredictionResult",
+  typeof scalars
 >;
 export type ReplicateEntityListType = FromSelector<
   typeof ReplicateEntityListSelector,
-  "ReplicateEntityList"
+  "ReplicateEntityList",
+  typeof scalars
 >;

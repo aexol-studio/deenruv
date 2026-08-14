@@ -254,6 +254,127 @@ describe("Default search plugin", () => {
     expect(result.search.items.map((i) => i.productName)).toEqual(["Laptop"]);
   }
 
+  async function testMultiTokenSearchAcrossFields(testProducts: TestProducts) {
+    const crossFieldResult = await testProducts({
+      term: "IC22MWDD nostalgic",
+      groupByProduct: true,
+    });
+    const reversedResult = await testProducts({
+      term: "nostalgic IC22MWDD",
+      groupByProduct: true,
+    });
+    const missingTokenResult = await testProducts({
+      term: "IC22MWDD nonexistent",
+      groupByProduct: true,
+    });
+
+    expect(crossFieldResult.search.items.map((i) => i.productName)).toEqual([
+      "Instant Camera",
+    ]);
+    expect(crossFieldResult.search.totalItems).toBe(1);
+    expect(reversedResult.search.items.map((i) => i.productName)).toEqual([
+      "Instant Camera",
+    ]);
+    expect(reversedResult.search.totalItems).toBe(1);
+    expect(missingTokenResult.search.items).toEqual([]);
+    expect(missingTokenResult.search.totalItems).toBe(0);
+  }
+
+  async function testGroupedPostgresRankingUsesBestVariant() {
+    interface RankedSearchResult {
+      search: {
+        items: Array<{
+          productId: string;
+          productVariantId: string;
+          score: number;
+        }>;
+      };
+    }
+
+    const searchRanked = (input: SearchInput) =>
+      adminClient.query<RankedSearchResult, { input: SearchInput }>(
+        SEARCH_PRODUCTS_WITH_SCORE,
+        { input },
+      );
+    const variantNames = new Map(
+      (
+        await testProductsAdmin({ groupByProduct: false, take: 100 })
+      ).search.items.map(({ productVariantId, productVariantName }) => [
+        productVariantId,
+        productVariantName,
+      ]),
+    );
+    const rankingVariants = ["T_1", "T_5", "T_6"];
+
+    try {
+      await adminClient.query<
+        UpdateProductVariantsMutation,
+        UpdateProductVariantsMutationVariables
+      >(UPDATE_PRODUCT_VARIANTS, {
+        input: [
+          {
+            id: "T_1",
+            translations: [{ languageCode: LanguageCode.en, name: "alpha" }],
+          },
+          {
+            id: "T_5",
+            translations: [{ languageCode: LanguageCode.en, name: "alpha" }],
+          },
+          {
+            id: "T_6",
+            translations: [
+              { languageCode: LanguageCode.en, name: "alpha alpha alpha" },
+            ],
+          },
+        ],
+      });
+      await awaitRunningJobs(adminClient);
+
+      const term = "alpha";
+      const grouped = await searchRanked({ term, groupByProduct: true });
+      const ungrouped = await searchRanked({ term, groupByProduct: false });
+      const bestVariantScoreByProduct = new Map<string, number>();
+
+      for (const item of ungrouped.search.items) {
+        bestVariantScoreByProduct.set(
+          item.productId,
+          Math.max(
+            bestVariantScoreByProduct.get(item.productId) ?? 0,
+            item.score,
+          ),
+        );
+      }
+
+      expect(ungrouped.search.items).toHaveLength(3);
+      expect(grouped.search.items).toHaveLength(2);
+      for (const item of grouped.search.items) {
+        expect(item.score).toBeCloseTo(
+          bestVariantScoreByProduct.get(item.productId)!,
+        );
+      }
+      expect(grouped.search.items[0].productId).toBe("T_2");
+      expect(grouped.search.items[0].score).toBeGreaterThan(
+        grouped.search.items[1].score,
+      );
+    } finally {
+      await adminClient.query<
+        UpdateProductVariantsMutation,
+        UpdateProductVariantsMutationVariables
+      >(UPDATE_PRODUCT_VARIANTS, {
+        input: rankingVariants.map((id) => ({
+          id,
+          translations: [
+            {
+              languageCode: LanguageCode.en,
+              name: variantNames.get(id)!,
+            },
+          ],
+        })),
+      });
+      await awaitRunningJobs(adminClient);
+    }
+  }
+
   async function testMatchFacetIdsAnd(testProducts: TestProducts) {
     const result = await testProducts({
       facetValueIds: ["T_1", "T_2"],
@@ -487,6 +608,11 @@ describe("Default search plugin", () => {
 
     it("matches partial search term", () =>
       testMatchPartialSearchTerm(testProductsShop));
+
+    if (process.env.DB === "postgres") {
+      it("requires all tokens while matching them across fields", () =>
+        testMultiTokenSearchAcrossFields(testProductsShop));
+    }
 
     it("matches by facetId with AND operator", () =>
       testMatchFacetIdsAnd(testProductsShop));
@@ -811,6 +937,14 @@ describe("Default search plugin", () => {
 
     it("matches partial search term", () =>
       testMatchPartialSearchTerm(testProductsAdmin));
+
+    if (process.env.DB === "postgres") {
+      it("requires all tokens while matching them across fields", () =>
+        testMultiTokenSearchAcrossFields(testProductsAdmin));
+
+      it("uses the best matching variant for grouped ranking", () =>
+        testGroupedPostgresRankingUsesBestVariant());
+    }
 
     it("matches by facetId with AND operator", () =>
       testMatchFacetIdsAnd(testProductsAdmin));
@@ -2266,6 +2400,18 @@ export const SEARCH_GET_PRICES = gql`
             value
           }
         }
+      }
+    }
+  }
+`;
+
+const SEARCH_PRODUCTS_WITH_SCORE = gql`
+  query SearchProductsWithScore($input: SearchInput!) {
+    search(input: $input) {
+      items {
+        productId
+        productVariantId
+        score
       }
     }
   }

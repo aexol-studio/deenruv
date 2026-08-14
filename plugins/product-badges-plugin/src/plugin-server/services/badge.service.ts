@@ -13,7 +13,10 @@ import {
 } from "@deenruv/core";
 import { Badge } from "../entities/Badge";
 import { BadgeTranslation } from "../entities/BadgeTranslation";
-import { ModelTypes } from "../zeus";
+import type {
+  CreateBadgeInput,
+  EditBadgeInput,
+} from "../extensions/badge.extension.js";
 
 @Injectable()
 export class BadgeService {
@@ -46,7 +49,7 @@ export class BadgeService {
 
   async createBadge(
     ctx: RequestContext,
-    { productId, ...input }: ModelTypes["CreateBadgeInput"],
+    { productId, ...input }: CreateBadgeInput,
   ) {
     const product = await this.connection
       .getRepository(ctx, Product)
@@ -85,7 +88,7 @@ export class BadgeService {
     }
   }
 
-  async editBadge(ctx: RequestContext, input: ModelTypes["EditBadgeInput"]) {
+  async editBadge(ctx: RequestContext, input: EditBadgeInput) {
     const badge = await this.findOne(ctx, input.id);
     if (!badge) throw new EntityNotFoundError("Badge not found", input.id);
 

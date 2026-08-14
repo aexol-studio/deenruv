@@ -59,8 +59,8 @@ export const PaymentMethodsListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreatePaymentMethod]}
-      deletePermissions={[Permission.DeletePaymentMethod]}
+      createPermissions={[Permission.CreatePaymentMethod, Permission.CreateSettings]}
+      deletePermissions={[Permission.DeletePaymentMethod, Permission.DeleteSettings]}
     />
   );
 };

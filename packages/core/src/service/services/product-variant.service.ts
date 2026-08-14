@@ -44,6 +44,10 @@ import { ProductVariantChannelEvent } from "../../event-bus/events/product-varia
 import { ProductVariantEvent } from "../../event-bus/events/product-variant-event";
 import { ProductVariantPriceEvent } from "../../event-bus/events/product-variant-price-event";
 import { CustomFieldRelationService } from "../helpers/custom-field-relation/custom-field-relation.service";
+import {
+  applyProductVariantListSearch,
+  CatalogListOptions,
+} from "../helpers/catalog-list-search";
 import { ListQueryBuilder } from "../helpers/list-query-builder/list-query-builder";
 import { ProductPriceApplicator } from "../helpers/product-price-applicator/product-price-applicator";
 import { TranslatableSaver } from "../helpers/translatable-saver/translatable-saver";
@@ -123,7 +127,7 @@ export class ProductVariantService {
 
   private findByProductIdsDataloader(
     ctx: RequestContext,
-    options: ListQueryOptions<ProductVariant> = {},
+    options: ListQueryOptions<ProductVariant> & CatalogListOptions = {},
     relations?: RelationPaths<ProductVariant>,
   ) {
     return ctx.dataloader(
@@ -171,6 +175,8 @@ export class ProductVariantService {
             },
           );
 
+        applyProductVariantListSearch(qb, options.searchTerm, ctx);
+
         const { sort: _, ...countOptions } = options;
         const countQb = this.listQueryBuilder
           .build(ProductVariant, countOptions, {
@@ -196,6 +202,8 @@ export class ProductVariantService {
             },
           )
           .groupBy("product.id");
+
+        applyProductVariantListSearch(countQb, options.searchTerm, ctx);
 
         if (ctx.apiType === "shop") {
           qb.andWhere("productvariant.enabled = :enabled", { enabled: true });
@@ -225,7 +233,7 @@ export class ProductVariantService {
 
   async findAll(
     ctx: RequestContext,
-    options?: ListQueryOptions<ProductVariant>,
+    options?: ListQueryOptions<ProductVariant> & CatalogListOptions,
   ): Promise<PaginatedList<Translated<ProductVariant>>> {
     const relations = ["featuredAsset", "taxCategory", "channels"];
     const customPropertyMap: { [name: string]: string } = {};
@@ -263,22 +271,21 @@ export class ProductVariantService {
       relations.push("facetValues");
       customPropertyMap.facetValueId = "facetValues.id";
     }
-    return this.listQueryBuilder
-      .build(ProductVariant, options, {
-        relations,
-        channelId: ctx.channelId,
-        where: { deletedAt: IsNull() },
-        ctx,
-        customPropertyMap,
-      })
-      .getManyAndCount()
-      .then(async ([variants, totalItems]) => {
-        const items = await this.applyPricesAndTranslateVariants(ctx, variants);
-        return {
-          items,
-          totalItems,
-        };
-      });
+    const qb = this.listQueryBuilder.build(ProductVariant, options, {
+      relations,
+      channelId: ctx.channelId,
+      where: { deletedAt: IsNull() },
+      ctx,
+      customPropertyMap,
+    });
+    applyProductVariantListSearch(qb, options?.searchTerm, ctx);
+    return qb.getManyAndCount().then(async ([variants, totalItems]) => {
+      const items = await this.applyPricesAndTranslateVariants(ctx, variants);
+      return {
+        items,
+        totalItems,
+      };
+    });
   }
 
   findOne(
@@ -319,7 +326,7 @@ export class ProductVariantService {
   async getVariantsByProductId(
     ctx: RequestContext,
     productId: ID,
-    options: ListQueryOptions<ProductVariant> = {},
+    options: ListQueryOptions<ProductVariant> & CatalogListOptions = {},
     relations?: RelationPaths<ProductVariant>,
   ): Promise<PaginatedList<Translated<ProductVariant>>> {
     return this.findByProductIdsDataloader(ctx, options, relations).load(

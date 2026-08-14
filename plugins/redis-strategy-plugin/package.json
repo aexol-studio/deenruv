@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/redis-strategy-plugin",
-  "version": "1.0.17-dev.20",
+  "version": "1.0.17-dev.21",
   "license": "MIT",
   "type": "module",
   "publishConfig": {
@@ -19,7 +19,7 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"SERVER,UI\" -c \"yellow.bold,cyan.bold\" \"tsc --watch --project src/plugin-server/tsconfig.json\" \"tsc --watch --project src/plugin-ui/tsconfig.json\"",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --es && zeus http://localhost:6100/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:6100/admin-api ./src/plugin-ui --td --es"
+    "zeus": "zeus http://localhost:6100/admin-api ./src/plugin-server --es && zeus http://localhost:6100/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:6100/admin-api ./src/plugin-ui --td --es && prettier --write ./src/plugin-server/zeus/*.ts ./src/plugin-server/ui/zeus/*.ts ./src/plugin-ui/zeus/*.ts"
   },
   "dependencies": {
     "@deenruv/admin-types": "workspace:^",

@@ -11,6 +11,10 @@ import { fileURLToPath } from "url";
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 import { downloadIntrospectionSchema } from "./download-introspection-schema.js";
+import {
+  transformAdminUiOperationTypes,
+  transformAdminUiSchemaTypes,
+} from "./plugins/admin-ui-v6-compatibility.js";
 
 const CLIENT_QUERY_FILES = [
   "packages/admin-ui/src/lib/core/src/data/definitions/**/*.ts",
@@ -45,6 +49,10 @@ const E2E_ASSET_SERVER_PLUGIN_QUERY_FILES =
   "plugins/asset-server-plugin/e2e/**/*.ts";
 const ADMIN_SCHEMA_OUTPUT_FILE = "schema-admin.json";
 const SHOP_SCHEMA_OUTPUT_FILE = "schema-shop.json";
+const ADMIN_UI_SCHEMA_TYPES_FILE =
+  "packages/admin-ui/src/lib/core/src/common/generated-schema-types.ts";
+const ADMIN_UI_OPERATION_TYPES_FILE =
+  "packages/admin-ui/src/lib/core/src/common/generated-types.ts";
 
 Promise.all([
   downloadIntrospectionSchema(ADMIN_API_PATH, ADMIN_SCHEMA_OUTPUT_FILE),
@@ -80,13 +88,19 @@ Promise.all([
       skipTypename: true,
     };
     const disableEsLintPlugin = { add: { content: "/* eslint-disable */" } };
+    const adminSchemaTypesModule =
+      "packages/admin-ui/src/lib/core/src/common/generated-schema-types";
+    const adminSchemaTypesReExport = "./generated-schema-types";
+    const reExportAdminSchemaTypesPlugin = {
+      add: { content: `export * from '${adminSchemaTypesReExport}';` },
+    };
     const graphQlErrorsPlugin = path.join(
       __dirname,
       "./plugins/graphql-errors-plugin.ts",
     );
     const commonPlugins = [disableEsLintPlugin, "typescript"];
     const clientPlugins = [
-      ...commonPlugins,
+      disableEsLintPlugin,
       "typescript-operations",
       "typed-document-node",
     ];
@@ -138,15 +152,30 @@ Promise.all([
             plugins: clientPlugins,
             config: e2eConfig,
           },
-        ["packages/admin-ui/src/lib/core/src/common/generated-types.ts"]: {
+        [ADMIN_UI_SCHEMA_TYPES_FILE]: {
+          schema: [
+            ADMIN_SCHEMA_OUTPUT_FILE,
+            path.join(__dirname, "client-schema.ts"),
+          ],
+          plugins: commonPlugins,
+          config: {
+            ...config,
+            defaultScalarType: "any",
+            skipTypeNameForRoot: true,
+          },
+        },
+        [ADMIN_UI_OPERATION_TYPES_FILE]: {
           schema: [
             ADMIN_SCHEMA_OUTPUT_FILE,
             path.join(__dirname, "client-schema.ts"),
           ],
           documents: CLIENT_QUERY_FILES,
-          plugins: clientPlugins,
+          plugins: [reExportAdminSchemaTypesPlugin, ...clientPlugins],
           config: {
             ...config,
+            defaultScalarType: "any",
+            importSchemaTypesFrom: adminSchemaTypesModule,
+            nonOptionalTypename: true,
             skipTypeNameForRoot: true,
           },
         },
@@ -164,6 +193,7 @@ Promise.all([
           plugins: commonPlugins,
           config: {
             ...config,
+            defaultScalarType: "any",
             scalars: {
               ...(config.scalars ?? {}),
               ID: "string | number",
@@ -176,6 +206,7 @@ Promise.all([
           plugins: commonPlugins,
           config: {
             ...config,
+            defaultScalarType: "any",
             scalars: {
               ...(config.scalars ?? {}),
               ID: "string | number",
@@ -201,7 +232,7 @@ Promise.all([
               SHOP_SCHEMA_OUTPUT_FILE,
               "plugins/payments-plugin/src/mollie/api-extensions.ts",
             ],
-            plugins: clientPlugins,
+            plugins: commonPlugins,
             config,
           },
         ["plugins/replicate-plugin/src/plugin-server/graphql/generated-admin-types.ts"]:
@@ -210,13 +241,33 @@ Promise.all([
               ADMIN_SCHEMA_OUTPUT_FILE,
               "plugins/replicate-plugin/src/plugin-server/extensions/replicate.extension.ts",
             ],
-            plugins: clientPlugins,
-            config,
+            plugins: commonPlugins,
+            config: {
+              ...config,
+              scalars: {
+                ...config.scalars,
+                DateTime: "string",
+              },
+            },
           },
       },
     };
     process.chdir(path.resolve(__dirname, "../.."));
-    return generate(codegenConfig);
+    return generate(codegenConfig).then(() => {
+      const schemaTypes = fs.readFileSync(ADMIN_UI_SCHEMA_TYPES_FILE, "utf-8");
+      const operationTypes = fs.readFileSync(
+        ADMIN_UI_OPERATION_TYPES_FILE,
+        "utf-8",
+      );
+      fs.writeFileSync(
+        ADMIN_UI_SCHEMA_TYPES_FILE,
+        transformAdminUiSchemaTypes(schemaTypes),
+      );
+      fs.writeFileSync(
+        ADMIN_UI_OPERATION_TYPES_FILE,
+        transformAdminUiOperationTypes(operationTypes),
+      );
+    });
   })
   .then(
     () => {

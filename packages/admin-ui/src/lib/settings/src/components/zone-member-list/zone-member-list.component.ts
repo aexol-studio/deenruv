@@ -18,6 +18,7 @@ import {
     GetZoneMembersDocument,
     GetZoneMembersQuery,
     ItemOf,
+    matchesTokenizedSearch,
     SelectionManager,
 } from '@deenruv/admin-ui/core';
 import { BehaviorSubject, combineLatest, merge, Observable, of, Subject, switchMap } from 'rxjs';
@@ -40,8 +41,10 @@ export class ZoneMemberListComponent implements OnInit, OnChanges, OnDestroy {
     @Input() selectedMemberIds: string[] = [];
     @Input() activeZone: ItemOf<GetZoneListQuery, 'zones'>;
     @Output() selectionChange = new EventEmitter<string[]>();
-    @ContentChild(ZoneMemberListHeaderDirective) headerTemplate: ZoneMemberListHeaderDirective;
-    @ContentChild(ZoneMemberControlsDirective) controlsTemplate: ZoneMemberControlsDirective;
+    @ContentChild(ZoneMemberListHeaderDirective)
+    headerTemplate: ZoneMemberListHeaderDirective;
+    @ContentChild(ZoneMemberControlsDirective)
+    controlsTemplate: ZoneMemberControlsDirective;
     members$: Observable<NonNullable<GetZoneMembersQuery['zone']>['members'] | ZoneMember[]>;
     filterTermControl = new FormControl('');
     filteredMembers$: Observable<ZoneMember[]>;
@@ -73,9 +76,7 @@ export class ZoneMemberListComponent implements OnInit, OnChanges, OnDestroy {
         this.members$ = merge(activeZoneMembers$, this.membersInput$);
 
         this.members$.pipe(take(1)).subscribe(members => {
-            this.selectionManager.setCurrentItems(
-                members?.filter(m => this.selectedMemberIds.includes(m.id)) ?? [],
-            );
+            this.selectionManager.setCurrentItems(members?.filter(m => this.selectedMemberIds.includes(m.id)) ?? []);
         });
         this.selectionManager.selectionChanges$.pipe(takeUntil(this.destroy$)).subscribe(selection => {
             this.selectionChange.emit(selection.map(s => s.id));
@@ -85,16 +86,7 @@ export class ZoneMemberListComponent implements OnInit, OnChanges, OnDestroy {
             this.filterTermControl.valueChanges.pipe(startWith('')),
         ).pipe(
             map(([members, filterTerm]) => {
-                if (filterTerm) {
-                    const term = filterTerm?.toLocaleLowerCase() ?? '';
-                    return members.filter(
-                        m =>
-                            m.name.toLocaleLowerCase().includes(term) ||
-                            m.code.toLocaleLowerCase().includes(term),
-                    );
-                } else {
-                    return members;
-                }
+                return members.filter(member => matchesTokenizedSearch(member, filterTerm, ['name', 'code']));
             }),
         );
         this.totalItems$ = this.filteredMembers$.pipe(map(members => members.length));

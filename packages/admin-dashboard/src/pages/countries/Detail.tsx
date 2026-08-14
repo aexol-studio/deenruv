@@ -10,6 +10,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { CountryDetailView } from '@/pages/countries/_components/CountryDetailView.js';
 import { useCallback } from 'react';
+import { Permission } from '@deenruv/admin-types';
 import { ModelTypes } from '@deenruv/admin-types';
 
 const CreateCountryMutation = getMutation('createCountry');
@@ -79,6 +80,11 @@ export const CountriesDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: [Permission.CreateCountry, Permission.CreateSettings],
+          edit: [Permission.UpdateCountry, Permission.UpdateSettings],
+          delete: [Permission.DeleteCountry, Permission.DeleteSettings],
         }}
       />
     </div>

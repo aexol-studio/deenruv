@@ -55,8 +55,8 @@ export const TaxCategoriesListPage = () => {
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
-      createPermissions={[Permission.CreateTaxCategory]}
-      deletePermissions={[Permission.DeleteTaxCategory]}
+      createPermissions={[Permission.CreateTaxCategory, Permission.CreateSettings]}
+      deletePermissions={[Permission.DeleteTaxCategory, Permission.DeleteSettings]}
     />
   );
 };

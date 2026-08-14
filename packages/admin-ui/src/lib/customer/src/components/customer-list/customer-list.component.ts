@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { CustomerListQueryDocument, LogicalOperator, TypedBaseListComponent } from '@deenruv/admin-ui/core';
+import { buildTokenizedSearchFilter, CustomerListQueryDocument, TypedBaseListComponent } from '@deenruv/admin-ui/core';
 import { gql } from 'apollo-angular';
 
 export const CUSTOMER_LIST_QUERY = gql`
@@ -80,23 +80,11 @@ export class CustomerListComponent
                 options: {
                     skip,
                     take,
-                    filter: {
-                        ...(this.searchTermControl.value
-                            ? {
-                                  emailAddress: {
-                                      contains: this.searchTermControl.value,
-                                  },
-                                  lastName: {
-                                      contains: this.searchTermControl.value,
-                                  },
-                                  postalCode: {
-                                      contains: this.searchTermControl.value,
-                                  },
-                              }
-                            : {}),
-                        ...this.filters.createFilterInput(),
-                    },
-                    filterOperator: this.searchTermControl.value ? LogicalOperator.OR : LogicalOperator.AND,
+                    filter: buildTokenizedSearchFilter(
+                        this.searchTermControl.value,
+                        ['emailAddress', 'lastName', 'postalCode'],
+                        this.filters.createFilterInput(),
+                    ),
                     sort: this.sorts.createSortInput(),
                 },
             }),

@@ -8,6 +8,7 @@ import {
 } from "@/selectors";
 import { apiClient } from "@/zeus_client/deenruvAPICall.js";
 import { Permission } from "@deenruv/admin-types";
+import { getSelectedChannelPermissions } from "@/access.js";
 
 import { create } from "zustand";
 export type SystemStatus = {
@@ -18,6 +19,8 @@ export type SystemStatus = {
 };
 
 export type JobQueue = { name: string; running: boolean };
+
+export type AdministratorAccessState = "pending" | "ready" | "unavailable";
 
 type ActiveClient = {
   id: string;
@@ -49,6 +52,7 @@ interface Server {
   serverConfig: ServerConfigType | undefined;
   activeAdministrator: ActiveAdministratorType | undefined;
   userPermissions: Permission[];
+  administratorAccessState: AdministratorAccessState;
   channels: ChannelType[];
   countries: CountryType[];
   isConnected: boolean;
@@ -69,11 +73,14 @@ interface Actions {
     activeAdministrator: ActiveAdministratorType | undefined,
   ): void;
   setUserPermissions(permissions: Permission[]): void;
+  beginAdministratorAccessInitialization(): void;
   setAdministratorAccess(
     activeAdministrator: ActiveAdministratorType | undefined,
-    permissions: Permission[],
+    selectedChannelId?: string,
   ): void;
+  setSelectedChannelPermissions(selectedChannelId?: string): void;
   clearAdministratorAccess(): void;
+  failAdministratorAccess(): void;
   setChannels(channels: ChannelType[]): void;
   setCountries(countries: CountryType[]): void;
   setIsConnected(isConnected: boolean): void;
@@ -150,6 +157,7 @@ export const useServer = create<Server & Actions>()((set, get) => ({
   isConnected: false,
   activeClients: [],
   userPermissions: [],
+  administratorAccessState: "pending",
   status: {
     data: { status: "", info: {}, error: {}, details: {} },
     loading: false,
@@ -166,11 +174,48 @@ export const useServer = create<Server & Actions>()((set, get) => ({
   setActiveClients: (activeClients) => set({ activeClients }),
   setPaymentMethodsType: (paymentMethodsType) => set({ paymentMethodsType }),
   setFulfillmentHandlers: (fulfillmentHandlers) => set({ fulfillmentHandlers }),
-  setUserPermissions: (userPermissions) => set({ userPermissions }),
-  setAdministratorAccess: (activeAdministrator, userPermissions) =>
-    set({ activeAdministrator, userPermissions }),
+  setUserPermissions: (userPermissions) =>
+    set({ userPermissions, administratorAccessState: "ready" }),
+  beginAdministratorAccessInitialization: () =>
+    set({
+      activeAdministrator: undefined,
+      userPermissions: [],
+      administratorAccessState: "pending",
+    }),
+  setAdministratorAccess: (activeAdministrator, selectedChannelId) =>
+    set({
+      activeAdministrator,
+      userPermissions: getSelectedChannelPermissions(
+        activeAdministrator,
+        selectedChannelId,
+      ),
+      administratorAccessState: "ready",
+    }),
+  setSelectedChannelPermissions: (selectedChannelId) =>
+    set((state) => {
+      const userPermissions = getSelectedChannelPermissions(
+        state.activeAdministrator,
+        selectedChannelId,
+      );
+      const permissionsAreEqual =
+        state.userPermissions.length === userPermissions.length &&
+        state.userPermissions.every(
+          (permission, index) => permission === userPermissions[index],
+        );
+      return permissionsAreEqual ? state : { userPermissions };
+    }),
   clearAdministratorAccess: () =>
-    set({ activeAdministrator: undefined, userPermissions: [] }),
+    set({
+      activeAdministrator: undefined,
+      userPermissions: [],
+      administratorAccessState: "pending",
+    }),
+  failAdministratorAccess: () =>
+    set({
+      activeAdministrator: undefined,
+      userPermissions: [],
+      administratorAccessState: "unavailable",
+    }),
   fetchStatus: async () => {
     set((state) => ({ status: { ...state.status, loading: true } }));
     const data = await getSystemStatus();

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import {
     ADMINISTRATOR_FRAGMENT,
+    buildTokenizedSearchFilter,
     GetAdministratorListDocument,
-    LogicalOperator,
     TypedBaseListComponent,
 } from '@deenruv/admin-ui/core';
 import { gql } from 'apollo-angular';
@@ -93,33 +93,16 @@ export class AdministratorListComponent extends TypedBaseListComponent<
     }
 
     createSearchQuery(skip: number, take: number, searchTerm: string | null) {
-        let _filter = {};
-        let filterOperator: LogicalOperator = LogicalOperator.AND;
-
-        if (searchTerm) {
-            _filter = {
-                emailAddress: {
-                    contains: searchTerm,
-                },
-                firstName: {
-                    contains: searchTerm,
-                },
-                lastName: {
-                    contains: searchTerm,
-                },
-            };
-            filterOperator = LogicalOperator.OR;
-        }
         return {
             options: {
                 skip,
                 take,
-                filter: {
-                    ...(_filter ?? {}),
-                    ...this.filters.createFilterInput(),
-                },
+                filter: buildTokenizedSearchFilter(
+                    searchTerm,
+                    ['emailAddress', 'firstName', 'lastName'],
+                    this.filters.createFilterInput(),
+                ),
                 sort: this.sorts.createSortInput(),
-                filterOperator,
             },
         };
     }

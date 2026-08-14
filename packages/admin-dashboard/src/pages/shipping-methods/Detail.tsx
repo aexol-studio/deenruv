@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router';
 import { useTranslation, DetailView, createDeenruvForm, getMutation, useMutation } from '@deenruv/react-ui-devkit';
-import { ModelTypes } from '@deenruv/admin-types';
+import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { ShippingMethodDetailView } from '@/pages/shipping-methods/_components/ShippingMethodDetailView.js';
 
 type FormDataType = Record<string, unknown>;
@@ -118,6 +118,11 @@ export const ShippingMethodsDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: [Permission.CreateShippingMethod, Permission.CreateSettings],
+          edit: [Permission.UpdateShippingMethod, Permission.UpdateSettings],
+          delete: [Permission.DeleteShippingMethod, Permission.DeleteSettings],
         }}
       />
     </div>

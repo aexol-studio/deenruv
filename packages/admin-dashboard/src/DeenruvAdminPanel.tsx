@@ -1,12 +1,11 @@
 // eslint-disable-next-line no-restricted-imports
 import { I18nextProvider } from 'react-i18next';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 import i18n from './i18.js';
 import {
-  Routes,
   PluginProvider,
   PluginStore,
   type DeenruvSettingsWindowType,
@@ -33,7 +32,7 @@ import {
   getDefaultAdminRoute,
   getPermittedAdminRoutes,
 } from '@/access/index.js';
-import { createAdminRouterRoutes } from '@/access/admin-router.js';
+import { CommittedRouterOwner, createAdminRouterRoutes } from '@/access/admin-router.js';
 
 declare global {
   interface Window {
@@ -83,7 +82,12 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
       translationsLanguage: p.translationsLanguage,
     })),
   );
-  const userPermissions = useServer((p) => p.userPermissions);
+  const { administratorAccessState, userPermissions } = useServer(
+    useShallow((p) => ({
+      administratorAccessState: p.administratorAccessState,
+      userPermissions: p.userPermissions,
+    })),
+  );
   const pluginRoutes = useMemo(
     () =>
       pluginsStore.routes.map((route) => ({
@@ -96,21 +100,25 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
     [plugins],
   );
   const permittedRoutes = useMemo(
-    () => getPermittedAdminRoutes([...builtInAdminRoutes, ...pluginRoutes], userPermissions),
-    [pluginRoutes, userPermissions],
+    () =>
+      administratorAccessState === 'ready'
+        ? getPermittedAdminRoutes([...builtInAdminRoutes, ...pluginRoutes], userPermissions)
+        : [],
+    [administratorAccessState, pluginRoutes, userPermissions],
   );
-  const defaultRoute = getDefaultAdminRoute(permittedRoutes);
-  const router = useMemo(
+  const defaultRoute = administratorAccessState === 'ready' ? getDefaultAdminRoute(permittedRoutes) : undefined;
+  const createRouter = useCallback(
     () =>
       createBrowserRouter(
         createAdminRouterRoutes({
           permittedRoutes,
           defaultRoute,
+          administratorAccessState,
           rootElement: <Root allPaths={permittedRoutes.map((route) => route.path).filter(Boolean)} />,
           errorElement: <ErrorPage />,
         }),
       ),
-    [defaultRoute, permittedRoutes],
+    [administratorAccessState, defaultRoute, permittedRoutes],
   );
 
   useEffect(() => {
@@ -136,7 +144,9 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
                     pluginsStore.notifications,
                   )}
                 >
-                  <RouterProvider router={router} />
+                  <CommittedRouterOwner createRouter={createRouter}>
+                    {(router) => <RouterProvider router={router} />}
+                  </CommittedRouterOwner>
                 </NotificationProvider>
               </PluginProvider>
             </AdminAccessProvider>
