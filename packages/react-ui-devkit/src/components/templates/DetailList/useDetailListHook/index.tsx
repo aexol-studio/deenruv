@@ -1,5 +1,5 @@
 import { LogicalOperator, ModelTypes, SortOrder } from "@deenruv/admin-types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Paginate } from "./Paginate";
 import { Search } from "./Search";
 import React from "react";
@@ -72,7 +72,21 @@ export const useDetailListHook = <
   });
   const [total, setTotal] = useState(0);
   const [objects, setObjects] = useState<GenericReturn<T>>();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const latestFetch = useRef(fetch);
+  const latestRequestId = useRef(0);
+  const mounted = useRef(false);
+
+  latestFetch.current = fetch;
+
+  useEffect(() => {
+    mounted.current = true;
+
+    return () => {
+      mounted.current = false;
+      latestRequestId.current += 1;
+    };
+  }, []);
 
   const setSearchQuery = (query: string | null) => {
     if (query) {
@@ -202,27 +216,42 @@ export const useDetailListHook = <
 
   const selectedChannel = useSettings(({ selectedChannel }) => selectedChannel);
 
+  const executeFetch = useCallback(
+    (params: PaginationInput, showLoading = false) => {
+      const requestId = ++latestRequestId.current;
+
+      if (showLoading && mounted.current) setLoading(true);
+
+      return latestFetch
+        .current(params)
+        .then(({ items, totalItems }) => {
+          if (!mounted.current || requestId !== latestRequestId.current) return;
+
+          setObjects(items);
+          setTotal(totalItems);
+        })
+        .finally(() => {
+          if (!mounted.current || requestId !== latestRequestId.current) return;
+
+          setLoading(false);
+        });
+    },
+    [],
+  );
+
   const refetch = useCallback(
     (initialFilterState?: ModelTypes[ListType[K]] | undefined) => {
       const page = searchParams.get(SearchParamKey.PAGE);
       if (page) searchParamValues.page = +page;
       searchParamValues.filter = initialFilterState;
-      fetch(searchParamValues).then(({ items, totalItems }) => {
-        setObjects(items);
-        setTotal(totalItems);
-      });
+      void executeFetch(searchParamValues);
     },
-    [searchParams, searchParamValues],
+    [executeFetch, searchParams, searchParamValues],
   );
 
   useEffect(() => {
-    // setLoading(true);
-    fetch(searchParamValues).then(({ items, totalItems }) => {
-      setObjects(items);
-      setTotal(totalItems);
-      // setLoading(false);
-    });
-  }, [translationsLanguage, searchParams, selectedChannel?.id]);
+    void executeFetch(searchParamValues, true);
+  }, [executeFetch, translationsLanguage, searchParams, selectedChannel?.id]);
 
   useEffect(() => {
     if (
@@ -230,26 +259,27 @@ export const useDetailListHook = <
       "refetchList" in additionalData &&
       additionalData.refetchList
     ) {
-      fetch(searchParamValues).then(({ items, totalItems }) => {
-        setObjects(items);
-        setTotal(totalItems);
-      });
+      void executeFetch(searchParamValues);
       setAdditionalData?.({ ...additionalData, refetchList: false });
     }
-  }, [additionalData, translationsLanguage, searchParams]);
+  }, [
+    additionalData,
+    executeFetch,
+    searchParamValues,
+    searchParams,
+    setAdditionalData,
+    translationsLanguage,
+  ]);
 
   useEffect(() => {
     if (!refetchTimeout) return;
 
     const interval = setInterval(() => {
-      fetch(searchParamValues).then(({ items, totalItems }) => {
-        setObjects(items);
-        setTotal(totalItems);
-      });
+      void executeFetch(searchParamValues);
     }, refetchTimeout);
 
     return () => clearInterval(interval);
-  }, [refetchTimeout, fetch, searchParamValues]);
+  }, [executeFetch, refetchTimeout, searchParamValues]);
 
   const itemsPerPage = useMemo(
     () => customItemsPerPage || ITEMS_PER_PAGE,
