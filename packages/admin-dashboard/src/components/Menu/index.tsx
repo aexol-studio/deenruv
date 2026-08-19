@@ -55,6 +55,8 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const { defaultRoute } = useAdminAccess();
   const userPermissions = useServer((state) => state.userPermissions);
   const { theme, setTheme } = useSettings();
+  const showChannelPicker = window.__DEENRUV_SETTINGS__.ui?.showChannelPicker !== false;
+  const showLanguagePicker = window.__DEENRUV_SETTINGS__.ui?.showLanguagePicker !== false;
   const {
     isCollapsed,
     isMobileOpen,
@@ -189,7 +191,11 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
             </div>
 
             <div className="ml-auto flex min-w-0 items-center justify-end gap-1.5">
-              <TopbarOverflow components={allowedTopNavigationComponents || []} />
+              <TopbarOverflow
+                components={allowedTopNavigationComponents || []}
+                showChannelPicker={showChannelPicker}
+                showLanguagePicker={showLanguagePicker}
+              />
               {allowedTopNavigationComponents?.length ? (
                 <div className="hidden items-center gap-2 lg:flex">
                   {allowedTopNavigationComponents.map(({ component: Component }, index) => (
@@ -197,10 +203,12 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                   ))}
                 </div>
               ) : null}
-              <div className="hidden items-center gap-1.5 lg:flex">
-                <LanguagesDropdown />
-                <ChannelSwitcher className="min-w-44" />
-              </div>
+              {showChannelPicker || showLanguagePicker ? (
+                <div className="hidden items-center gap-1.5 lg:flex">
+                  {showLanguagePicker ? <LanguagesDropdown /> : null}
+                  {showChannelPicker ? <ChannelSwitcher className="min-w-44" /> : null}
+                </div>
+              ) : null}
               <Button
                 onClick={openGlobalSearch}
                 variant="outline"

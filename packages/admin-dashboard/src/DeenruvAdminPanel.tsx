@@ -58,6 +58,8 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
     ...settings,
     ui: {
       ...settings.ui,
+      showChannelPicker: settings?.ui?.showChannelPicker ?? true,
+      showLanguagePicker: settings?.ui?.showLanguagePicker ?? true,
       defaultChannelCode: settings?.ui?.defaultChannelCode || DEFAULT_CHANNEL_CODE,
       defaultLanguageCode: settings?.ui?.defaultLanguageCode || LanguageCode.en,
       defaultTranslationLanguageCode: settings?.ui?.defaultTranslationLanguageCode || LanguageCode.en,

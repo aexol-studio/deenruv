@@ -22,6 +22,14 @@ describe('selectPreferredChannel', () => {
     expect(selectPreferredChannel([channels[0]], undefined, 'missing', '__default_channel__')).toBe(channels[0]);
   });
 
+  it('forces the configured accessible channel over a retained selection', () => {
+    expect(selectPreferredChannel(channels, channels[0], 'configured', '__default_channel__', true)).toBe(channels[2]);
+  });
+
+  it('does not fall back when the forced configured channel is unavailable', () => {
+    expect(selectPreferredChannel(channels, channels[0], 'missing', '__default_channel__', true)).toBeUndefined();
+  });
+
   it('suppresses permissions until they belong to the newly selected channel', () => {
     const snapshots: Array<{ channelId: string; permissions: string[] }> = [];
     let selectedChannelId = 'first';

@@ -17,8 +17,11 @@ export const selectPreferredChannel = (
   retainedChannel: ChannelType | undefined,
   configuredDefaultCode: string | undefined,
   builtInDefaultCode: string,
+  forceConfiguredDefault = false,
 ): ChannelType | undefined =>
-  channels.find((channel) => channel.id === retainedChannel?.id) ??
-  channels.find((channel) => channel.code === configuredDefaultCode) ??
-  channels.find((channel) => channel.code === builtInDefaultCode) ??
-  channels[0];
+  forceConfiguredDefault
+    ? channels.find((channel) => channel.code === configuredDefaultCode)
+    : (channels.find((channel) => channel.id === retainedChannel?.id) ??
+      channels.find((channel) => channel.code === configuredDefaultCode) ??
+      channels.find((channel) => channel.code === builtInDefaultCode) ??
+      channels[0]);

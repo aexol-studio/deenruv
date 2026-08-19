@@ -11,7 +11,7 @@ import {
   useTranslation,
   capitalizeFirstLetter,
 } from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Outlet, useLocation, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import {
@@ -25,7 +25,7 @@ import { Menu } from '@/components';
 import { GlobalSearch } from '@/components/GlobalSearch.js';
 import { ContentAreaSkeleton } from '@/components/ContentAreaSkeleton.js';
 import { DeenruvDeveloperIndicator } from '@/DeenruvDeveloperIndicator.js';
-import { CurrencyCode, LanguageCode, Permission } from '@deenruv/admin-types';
+import { Permission } from '@deenruv/admin-types';
 import { selectPreferredChannel } from '@/access/channel-selection.js';
 import { ErrorPage } from '@/pages/Custom404.js';
 
@@ -181,6 +181,11 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
     if (administratorAccessState !== 'pending' || hasInitializedAdministratorAccess.current) return;
     hasInitializedAdministratorAccess.current = true;
     beginAdministratorAccessInitialization();
+    const uiSettings = window.__DEENRUV_SETTINGS__.ui;
+    if (uiSettings?.showLanguagePicker === false) {
+      setLanguage(uiSettings.defaultLanguageCode);
+      setTranslationLanguage(uiSettings.defaultTranslationLanguageCode);
+    }
     const init = async () => {
       const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
@@ -193,6 +198,15 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         toast.error(t('setup.failedAdmin'));
         return;
       } else {
+        const channelPickerIsHidden = uiSettings?.showChannelPicker === false;
+        const configuredChannelCode = uiSettings?.defaultChannelCode;
+        const failFixedChannelInitialization = () => {
+          failAdministratorAccess();
+          setLoaded(true);
+          toast.error(t('setup.failedAdmin'), {
+            description: `Configured channel "${configuredChannelCode}" is not accessible to this administrator.`,
+          });
+        };
         let administratorChannelId = selectedChannel?.id;
         if ([Permission.ReadChannel].some((p) => roles.some((r) => r.permissions.includes(p)))) {
           const {
@@ -216,9 +230,14 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
           const preferredChannel = selectPreferredChannel(
             allChannels,
             selectedChannel,
-            window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+            configuredChannelCode,
             DEFAULT_CHANNEL_CODE,
+            channelPickerIsHidden,
           );
+          if (channelPickerIsHidden && !preferredChannel) {
+            failFixedChannelInitialization();
+            return;
+          }
           if (preferredChannel && preferredChannel.id !== channel?.id) {
             setSelectedChannel(preferredChannel);
           }
@@ -226,21 +245,27 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         } else {
           const possibleChannels = roles.flatMap((role) => role.channels);
           if (possibleChannels.length > 0) {
-            setSelectedChannel(possibleChannels[0]);
-            administratorChannelId = possibleChannels[0].id;
+            const preferredChannel = channelPickerIsHidden
+              ? selectPreferredChannel(
+                  possibleChannels,
+                  selectedChannel,
+                  configuredChannelCode,
+                  DEFAULT_CHANNEL_CODE,
+                  true,
+                )
+              : possibleChannels[0];
+            if (!preferredChannel) {
+              failFixedChannelInitialization();
+              return;
+            }
+            setSelectedChannel(preferredChannel);
+            administratorChannelId = preferredChannel.id;
+          } else if (channelPickerIsHidden) {
+            failFixedChannelInitialization();
+            return;
           }
         }
         setAdministratorAccess(activeAdministratorResponse.activeAdministrator, administratorChannelId);
-      }
-
-      // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
-      if (window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode) {
-        // window?.__DEENRUV_SETTINGS__.i18n.changeLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
-        // setLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
-      }
-      // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
-      if (window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode) {
-        // setTranslationLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode);
       }
 
       try {

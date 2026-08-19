@@ -24,15 +24,34 @@ export type StorefrontEntityUrlResolver = (
   context: StorefrontEntityUrlContext,
 ) => string | null | undefined;
 
+type ChannelPickerSettings =
+  | { showChannelPicker?: true; defaultChannelCode?: string }
+  | { showChannelPicker: false; defaultChannelCode: string };
+
+type LanguagePickerSettings =
+  | {
+      showLanguagePicker?: true;
+      defaultLanguageCode?: LanguageCode;
+      defaultTranslationLanguageCode?: LanguageCode;
+    }
+  | {
+      showLanguagePicker: false;
+      defaultLanguageCode: LanguageCode;
+      defaultTranslationLanguageCode: LanguageCode;
+    };
+
+type AdminPanelUiCommonSettings = {
+  resolveStorefrontEntityUrl?: StorefrontEntityUrlResolver;
+  extras?: { orderObservableStates?: string[] };
+};
+
+type AdminPanelUiSettings = ChannelPickerSettings &
+  LanguagePickerSettings &
+  AdminPanelUiCommonSettings;
+
 export type DeenruvAdminPanelSettings = {
   api: { uri: string; channelTokenName?: string; authTokenName?: string };
-  ui?: {
-    defaultChannelCode?: string;
-    defaultLanguageCode?: LanguageCode;
-    defaultTranslationLanguageCode?: LanguageCode;
-    resolveStorefrontEntityUrl?: StorefrontEntityUrlResolver;
-    extras?: { orderObservableStates?: string[] };
-  };
+  ui?: AdminPanelUiSettings;
   branding: {
     name: string;
     showAppVersion?: boolean;
@@ -41,8 +60,18 @@ export type DeenruvAdminPanelSettings = {
   };
 };
 
-export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
+export type DeenruvSettingsWindowType = Omit<
+  DeenruvAdminPanelSettings,
+  "api" | "ui"
+> & {
   appVersion: string;
   api: Required<DeenruvAdminPanelSettings["api"]>;
+  ui?: AdminPanelUiCommonSettings & {
+    showChannelPicker: boolean;
+    showLanguagePicker: boolean;
+    defaultChannelCode: string;
+    defaultLanguageCode: LanguageCode;
+    defaultTranslationLanguageCode: LanguageCode;
+  };
   i18n: any;
 };
