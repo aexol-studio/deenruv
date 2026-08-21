@@ -1,4 +1,4 @@
-import { Fragment, type ReactElement, type ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, type Key, type ReactElement, type ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import { Routes } from '@deenruv/react-ui-devkit';
 import { Navigate, type RouteObject } from 'react-router';
 import type { AdminRouteDefinition } from './types.js';
@@ -14,22 +14,24 @@ type CreateAdminRouterRoutesInput = {
 
 type CommittedRouterOwnerProps<Router extends { dispose(): void }> = {
   createRouter: () => Router;
+  /** Remounts router consumers only when their route-table state cannot be reused. */
+  remountKey: Key;
   children: (router: Router) => ReactNode;
 };
 
 export const CommittedRouterOwner = <Router extends { dispose(): void }>({
   createRouter,
+  remountKey,
   children,
 }: CommittedRouterOwnerProps<Router>) => {
-  const [ownedRouter, setOwnedRouter] = useState<{ router: Router; generation: number }>();
+  const [ownedRouter, setOwnedRouter] = useState<{ router: Router; remountKey: Key }>();
   const activeRouter = useRef<Router | undefined>(undefined);
-  const routerGeneration = useRef(0);
   const disposedRouters = useRef(new WeakSet<object>());
 
   useLayoutEffect(() => {
     const nextRouter = createRouter();
     activeRouter.current = nextRouter;
-    setOwnedRouter({ router: nextRouter, generation: ++routerGeneration.current });
+    setOwnedRouter({ router: nextRouter, remountKey });
 
     return () => {
       if (activeRouter.current === nextRouter) {
@@ -42,10 +44,10 @@ export const CommittedRouterOwner = <Router extends { dispose(): void }>({
         }
       });
     };
-  }, [createRouter]);
+  }, [createRouter, remountKey]);
 
   return ownedRouter && activeRouter.current === ownedRouter.router ? (
-    <Fragment key={ownedRouter.generation}>{children(ownedRouter.router)}</Fragment>
+    <Fragment key={ownedRouter.remountKey}>{children(ownedRouter.router)}</Fragment>
   ) : null;
 };
 

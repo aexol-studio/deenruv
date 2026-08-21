@@ -109,6 +109,10 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
     [administratorAccessState, pluginRoutes, userPermissions],
   );
   const defaultRoute = administratorAccessState === 'ready' ? getDefaultAdminRoute(permittedRoutes) : undefined;
+  const routerRemountKey = useMemo(
+    () => JSON.stringify([administratorAccessState, permittedRoutes.map(({ id }) => id)]),
+    [administratorAccessState, permittedRoutes],
+  );
   const createRouter = useCallback(
     () =>
       createBrowserRouter(
@@ -146,7 +150,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
                     pluginsStore.notifications,
                   )}
                 >
-                  <CommittedRouterOwner createRouter={createRouter}>
+                  <CommittedRouterOwner createRouter={createRouter} remountKey={routerRemountKey}>
                     {(router) => <RouterProvider router={router} />}
                   </CommittedRouterOwner>
                 </NotificationProvider>
