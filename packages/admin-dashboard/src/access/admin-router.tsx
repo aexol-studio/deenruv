@@ -1,4 +1,4 @@
-import { type ReactElement, type ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, type ReactElement, type ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import { Routes } from '@deenruv/react-ui-devkit';
 import { Navigate, type RouteObject } from 'react-router';
 import type { AdminRouteDefinition } from './types.js';
@@ -21,14 +21,15 @@ export const CommittedRouterOwner = <Router extends { dispose(): void }>({
   createRouter,
   children,
 }: CommittedRouterOwnerProps<Router>) => {
-  const [router, setRouter] = useState<Router>();
+  const [ownedRouter, setOwnedRouter] = useState<{ router: Router; generation: number }>();
   const activeRouter = useRef<Router | undefined>(undefined);
+  const routerGeneration = useRef(0);
   const disposedRouters = useRef(new WeakSet<object>());
 
   useLayoutEffect(() => {
     const nextRouter = createRouter();
     activeRouter.current = nextRouter;
-    setRouter(nextRouter);
+    setOwnedRouter({ router: nextRouter, generation: ++routerGeneration.current });
 
     return () => {
       if (activeRouter.current === nextRouter) {
@@ -43,7 +44,9 @@ export const CommittedRouterOwner = <Router extends { dispose(): void }>({
     };
   }, [createRouter]);
 
-  return router && activeRouter.current === router ? children(router) : null;
+  return ownedRouter && activeRouter.current === ownedRouter.router ? (
+    <Fragment key={ownedRouter.generation}>{children(ownedRouter.router)}</Fragment>
+  ) : null;
 };
 
 export const createAdminRouterRoutes = ({
