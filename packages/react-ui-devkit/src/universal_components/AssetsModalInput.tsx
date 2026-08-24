@@ -388,7 +388,7 @@ export function AssetsModalInput({
                       ) : null}
                       <div className="aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
                         <ImageWithPreview
-                          imageClassName="size-full object-cover transition-transform group-hover:scale-[1.02]"
+                          imageClassName="size-full object-contain transition-transform group-hover:scale-[1.02]"
                           src={asset.preview}
                           alt={asset.name}
                         />
