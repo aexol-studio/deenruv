@@ -325,12 +325,21 @@ export function AssetsModalInput({
           <div className="min-h-0 w-full flex-1 overflow-y-auto pr-1">
             {isPending ? (
               <div
-                className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+                className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
                 role="status"
                 aria-label={t("asset.loading")}
               >
                 {Array.from({ length: 12 }).map((_, index) => (
-                  <Skeleton className="aspect-square rounded-md" key={index} />
+                  <div
+                    className="overflow-hidden rounded-md border"
+                    key={index}
+                  >
+                    <Skeleton className="aspect-[4/3] w-full rounded-none" />
+                    <div className="space-y-2 border-t p-2">
+                      <Skeleton className="h-3 w-3/4 rounded-sm" />
+                      <Skeleton className="h-2.5 w-full rounded-sm" />
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : error ? (
@@ -349,7 +358,7 @@ export function AssetsModalInput({
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {assets.map((asset) => {
                   const metadata = getAssetMetadata(asset);
                   const selected = draftAsset?.id === asset.id;
@@ -361,7 +370,7 @@ export function AssetsModalInput({
                       aria-pressed={selected}
                       aria-describedby={metadataId}
                       className={cn(
-                        "group relative flex aspect-square min-w-0 flex-col overflow-hidden rounded-md border bg-card text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        "group relative flex min-w-0 flex-col overflow-hidden rounded-md border bg-card text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         selected
                           ? "border-primary ring-2 ring-primary"
                           : "hover:border-primary/60",
@@ -377,7 +386,7 @@ export function AssetsModalInput({
                           <span className="sr-only">{t("asset.selected")}</span>
                         </span>
                       ) : null}
-                      <div className="min-h-0 flex-1 overflow-hidden bg-muted">
+                      <div className="aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
                         <ImageWithPreview
                           imageClassName="size-full object-cover transition-transform group-hover:scale-[1.02]"
                           src={asset.preview}
