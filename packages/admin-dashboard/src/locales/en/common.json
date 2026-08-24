@@ -972,13 +972,22 @@
   "asset": {
     "dialogTitle": "Select resource",
     "dialogButton": "Select resource",
+    "pickerDescription": "Choose one resource. Your selection is applied only after confirmation.",
+    "searchLabel": "Search resources by filename",
     "dialogSearchPlaceholder": "Searching for resources by name",
     "tags": "Filter by tag",
+    "removeTag": "Remove {{value}} filter",
     "perPageValue": "{{value}} per page",
     "confirmButton": "Add resource",
     "uploadButton": "Upload from disk",
     "cancel": "Cancel",
     "noImages": "No resources for a specific search",
+    "fetchError": "Resources could not be loaded. Try again.",
+    "loading": "Loading resources",
+    "selected": "Selected",
+    "resultRange": "{{from}}–{{to}} of {{total}}",
+    "paginationLabel": "Resource pages",
+    "actionsLabel": "Resource selection controls",
     "description": "Uploading and managing resources that can be used in content"
   },
   "product": {

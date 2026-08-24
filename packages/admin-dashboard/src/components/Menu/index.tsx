@@ -5,8 +5,8 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
-  buildURL,
   Button,
   cn,
   dashToCamelCase,
@@ -30,9 +30,10 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { MenuIcon, Moon, PanelLeftClose, PanelLeftOpen, SearchIcon, Slash, Sun, SunMoon } from 'lucide-react';
 
-import { canAccessAdminItem, useAdminAccess } from '@/access/index.js';
+import { adminNavigationGroups, canAccessAdminItem, useAdminAccess } from '@/access/index.js';
 
 import { ChannelSwitcher } from './ChannelSwitcher.js';
+import { buildMenuBreadcrumbs } from './Breadcrumbs.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
 import { Notifications } from './Notifications.js';
 import { SidebarContent } from './SidebarContent.js';
@@ -48,11 +49,12 @@ const removableCrumbs = ['draft', 'admin-ui'];
 
 export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { t } = useTranslation('common');
+  const { t: pluginTranslation } = useTranslation();
   const navigate = useNavigate();
   const matches = useMatches();
   const openGlobalSearch = useGlobalSearch((state) => state.open);
-  const { topNavigationComponents } = usePluginStore();
-  const { defaultRoute } = useAdminAccess();
+  const { navMenuData, topNavigationComponents } = usePluginStore();
+  const { defaultRoute, routes } = useAdminAccess();
   const userPermissions = useServer((state) => state.userPermissions);
   const { theme, setTheme } = useSettings();
   const showChannelPicker = window.__DEENRUV_SETTINGS__.ui?.showChannelPicker !== false;
@@ -71,16 +73,46 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const allowedTopNavigationComponents = (
     topNavigationComponents as PluginTopNavigationComponent[] | undefined
   )?.filter((entry) => canAccessAdminItem({ item: entry.access, userPermissions }));
-  const crumbs = useMemo(
-    () =>
-      matches
-        .filter((match) => !!match.pathname)
-        .map((match) => match.pathname)
-        .flatMap((path) => path.split('/'))
-        .filter(Boolean)
-        .filter((crumb) => !removableCrumbs.includes(crumb)),
-    [matches],
-  );
+  const pathname = matches.at(-1)?.pathname || '';
+  const crumbSegments = pathname.split('/').filter(Boolean);
+  const pluginT = (translation: string): string => {
+    const [namespace = '', ...keyParts] = translation.split('.');
+    return pluginTranslation(keyParts.join('.'), { ns: namespace });
+  };
+  const crumbs = useMemo(() => {
+    const groups = [
+      ...adminNavigationGroups.map((group) => ({
+        id: group.id,
+        label: t(`menuGroups.${group.labelKey}`),
+        permitted: true,
+      })),
+      ...navMenuData.groups.map((group) => ({
+        id: group.id,
+        label: pluginT(group.labelId),
+        permitted: canAccessAdminItem({ item: group.access, userPermissions }),
+      })),
+    ];
+    const links = navMenuData.links.map((link) => ({
+      href: link.href,
+      groupId: link.groupId,
+      label: pluginT(link.labelId),
+      permitted: canAccessAdminItem({ item: link.access, userPermissions }),
+    }));
+    const extensionsRoute = routes.find((route) => route.id === 'extensions');
+    return buildMenuBreadcrumbs({
+      pathname,
+      groups,
+      links,
+      extensions: {
+        label: t('menu.extensions'),
+        href: extensionsRoute?.path || '/admin-ui/extensions',
+        permitted: canAccessAdminItem({ item: extensionsRoute, userPermissions }),
+      },
+      fallbackLabels: crumbSegments.map((crumb) =>
+        removableCrumbs.includes(crumb) ? '' : t(`menu.${dashToCamelCase(crumb)}`, { defaultValue: crumb }),
+      ),
+    });
+  }, [navMenuData.groups, navMenuData.links, pathname, pluginTranslation, routes, t, userPermissions]);
   const navigateHome = () => navigate(defaultRoutePath, { viewTransition: true });
 
   return (
@@ -155,15 +187,24 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 <BreadcrumbList className="flex-nowrap overflow-hidden">
                   {crumbs.length ? (
                     crumbs.map((crumb, index) => {
-                      const path = crumbs.slice(0, index + 1);
                       return (
-                        <React.Fragment key={`${crumb}-${index}`}>
+                        <React.Fragment key={`${crumb.label}-${index}`}>
                           <BreadcrumbItem className="min-w-0">
-                            <NavLink to={buildURL(path)} viewTransition className="truncate">
-                              <span className="text-sm font-semibold tracking-tight text-foreground">
-                                {index === 0 ? t(`menu.${dashToCamelCase(crumb)}`) : crumb}
+                            {crumb.current ? (
+                              <BreadcrumbPage className="truncate text-sm font-semibold tracking-tight">
+                                {crumb.label}
+                              </BreadcrumbPage>
+                            ) : crumb.href ? (
+                              <NavLink to={crumb.href} viewTransition className="truncate">
+                                <span className="text-sm font-semibold tracking-tight text-foreground">
+                                  {crumb.label}
+                                </span>
+                              </NavLink>
+                            ) : (
+                              <span className="truncate text-sm font-semibold tracking-tight text-muted-foreground">
+                                {crumb.label}
                               </span>
-                            </NavLink>
+                            )}
                           </BreadcrumbItem>
                           {index !== crumbs.length - 1 && (
                             <BreadcrumbSeparator>
@@ -175,15 +216,13 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     })
                   ) : (
                     <BreadcrumbItem>
-                      <NavLink to={defaultRoutePath} viewTransition>
-                        <span className="text-lg font-semibold tracking-tight text-foreground">
-                          {t(
-                            defaultRouteMenuKey === 'dashboard'
-                              ? 'dashboard'
-                              : `menu.${dashToCamelCase(defaultRouteMenuKey)}`,
-                          )}
-                        </span>
-                      </NavLink>
+                      <BreadcrumbPage className="text-lg font-semibold tracking-tight">
+                        {t(
+                          defaultRouteMenuKey === 'dashboard'
+                            ? 'dashboard'
+                            : `menu.${dashToCamelCase(defaultRouteMenuKey)}`,
+                        )}
+                      </BreadcrumbPage>
                     </BreadcrumbItem>
                   )}
                 </BreadcrumbList>

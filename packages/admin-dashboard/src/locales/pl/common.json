@@ -971,13 +971,22 @@
   "asset": {
     "dialogTitle": "Wybierz zasób",
     "dialogButton": "Wybierz zasób",
+    "pickerDescription": "Wybierz jeden zasób. Wybór zostanie zastosowany dopiero po potwierdzeniu.",
+    "searchLabel": "Szukaj zasobów według nazwy pliku",
     "dialogSearchPlaceholder": "Wyszukiwanie zasobów według nazwy",
     "tags": "Filtruj według tagu",
+    "removeTag": "Usuń filtr {{value}}",
     "perPageValue": "{{value}} na stronę",
     "confirmButton": "Dodaj zasób",
     "uploadButton": "Prześlij z dysku",
     "cancel": "Anuluj",
     "noImages": "Brak zasobów dla określonego wyszukiwania",
+    "fetchError": "Nie udało się załadować zasobów. Spróbuj ponownie.",
+    "loading": "Ładowanie zasobów",
+    "selected": "Wybrano",
+    "resultRange": "{{from}}–{{to}} z {{total}}",
+    "paginationLabel": "Strony zasobów",
+    "actionsLabel": "Elementy sterujące wyborem zasobu",
     "description": "Przesyłanie i zarządzanie zasobami, które mogą być używane w treści"
   },
   "product": {
