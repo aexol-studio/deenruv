@@ -11,21 +11,33 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDate(
   date: Date | string | number,
-  opts: FormatDateOptions = {}
+  opts: FormatDateOptions = {},
 ) {
   const browserLocale =
-    typeof navigator !== "undefined" ? navigator.language : "en-US";
+    typeof globalThis.navigator !== "undefined"
+      ? globalThis.navigator.language
+      : "en-US";
   if (!date) return "-";
   try {
-    const result = new Intl.DateTimeFormat(opts.locale ?? browserLocale, {
-      month: opts.month ?? "long",
-      day: opts.day ?? "numeric",
-      year: opts.year ?? "numeric",
-      ...opts,
-    }).format(new Date(date));
+    const { locale, ...formatOptions } = opts;
+    const hasStyleOption =
+      formatOptions.dateStyle !== undefined ||
+      formatOptions.timeStyle !== undefined;
+    const resolvedOptions = hasStyleOption
+      ? formatOptions
+      : {
+          month: formatOptions.month ?? "long",
+          day: formatOptions.day ?? "numeric",
+          year: formatOptions.year ?? "numeric",
+          ...formatOptions,
+        };
+    const result = new Intl.DateTimeFormat(
+      locale ?? browserLocale,
+      resolvedOptions,
+    ).format(new Date(date));
     return result;
   } catch (e) {
-    console.error("Error formatting date:", e);
+    globalThis.console.error("Error formatting date:", e);
     if (typeof date === "string") {
       return date;
     }
