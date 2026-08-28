@@ -10,6 +10,7 @@ import {
   Button,
   DropdownMenuCheckboxItem,
   useTranslation,
+  translatePluginLabel,
 } from '@deenruv/react-ui-devkit';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -40,7 +41,7 @@ export const Dashboard = () => {
                     checked={widget.visible}
                     onCheckedChange={(checked) => setShowWidget(widget.id, checked)}
                   >
-                    {widget.name}
+                    {translatePluginLabel(widget, widget.name, t)}
                   </DropdownMenuCheckboxItem>
                 ))}
               </DropdownMenuGroup>

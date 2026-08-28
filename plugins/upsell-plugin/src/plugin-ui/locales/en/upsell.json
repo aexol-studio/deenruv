@@ -1,0 +1,22 @@
+{
+  "tab": {
+    "extras": "Extras"
+  },
+  "title": "Upsell products",
+  "loading": "Loading upsell products",
+  "noImage": "No image",
+  "removeAria": "Remove upsell product",
+  "viewProduct": "View product",
+  "empty": {
+    "title": "No upsell products",
+    "description": "Add upsell products to increase average order value"
+  },
+  "toast": {
+    "noProduct": "No product selected",
+    "selectionCanceled": "Upsell product selection canceled",
+    "removed": "Upsell product removed",
+    "removeFailed": "Failed to remove upsell product",
+    "updated": "Upsell products updated successfully",
+    "updateFailed": "Failed to update upsell products"
+  }
+}

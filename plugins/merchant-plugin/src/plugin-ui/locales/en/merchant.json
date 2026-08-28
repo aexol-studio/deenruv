@@ -3,5 +3,64 @@
     "googleMerchant": "Google Merchant",
     "facebookCommerce": "Facebook Commerce",
     "merchantPlatforms": "Merchant Platforms"
+  },
+  "common": {
+    "brand": "Brand",
+    "save": "Save",
+    "loading": "Loading platform settings",
+    "autoUpdate": "Automatically update when a product changes",
+    "updateAllOnSave": "Update all products when saving",
+    "connectionStatus": "Connection status",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "productsCount": "Product count",
+    "removeOldItems": "Remove old items",
+    "settingsSaved": "Settings saved successfully",
+    "settingsSaveFailed": "Failed to save settings",
+    "settingsSaveFailedWithError": "Failed to save settings: {{message}}",
+    "settingsLoadFailed": "Failed to load platform settings",
+    "unknownError": "Unknown error",
+    "oldItemsRemoved": "Old items removed successfully",
+    "oldItemsRemoveFailed": "Failed to remove old items"
+  },
+  "google": {
+    "title": "Google Merchant",
+    "merchantId": "Merchant ID",
+    "dataSource": "Data source",
+    "contentLanguage": "Content language",
+    "feedLabel": "Feed label",
+    "credentials": "Google account credentials",
+    "invalidCredentialsFile": "The credentials file is not valid JSON",
+    "credentialsReadFailed": "Failed to read the credentials file",
+    "diagnostics": {
+      "title": "Connection diagnostics",
+      "status": "Diagnostic status",
+      "unknown": "UNKNOWN",
+      "dataSourceVerified": "Data source verified",
+      "latency": "Latency",
+      "disapprovedProducts": "Disapproved products",
+      "productIssues": "Product issues",
+      "yes": "yes",
+      "no": "no",
+      "test": "Test connection",
+      "completed": "Connection diagnostic completed"
+    },
+    "sync": {
+      "all": "Synchronize all",
+      "queued": "Full synchronization queued",
+      "queueFailed": "Failed to queue full synchronization",
+      "cleanupQueued": "Orphan cleanup queued",
+      "cleanupQueueFailed": "Failed to queue orphan cleanup",
+      "recent": "Recent synchronizations",
+      "empty": "No synchronization history",
+      "successful": "successful",
+      "failed": "failed",
+      "attempts": "attempts"
+    }
+  },
+  "facebook": {
+    "title": "Facebook Commerce",
+    "catalogId": "Catalog ID",
+    "accessToken": "Facebook access token"
   }
 }

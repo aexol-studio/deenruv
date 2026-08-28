@@ -8,7 +8,7 @@ import {
 import { ChevronLeft, EllipsisVerticalIcon, Trash2 } from "lucide-react";
 import { ModelTypes } from "@deenruv/admin-types";
 import { cn } from "@/lib";
-import { usePluginStore } from "@/plugins";
+import { translatePluginLabel, usePluginStore } from "@/plugins";
 import { DetailKeys } from "@/types";
 import {
   DropdownMenu,
@@ -173,6 +173,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
 }: DetailViewProps<LOCATION>) => {
   const [searchParams] = useSearchParams();
   const { getDetailViewTabs, getDetailViewActions } = usePluginStore();
+  const { t: translatePluginTab } = useTranslation();
   const form = useDeenruvForm(
     configToSchemaAndDefaults(
       main.form.config as Record<
@@ -191,10 +192,11 @@ export const DetailView = <LOCATION extends DetailKeys>({
     return (
       getDetailViewTabs(locationId)?.map(({ component, ...rest }) => ({
         ...rest,
+        label: translatePluginLabel(rest, rest.label, translatePluginTab),
         component: <React.Fragment>{component}</React.Fragment>,
       })) || []
     );
-  }, [locationId]);
+  }, [locationId, translatePluginTab]);
 
   const actions = useMemo(() => getDetailViewActions(locationId), [locationId]);
   const permissionsObj = useMemo(

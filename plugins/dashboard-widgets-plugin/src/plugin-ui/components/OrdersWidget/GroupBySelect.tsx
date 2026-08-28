@@ -5,10 +5,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React from "react";
 import { GroupBy } from "../../types";
-import { useTranslation } from "react-i18next";
 
 interface GroupBySelectProps {
   value?: GroupBy;
@@ -19,9 +19,7 @@ export const GroupBySelect: React.FC<GroupBySelectProps> = ({
   changeGroupBy,
   value,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   return (
     <Select
       value={value}

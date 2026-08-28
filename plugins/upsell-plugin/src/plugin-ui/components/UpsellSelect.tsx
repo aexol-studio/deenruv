@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   buttonVariants,
   Card,
   CardContent,
@@ -12,29 +11,26 @@ import {
   useDetailView,
   useLazyQuery,
   useMutation,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { QUERIES } from "../graphql/queries";
 import { MUTATIONS } from "../graphql/mutations";
 import { toast } from "sonner";
 import { Loader2, PlusCircle, XIcon } from "lucide-react";
+import { translationNS } from "../translation-ns";
 
 export const UpsellSelect = () => {
+  const { t } = useTranslation(translationNS);
   const { id } = useDetailView("products-detail-view");
-  const navigate = useNavigate();
   const [run, { data, loading }] = useLazyQuery(QUERIES["GET_UPSELLS"]);
-  const [createUpsell, { loading: createLoading }] = useMutation(
-    MUTATIONS["CREATE_UPSELL"]
-  );
-  const [deleteUpsell, { loading: deleteLoading }] = useMutation(
-    MUTATIONS["DELETE_UPSELL"]
-  );
+  const [createUpsell] = useMutation(MUTATIONS["CREATE_UPSELL"]);
+  const [deleteUpsell] = useMutation(MUTATIONS["DELETE_UPSELL"]);
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
 
   const onSingleDelete = async (upsellProductID: string) => {
     if (!id) {
-      toast.error("No product selected");
+      toast.error(t("toast.noProduct"));
       return;
     }
 
@@ -45,9 +41,9 @@ export const UpsellSelect = () => {
         input: [{ baseProductID: id, upsellProductID }],
       });
       run({ productID: id });
-      toast.success("Upsell product removed");
+      toast.success(t("toast.removed"));
     } catch {
-      toast.error("Failed to delete upsell product");
+      toast.error(t("toast.removeFailed"));
     } finally {
       setDeletingIds((prev) => prev.filter((id) => id !== upsellProductID));
     }
@@ -61,18 +57,18 @@ export const UpsellSelect = () => {
     <Card className="border border-border shadow-sm">
       <CardHeader className="border-b border-border bg-muted/30">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Upsell Products</h3>
+          <h3 className="text-lg font-semibold">{t("title")}</h3>
           <DialogProductPicker
             initialValue={data?.upsellProducts.map((p) => p.id) || []}
             mode="product"
             multiple
             onSubmit={async (result) => {
               if (!id) {
-                toast.error("No product selected");
+                toast.error(t("toast.noProduct"));
                 return;
               }
               if (!result) {
-                toast.info("Canceled select upsell products");
+                toast.info(t("toast.selectionCanceled"));
                 return;
               }
               const selectedIds = result.map((p) => p.productId);
@@ -80,7 +76,7 @@ export const UpsellSelect = () => {
                 .filter((p) => !selectedIds.includes(p.id))
                 .map((p) => p.id);
               const toAdd = selectedIds.filter((id) =>
-                data?.upsellProducts.every((p) => p.id !== id)
+                data?.upsellProducts.every((p) => p.id !== id),
               );
               try {
                 if (toDelete?.length) {
@@ -99,9 +95,9 @@ export const UpsellSelect = () => {
                     })),
                   });
                 }
-                toast.success("Upsell products updated successfully");
+                toast.success(t("toast.updated"));
               } catch {
-                toast.error("Failed to update upsell products");
+                toast.error(t("toast.updateFailed"));
               }
               run({ productID: id });
             }}
@@ -110,7 +106,11 @@ export const UpsellSelect = () => {
       </CardHeader>
       <CardContent className="p-6">
         {loading ? (
-          <div className="flex h-[400px] items-center justify-center">
+          <div
+            className="flex h-[400px] items-center justify-center"
+            role="status"
+            aria-label={t("loading")}
+          >
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : (
@@ -133,14 +133,14 @@ export const UpsellSelect = () => {
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-muted/30 text-muted-foreground">
-                          No image
+                          {t("noImage")}
                         </div>
                       )}
                       <button
                         className="absolute right-2 top-2 rounded-full bg-background/80 p-1.5 text-destructive opacity-0 shadow-sm transition-opacity hover:bg-destructive hover:text-destructive-foreground focus:opacity-100 group-hover:opacity-100"
                         onClick={() => onSingleDelete(product.id)}
                         disabled={deletingIds.includes(product.id)}
-                        aria-label="Remove upsell product"
+                        aria-label={t("removeAria")}
                       >
                         {deletingIds.includes(product.id) ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -167,7 +167,7 @@ export const UpsellSelect = () => {
                           })}
                           rel="noreferrer"
                         >
-                          View Product
+                          {t("viewProduct")}
                         </a>
                       </div>
                     </div>
@@ -179,9 +179,9 @@ export const UpsellSelect = () => {
                 <div className="rounded-full bg-muted/30 p-3">
                   <PlusCircle className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h3 className="mt-4 text-lg font-medium">No upsell products</h3>
+                <h3 className="mt-4 text-lg font-medium">{t("empty.title")}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Add upsell products to increase average order value
+                  {t("empty.description")}
                 </p>
               </div>
             )}

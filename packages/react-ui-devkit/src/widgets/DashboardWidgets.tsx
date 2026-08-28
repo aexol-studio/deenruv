@@ -37,6 +37,8 @@ import { useShallow } from "zustand/react/shallow";
 import { LanguageCode } from "@deenruv/admin-types";
 import { DeenruvUIPlugin, Widget } from "@/plugins/types.js";
 import { WidgetsEmptyState } from "@/widgets/WidgetsEmptyState.js";
+import { useTranslation } from "@/hooks";
+import { translatePluginLabel } from "@/plugins";
 
 const WidgetItemContext = createContext<{
   size: { width: number; height: number };
@@ -92,6 +94,8 @@ export const useWidgetItem = () => {
 const WidgetItem: React.FC<
   PropsWithChildren<{ widget: Omit<Widget, "component"> }>
 > = ({ widget, children }) => {
+  const { t } = useTranslation();
+  const widgetLabel = translatePluginLabel(widget, widget.name, t);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: widget.id,
@@ -124,7 +128,7 @@ const WidgetItem: React.FC<
               <DropdownMenuContent className="w-56">
                 <div className="flex items-center justify-between">
                   <DropdownMenuLabel className="text-xs">
-                    {widget.name}
+                    {widgetLabel}
                   </DropdownMenuLabel>
                   <DropdownMenuLabel>
                     <span className="whitespace-nowrap text-xs text-gray-500">

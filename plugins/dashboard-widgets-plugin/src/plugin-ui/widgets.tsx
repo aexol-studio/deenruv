@@ -5,11 +5,11 @@ import {
   CategoriesChartWidget,
   LatestOrdersWidget,
 } from "./components";
-
 export const widgets = [
   {
     id: "2",
     name: "Orders Widget",
+    labelId: "widgets.orders",
     component: <OrdersWidget />,
     visible: true,
     size: { width: 12, height: 8 },
@@ -18,6 +18,7 @@ export const widgets = [
   {
     id: "3",
     name: "Products Widget",
+    labelId: "widgets.products",
     component: <ProductsChartWidget />,
     visible: true,
     size: { width: 6, height: 10 },
@@ -26,6 +27,7 @@ export const widgets = [
   {
     id: "4",
     name: "Categories Widget",
+    labelId: "widgets.categories",
     component: <CategoriesChartWidget />,
     visible: true,
     size: { width: 6, height: 10 },
@@ -34,6 +36,7 @@ export const widgets = [
   {
     id: "5",
     name: "Latest Orders Widget",
+    labelId: "widgets.latestOrders",
     component: <LatestOrdersWidget />,
     visible: true,
     size: { width: 6, height: 10 },

@@ -7,6 +7,7 @@ import {
   useMutation,
   Checkbox,
   Button,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import {
   getMerchantPlatformInfo,
@@ -17,8 +18,10 @@ import {
   removeOrphanItems,
 } from "../graphql/mutations";
 import { toast } from "sonner";
+import { translationNS } from "../translation-ns.js";
 
 export const FacebookPage = () => {
+  const { t } = useTranslation(translationNS);
   const [fetchMerchantPlatformSettings] = useLazyQuery(
     getMerchantPlatformSettings,
   );
@@ -31,6 +34,7 @@ export const FacebookPage = () => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [settingsForm, setSettingsForm] = useState({
     brand: "",
     merchantId: "",
@@ -42,6 +46,7 @@ export const FacebookPage = () => {
   const refetch = async () => {
     try {
       setIsLoading(true);
+      setLoadError(false);
       const [settingsData, infoData] = await Promise.all([
         fetchMerchantPlatformSettings({ platform: "facebook" }),
         fetchMerchantPlatformInfo({ platform: "facebook" }),
@@ -84,6 +89,7 @@ export const FacebookPage = () => {
       setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setLoadError(true);
       setIsLoading(false);
     }
   };
@@ -105,14 +111,19 @@ export const FacebookPage = () => {
         },
       });
       if (saveMerchantPlatformSettings) {
-        toast.success("Settings saved successfully");
+        toast.success(t("common.settingsSaved"));
         refetch();
       } else {
-        toast.error("Failed to save settings");
+        toast.error(t("common.settingsSaveFailed"));
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save settings");
+      toast.error(
+        t("common.settingsSaveFailedWithError", {
+          message:
+            error instanceof Error ? error.message : t("common.unknownError"),
+        }),
+      );
     }
   };
 
@@ -124,6 +135,8 @@ export const FacebookPage = () => {
       >
         {isLoading && (
           <div
+            role="status"
+            aria-label={t("common.loading")}
             style={{
               position: "absolute",
               top: 0,
@@ -149,11 +162,20 @@ export const FacebookPage = () => {
               className="spinner"
             />
           </div>
-        )}{" "}
+        )}
+        <h2 className="mb-4 text-xl font-semibold">{t("facebook.title")}</h2>
+        {loadError ? (
+          <div
+            className="mb-4 rounded border border-red-400 p-3 text-red-700"
+            role="alert"
+          >
+            {t("common.settingsLoadFailed")}
+          </div>
+        ) : null}
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           <div className="flex justify-between gap-4">
             <div className="w-full flex flex-col gap-2">
-              <Label>Brand</Label>
+              <Label>{t("common.brand")}</Label>
               <Input
                 className="w-full"
                 value={settingsForm.brand}
@@ -163,7 +185,7 @@ export const FacebookPage = () => {
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <Label>Catalog ID</Label>
+              <Label>{t("facebook.catalogId")}</Label>
               <Input
                 className="w-full"
                 value={settingsForm.merchantId}
@@ -178,7 +200,7 @@ export const FacebookPage = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
-              <Label>Facebook Access Token</Label>
+              <Label>{t("facebook.accessToken")}</Label>
               <Input
                 className="w-full"
                 value={settingsForm.credentials}
@@ -202,7 +224,7 @@ export const FacebookPage = () => {
                 }
               />
               <Label htmlFor="facebook-account-credentials">
-                Auto update on Product's change
+                {t("common.autoUpdate")}
               </Label>
             </div>
           </div>
@@ -210,7 +232,7 @@ export const FacebookPage = () => {
             <div className="flex items-center gap-4">
               <div className="flex gap-2">
                 <Label htmlFor="auto-update-on-products-change">
-                  Update ALL products with saving
+                  {t("common.updateAllOnSave")}
                 </Label>
                 <Checkbox
                   id="auto-update-on-products-change"
@@ -223,33 +245,33 @@ export const FacebookPage = () => {
                   }
                 />
               </div>
-              <Button>Save</Button>
+              <Button>{t("common.save")}</Button>
             </div>
           </div>
         </form>
         <div className="flex gap-2">
-          <span>Connection status</span>
-          {serviceInfo.connectionStatus ? <div>💚</div> : <div>💔</div>}
+          <span>{t("common.connectionStatus")}</span>
+          <strong>
+            {serviceInfo.connectionStatus
+              ? t("common.connected")
+              : t("common.disconnected")}
+          </strong>
         </div>
-        {/* <div className="flex gap-2">
-          <span>Products count</span>
-          <span>{serviceInfo.productsCount}</span>
-        </div> */}
         {serviceInfo.connectionStatus ? (
           <div className="mt-8">
             <Button
               onClick={async () => {
                 try {
                   await removeOldItems({ platform: "facebook" });
-                  toast.success("Old items removed successfully");
+                  toast.success(t("common.oldItemsRemoved"));
                   refetch();
                 } catch (error) {
                   console.error(error);
-                  toast.error("Failed to remove old items");
+                  toast.error(t("common.oldItemsRemoveFailed"));
                 }
               }}
             >
-              Remove old items
+              {t("common.removeOldItems")}
             </Button>
           </div>
         ) : null}

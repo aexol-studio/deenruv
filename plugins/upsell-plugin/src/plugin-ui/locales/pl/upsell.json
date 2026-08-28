@@ -1,0 +1,22 @@
+{
+  "tab": {
+    "extras": "Dodatki"
+  },
+  "title": "Produkty upsell",
+  "loading": "Ładowanie produktów upsell",
+  "noImage": "Brak zdjęcia",
+  "removeAria": "Usuń produkt upsell",
+  "viewProduct": "Zobacz produkt",
+  "empty": {
+    "title": "Brak produktów upsell",
+    "description": "Dodaj produkty upsell, aby zwiększyć średnią wartość zamówienia"
+  },
+  "toast": {
+    "noProduct": "Nie wybrano produktu",
+    "selectionCanceled": "Anulowano wybór produktów upsell",
+    "removed": "Produkt upsell został usunięty",
+    "removeFailed": "Nie udało się usunąć produktu upsell",
+    "updated": "Produkty upsell zostały zaktualizowane",
+    "updateFailed": "Nie udało się zaktualizować produktów upsell"
+  }
+}

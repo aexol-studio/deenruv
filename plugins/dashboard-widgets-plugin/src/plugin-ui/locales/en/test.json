@@ -1,7 +1,6 @@
 {
   "metrics": "Metrics",
   "averageOrderValue": "Average order value",
-  "averageOrdersValue": "Average order value",
   "bestsellers": "Bestsellers",
   "categories": "Popular categories",
   "showAll": "All",
@@ -26,7 +25,7 @@
   "thisMonth": "This month",
   "lastMonth": "Last month",
   "thisYear": "This year",
-  "LastYear": "Last year",
+  "lastYear": "Last year",
   "gross": "Gross",
   "net": "Net",
   "firstYearQuarterInterval": "I quarter",
@@ -67,5 +66,11 @@
   "byDay": "Group by day",
   "byWeek": "Group by week",
   "byMonth": "Group by month",
-  "byQuarter": "Group by quarter"
+  "byQuarter": "Group by quarter",
+  "widgets": {
+    "orders": "Orders Widget",
+    "products": "Products Widget",
+    "categories": "Categories Widget",
+    "latestOrders": "Latest Orders Widget"
+  }
 }

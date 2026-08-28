@@ -1,6 +1,4 @@
-import { Card, CardContent } from "@deenruv/react-ui-devkit";
-
-import { useTranslation } from "react-i18next";
+import { Card, CardContent, useTranslation } from "@deenruv/react-ui-devkit";
 import { TooltipProps } from "recharts";
 import {
   NameType,
@@ -16,9 +14,7 @@ export const CustomBarChartTooltip: React.FC<CustomBarChartTooltipProps> = ({
   chartProps,
   currencyCode,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const payload = chartProps.payload?.[0]?.payload;
 
   return (

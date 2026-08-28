@@ -50,8 +50,22 @@ const getStatusColor = (status: string) => {
   }
 };
 
+export const getReviewStateLabel = (
+  state: ReviewState,
+  translate: (key: string) => string,
+) => {
+  switch (state) {
+    case ReviewState.PENDING:
+      return translate("state.pending");
+    case ReviewState.ACCEPTED:
+      return translate("state.accepted");
+    case ReviewState.DECLINED:
+      return translate("state.declined");
+  }
+};
+
 export const ReviewOrder = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE);
+  const { t, i18n } = useTranslation(TRANSLATION_NAMESPACE);
   const { order } = useOrder();
   const [getReviewForOrder, { data }] = useLazyQuery(GetReviewForOrderQuery);
 
@@ -76,7 +90,7 @@ export const ReviewOrder = () => {
             </CardTitle>
           </div>
           <Badge className={getStatusColor(data.getReviewForOrder.state)}>
-            {data.getReviewForOrder.state}
+            {getReviewStateLabel(data.getReviewForOrder.state, t)}
           </Badge>
         </div>
       </CardHeader>
@@ -97,7 +111,9 @@ export const ReviewOrder = () => {
             {data.getReviewForOrder.createdAt && (
               <div className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
-                {formatDate(data.getReviewForOrder.createdAt)}
+                {formatDate(data.getReviewForOrder.createdAt, {
+                  locale: i18n.resolvedLanguage ?? i18n.language,
+                })}
               </div>
             )}
           </div>

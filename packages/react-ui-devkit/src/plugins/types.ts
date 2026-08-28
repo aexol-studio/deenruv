@@ -22,6 +22,12 @@ import { FC, SVGProps } from "react";
 export type Widget<T extends Record<string, any> = object> = {
   id: string | number;
   name: string;
+  /** Relative translation key for the user-facing widget name. */
+  labelId?: string;
+  /** Translation namespace resolved from the owning plugin by PluginStore. */
+  translationNamespace?: string;
+  /** Fully-qualified translation key resolved by PluginStore. */
+  fullLabelId?: string;
   component: React.JSX.Element;
   visible: boolean;
   size: { width: number; height: number };
@@ -141,6 +147,12 @@ export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
   id: KEY;
   /** Label used as readable value */
   label: string;
+  /** Relative translation key for the user-facing tab label. */
+  labelId?: string;
+  /** Translation namespace resolved from the owning plugin by PluginStore. */
+  translationNamespace?: string;
+  /** Fully-qualified translation key resolved by PluginStore. */
+  fullLabelId?: string;
   /** Name used as query param */
   name: string;
   /** Tab component */
@@ -152,6 +164,31 @@ export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
   /** Choose if tab is disabled */
   disabled?: boolean;
 };
+
+export type PluginLabelDefinition = Pick<
+  Widget,
+  "labelId" | "translationNamespace" | "fullLabelId"
+>;
+
+export type PluginLabelTranslator = (
+  key: string,
+  options: { ns: string; defaultValue: string },
+) => string;
+
+/** Resolves a plugin label at render time while preserving its legacy fallback. */
+export function translatePluginLabel(
+  definition: PluginLabelDefinition,
+  fallback: string,
+  translate: PluginLabelTranslator,
+): string {
+  if (!definition.labelId || !definition.translationNamespace) {
+    return fallback;
+  }
+  return translate(definition.labelId, {
+    ns: definition.translationNamespace,
+    defaultValue: fallback,
+  });
+}
 
 export type PluginNavigationGroup = {
   id: string;

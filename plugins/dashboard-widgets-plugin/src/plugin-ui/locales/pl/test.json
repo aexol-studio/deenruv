@@ -66,5 +66,11 @@
   "byDay": "Grupuj wg. dnia",
   "byWeek": "Grupuj wg. tygodnia",
   "byMonth": "Grupuj wg. miesiąca",
-  "byQuarter": "Grupuj wg. kwartału"
+  "byQuarter": "Grupuj wg. kwartału",
+  "widgets": {
+    "orders": "Widget zamówień",
+    "products": "Widget produktów",
+    "categories": "Widget kategorii",
+    "latestOrders": "Widget ostatnich zamówień"
+  }
 }

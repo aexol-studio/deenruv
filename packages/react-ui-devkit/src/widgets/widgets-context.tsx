@@ -3,7 +3,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { createStore, useStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createContext, useContext } from "react";
-import { Channel, Widget } from "@/plugins";
+import type { Channel, Widget } from "@/plugins";
 
 interface WidgetsStoreProps {
   widgets: Widget[];
@@ -27,12 +27,65 @@ interface WidgetsStoreState extends WidgetsStoreProps {
 }
 type WidgetsStoreType = ReturnType<typeof createWidgetsStore>;
 
+const DEFAULT_LOCAL_STORAGE_KEY = "dashboard-widgets";
+
+type PersistedWidgetLayout = Pick<Widget, "id"> &
+  Partial<Pick<Widget, "visible" | "size">>;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
+
+const isPersistedWidgetLayout = (
+  value: unknown,
+): value is PersistedWidgetLayout =>
+  isRecord(value) &&
+  (typeof value.id === "string" || typeof value.id === "number");
+
+export const mergePersistedWidgets = (
+  currentWidgets: Widget[],
+  persistedWidgets: unknown,
+): Widget[] => {
+  if (!Array.isArray(persistedWidgets)) return currentWidgets;
+
+  const currentById = new Map(
+    currentWidgets.map((widget) => [widget.id, widget]),
+  );
+  const hydrated: Widget[] = [];
+  for (const persisted of persistedWidgets) {
+    if (!isPersistedWidgetLayout(persisted)) continue;
+    const current = currentById.get(persisted.id);
+    if (!current) continue;
+    hydrated.push({
+      ...current,
+      ...(typeof persisted.visible === "boolean"
+        ? { visible: persisted.visible }
+        : {}),
+      ...(isRecord(persisted.size) &&
+      typeof persisted.size.width === "number" &&
+      typeof persisted.size.height === "number"
+        ? {
+            size: {
+              width: persisted.size.width,
+              height: persisted.size.height,
+            },
+          }
+        : {}),
+    });
+    currentById.delete(persisted.id);
+  }
+
+  return [
+    ...hydrated,
+    ...currentWidgets.filter((widget) => currentById.has(widget.id)),
+  ];
+};
+
 const createWidgetsStore = (initProps?: Partial<WidgetsStoreProps>) => {
   const DEFAULT_PROPS: WidgetsStoreProps = {
     widgets: [],
     context: undefined,
     options: {
-      localStorageKey: "dashboard-widgets",
+      localStorageKey: DEFAULT_LOCAL_STORAGE_KEY,
     },
   };
   return createStore<WidgetsStoreState>()(
@@ -74,29 +127,32 @@ const createWidgetsStore = (initProps?: Partial<WidgetsStoreProps>) => {
         };
       },
       {
-        name:
-          initProps?.options?.localStorageKey ||
-          DEFAULT_PROPS?.options?.localStorageKey!,
-        storage: createJSONStorage(() => localStorage, {
+        name: initProps?.options?.localStorageKey || DEFAULT_LOCAL_STORAGE_KEY,
+        storage: createJSONStorage(() => globalThis.localStorage, {
           replacer: (key, value) => {
             if (key === "component") return undefined;
             return value;
           },
-          reviver: (_, value) => {
-            if (Array.isArray(value)) {
-              return value.map((data) => {
-                const widget = initProps?.widgets?.find(
-                  (widget) => widget.id === data.id,
-                );
-                return {
-                  ...data,
-                  component: widget?.component || <div>Widget not found</div>,
-                };
-              });
-            }
-            return value;
-          },
         }),
+        partialize: (state) => ({
+          widgets: state.widgets.map(({ id, size, visible }) => ({
+            id,
+            size,
+            visible,
+          })),
+        }),
+        merge: (persistedState, currentState) => {
+          const persistedWidgets = isRecord(persistedState)
+            ? persistedState.widgets
+            : undefined;
+          return {
+            ...currentState,
+            widgets: mergePersistedWidgets(
+              currentState.widgets,
+              persistedWidgets,
+            ),
+          };
+        },
       },
     ),
   );

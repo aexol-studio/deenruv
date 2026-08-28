@@ -21,7 +21,7 @@ import {
 } from "../graphql/mutations.js";
 
 export const Reviews = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE);
+  const { t, i18n } = useTranslation(TRANSLATION_NAMESPACE);
   const [fetch] = useLazyQuery(ListReviewQuery);
   const [changeReviewState] = useMutation(ChangeReviewStateMutation);
   const [changeReviewsState] = useMutation(ChangeReviewsStateMutation);
@@ -194,6 +194,7 @@ export const Reviews = () => {
                 {responseCreatedAt
                   ? t("list.responseCreatedAtValue", {
                       date: formatDate(responseCreatedAt, {
+                        locale: i18n.resolvedLanguage ?? i18n.language,
                         dateStyle: "medium",
                         timeStyle: "short",
                       }),

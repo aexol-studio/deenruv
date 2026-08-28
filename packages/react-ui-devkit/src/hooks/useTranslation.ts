@@ -27,9 +27,14 @@ type EntityType = KnownEntityType | (string & {});
 type CountType = number | "single" | "many" | "one";
 
 export const useTranslation = (ns: string | string[] = "common") => {
-  const i18n = useI18NTranslation(ns, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const runtimeI18n =
+    typeof globalThis.window === "undefined"
+      ? undefined
+      : globalThis.window.__DEENRUV_SETTINGS__.i18n;
+  const i18n = useI18NTranslation(
+    ns,
+    runtimeI18n ? { i18n: runtimeI18n } : undefined,
+  );
 
   function tEntity(
     value: string,

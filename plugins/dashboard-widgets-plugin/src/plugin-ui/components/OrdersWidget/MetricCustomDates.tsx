@@ -5,11 +5,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
-import { endOfDay, format, startOfDay } from "date-fns";
+import { endOfDay, startOfDay } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { formatCustomMetricDate } from "../../translation-formatters";
 
 interface MetricsCustomDatesProps {
   startDate: Date | undefined;
@@ -24,9 +25,8 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
   setDate,
   isVisible,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t, i18n } = useTranslation("dashboard-widgets-plugin");
+  const language = i18n.resolvedLanguage ?? i18n.language;
   if (!isVisible) return null;
   return (
     <div className="!mt-0 flex gap-2">
@@ -41,7 +41,7 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
           >
             <CalendarIcon className="mr-2 size-4" />
             {startDate ? (
-              format(startDate, "PPP")
+              formatCustomMetricDate(startDate, language)
             ) : (
               <span>{t("chooseStartDate")}</span>
             )}
@@ -66,7 +66,7 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
           >
             <CalendarIcon className="mr-2 size-4" />
             {endDate ? (
-              format(endDate, "PPP")
+              formatCustomMetricDate(endDate, language)
             ) : (
               <span>{t("chooseEndDate")}</span>
             )}

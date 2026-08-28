@@ -1,5 +1,8 @@
 import React from "react";
-import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
+import {
+  createDeenruvUIPlugin,
+  DEENRUV_UI_VERSION,
+} from "@deenruv/react-ui-devkit";
 import { GooglePage } from "./pages/GooglePage.js";
 import { FacebookPage } from "./pages/FacebookPage.js";
 import { GlobeIcon } from "lucide-react";

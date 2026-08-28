@@ -16,6 +16,7 @@ import {
 } from "@deenruv/react-ui-devkit";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { sortBySelected } from "../../utils";
+import { formatVariantId } from "../../translation-formatters";
 
 interface ProductSelectProps {
   metricType: ChartMetricType;
@@ -85,7 +86,9 @@ export const ProductSelector: React.FC<ProductSelectProps> = ({
                     <div className="flex w-full cursor-pointer justify-between gap-2">
                       <span className="shrink-0">{product.name}</span>
                       <div className="flex">
-                        <span className="shrink-0 pr-1 opacity-50">{`(variant ID: ${product.id})`}</span>{" "}
+                        <span className="shrink-0 pr-1 opacity-50">
+                          {formatVariantId(t("variantID"), product.id)}
+                        </span>{" "}
                         <Check
                           style={{
                             color:

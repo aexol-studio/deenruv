@@ -1,5 +1,8 @@
 import React from "react";
-import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
+import {
+  createDeenruvUIPlugin,
+  DEENRUV_UI_VERSION,
+} from "@deenruv/react-ui-devkit";
 import { Reviews } from "./pages/Reviews";
 import { ListIcon } from "lucide-react";
 import { Review } from "./pages/Review";
@@ -50,6 +53,7 @@ export const ReviewsUIPlugin = createDeenruvUIPlugin({
       id: "customers-detail-view",
       name: "reviews",
       label: "Reviews",
+      labelId: "nav.reviews",
       component: <ReviewCustomer />,
       hideSidebar: true,
     },

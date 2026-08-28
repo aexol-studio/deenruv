@@ -22,7 +22,6 @@ import {
   useTranslation,
   Routes,
   priceFormatter,
-  useWidgetsStore,
   useSettings,
   TableLabel,
 } from "@deenruv/react-ui-devkit";
@@ -42,11 +41,11 @@ import { NavLink, useNavigate } from "react-router";
 type LatestOrdersProps = object;
 
 export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
-  const { t } = useTranslation("dashboard-widgets-plugin");
+  const { t, i18n } = useTranslation("dashboard-widgets-plugin");
   const navigate = useNavigate();
   const channel = useSettings((state) => state.selectedChannel);
   const [isLoading, setIsLoading] = useState(false);
-  const language = useWidgetsStore((p) => p.context?.language);
+  const translationLocale = i18n.resolvedLanguage ?? i18n.language;
   const { data: latestOrdersData, runQuery: getOrders } =
     useQuery(LatestOrdersQuery);
   const orders = latestOrdersData?.orders?.items || [];
@@ -112,7 +111,7 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
       cell: ({ row }) => (
         <span>
           {formatDistanceToNow(new Date(row.original.createdAt), {
-            locale: language === "pl" ? pl : undefined,
+            locale: translationLocale.startsWith("pl") ? pl : undefined,
             addSuffix: true,
           })}
         </span>

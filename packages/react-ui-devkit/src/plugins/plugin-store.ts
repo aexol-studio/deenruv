@@ -1,7 +1,7 @@
 import React from "react";
 
 import { defaultInputComponents } from "./default-input-components.js";
-import { DetailLocationID, LocationKeys } from "@/types/index.js";
+import type { DetailLocationID, LocationKeys } from "@/types/index.js";
 import {
   DeenruvUIPlugin,
   DeenruvUIPluginManifestItem,
@@ -28,7 +28,17 @@ export type DeenruvPluginStored = DeenruvUIPlugin & {
   author?: string;
   /** Plugin category for filtering */
   category?: string;
+  /** Namespace used to resolve declarative plugin labels at render time. */
+  translationNamespace?: string;
 };
+
+const getLabelMetadata = (labelId?: string, translationNamespace?: string) =>
+  labelId && translationNamespace
+    ? {
+        translationNamespace,
+        fullLabelId: `${translationNamespace}.${labelId}`,
+      }
+    : {};
 
 export class PluginStore {
   private i18next: I18Next;
@@ -136,7 +146,11 @@ export class PluginStore {
         extensions,
         ...plugin
       }) => {
-        this.pluginMap.set(plugin.name, { ...plugin, status: "active" });
+        this.pluginMap.set(plugin.name, {
+          ...plugin,
+          status: "active",
+          translationNamespace: translations?.ns,
+        });
         this.pluginConfig.set(plugin.name, plugin.config || {});
 
         // Index extension-surface entries
@@ -404,7 +418,10 @@ export class PluginStore {
     >();
     this.getPluginMap().forEach((plugin) => {
       plugin.tabs?.forEach((tab) => {
-        tabs.set(tab.id, tab);
+        tabs.set(tab.id, {
+          ...tab,
+          ...getLabelMetadata(tab.labelId, plugin.translationNamespace),
+        });
       });
     });
     return Array.from(tabs.values()).filter((tab) => tab.id === location);
@@ -481,7 +498,11 @@ export class PluginStore {
     >();
     this.getPluginMap().forEach((plugin) => {
       plugin.widgets?.forEach((widget) => {
-        widgets.set(widget.id, { ...widget, plugin });
+        widgets.set(widget.id, {
+          ...widget,
+          ...getLabelMetadata(widget.labelId, plugin.translationNamespace),
+          plugin,
+        });
       });
     });
     return Array.from(widgets.values());

@@ -22,7 +22,7 @@ import { ReviewState, SortOrder } from "../zeus";
 import { UniversalSelectDialog } from "./UniversalSelectDialog";
 
 export const ReviewCustomer = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE);
+  const { t, i18n } = useTranslation(TRANSLATION_NAMESPACE);
   const [fetch] = useLazyQuery(ListReviewQuery);
   const [changeReviewState] = useMutation(ChangeReviewStateMutation);
   const [changeReviewsState] = useMutation(ChangeReviewsStateMutation);
@@ -190,7 +190,9 @@ export const ReviewCustomer = () => {
               <div>
                 {responseCreatedAt
                   ? t("list.responseCreatedAtValue", {
-                      date: formatDate(responseCreatedAt),
+                      date: formatDate(responseCreatedAt, {
+                        locale: i18n.resolvedLanguage ?? i18n.language,
+                      }),
                     })
                   : t("list.noResponse")}
               </div>

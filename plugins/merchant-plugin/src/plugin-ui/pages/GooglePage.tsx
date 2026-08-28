@@ -7,6 +7,7 @@ import {
   useMutation,
   Checkbox,
   Button,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import {
   getGoogleMerchantDiagnostic,
@@ -21,20 +22,21 @@ import {
   sendAllProductsToMerchantPlatform,
 } from "../graphql/mutations";
 import { toast } from "sonner";
+import { translationNS } from "../translation-ns.js";
 
 export const GooglePage = () => {
+  const { t, i18n } = useTranslation(translationNS);
   const [fetchMerchantPlatformSettings] = useLazyQuery(
     getMerchantPlatformSettings,
   );
-  const [fetchMerchantPlatformInfo] = useLazyQuery(
-    getGoogleMerchantDiagnostic,
-  );
+  const [fetchMerchantPlatformInfo] = useLazyQuery(getGoogleMerchantDiagnostic);
   const [fetchSyncHistory] = useLazyQuery(getGoogleMerchantSyncHistory);
   const [mutate] = useMutation(saveMerchantPlatformSettings);
   const [removeOldItems] = useMutation(removeOrphanItems);
   const [sendAllProducts] = useMutation(sendAllProductsToMerchantPlatform);
-  const [diagnostic, setDiagnostic] =
-    useState<GoogleMerchantDiagnostic | null>(null);
+  const [diagnostic, setDiagnostic] = useState<GoogleMerchantDiagnostic | null>(
+    null,
+  );
   const [syncHistory, setSyncHistory] = useState<MerchantSyncRunSummary[]>([]);
   const [serviceInfo, setServiceInfo] = useState({
     productsCount: 0,
@@ -55,15 +57,18 @@ export const GooglePage = () => {
           });
         } catch (error) {
           console.error("Invalid JSON file:", error);
+          toast.error(t("google.invalidCredentialsFile"));
         }
       };
       reader.onerror = (e) => {
         console.error("Error reading file", e);
+        toast.error(t("google.credentialsReadFailed"));
       };
       if (file) reader.readAsText(file);
     }
   };
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [settingsForm, setSettingsForm] = useState({
     brand: "",
     merchantId: "",
@@ -78,6 +83,7 @@ export const GooglePage = () => {
   const refetch = async () => {
     try {
       setIsLoading(true);
+      setLoadError(false);
       const [settingsData, infoData, historyData] = await Promise.all([
         fetchMerchantPlatformSettings({ platform: "google" }),
         fetchMerchantPlatformInfo(),
@@ -134,6 +140,7 @@ export const GooglePage = () => {
       setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setLoadError(true);
       setIsLoading(false);
     }
   };
@@ -155,17 +162,18 @@ export const GooglePage = () => {
         },
       });
       if (saveMerchantPlatformSettings) {
-        toast.success("Settings saved successfully");
+        toast.success(t("common.settingsSaved"));
         refetch();
       } else {
-        toast.error("Failed to save settings");
+        toast.error(t("common.settingsSaveFailed"));
       }
     } catch (error) {
       console.error(error);
       toast.error(
-        `Failed to save settings: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
+        t("common.settingsSaveFailedWithError", {
+          message:
+            error instanceof Error ? error.message : t("common.unknownError"),
+        }),
       );
     }
   };
@@ -178,6 +186,8 @@ export const GooglePage = () => {
       >
         {isLoading && (
           <div
+            role="status"
+            aria-label={t("common.loading")}
             style={{
               position: "absolute",
               top: 0,
@@ -204,10 +214,19 @@ export const GooglePage = () => {
             />
           </div>
         )}
+        <h2 className="mb-4 text-xl font-semibold">{t("google.title")}</h2>
+        {loadError ? (
+          <div
+            className="mb-4 rounded border border-red-400 p-3 text-red-700"
+            role="alert"
+          >
+            {t("common.settingsLoadFailed")}
+          </div>
+        ) : null}
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           <div className="flex justify-between gap-4">
             <div className="w-full flex flex-col gap-2">
-              <Label>Brand</Label>
+              <Label>{t("common.brand")}</Label>
               <Input
                 className="w-full"
                 value={settingsForm.brand}
@@ -217,7 +236,7 @@ export const GooglePage = () => {
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <Label>Merchant ID</Label>
+              <Label>{t("google.merchantId")}</Label>
               <Input
                 className="w-full"
                 required
@@ -232,7 +251,7 @@ export const GooglePage = () => {
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">
-            <Label>Data source</Label>
+            <Label>{t("google.dataSource")}</Label>
             <Input
               className="w-full"
               placeholder="accounts/{merchantId}/dataSources/{id}"
@@ -248,7 +267,7 @@ export const GooglePage = () => {
           </div>
           <div className="flex justify-between gap-4">
             <div className="w-full flex flex-col gap-2">
-              <Label>Content language</Label>
+              <Label>{t("google.contentLanguage")}</Label>
               <Input
                 required
                 value={settingsForm.contentLanguage}
@@ -261,7 +280,7 @@ export const GooglePage = () => {
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <Label>Feed label</Label>
+              <Label>{t("google.feedLabel")}</Label>
               <Input
                 required
                 value={settingsForm.feedLabel}
@@ -276,7 +295,7 @@ export const GooglePage = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
-              <Label>Google Account Credentials</Label>
+              <Label>{t("google.credentials")}</Label>
               <Input
                 style={{
                   border: "none",
@@ -300,7 +319,7 @@ export const GooglePage = () => {
                 }
               />
               <Label htmlFor="google-account-credentials">
-                Auto update on Product's change
+                {t("common.autoUpdate")}
               </Label>
             </div>
           </div>
@@ -308,7 +327,7 @@ export const GooglePage = () => {
             <div className="flex items-center gap-4">
               <div className="flex gap-2">
                 <Label htmlFor="auto-update-on-products-change">
-                  Update ALL products with saving
+                  {t("common.updateAllOnSave")}
                 </Label>
                 <Checkbox
                   id="auto-update-on-products-change"
@@ -321,31 +340,45 @@ export const GooglePage = () => {
                   }
                 />
               </div>
-              <Button>Save</Button>
+              <Button>{t("common.save")}</Button>
             </div>
           </div>
         </form>
         <div className="flex gap-2">
-          <span>Connection status</span>
+          <span>{t("common.connectionStatus")}</span>
           <strong>
-            {serviceInfo.connectionStatus ? "Connected" : "Disconnected"}
+            {serviceInfo.connectionStatus
+              ? t("common.connected")
+              : t("common.disconnected")}
           </strong>
         </div>
         <div className="flex gap-2">
-          <span>Products count</span>
+          <span>{t("common.productsCount")}</span>
           <span>{serviceInfo.productsCount}</span>
         </div>
         <div className="flex flex-col gap-1 text-sm">
-          <span>Diagnostic: {diagnostic?.connectionStatus ?? "UNKNOWN"}</span>
+          <h3 className="font-semibold">{t("google.diagnostics.title")}</h3>
           <span>
-            Data source verified:{" "}
-            {diagnostic?.dataSourceVerified ? "yes" : "no"}
+            {t("google.diagnostics.status")}:{" "}
+            {diagnostic?.connectionStatus ?? t("google.diagnostics.unknown")}
           </span>
-          <span>Latency: {diagnostic?.latencyMs ?? 0} ms</span>
           <span>
-            Disapproved products: {diagnostic?.disapprovedProductsCount ?? 0}
+            {t("google.diagnostics.dataSourceVerified")}:{" "}
+            {diagnostic?.dataSourceVerified
+              ? t("google.diagnostics.yes")
+              : t("google.diagnostics.no")}
           </span>
-          <span>Product issues: {diagnostic?.issuesCount ?? 0}</span>
+          <span>
+            {t("google.diagnostics.latency")}: {diagnostic?.latencyMs ?? 0} ms
+          </span>
+          <span>
+            {t("google.diagnostics.disapprovedProducts")}:{" "}
+            {diagnostic?.disapprovedProductsCount ?? 0}
+          </span>
+          <span>
+            {t("google.diagnostics.productIssues")}:{" "}
+            {diagnostic?.issuesCount ?? 0}
+          </span>
           {diagnostic?.lastError ? (
             <div className="rounded border border-red-400 p-2 text-red-700">
               {diagnostic.lastError.code}: {diagnostic.lastError.message}
@@ -366,25 +399,25 @@ export const GooglePage = () => {
             type="button"
             onClick={async () => {
               await refetch();
-              toast.success("Connection diagnostic completed");
+              toast.success(t("google.diagnostics.completed"));
             }}
           >
-            Test connection
+            {t("google.diagnostics.test")}
           </Button>
           <Button
             type="button"
             onClick={async () => {
               try {
                 await sendAllProducts({ platform: "google" });
-                toast.success("Full synchronization queued");
+                toast.success(t("google.sync.queued"));
                 await refetch();
               } catch (error) {
                 console.error(error);
-                toast.error("Failed to queue full synchronization");
+                toast.error(t("google.sync.queueFailed"));
               }
             }}
           >
-            Synchronize all
+            {t("google.sync.all")}
           </Button>
         </div>
         {serviceInfo.connectionStatus ? (
@@ -393,30 +426,33 @@ export const GooglePage = () => {
               onClick={async () => {
                 try {
                   await removeOldItems({ platform: "google" });
-                  toast.success("Orphan cleanup queued");
+                  toast.success(t("google.sync.cleanupQueued"));
                   refetch();
                 } catch (error) {
                   console.error(error);
-                  toast.error("Failed to queue orphan cleanup");
+                  toast.error(t("google.sync.cleanupQueueFailed"));
                 }
               }}
             >
-              Remove old items
+              {t("common.removeOldItems")}
             </Button>
           </div>
         ) : null}
         <div className="mt-8 flex flex-col gap-2">
-          <h3 className="font-semibold">Recent synchronizations</h3>
+          <h3 className="font-semibold">{t("google.sync.recent")}</h3>
           {syncHistory.length === 0 ? (
-            <span>No synchronization history</span>
+            <span>{t("google.sync.empty")}</span>
           ) : (
             syncHistory.map((run) => (
               <div className="rounded border p-2 text-sm" key={run.id}>
                 <div>
-                  {run.status} · {run.succeeded}/{run.total} successful ·{" "}
-                  {run.failed} failed
+                  {run.status} · {run.succeeded}/{run.total}{" "}
+                  {t("google.sync.successful")} · {run.failed}{" "}
+                  {t("google.sync.failed")}
                 </div>
-                <div>{new Date(run.createdAt).toLocaleString()}</div>
+                <div>
+                  {new Date(run.createdAt).toLocaleString(i18n.language)}
+                </div>
                 {run.errorSummary ? (
                   <div className="text-red-700">{run.errorSummary}</div>
                 ) : null}
@@ -428,8 +464,9 @@ export const GooglePage = () => {
                       className="mt-1 text-red-700"
                       key={`${run.id}-${item.offerId}-${item.operation}`}
                     >
-                      {item.offerId} · {item.errorCode ?? "ERROR"} · attempts:{" "}
-                      {item.attempts} · {item.errorMessage}
+                      {item.offerId} · {item.errorCode ?? "ERROR"} ·{" "}
+                      {t("google.sync.attempts")}: {item.attempts} ·{" "}
+                      {item.errorMessage}
                     </div>
                   ))}
               </div>

@@ -1,4 +1,7 @@
-import { createDeenruvUIPlugin, DEENRUV_UI_VERSION } from "@deenruv/react-ui-devkit";
+import {
+  createDeenruvUIPlugin,
+  DEENRUV_UI_VERSION,
+} from "@deenruv/react-ui-devkit";
 import pl from "./locales/pl";
 import en from "./locales/en";
 import { translationNS } from "./translation-ns";
@@ -17,6 +20,7 @@ export const UpsellUIPlugin = createDeenruvUIPlugin({
       sidebarReplacement: <></>,
       name: "Extras",
       label: "Extras",
+      labelId: "tab.extras",
     },
   ],
 });

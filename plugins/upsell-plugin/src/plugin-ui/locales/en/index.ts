@@ -1,3 +1,4 @@
-import wfirma from './wfirma.json';
+import wfirma from "./wfirma.json";
+import upsell from "./upsell.json";
 
-export default [wfirma];
+export default [wfirma, upsell];

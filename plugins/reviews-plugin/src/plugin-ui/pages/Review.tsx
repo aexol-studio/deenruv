@@ -36,7 +36,7 @@ import { toast } from "sonner";
 import { ReviewStateChange } from "../components/ReviewStateChange";
 
 export const Review = () => {
-  const { t } = useTranslation(TRANSLATION_NAMESPACE);
+  const { t, i18n } = useTranslation(TRANSLATION_NAMESPACE);
   const { id } = useParams();
   const { data: config } = useQuery(GetReviewsConfigQuery);
   const [get] = useLazyQuery(GetReviewQuery);
@@ -225,7 +225,9 @@ export const Review = () => {
                     variant="action"
                     size="sm"
                     className="text-xs"
-                    onClick={() => handleChangeReviewState(ReviewState.ACCEPTED)}
+                    onClick={() =>
+                      handleChangeReviewState(ReviewState.ACCEPTED)
+                    }
                   >
                     {t("detail.acceptReview")}
                   </Button>
@@ -255,6 +257,7 @@ export const Review = () => {
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Calendar className="w-4 h-4" />
                         {formatDate(review.createdAt, {
+                          locale: i18n.language,
                           dateStyle: "medium",
                           timeStyle: "short",
                         })}
@@ -320,6 +323,7 @@ export const Review = () => {
                         className="text-xs text-secondary"
                       >
                         {formatDate(review.responseCreatedAt, {
+                          locale: i18n.language,
                           dateStyle: "medium",
                           timeStyle: "short",
                         })}
@@ -334,6 +338,7 @@ export const Review = () => {
                 <div>
                   <span className="font-medium">{t("detail.createdAt")}:</span>{" "}
                   {formatDate(review.createdAt, {
+                    locale: i18n.language,
                     dateStyle: "medium",
                     timeStyle: "short",
                   })}
@@ -341,6 +346,7 @@ export const Review = () => {
                 <div>
                   <span className="font-medium">{t("detail.updatedAt")}:</span>{" "}
                   {formatDate(review.updatedAt, {
+                    locale: i18n.language,
                     dateStyle: "medium",
                     timeStyle: "short",
                   })}

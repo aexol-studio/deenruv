@@ -2,6 +2,65 @@
   "nav": {
     "googleMerchant": "Google Merchant",
     "facebookCommerce": "Facebook Commerce",
-    "merchantPlatforms": "Merchant Platforms"
+    "merchantPlatforms": "Platformy sprzedażowe"
+  },
+  "common": {
+    "brand": "Marka",
+    "save": "Zapisz",
+    "loading": "Ładowanie ustawień platformy",
+    "autoUpdate": "Aktualizuj automatycznie po zmianie produktu",
+    "updateAllOnSave": "Zaktualizuj wszystkie produkty podczas zapisywania",
+    "connectionStatus": "Stan połączenia",
+    "connected": "Połączono",
+    "disconnected": "Rozłączono",
+    "productsCount": "Liczba produktów",
+    "removeOldItems": "Usuń stare pozycje",
+    "settingsSaved": "Ustawienia zostały zapisane",
+    "settingsSaveFailed": "Nie udało się zapisać ustawień",
+    "settingsSaveFailedWithError": "Nie udało się zapisać ustawień: {{message}}",
+    "settingsLoadFailed": "Nie udało się wczytać ustawień platformy",
+    "unknownError": "Nieznany błąd",
+    "oldItemsRemoved": "Stare pozycje zostały usunięte",
+    "oldItemsRemoveFailed": "Nie udało się usunąć starych pozycji"
+  },
+  "google": {
+    "title": "Google Merchant",
+    "merchantId": "Identyfikator sprzedawcy",
+    "dataSource": "Źródło danych",
+    "contentLanguage": "Język treści",
+    "feedLabel": "Etykieta pliku danych",
+    "credentials": "Dane logowania konta Google",
+    "invalidCredentialsFile": "Plik danych logowania nie zawiera poprawnego JSON-a",
+    "credentialsReadFailed": "Nie udało się odczytać pliku danych logowania",
+    "diagnostics": {
+      "title": "Diagnostyka połączenia",
+      "status": "Stan diagnostyki",
+      "unknown": "NIEZNANY",
+      "dataSourceVerified": "Źródło danych zweryfikowane",
+      "latency": "Opóźnienie",
+      "disapprovedProducts": "Odrzucone produkty",
+      "productIssues": "Problemy z produktami",
+      "yes": "tak",
+      "no": "nie",
+      "test": "Sprawdź połączenie",
+      "completed": "Diagnostyka połączenia zakończona"
+    },
+    "sync": {
+      "all": "Synchronizuj wszystko",
+      "queued": "Pełna synchronizacja została dodana do kolejki",
+      "queueFailed": "Nie udało się dodać pełnej synchronizacji do kolejki",
+      "cleanupQueued": "Usuwanie osieroconych pozycji zostało dodane do kolejki",
+      "cleanupQueueFailed": "Nie udało się dodać usuwania osieroconych pozycji do kolejki",
+      "recent": "Ostatnie synchronizacje",
+      "empty": "Brak historii synchronizacji",
+      "successful": "zakończonych powodzeniem",
+      "failed": "nieudanych",
+      "attempts": "próby"
+    }
+  },
+  "facebook": {
+    "title": "Facebook Commerce",
+    "catalogId": "Identyfikator katalogu",
+    "accessToken": "Token dostępu Facebooka"
   }
 }
