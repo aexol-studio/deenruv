@@ -137,6 +137,14 @@ export const ORDER_LINE_FRAGMENT = gql`
             sku
             trackInventory
             stockOnHand
+            featuredAsset {
+                preview
+            }
+            product {
+                featuredAsset {
+                    preview
+                }
+            }
         }
         discounts {
             ...Discount

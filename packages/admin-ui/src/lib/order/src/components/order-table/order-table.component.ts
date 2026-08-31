@@ -2,6 +2,18 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { AdjustmentType, CustomFieldConfig, OrderDetailFragment } from '@deenruv/admin-ui/core';
 
+interface OrderLineAssetSource {
+    featuredAsset: { preview: string } | null;
+    productVariant: {
+        featuredAsset: { preview: string } | null;
+        product: { featuredAsset: { preview: string } | null };
+    };
+}
+
+export function getOrderLineAsset(line: OrderLineAssetSource): { preview: string } | null {
+    return line.featuredAsset ?? line.productVariant.featuredAsset ?? line.productVariant.product.featuredAsset;
+}
+
 @Component({
     selector: 'vdr-order-table',
     templateUrl: './order-table.component.html',
@@ -18,6 +30,7 @@ export class OrderTableComponent implements OnInit {
     customFieldsForLine: {
         [lineId: string]: Array<{ config: CustomFieldConfig; formGroup: UntypedFormGroup; value: any }>;
     } = {};
+    readonly getOrderLineAsset = getOrderLineAsset;
 
     get visibleOrderLineCustomFields(): CustomFieldConfig[] {
         return this.orderLineCustomFieldsVisible ? this.orderLineCustomFields : [];
