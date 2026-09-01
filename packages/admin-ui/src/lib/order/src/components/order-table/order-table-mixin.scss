@@ -60,6 +60,26 @@
         cursor: pointer;
         text-transform: lowercase;
     }
+    .image-placeholder {
+        width: 50px;
+        height: 50px;
+        background-color: var(--color-component-bg-200);
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .placeholder {
+            display: flex;
+            width: 50px;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-grey-300);
+        }
+    }
     .thumb img {
         width: 50px;
         height: 50px;
