@@ -27,6 +27,13 @@
     "title": "Google Merchant",
     "merchantId": "Merchant ID",
     "dataSource": "Data source",
+    "dataSourceDiscovery": {
+      "discover": "Discover data sources",
+      "loading": "Discovering data sources…",
+      "empty": "No data sources were found for the entered Merchant account.",
+      "error": "Data sources could not be discovered. Check the Merchant ID and saved credentials.",
+      "select": "Select a discovered data source"
+    },
     "contentLanguage": "Content language",
     "feedLabel": "Feed label",
     "credentials": "Google account credentials",

@@ -6,11 +6,14 @@ import {
   buildGoogleProductName,
   collectGoogleProductsForDataSource,
   createGoogleDeleteOperation,
+  createGoogleDataSourcesDiscoveryClient,
   createGoogleInsertOperation,
   createGoogleMerchantClients,
   createGoogleUpdateOperation,
   diagnoseGoogleMerchantConnection,
+  discoverGoogleMerchantDataSources,
   executeGoogleWriteOperations,
+  GoogleDataSourcesDiscoveryClient,
   GoogleProductInputsWriter,
   GoogleDataSourcesReader,
   GoogleProductsReader,
@@ -57,6 +60,193 @@ function createProduct(communicateID = "sku-123"): GoogleProduct {
 }
 
 describe("Google Merchant settings", () => {
+  it("uses the requested account with only stored credentials", async () => {
+    const requests: Array<{ parent: string }> = [];
+    let closed = false;
+    const client: GoogleDataSourcesDiscoveryClient = {
+      async close() {
+        closed = true;
+      },
+      async *listDataSourcesAsync(request) {
+        requests.push(request);
+        yield { name: "accounts/123456/dataSources/987654" };
+      },
+    };
+
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [
+          { key: "merchantId", value: "999999" },
+          { key: "credentials", value: credentialJson },
+        ],
+        () => client,
+      ),
+    ).resolves.toEqual(["accounts/123456/dataSources/987654"]);
+    expect(requests).toEqual([{ parent: "accounts/123456" }]);
+    expect(closed).toBe(true);
+  });
+
+  it("filters foreign or malformed resource names and deduplicates account data sources", async () => {
+    const client: GoogleDataSourcesDiscoveryClient = {
+      async close() {},
+      async *listDataSourcesAsync() {
+        yield { name: "accounts/123456/dataSources/9" };
+        yield { name: "accounts/999999/dataSources/9" };
+        yield { name: "accounts/123456/dataSources/9" };
+        yield { name: "accounts/123456/dataSources/not-numeric" };
+        yield { name: null };
+      },
+    };
+
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [
+          { key: "merchantId", value: "123456" },
+          { key: "credentials", value: credentialJson },
+        ],
+        () => client,
+      ),
+    ).resolves.toEqual(["accounts/123456/dataSources/9"]);
+  });
+
+  it("closes the discovery client when listing fails", async () => {
+    let closed = false;
+    const client: GoogleDataSourcesDiscoveryClient = {
+      async close() {
+        closed = true;
+      },
+      async *listDataSourcesAsync() {
+        throw { code: 16, details: "Credentials rejected" };
+      },
+    };
+
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [
+          { key: "merchantId", value: "123456" },
+          { key: "credentials", value: credentialJson },
+        ],
+        () => client,
+      ),
+    ).rejects.toThrow("Google Merchant authentication failed");
+    expect(closed).toBe(true);
+  });
+
+  it("does not expose invalid saved credential contents", async () => {
+    const secret = "do-not-expose-this-value";
+
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [
+          { key: "merchantId", value: "999999" },
+          {
+            key: "credentials",
+            value: JSON.stringify({ type: secret }),
+          },
+        ],
+      ),
+    ).rejects.toThrow("Saved Google credentials are invalid");
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [
+          { key: "merchantId", value: "999999" },
+          {
+            key: "credentials",
+            value: JSON.stringify({ type: secret }),
+          },
+        ],
+      ),
+    ).rejects.not.toThrow(secret);
+  });
+
+  it("exposes only list and close capabilities on the production discovery client", async () => {
+    const client = createGoogleDataSourcesDiscoveryClient(
+      createSettings().credentials,
+    );
+
+    expect(Object.keys(client).sort()).toEqual([
+      "close",
+      "listDataSourcesAsync",
+    ]);
+    expect("createDataSource" in client).toBe(false);
+    await client.close();
+  });
+
+  it("caps unique discovery results at 100 and returns ASCII-sorted names", async () => {
+    const client: GoogleDataSourcesDiscoveryClient = {
+      async close() {},
+      async *listDataSourcesAsync() {
+        for (let id = 150; id >= 1; id -= 1) {
+          yield { name: `accounts/123456/dataSources/${id}` };
+        }
+      },
+    };
+
+    const names = await discoverGoogleMerchantDataSources(
+      "123456",
+      [{ key: "credentials", value: credentialJson }],
+      () => client,
+    );
+
+    expect(names).toHaveLength(100);
+    expect(names).toEqual([...names].sort());
+    expect(names).toContain("accounts/123456/dataSources/150");
+    expect(names).not.toContain("accounts/123456/dataSources/50");
+  });
+
+  it("normalizes client construction failures", async () => {
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [{ key: "credentials", value: credentialJson }],
+        () => {
+          throw new Error("raw constructor detail");
+        },
+      ),
+    ).rejects.toThrow("Google Merchant data-source client could not be created");
+  });
+
+  it("preserves the primary discovery error when closing also fails", async () => {
+    const client: GoogleDataSourcesDiscoveryClient = {
+      async close() {
+        throw new Error("close failed");
+      },
+      async *listDataSourcesAsync() {
+        throw { code: 16, details: "Credentials rejected" };
+      },
+    };
+
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [{ key: "credentials", value: credentialJson }],
+        () => client,
+      ),
+    ).rejects.toThrow("Google Merchant authentication failed");
+  });
+
+  it("reports a bounded close-only failure", async () => {
+    const client: GoogleDataSourcesDiscoveryClient = {
+      async close() {
+        throw new Error("raw close detail");
+      },
+      async *listDataSourcesAsync() {},
+    };
+
+    await expect(
+      discoverGoogleMerchantDataSources(
+        "123456",
+        [{ key: "credentials", value: credentialJson }],
+        () => client,
+      ),
+    ).rejects.toThrow("Google Merchant data-source client could not be closed");
+  });
+
   it("normalizes and validates the account-scoped dataSource", () => {
     const settings = createSettings();
 

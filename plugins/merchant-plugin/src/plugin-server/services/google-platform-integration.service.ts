@@ -20,6 +20,7 @@ import {
   collectGoogleProductsForDataSource,
   createGoogleDeleteOperation,
   diagnoseGoogleMerchantConnection,
+  discoverGoogleMerchantDataSources,
   createGoogleInsertOperation,
   createGoogleMerchantClients,
   createGoogleUpdateOperation,
@@ -157,6 +158,22 @@ export class GooglePlatformIntegrationService {
     } finally {
       await this.closeClients(clients);
     }
+  }
+
+  async discoverGoogleMerchantDataSources(
+    ctx: RequestContext,
+    requestedMerchantId: string,
+  ): Promise<string[]> {
+    const rawSettings = await this.connection
+      .getRepository(ctx, MerchantPlatformSettingsEntity)
+      .findOne({ relations: ["entries"], where: { platform: "google" } });
+    if (!rawSettings) {
+      throw new Error("Google Merchant settings not found");
+    }
+    return discoverGoogleMerchantDataSources(
+      requestedMerchantId,
+      rawSettings.entries,
+    );
   }
 
   async getGoogleProduct(

@@ -27,6 +27,13 @@
     "title": "Google Merchant",
     "merchantId": "Identyfikator sprzedawcy",
     "dataSource": "Źródło danych",
+    "dataSourceDiscovery": {
+      "discover": "Wykryj źródła danych",
+      "loading": "Wykrywanie źródeł danych…",
+      "empty": "Nie znaleziono źródeł danych dla podanego konta Merchant.",
+      "error": "Nie udało się wykryć źródeł danych. Sprawdź identyfikator Merchant i zapisane dane logowania.",
+      "select": "Wybierz wykryte źródło danych"
+    },
     "contentLanguage": "Język treści",
     "feedLabel": "Etykieta pliku danych",
     "credentials": "Dane logowania konta Google",

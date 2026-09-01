@@ -19,6 +19,7 @@ const FEED_LABEL_PATTERN = /^[A-Z0-9_-]{1,20}$/;
 export const GOOGLE_CONTENT_LANGUAGE = "pl";
 export const GOOGLE_FEED_LABEL = "PL";
 export const DEFAULT_GOOGLE_WRITE_CONCURRENCY = 4;
+export const MAX_GOOGLE_DATA_SOURCE_DISCOVERY_RESULTS = 100;
 
 type MerchantClientOptions = NonNullable<
   ConstructorParameters<typeof v1.ProductsServiceClient>[0]
@@ -101,6 +102,17 @@ export interface GoogleProductsReader {
 export interface GoogleDataSourcesReader {
   getDataSource(request: { name: string }): Promise<unknown>;
 }
+
+export interface GoogleDataSourcesDiscoveryClient {
+  close(): Promise<void>;
+  listDataSourcesAsync(request: {
+    parent: string;
+  }): AsyncIterable<{ name?: string | null }>;
+}
+
+export type GoogleDataSourcesDiscoveryClientFactory = (
+  credentials: GoogleMerchantCredentials,
+) => GoogleDataSourcesDiscoveryClient;
 
 export type GoogleMerchantRetryOptions = {
   delay?: (attempt: number) => Promise<void>;
@@ -310,6 +322,101 @@ export function normalizeDataSource(
     throw new Error("Google dataSource account must match Merchant ID");
   }
   return `accounts/${match[1]}/dataSources/${match[2]}`;
+}
+
+export function parseGoogleDataSourceDiscoverySettings(
+  requestedMerchantId: string,
+  entries: readonly SettingEntry[],
+): Pick<GoogleMerchantSettings, "accountId" | "credentials"> {
+  const getValue = (key: string) =>
+    entries.find((entry) => entry.key === key)?.value;
+  const accountId = normalizeMerchantId(requestedMerchantId);
+  const rawCredentials = getValue("credentials")?.trim();
+  if (!rawCredentials) {
+    throw new Error("Saved Google credentials are required");
+  }
+  try {
+    return {
+      accountId,
+      credentials: parseGoogleCredentials(rawCredentials),
+    };
+  } catch {
+    throw new Error("Saved Google credentials are invalid");
+  }
+}
+
+export function createGoogleDataSourcesDiscoveryClient(
+  credentials: GoogleMerchantCredentials,
+): GoogleDataSourcesDiscoveryClient {
+  const client = new dataSourcesV1.DataSourcesServiceClient({
+    credentials,
+    scopes: [GOOGLE_OAUTH_SCOPE],
+  });
+  // Google exposes data-source reads under the broad content scope. Actual write
+  // prevention is IAM/operator-owned; this wrapper narrows the runtime API surface.
+  return {
+    close: () => client.close(),
+    listDataSourcesAsync: (request) => client.listDataSourcesAsync(request),
+  };
+}
+
+function normalizeGoogleDataSourceDiscoveryError(error: unknown): Error {
+  const normalized = normalizeGoogleMerchantError(error);
+  const messages: Partial<Record<GoogleMerchantConnectionStatus, string>> = {
+    AUTHENTICATION_FAILED: "Google Merchant authentication failed",
+    PERMISSION_DENIED:
+      "Saved Google credentials cannot read this Merchant account",
+    UNAVAILABLE: "Google Merchant data-source discovery is temporarily unavailable",
+  };
+  return new Error(
+    messages[normalized.status] ?? "Google Merchant data-source discovery failed",
+  );
+}
+
+export async function discoverGoogleMerchantDataSources(
+  requestedMerchantId: string,
+  entries: readonly SettingEntry[],
+  createClient: GoogleDataSourcesDiscoveryClientFactory =
+    createGoogleDataSourcesDiscoveryClient,
+): Promise<string[]> {
+  const settings = parseGoogleDataSourceDiscoverySettings(
+    requestedMerchantId,
+    entries,
+  );
+  let client: GoogleDataSourcesDiscoveryClient;
+  try {
+    client = createClient(settings.credentials);
+  } catch {
+    throw new Error("Google Merchant data-source client could not be created");
+  }
+  const names = new Set<string>();
+  let discoveryError: Error | undefined;
+
+  try {
+    for await (const dataSource of client.listDataSourcesAsync({
+      parent: `accounts/${settings.accountId}`,
+    })) {
+      if (!dataSource.name) continue;
+      try {
+        names.add(normalizeDataSource(dataSource.name, settings.accountId));
+        if (names.size === MAX_GOOGLE_DATA_SOURCE_DISCOVERY_RESULTS) break;
+      } catch {
+        // Ignore malformed or cross-account resources returned by the remote API.
+      }
+    }
+    return [...names].sort();
+  } catch (error) {
+    discoveryError = normalizeGoogleDataSourceDiscoveryError(error);
+    throw discoveryError;
+  } finally {
+    try {
+      await client.close();
+    } catch {
+      if (!discoveryError) {
+        throw new Error("Google Merchant data-source client could not be closed");
+      }
+    }
+  }
 }
 
 export function parseGoogleMerchantSettings(

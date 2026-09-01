@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Label,
   Input,
   PageBlock,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   useLazyQuery,
   useMutation,
   Checkbox,
@@ -11,6 +16,7 @@ import {
 } from "@deenruv/react-ui-devkit";
 import {
   getGoogleMerchantDiagnostic,
+  getGoogleMerchantDataSources,
   getGoogleMerchantSyncHistory,
   getMerchantPlatformSettings,
   GoogleMerchantDiagnostic,
@@ -23,6 +29,11 @@ import {
 } from "../graphql/mutations";
 import { toast } from "sonner";
 import { translationNS } from "../translation-ns.js";
+import {
+  createGoogleDataSourceDiscoveryRequestTracker,
+  isValidGoogleMerchantId,
+  selectDiscoveredGoogleDataSource,
+} from "./google-data-source-discovery.js";
 
 export const GooglePage = () => {
   const { t, i18n } = useTranslation(translationNS);
@@ -30,6 +41,9 @@ export const GooglePage = () => {
     getMerchantPlatformSettings,
   );
   const [fetchMerchantPlatformInfo] = useLazyQuery(getGoogleMerchantDiagnostic);
+  const [fetchGoogleMerchantDataSources] = useLazyQuery(
+    getGoogleMerchantDataSources,
+  );
   const [fetchSyncHistory] = useLazyQuery(getGoogleMerchantSyncHistory);
   const [mutate] = useMutation(saveMerchantPlatformSettings);
   const [removeOldItems] = useMutation(removeOrphanItems);
@@ -42,6 +56,17 @@ export const GooglePage = () => {
     productsCount: 0,
     connectionStatus: false,
   });
+  const [discoveredDataSources, setDiscoveredDataSources] = useState<string[]>(
+    [],
+  );
+  const [discoveryAttempted, setDiscoveryAttempted] = useState(false);
+  const [discoveryError, setDiscoveryError] = useState(false);
+  const [isDiscoveringDataSources, setIsDiscoveringDataSources] =
+    useState(false);
+  const discoveryRequestTracker = useRef(
+    createGoogleDataSourceDiscoveryRequestTracker(),
+  ).current;
+  const currentMerchantId = useRef("");
 
   const handleSelectedFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -149,6 +174,15 @@ export const GooglePage = () => {
     refetch();
   }, []);
 
+  useEffect(() => {
+    currentMerchantId.current = settingsForm.merchantId;
+    discoveryRequestTracker.invalidate();
+    setDiscoveredDataSources([]);
+    setDiscoveryAttempted(false);
+    setDiscoveryError(false);
+    setIsDiscoveringDataSources(false);
+  }, [settingsForm.merchantId]);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -175,6 +209,32 @@ export const GooglePage = () => {
             error instanceof Error ? error.message : t("common.unknownError"),
         }),
       );
+    }
+  };
+
+  const discoverDataSources = async () => {
+    const merchantId = settingsForm.merchantId.trim();
+    if (!isValidGoogleMerchantId(merchantId)) return;
+    const request = discoveryRequestTracker.begin(merchantId);
+    setDiscoveryAttempted(true);
+    setDiscoveryError(false);
+    setIsDiscoveringDataSources(true);
+    try {
+      const data = await fetchGoogleMerchantDataSources({ merchantId });
+      if (!discoveryRequestTracker.isCurrent(request, currentMerchantId.current)) {
+        return;
+      }
+      setDiscoveredDataSources(data.getGoogleMerchantDataSources);
+    } catch {
+      if (!discoveryRequestTracker.isCurrent(request, currentMerchantId.current)) {
+        return;
+      }
+      setDiscoveredDataSources([]);
+      setDiscoveryError(true);
+    } finally {
+      if (discoveryRequestTracker.isCurrent(request, currentMerchantId.current)) {
+        setIsDiscoveringDataSources(false);
+      }
     }
   };
 
@@ -241,12 +301,18 @@ export const GooglePage = () => {
                 className="w-full"
                 required
                 value={settingsForm.merchantId}
-                onChange={(e) =>
+                onChange={(e) => {
+                  currentMerchantId.current = e.target.value;
+                  discoveryRequestTracker.invalidate();
+                  setDiscoveredDataSources([]);
+                  setDiscoveryAttempted(false);
+                  setDiscoveryError(false);
+                  setIsDiscoveringDataSources(false);
                   setSettingsForm({
                     ...settingsForm,
                     merchantId: e.target.value,
-                  })
-                }
+                  });
+                }}
               />
             </div>
           </div>
@@ -264,6 +330,61 @@ export const GooglePage = () => {
                 })
               }
             />
+            <div className="flex items-center gap-2">
+              <Button
+                disabled={
+                  isDiscoveringDataSources ||
+                  !isValidGoogleMerchantId(settingsForm.merchantId)
+                }
+                onClick={discoverDataSources}
+                type="button"
+              >
+                {isDiscoveringDataSources
+                  ? t("google.dataSourceDiscovery.loading")
+                  : t("google.dataSourceDiscovery.discover")}
+              </Button>
+              {discoveredDataSources.length > 0 ? (
+                <Select
+                  onValueChange={(selectedValue) =>
+                    setSettingsForm((current) => ({
+                      ...current,
+                      dataSource: selectDiscoveredGoogleDataSource(
+                        current.dataSource,
+                        selectedValue,
+                        discoveredDataSources,
+                      ),
+                    }))
+                  }
+                  value={
+                    discoveredDataSources.includes(settingsForm.dataSource)
+                      ? settingsForm.dataSource
+                      : undefined
+                  }
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue
+                      placeholder={t("google.dataSourceDiscovery.select")}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {discoveredDataSources.map((dataSource) => (
+                      <SelectItem key={dataSource} value={dataSource}>
+                        {dataSource}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : null}
+            </div>
+            <div aria-live="polite" className="text-sm">
+              {discoveryError
+                ? t("google.dataSourceDiscovery.error")
+                : discoveryAttempted &&
+                    !isDiscoveringDataSources &&
+                    discoveredDataSources.length === 0
+                  ? t("google.dataSourceDiscovery.empty")
+                  : null}
+            </div>
           </div>
           <div className="flex justify-between gap-4">
             <div className="w-full flex flex-col gap-2">

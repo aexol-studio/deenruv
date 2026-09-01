@@ -1,5 +1,5 @@
 import { Args, Query, Resolver, Mutation } from "@nestjs/graphql";
-import { Ctx, RequestContext } from "@deenruv/core";
+import { Allow, Ctx, Permission, RequestContext } from "@deenruv/core";
 import { GooglePlatformIntegrationService } from "../services/google-platform-integration.service.js";
 import { MerchantPlatformSetting } from "../entities/platform-integration-setting.entity.js";
 import { PlatformIntegrationService } from "../services/platform-integration.service.js";
@@ -13,6 +13,18 @@ export class PlatformIntegrationAdminResolver {
     private facebookPlatformIntegrationService: FacebookPlatformIntegrationService,
     private platformIntegrationService: PlatformIntegrationService,
   ) {}
+
+  @Query()
+  @Allow(Permission.ReadSettings)
+  async getGoogleMerchantDataSources(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { merchantId: string },
+  ): Promise<string[]> {
+    return this.googlePlatformIntegrationService.discoverGoogleMerchantDataSources(
+      ctx,
+      args.merchantId,
+    );
+  }
 
   @Query()
   async getMerchantPlatformSettings(

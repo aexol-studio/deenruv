@@ -88,6 +88,7 @@ export const adminApiExtensions = gql`
   }
 
   extend type Query {
+    getGoogleMerchantDataSources(merchantId: String!): [String!]!
     getMerchantPlatformSettings(
       platform: String!
     ): MerchantPlatformSettingsEntity

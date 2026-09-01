@@ -12,6 +12,14 @@ export const getMerchantPlatformSettings = query({
     merchantPlatformSettingsSelector,
   ],
 });
+export const getGoogleMerchantDataSources = gql`
+  query GetGoogleMerchantDataSources($merchantId: String!) {
+    getGoogleMerchantDataSources(merchantId: $merchantId)
+  }
+` as TypedDocumentNode<
+  { getGoogleMerchantDataSources: string[] },
+  { merchantId: string }
+>;
 export const getMerchantPlatformInfo = query({
   getMerchantPlatformInfo: [
     { platform: $("platform", "String!") },
